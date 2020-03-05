@@ -1,0 +1,92 @@
+<template>
+    <div id="contents">
+        <h3>{{$route.name}}</h3>
+        <ul class="navi">
+            <li class="home"><a href="/" target="_top">홈</a></li>
+            <li>상품관리</li>
+            <li>상품관리</li>
+            <li class="on">{{$route.name}}</li>
+        </ul>
+        <ul class="helpbox">
+            <li>네이버 지식쇼핑/다음 쇼핑하우의 상품연동을 관리합니다.</li>
+        </ul>
+
+        <table class="t_list">
+            <colgroup>
+                <col width="300">
+                <col width="*">
+                <col width="150">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>업체</th>
+                    <th>상품 DB URL</th>
+                    <th>제휴사관리자</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <!-- 네이버지식쇼핑 -->
+                <tr>
+                    <td nowrap=""><strong>네이버 지식쇼핑</strong><br>(수동 업데이트)</td>
+                    <td class="left">
+                        <div>
+                            <strong class="blue">[전체상품]</strong>
+                            <span>http://mimd.mallstore.co.kr/data/base/ep/naver/all.txt</span>
+                            <span class="button small"><a href="http://mimd.mallstore.co.kr/data/base/ep/naver/all.txt" target="_blank" exist="1">미리보기</a></span>
+                            <button type="button" class="btn btn-sm btn-info" onclick="updateEp('naver', 'all')">업데이트</button>
+                        </div>
+                        <div class="orange font11">최근 업데이트 일시 : 2017-01-09 16:20:22</div>
+                        <div class="mgt10">
+                            <strong class="blue">[요약상품]</strong>
+                            <span>http://mimd.mallstore.co.kr/data/base/ep/naver/brief.txt</span>
+                            <span class="button small"><a href="http://mimd.mallstore.co.kr/data/base/ep/naver/brief.txt" target="_blank" exist="1" preview="preview">미리보기</a></span>
+                            <button type="button" class="btn btn-sm btn-info" onclick="updateEp('naver', 'brief')">업데이트</button>
+                        </div>
+                        <div class="orange font11">최근 업데이트 일시 : 2013-08-13 14:05:56</div>
+                        <div class="mgt10 font11">
+                            [업데이트 주기]<br> * 전체상품 : 매일 01시 (1일 1회)<br> * 요약상품 : 매일 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20시 (09~20시 매 시각마다 : 1일 12회)
+                        </div>
+                    </td>
+                    <td>
+                        <a href="https://adcenter.shopping.naver.com/member/login/form.nhn" class="btn btn-default" target="naver_new">관리</a>
+                    </td>
+                </tr>
+                <!-- 네이버지식쇼핑 -->
+
+                <!-- 다음 쇼핑하우 -->
+                <tr>
+                    <td style="border-bottom: 0;"><strong>다음 쇼핑하우</strong></td>
+                    <td class="left" style="border-bottom: 0;">
+                        <div>
+                            <strong class="blue">[전체상품]</strong>
+                            <span>http://mimd.mallstore.co.kr/exts/ep/daum.asp?kind=all</span>
+                            <a href="http://mimd.mallstore.co.kr/exts/ep/daum.asp?kind=all&method=preview" class="btn btn-sm btn-info" target="_blank">미리보기</a>
+                        </div>
+                        <div class="mgt5">
+                            <strong class="blue">[요약상품]</strong>
+                            <span>http://mimd.mallstore.co.kr/exts/ep/daum.asp?kind=brief</span>
+                            <a href="http://mimd.mallstore.co.kr/exts/ep/daum.asp?kind=brief&method=preview" class="btn btn-sm btn-info" target="_blank">미리보기</a>
+                        </div>
+                    </td>
+                    <td style="border-bottom: 0;">
+                        <a href="http://commerceone.biz.daum.net/main.daum" class="btn btn-default" target="daum_new">관리</a>
+                    </td>
+                </tr>
+                <!-- 다음 쇼핑하우 -->
+
+            </tbody>
+        </table>
+
+        <div id="loadingUpdate" style="display:none">
+            <div class="loading_update">
+                <p><strong>상품 DB</strong>를 <strong class="red">업데이트 중</strong> 입니다.<br>잠시만 기다려 주세요.</p>
+                <img src="/img/loading.bar.gif" alt="loading..">
+            </div>
+        </div>
+
+    </div>
+</template>
+<script>
+export default {}
+</script>
