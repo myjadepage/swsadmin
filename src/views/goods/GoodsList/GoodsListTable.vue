@@ -1,11 +1,25 @@
 <template>
     <div>
         <div class="float-right mt-1 mb-1">
-            <select>
-                <option value="">정렬순서</option>
+            <select v-model="perPage">
+                <option value="10" selected>10개 보기</option>
+                <option value="50">50개 보기</option>
+                <option value="100">100개 보기</option>
             </select>
         </div>
-        <b-table :items="products" :busy="isBusy" :fields="fields" selectable :select-mode="'multi'" head-variant="light">
+        <b-table 
+            :items="products" 
+            :busy="isBusy" 
+            :fields="fields" 
+            selectable
+            head-variant="light"
+            :select-mode="'single'"
+            :filter="FilterFields"
+            :filter-function="filtering"
+            :current-page="currentPage"
+            :per-page="perPage"
+            @filtered="resultFilter"
+        >
             <template v-slot:table-busy>
                 <div class="text-center text-danger my-2">
                     <b-spinner class="align-middle"></b-spinner>&emsp;&emsp;&emsp;&emsp;
@@ -88,7 +102,12 @@
             </template>
         </b-table>
         <div class="float-right">
-            <b-pagination v-model="currentPage" :total-rows="products.length"></b-pagination>
+            <b-pagination 
+                v-model="currentPage" 
+                :total-rows="totalPage"
+                :per-page="perPage"
+            >
+            </b-pagination>
         </div>
     </div>
 </template>
@@ -104,7 +123,9 @@ export default {
       defaultImage: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Noimage.svg',
       products: [],
       isBusy: true,
-      currentPage: 1,
+      currentPage: 1,   // 현재 페이지
+      perPage: 10,      // 페이지당 표현수
+      totalPage: 0,
       fields: [
           {key : 'selected', label: '', class: 'text-center align-middle'},
           {key : 'productCode', label: '고유번호', class: 'text-center align-middle'},
@@ -114,6 +135,7 @@ export default {
           {key : 'setting', label: '기능', class: 'align-middle'}
       ]
   }),
+  props: ['FilterFields'],
   mixins: [commonJs],
   mounted () {
       this.init()
@@ -121,6 +143,16 @@ export default {
   methods: {
       init: function () {
         this.axiosGetRequest('/api/v1/products/lists','',this.loadProductsList)
+      },
+      filtering (row, filter) {
+          // 상품명 검색
+          if ((row.title.productName).indexOf(filter.FieldText) > -1) {
+              return row
+          }
+      },
+      resultFilter(filteredItems) {
+          this.totalPage = filteredItems.length
+          this.currentPage = 1
       },
       loadProductsList(res) {
         this.isBusy=true
@@ -155,6 +187,7 @@ export default {
                 
             })
         }
+        this.totalPage = result.length
         this.isBusy=false
         return res
       },
