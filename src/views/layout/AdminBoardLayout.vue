@@ -1,5 +1,5 @@
 <template>
-    <div id="wrap">
+    <div id="wrap" style="min-width: 1866px">
         <div id="header">
             <div id="admininfo">
                 <admin-menu name="AdminMenu"></admin-menu>

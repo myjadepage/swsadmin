@@ -1,10 +1,10 @@
-const videoMixin = {
+export default {
   data () {
     return {
       videoCounter: 2,
       videos: [
-        {id: 1, videoTitle: 'videoTitle1', videoVisibleTitle: '', videoObjName: 'optionalVideo1Url', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage1'},
-        {id: 2, videoTitle: 'videoTitle2', videoVisibleTitle: '', videoObjName: 'optionalVideo2Url', imageVisibleTitle: '', imageObjName: 'thumbNailImage2'}
+        {id: 1, videoTitle: 'videoTitle1', videoVisibleTitle: '', videoObjName: 'optionalVideo1Url', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage1', progressValue: 0, progressMax: 0},
+        {id: 2, videoTitle: 'videoTitle2', videoVisibleTitle: '', videoObjName: 'optionalVideo2Url', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage2', progressValue: 0, progressMax: 0}
       ]
     }
   },
@@ -31,5 +31,3 @@ const videoMixin = {
     }
   }
 }
-
-export default videoMixin

@@ -44,7 +44,7 @@
         vertical-align: bottom
     }
     select {
-        min-width: 200px;
+        width: 200px;
     }
     input {
         vertical-align: middle
@@ -1520,7 +1520,7 @@
         /* border: 1px solid #D6D6D6 */
     }
     #frameBox .border .menu {
-        height: 40px;
+        /* height: 40px; */
         line-height: 40px;
         /* border-bottom: 1px solid #D6D6D6; */
         overflow: hidden
@@ -2391,7 +2391,7 @@
     }
     .t_form td.category u {
         font-weight: bold;
-        margin-left: 3px
+        margin-left: 10px
     }
     .t_form td.blank {
         height: 2px;
@@ -2417,7 +2417,7 @@
     .t_form td .explain dd.bgn {
         background: none
     }
-    .t_form td.category {
+    .t_form td .category {
         padding: 0
     }
     .t_form td.category table {

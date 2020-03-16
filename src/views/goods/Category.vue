@@ -13,33 +13,112 @@
         </ul>
 
         <table id="frameBox">
-            <colgroup>
-                <col width="250">
-                <col width="10">
-                <col width="*">
-            </colgroup>
             <tbody>
                 <tr>
-                    <th class="frame_cate">
-                        <div class="border">
-                            <div class="menu">
-                                <ul>
-                                    <li><b-button variant="success" id="btn-expand-all">전체</b-button></li>
-                                    <li><b-button variant="danger" id="btn-collapse-all">닫기</b-button></li>
-                                </ul>
-                            </div>
-                            <div id="tree"></div>
-                        </div>
-                    </th>
-                    <td></td>
                     <td>
-
+                        <table class="table table-bordered t_category category">
+                            <colgroup>
+                                <col width="250px" />
+                                <col width="*" />
+                            </colgroup>
+                            <tr>
+                                <th>
+                                    1차 카테고리
+                                </th>
+                                <td class='category-dashboard category1'>
+                                    <h3 v-for="(item1, index) in categories1Level.children" :key="index" class="category-item" @click="clickCategoryLevel(item1)" @dblclick="categoryOverFn">
+                                        <a href="#" class="badge badge-danger category-item close-btn" style="display: none;" @click="deleteCategory(item1)">x</a>
+                                        <a href="#" class="badge badge-success category-item modify-btn" style="display: none;" @click="showMoveModelCategory(item1)">#</a>
+                                        <a href="#" class="badge badge-light category-item item">
+                                            {{ item1.name }}
+                                        </a>
+                                    </h3>
+                                    <h3 class="category-item add-btn category1" @click="showInsertModal(1)">
+                                        <a href="#" class="badge badge-light category-item item">
+                                            <font-awesome-icon icon="plus"/> 카테고리 추가
+                                        </a>
+                                    </h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    2차 카테고리
+                                </th>
+                                <td class='category-dashboard category2'>
+                                    <h3 v-for="(item2, index) in categories2Level.children" :key="index" class="category-item" @click="clickCategoryLevel(item2)" @dblclick="categoryOverFn">
+                                        <a href="#" class="badge badge-danger category-item close-btn" style="display: none;" @click.passive="deleteCategory(item2)">x</a>
+                                        <a href="#" class="badge badge-success category-item modify-btn" style="display: none;" @click="showMoveModelCategory(item2)">#</a>
+                                        <a href="#" class="badge badge-light category-item item">{{ item2.name }}</a>
+                                    </h3>
+                                    <h3 class="category-item add-btn category2" @click="showInsertModal(2)" style="display:none">
+                                        <a href="#" class="badge badge-light category-item item">
+                                            <font-awesome-icon icon="plus"/> 카테고리 추가
+                                        </a>
+                                    </h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    3차 카테고리
+                                </th>
+                                <td class='category-dashboard category3'>
+                                    <h3 v-for="(item3, index) in categories3Level.children" :key="index" class="category-item" @click="clickCategoryLevel(item3)" @dblclick="categoryOverFn">
+                                        <a href="#" class="badge badge-danger category-item close-btn" style="display: none;" @click="deleteCategory(item3)">x</a>
+                                        <a href="#" class="badge badge-success category-item modify-btn" style="display: none;" @click="showMoveModelCategory(item3)">#</a>
+                                        <a href="#" class="badge badge-light category-item item">{{ item3.name }}</a>
+                                    </h3>
+                                    <h3 class="category-item add-btn category3" @click="showInsertModal(3)" style="display:none">
+                                        <a href="#" class="badge badge-light category-item item">
+                                            <font-awesome-icon icon="plus"/> 카테고리 추가
+                                        </a>
+                                    </h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    4차 카테고리
+                                </th>
+                                <td class='category-dashboard category4'>
+                                    <h3 v-for="(item4, index) in categories4Level.children" :key="index" class="category-item" @click="clickCategoryLevel(item4)" @dblclick="categoryOverFn">
+                                        <a href="#" class="badge badge-danger category-item close-btn" style="display: none;" @click="deleteCategory(item4)">x</a>
+                                        <a href="#" class="badge badge-success category-item modify-btn" style="display: none;" @click="showMoveModelCategory(item4)">#</a>
+                                        <a href="#" class="badge badge-light category-item item">{{ item4.name }}</a>
+                                    </h3>
+                                    <h3 class="category-item add-btn category4" @click="showInsertModal(4)" style="display:none">
+                                        <a href="#" class="badge badge-light category-item item">
+                                            <font-awesome-icon icon="plus"/> 카테고리 추가
+                                        </a>
+                                    </h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    5차 카테고리
+                                </th>
+                                <td class='category-dashboard category5'>
+                                    <h3 v-for="(item5, index) in categories5Level.children" :key="index" class="category-item" @click="clickCategoryLevel(item5)" @dblclick="categoryOverFn">
+                                        <a href="#" class="badge badge-danger category-item close-btn" style="display: none;" @click="deleteCategory(item5)">x</a>
+                                        <a href="#" class="badge badge-success category-item modify-btn" style="display: none;" @click="showMoveModelCategory(item5)">#</a>
+                                        <a href="#" class="badge badge-light category-item item">{{ item5.name }}</a>
+                                    </h3>
+                                    <h3 class="category-item add-btn category5" @click="showInsertModal(5)" style="display:none">
+                                        <a draggable="true" href="#" class="badge badge-light category-item item">
+                                            <font-awesome-icon icon="plus"/> 카테고리 추가
+                                        </a>
+                                    </h3>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <form name="Frm" method="post">
                             <div id="wrap_body">
                                 <!-- 카테고리 정보 : 시작 -->
-                                <div class="box" style="padding-top:0">
-                                    <div class="section_head" style="margin-top: 0;">
-                                        <h4><i class="xi-check-circle"></i> 카테고리 추가</h4>
+                                <div class="box">
+                                    <div class="section_head">
+                                        <h4><font-awesome-icon icon="info-circle" /> 카테고리 추가</h4>
                                     </div>
 
                                     <table class="t_form">
@@ -48,26 +127,39 @@
                                             <tr>
                                                 <th>현재 카테고리</th>
                                                 <td class="category">
-                                                    <u id="target_category"> 추가</u>
+                                                    <u id="target_category"> {{ selectCategory.breadcrumb() }}</u>
+                                                    <!-- <template v-if="categories2Level.children.length > 0">
+                                                        <a href="#" class="btn btn-light btn-sm" @click="newCategorySub()"> + 추가</a>
+                                                    </template> -->
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>카테고리명</th>
                                                 <td>
-                                                    <input type="text" name="name" value="" class="text_input" style="width:98%" maxlength="100">
+                                                    <input type="text" name="name" v-model="selectCategory.title" class="text_input" style="width:98%" maxlength="100">
                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <th>아이콘 설정</th>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <th>수수료율</th>
                                                 <td>
-                                                    <input type="text" name="cms" class="text_input" style="width:50px" value="" maxlength="5" onkeyup="onlyFloat(this)" onblur="onlyFloat(this)"> %
+                                                    <input type="text" class="text_input" style="width:50px; text-align:right" v-model="selectCategory.feeRate" maxlength="5"> %
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>숨김 여부</th>
                                                 <td>
-                                                    <span><input type="radio" name="hidden" value="0" checked>노출</span>
-                                                    <span class="mgl20"><input type="radio" name="hidden" value="1">숨김</span>
+                                                    <span>
+                                                        <input type="radio" id="isHideTrue" name="hidden" value=true v-model="selectCategory.isHide" checked>
+                                                        <label for="isHideTrue">노출</label>
+                                                    </span>
+                                                    <span class="mgl20">
+                                                        <input type="radio" id="isHideFalse" name="hidden" value=false v-model="selectCategory.isHide" >
+                                                        <label for="isHideFalse">숨김</label>
+                                                    </span>
                                                 </td>
                                             </tr>
 
@@ -75,206 +167,301 @@
                                     </table>
                                 </div>
                                 <!-- 카테고리 정보 : 끝 //-->
-
+                                
                                 <!-- 상단 꾸미기 : 시작 -->
                                 <div class="box">
                                     <div class="section_head">
-                                        <h4><i class="xi-check-circle"></i> 카테고리 상단 디자인</h4>
+                                        <h4><font-awesome-icon icon="info-circle" /> 카테고리 상단 디자인</h4>
                                     </div>
-                                    <vue-editor id="vueEditor" v-model="categorCommentHtml"></vue-editor>
+                                    <quill-editor
+                                        ref="editorOptionRef"
+                                        class="quill-editor" 
+                                        :options="editorOption"
+                                        id="categorCommentHtml" 
+                                        name="categorCommentHtml" 
+                                        v-model="selectCategory.topDesignHTML"
+                                    ></quill-editor>
+                                    <input type="file" id="categorCommentHtmlImage" accept="image/*" style="display:none" @change="categorCommentHtmlimageHandler" />
 
                                     <table class="t_form">
                                         <tbody>
                                             <tr>
                                                 <th>하위 적용</th>
                                                 <td>
-                                                    <input type="checkbox" name="isInheritTopDecor" value="T"> 하위 카테고리에도 동일 하게 적용.
+                                                    <input type="checkbox" name="isInheritTopDecor" v-model="selectCategory.isApplyChildCategory"> 하위 카테고리에도 동일 하게 적용.
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <!-- 상단 꾸미기 : 끝 //-->
-
-                                <!-- 카테고리 슬라이드 배너 : 시작 -->
-                                <div class="box">
-                                    <div class="sortable_title">
-                                        <h4><i class="xi-check-circle"></i> 카테고리 슬라이드 배너</h4>
-                                        <p>
-                                            <span><input type="checkbox" name="cbListAll" onclick="cbBannerAll(this)">전체선택</span>
-                                            <button type="button" class="btn btn-sm btn-info mgl20">배너추가</button>
-                                            <button type="button" class="btn btn-sm btn-danger">배너삭제</button>
-                                            <button type="button" class="btn btn-sm btn-secondary">저장</button>
-                                        </p>
-                                    </div>
-                                    <ul class="sortable sortable_banner ui-sortable mgt10" id="bannerList">
-                                        <li>
-                                            <input type="checkbox" name="cbBanner" class="cb">
-
-                                            <div class="banner">
-                                                <img src="@/assets/img/event_category_2_1_1.jpg" alt="배너1">
-                                            </div>
-                                            <div class="caption">
-                                                <span class="ellipsis">배너1</span>
-                                                <hr/>
-                                                <button class="btn btn-sm btn-secondary" type="button">수정</button>
-                                                <a href="@/assets/img/event_category_2_1_1.jpg" class="btn btn-sm btn-default">원본</a>
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <input type="checkbox" name="cbBanner" class="cb">
-                                            <div class="banner">
-                                                <img src="@/assets/img/event_category_2_2_1.jpg" alt="배너2" ow="790" oh="410">
-                                            </div>
-                                            <div class="caption">
-                                                <span class="ellipsis">배너2</span>
-                                                <hr/>
-                                                <button class="btn btn-sm btn-secondary" type="button">수정</button>
-                                                <a href="@/assets/img/event_category_2_2_1.jpg" class="btn btn-sm btn-default">원본</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-
-                                </div>
-                                <!-- 카테고리 슬라이드 배너 : 끝 //-->
-
-                                <div class="box">
-                                    <div class="section_head">
-                                        <h4><i class="xi-check-circle"></i> Best 추천상품 관리</h4>
-                                    </div>
-
-                                    <table class="t_form">
-                                        <tbody>
-                                            <tr>
-                                                <th>출력여부</th>
-                                                <td>
-                                                    <label><input type="radio" name="areaHiddenCMA" value="0" checked> 출력</label>
-                                                    <label><input type="radio" name="areaHiddenCMA" value="1" class="mgl20"> 숨김</label>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <th>상품관리</th>
-                                                <td>
-                                                    <select id="areaGoodsCMA" name="areaGoodsCMA" class="text_input" size="5" multiple max="0" style="width:100%" ondblclick="openGoods(this)"></select>
-
-                                                    <div class="over_h mgt5">
-                                                        <div class="fl">
-                                                            <button class="btn btn-sm btn-default" onclick="moveGoods('areaGoodsCMA', 'UP');">▲</button>
-                                                            <button class="btn btn-sm btn-default" onclick="moveGoods('areaGoodsCMA', 'DOWN');">▼</button>
-                                                            <button class="btn btn-sm btn-danger" onclick="delGoods('areaGoodsCMA');">삭제</button>
-                                                        </div>
-                                                        <div class="fr">
-                                                            <button class="btn btn-sm btn-secondary" onclick="openSelectGoods('areaGoodsCMA');">상품선택</button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="box">
-                                    <div class="section_head">
-                                        <h4><i class="xi-check-circle"></i> New 상품 관리</h4>
-                                    </div>
-
-                                    <table class="t_form">
-                                        <tbody>
-                                            <tr>
-                                                <th>출력여부</th>
-                                                <td>
-                                                    <label><input type="radio" name="areaHiddenCMB" value="0" checked> 출력</label>
-                                                    <label><input type="radio" name="areaHiddenCMB" value="1" class="mgl20"> 숨김</label>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <th>상품관리</th>
-                                                <td>
-                                                    <select id="areaGoodsCMB" name="areaGoodsCMB" class="text_input" size="5" multiple max="0" style="width:100%" ondblclick="openGoods(this)"></select>
-
-                                                    <div class="over_h mgt5">
-                                                        <div class="fl">
-                                                            <button class="btn btn-sm btn-default" onclick="moveGoods('areaGoodsCMB', 'UP');">▲</button>
-                                                            <button class="btn btn-sm btn-default" onclick="moveGoods('areaGoodsCMB', 'DOWN');">▼</button>
-                                                            <button class="btn btn-sm btn-danger" onclick="delGoods('areaGoodsCMB');">삭제</button>
-                                                        </div>
-                                                        <div class="fr">
-                                                            <button class="btn btn-sm btn-secondary" onclick="openSelectGoods('areaGoodsCMB');">상품선택</button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="box">
-                                    <div class="section_head">
-                                        <h4><i class="xi-check-circle"></i> MD 추천상품 관리</h4>
-                                    </div>
-
-                                    <table class="t_form">
-                                        <tbody>
-                                            <tr>
-                                                <th>출력여부</th>
-                                                <td>
-                                                    <label><input type="radio" name="areaHiddenCMC" value="0" checked> 출력</label>
-                                                    <label><input type="radio" name="areaHiddenCMC" value="1" class="mgl20"> 숨김</label>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <th>상품관리</th>
-                                                <td>
-                                                    <select id="areaGoodsCMC" name="areaGoodsCMC" class="text_input" size="5" multiple max="0" style="width:100%" ondblclick="openGoods(this)"></select>
-
-                                                    <div class="over_h mgt5">
-                                                        <div class="fl">
-                                                            <button class="btn btn-sm btn-default" onclick="moveGoods('areaGoodsCMC', 'UP');">▲</button>
-                                                            <button class="btn btn-sm btn-default" onclick="moveGoods('areaGoodsCMC', 'DOWN');">▼</button>
-                                                            <button class="btn btn-sm btn-danger" onclick="delGoods('areaGoodsCMC');">삭제</button>
-                                                        </div>
-                                                        <div class="fr">
-                                                            <button class="btn btn-sm btn-secondary" onclick="openSelectGoods('areaGoodsCMC');">상품선택</button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
                                 <div class="btn_center">
-                                    <button type="button" class="btn btn-info">확인</button>
-                                    <button type="button" class="btn btn-danger">삭제</button>
+                                    <b-button type="button" class="btn btn-info" @click="modifyCategory">확인</b-button>&emsp;
+                                    <b-button type="button" class="btn btn-danger">삭제</b-button>
                                 </div>
-
                             </div>
-
                         </form>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- Modal -->
+        <b-modal ref="root-my-modal" hide-footer title="카테고리 생성">
+            <!-- <div class="d-block text-center">
+                <h3>루트 카테고리 생성하기</h3>
+            </div> -->
+            <form name="insertRootCategory" onsubmit="return false">
+                <p><span class="font-weight-bold">{{ selectCategory.breadcrumb() }}</span></p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" v-model="insertSelectCategory.text" placeholder="카테고리명을 입력하세요" aria-label="카테고리명을 입력하세요">
+                    <div class="input-group-append">
+                        <button class="btn btn-info" type="button" id="button-addon2" @click="insertRootCategory">추가하기</button>
+                    </div>
+                </div>
+            </form>
+        </b-modal>
+
+        <!-- Modal -->
+        <b-modal ref="move-category-modal" hide-footer title="카테고리 이동">
+            <div class="content">
+                <div class="row mb-3">
+                    <div class="col-4 font-weight-bold">대상 카테고리</div>
+                    <div class="col-8"><h3><span class="badge badge-light">{{ selectCategory.breadcrumb() }}</span></h3></div>
+                </div>
+                <div class="row">
+                    <div class="col-4 font-weight-bold">이동 위치</div>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <select name="move_category" for="select_1" @change="selectCategory.move_select = 1" @change.stop="selectEvent">
+                                    <option>::1차 카테고리를 선택하세요::</option>
+                                    <option v-for="(item, index) in moveSelect1" :key="index" :value="item.value">{{ item.text }}</option>
+                                </select>
+                                <input type="radio" name="move_select" id="move_select_1" value="1"  v-model="selectCategory.move_select" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <select name="move_category" id="select_2" @change="selectCategory.move_select = 2" @change.stop="selectEvent">
+                                    <option>::2차 카테고리를 선택하세요::</option>
+                                    <option v-for="(item, index) in moveSelect2" :key="index" :value="item.value">{{ item.text }}</option>
+                                </select>
+                                <input type="radio" name="move_select" id="move_select_2" value="2" v-model="selectCategory.move_select" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <select name="move_category" id="select_3" @change="selectCategory.move_select = 3" @change.stop="selectEvent">
+                                    <option>::3차 카테고리를 선택하세요::</option>
+                                    <option v-for="(item, index) in moveSelect3" :key="index" :value="item.value">{{ item.text }}</option>
+                                </select>
+                                <input type="radio" name="move_select" id="move_select_3" value="3" v-model="selectCategory.move_select" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <select name="move_category" id="select_4" @change="selectCategory.move_select = 4" @change.stop="selectEvent" >
+                                    <option>::4차 카테고리를 선택하세요::</option>
+                                    <option v-for="(item, index) in moveSelect4" :key="index" :value="item.value">{{ item.text }}</option>
+                                </select>
+                                <input type="radio" name="move_select" id="move_select_4" value="4" v-model="selectCategory.move_select" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" @click="move">이동</button>
+                    <button class="btn btn-danger">취소</button>
+                </div>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
+import $ from 'jquery'
+import Quill from 'quill'
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
+import { ImageUpload } from 'quill-image-upload'
+import { quillEditor } from 'vue-quill-editor'
+import 'quill/dist/quill.snow.css'
+import commonJs from '@/assets/js/common.js'
+import CategoryComponent from '@/views/goods/Category/Category.js'
+// 이미지 업로드 등록시 함수 
+import ImagesUploader from '@/assets/js/ImagesUploader.js'
 
-import { VueEditor } from 'vue2-editor'
+Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
+Quill.register('modules/imageUpload', ImageUpload)
+
 export default {
-  data () {
-    return {
-      categorCommentHtml: '<p>카테고리 상탄 디자인을 입력하여 주십시오</p>'
-    }
-  },
-  components:
-    {
-      VueEditor
+    mixins: [commonJs, ImagesUploader, CategoryComponent],
+    data () {
+        return {
+            editorOption: {
+                modules: {
+                    toolbar: {
+                        container:[
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'header': 1 }, { 'header': 2 }],
+                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                            [{ 'script': 'sub' }, { 'script': 'super' }],
+                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                            [{ 'direction': 'rtl' }],
+                            [{ 'size': ['small', false, 'large', 'huge'] }],
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            [{ 'font': [] }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'align': [] }],
+                            ['clean'],
+                            ['link', 'image']
+                        ],
+                        handlers: {
+                            'image': function () {
+                                document.getElementById('categorCommentHtmlImage').click()
+                            }
+                        }
+                    }
+                    ,
+                    imageDropAndPaste: {
+                        handler: this.categorCommentHtmlimageHandler
+                    }
+                },
+                placeholder: '내용을 입력해주세요...'
+            },
+            insertSelectCategory: {
+                parentSysId: 0,
+                categoryLevel: 0,
+                text: ''
+            },
+            selectCategory: {
+                categoryLevel: 0,
+                categorySysId: 0,
+                categoryCode: '',
+                parentSysId: 0,
+                feeRate: 0,
+                isHide: true,
+                title: '',
+                breadcrumb: function () {
+                    if (this.categories.length === 0) {
+                        return ''
+                    } else if (this.categories.length === 1) {
+                        return this.categories[0].name
+                    } else {
+                        var tempTitle = new Array()
+                        for (var i = 0 ; i < this.categories.length ; i++) {
+                            tempTitle[i] = this.categories[i].name
+                        }
+                        return tempTitle.join(' > ')
+                    }
+                },
+                topDesignHTML: '',
+                isApplyChildCategory: false,
+                move_select: 0,
+                categories:[]
+            },
+            moveSelect1: [],
+            moveSelect2: [],
+            moveSelect3: [],
+            moveSelect4: [],
+            moveSelect5: []
+        }
+    },
+    mounted () {
+        this.init()
+    },
+    methods: {
+        // 카테고리 이동 시작
+        showMoveModelCategory: function (item){
+            this.setSelectCategory(item)
+            this.axiosGetRequest('/api/v1/categories',{categoryLevel: 1}, this.modelInitialSelectBox)
+            this.$refs['move-category-modal'].show()
+        },
+        modelInitialSelectBox: function (res) {
+            var data = res.data.jsonData.categories
+            this.moveSelect1.splice(0,1)
+            for(var i = 9 ; i < data.length ; i ++) {
+                this.moveSelect1.push({value: data[i].categorySysId, text: data[i].name})
+            }
+        },
+        selectEvent: function(event) {
+            var param = {
+                parentSysId: event.target[event.target.selectedIndex].value,
+                categoryLevel: (this.selectCategory.move_select + 1)
+            }
+            this.axiosGetRequest('/api/v1/categories', param, this.moveCategorySelectSuccess)
+        },
+        moveCategorySelectSuccess: function (res) {
+            var data = res.data.jsonData.categories
+            var categoryLevel = data[0].categoryLevel
+            for (var i = 0 ; i < data.length ; i ++) {
+                this.$data['moveSelect'+ categoryLevel].push({value: data[i].categorySysId, text: data[i].name})
+            }
+        },
+        // 카테고리 이동 끝
+        // 카테고리 이동이동
+        // eslint-disable-next-line no-unused-vars
+        move: function (event){
+            var id = $('#move_select_'+this.selectCategory.move_select)
+            console.log(id)
+            var param = {
+                categorySysId: this.selectCategory.categorySysId,
+                categoryLevel: this.selectCategory.categoryLevel,
+                categoryCode: this.selectCategory.categoryCode,
+                name: this.selectCategory.text,
+                parentSysId: ''
+            }
+            console.log(param)
+        },
+        // 이미지 에디터에서 올림
+        categorCommentHtmlimageHandler: function (imageDataUrl, type){
+            var ext = type.split('/')
+            var imageExt = ext[1]
+            var blob = this.dataURItoBlob(imageDataUrl)
+            var file = this.blobToFile(blob, 'temp.'+imageExt)
+            var cursorLocation = this.$refs.editorOptionRef.quill.getSelection(true) 
+            this.onEditorImagesUploaderEvent(file, this.$refs.editorOptionRef.quill, cursorLocation.index)
+        },
+        init: function () {
+            const param = {
+                categoryLevel: 1
+            }
+            this.axiosGetRequest('/api/v1/categories', param, this.insertCategoryFn)
+        }
+    },
+    components: {
+        quillEditor
     }
 }
 </script>
 <style>
+    /* 카테고리 item list */
+    .t_category.category{
+        
+    }
+    .t_category.category tr{
+        height: 60px;
+    }
+    .t_category.category tr th {
+        background: #f5f5f5;
+        font-weight: 700;
+    }
+    .t_category .category-item {
+        margin-left: 5px; 
+        margin-right: 5px
+    }
+    .t_category .category-item .close-btn{
+        position: relative;
+        top: -8px;
+        right: -8px;
+        margin: -8px;
+    }
+    .t_category .category-item .modify-btn{
+        position: relative;
+        top: 11px;
+        right: -8px;
+        margin: -8px;
+    }
+    .t_category .category-item .item{
+        padding: 8px 12px;
+    }
+    .add-btn{
+        margin-bottom: 6px;
+    }
     #vueEditor{
         height: 200px;
     }

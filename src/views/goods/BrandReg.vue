@@ -45,8 +45,14 @@
                     </tr>
                     <tr>
                         <th rowspan="2">상단 디자인</th>
-                        <td>
-                            <div class="summernote" name="deliveryCommentHTML"></div>
+                        <td style="padding: 0px">
+                            <quill-editor
+                                ref="editorOptionRef"
+                                class="quill-editor" 
+                                :options="editorOption"
+                                id="brandRegHtml" 
+                                name="brandRegHtml" 
+                            ></quill-editor>
                         </td>
                     </tr>
                 </tbody>
@@ -59,12 +65,56 @@
     </div>
 </template>
 <script>
+import Quill from 'quill'
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
+import { ImageUpload } from 'quill-image-upload'
+import { quillEditor } from 'vue-quill-editor'
+import 'quill/dist/quill.snow.css'
+import commonJs from '@/assets/js/common.js'
+// 이미지 업로드 등록시 함수 
+import ImagesUploader from '@/assets/js/ImagesUploader.js'
 
-import goodsReg from '../assets/js/goods/goods_reg.js'
+Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
+Quill.register('modules/imageUpload', ImageUpload)
 export default {
-  mounted () {
-    // eslint-disable-next-line no-unused-expressions
-    goodsReg
-  }
+  mixins: [commonJs, ImagesUploader],
+  data: () => ({
+    editorOption: {
+        modules: {
+            toolbar: {
+                container:[
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['clean'],
+                    ['link', 'image']
+                ],
+                handlers: {
+                    'image': function () {
+                        document.getElementById('categorCommentHtmlImage').click()
+                    }
+                }
+            }
+            ,
+            imageDropAndPaste: {
+                handler: this.categorCommentHtmlimageHandler
+            }
+        },
+        placeholder: '내용을 입력해주세요...'
+    },
+  }),
+    components: {
+        quillEditor
+    }
+
 }
 </script>

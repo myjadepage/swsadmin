@@ -15,41 +15,42 @@
             <li>[상품영역]중 서브메인과 중간영역은 카테고리 지정시에만 가능합니다.</li>
         </ul>
 
-        <!-- 검색 폼 : 시작 ###################################################################### -->
         <form name="sFrm">
             <div class="box">
                 <table class="t_form">
-                    <caption>상품 검색 폼</caption>
-
+                    <colgroup>
+                        <col width="170">
+                        <col width="*">
+                    </colgroup>
                     <tbody>
                         <tr>
                             <th>상품분류</th>
                             <td>
                                 <div class="fl mgr5">
-                                    <select class="text_input" style="width: 100px;" id="scate_1" name="scate_1" onchange="sc.get(this)">
+                                    <select id="scate_1" name="scate_1">
                                         <option value="">선택</option>
                                     </select>
                                 </div>
                                 <div class="fl mgr5">
-                                    <select class="text_input" style="width: 100px;" id="scate_2" name="scate_2" onchange="sc.get(this)">
+                                    <select id="scate_2" name="scate_2">
                                         <option value="">선택</option>
                                     </select>
                                 </div>
                                 <div class="fl mgr5">
-                                    <select class="text_input" style="width: 100px;" id="scate_3" name="scate_3" onchange="sc.get(this)">
+                                    <select id="scate_3" name="scate_3">
                                     <option value="">선택</option>
                                 </select>
                                 </div>
 
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <th>상품영역</th>
                             <td style="padding:0;">
                                 <table class="t_form" style="border:none 0">
                                     <tbody>
                                         <tr>
-                                            <th>메인</th>
+                                            <th style="width: 100px; padding: 7px 15px">메인</th>
                                             <td style="border-top:0;">
                                                 <ul class="arrange">
                                                     <li><label><input type="checkbox" name="caream" > md추천</label></li>
@@ -58,7 +59,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th style="border:0;border-right:solid 1px #ddd">서브</th>
+                                            <th style="border:0;border-right:solid 1px #ddd; width: 100px; padding: 7px 15px">서브</th>
                                             <td style="border:0 ;">
                                                 <ul class="arrange">
                                                     <li><label><input type="checkbox" name="careas" > 대분류 Best Seller</label></li>
@@ -72,11 +73,11 @@
                                     </tbody>
                                 </table>
                             </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <th>그룹별</th>
                             <td>
-                                <select id="sbrand" name="sbrand" class="text_input" onchange="change();">
+                                <select id="sbrand" name="sbrand">
                                 <option value="">브랜드</option>
                             </select>
                             </td>
@@ -84,17 +85,14 @@
                         <tr>
                             <th>상품등록일</th>
                             <td>
-                                <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-                                    <input id="startpicker-input" type="text" aria-label="Date">
-                                    <span class="tui-ico-date"></span>
-                                    <div id="startpicker-container" style="margin-left: -1px;"></div>
-                                </div>
-                                <span>~</span>
-                                <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-                                    <input id="endpicker-input" type="text" aria-label="Date">
-                                    <span class="tui-ico-date"></span>
-                                    <div id="endpicker-container" style="margin-left: -1px;"></div>
-                                </div>
+                                <b-row>
+                                    <b-col cols="2">
+                                        <b-form-datepicker id="startDate" placeholder="시작일자 선택" ></b-form-datepicker>
+                                    </b-col>
+                                    <b-col cols="2">
+                                        <b-form-datepicker id="endDate" placeholder="종료일자 선택" ></b-form-datepicker>
+                                    </b-col>
+                                </b-row>
                             </td>
                         </tr>
                         <tr>
@@ -145,115 +143,22 @@
                 </table>
             </div>
         </form>
-        <!-- 검색 폼 : 끝 ###################################################################### -->
-
-        <form name="Frm">
-            <div class="box">
-                <div class="section_head">
-                    <h4><i class="xi-check-circle"></i> 총 <strong class="red">62</strong>개의 상품이 검색되었습니다.</h4>
-                    <div>
-                        <select id="psize" name="psize" onchange="changeList();" class="text_input">
-                            <option value="10" selected="">10줄씩보기</option>
-                            <option value="20">20줄씩보기</option>
-                            <option value="30">30줄씩보기</option>
-                            <option value="50">50줄씩보기</option>
-                            <option value="100">100줄씩보기</option>
-                        </select>
-                        <select id="psort" name="psort" onchange="changeList();" class="text_input">
-                            <option value="sort_desc" selected="">기본정렬</option>
-                            <option value="name_asc">상품명순</option>
-                            <option value="no_desc">신상품순</option>
-                            <option value="hits_desc">인기도순</option>
-                            <option value="price_desc">고가격순</option>
-                            <option value="price_asc">저가격순</option>
-                        </select>
-                    </div>
-                </div>
-
-                <table class="t_list mgt10">
-                    <caption>상품 리스트</caption>
-                    <colgroup>
-                        <col width="30">
-                        <col width="100">
-                        <col width="*">
-                        <col width="150">
-                        <col width="150">
-                        <col width="150">
-                        <col width="100">
-                        <col width="100">
-                        <col width="100">
-                        <col width="150">
-                        <col width="160">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" name="cbListAll" onclick="sws.common.checkCbAll(this.form.cbList, this.checked)"></th>
-                            <th>고유번호</th>
-                            <th>상품명 / 카테고리 / 공급업체</th>
-                            <th>판매가</th>
-                            <th>시중가</th>
-                            <th>공급가</th>
-                            <th>조회수</th>
-                            <th>판매수량</th>
-                            <th>재고</th>
-                            <th>진열여부</th>
-                            <th>기능</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="checkbox" name="cbList" value="243"></td>
-                            <td><strong>243</strong></td>
-                            <td class="vm">
-                                <div class="gbox tl">
-                                    <img src="@/assets/img/201721660706400_1_1_1_1.jpg" class="photo">
-                                    <div><a href="" target="_blank"><strong>SUN_추가상품_개별_선불12000원이상 무료</strong></a></div>
-                                    <div class="category">OUTER 〉자켓테이러드자켓</div>
-                                </div>
-                            </td>
-                            <td>
-                                <input type="text" name="price_243" value="10,000" maxlength="10" class="text_input" style="width:50%" onkeyup="toCurrency(this); calcPrice(243, 'price ');" onblur="checkPriceRound(this, 243, 'price ')"> 원
-                            </td>
-                            <td>
-                                <input type="text" name="marketPrice_243" value="0" maxlength="10" class="text_input" style="width:50%" onkeyup="toCurrency(this)"> 원
-                            </td>
-                            <td>
-                                <input type="text" name="originalPrice_243" value="10,000" maxlength="10" class="text_input" style="width:50%" onkeyup="toCurrency(this); calcPrice(243, this);" onblur="checkPriceRound(this, 243)"> 원
-                            </td>
-                            <td>270 회</td>
-                            <td>0 개</td>
-                            <td>무제한</td>
-                            <td>
-                                <div class="mgt5"><button type="button" class="btn btn-sm btn-default" onclick="changeSoldOut(243)">상품진열 표시</button></div>
-                                <div class="mgt5"><button type="button" class="btn btn-sm btn-default" onclick="changeDisplay(243)">상품진열 안함</button></div>
-                            </td>
-                            <td>
-                                <div>
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="validSave(243)">저장</button>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="del(243)">삭제</button>
-                                </div>
-                                <div class="mgt10">
-                                    <button type="button" class="btn btn-sm btn-default" onclick="openGoodsHistory(243)">이력</button>
-                                    <button type="button" class="btn btn-sm btn-default" onclick="copy(243)">복사</button>
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="edit(243)">수정</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="paging" style="margin-top:20px">
-                <span><a href=""><strong>1</strong></a><a href="">2</a></span>
-            </div>
-
-            <div class="btn_right">
-                <button type="button" class="btn btn-secondary" onclick="downExcel()">엑셀로받기</button>
-                <button type="button" class="btn btn-danger" onclick="delList()">일괄삭제</button>
-            </div>
-        </form>
+        <Goods-list-table></Goods-list-table>
     </div>
 </template>
 <script>
-export default {}
+import commonJs from '@/assets/js/common.js'
+import GoodsListTable from './GoodsList/GoodsListTable'
+export default {
+  data: () => ({
+  }),
+  mixins: [commonJs],
+  components: {
+      GoodsListTable
+  },
+  mounted () {  
+  },
+  methods: { 
+  }
+}
 </script>

@@ -1,11 +1,165 @@
-import $ from 'jquery'
 import Axios from 'axios'
 
 export default {
   data () {
-
+    // Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
+    Axios.defaults.baseURL = 'http://192.168.1.40:3000/' // -- admin.shallwe.link
+    // Axios.defaults.baseURL = 'http://api.shallwe.shop/' // -- admin.shallwe.shop
+    Axios.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded';
   },
   methods: {
+    //---------------------- 파일업로드 관련된 함수 ----------------------------------------
+    /**
+     *
+     * 일자 : 2020. 03. 09.
+     * 작성자 : 김도령
+     * DataURL to Blob
+     * @param object
+     *
+     */
+    dataURItoBlob: function (dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ia], {type:mimeString});
+    },
+    /**
+     *
+     * 일자 : 2020. 03. 09.
+     * 작성자 : 김도령
+     * blobToFile
+     * @param object
+     *
+     */
+    blobToFile: function (theBlob, fileName){
+        //A Blob() is almost a File() - it's just missing the two properties below which we will add
+        theBlob.lastModifiedDate = new Date();
+        theBlob.name = fileName;
+        return theBlob;
+    },
+    /**
+     *
+     * 일자 : 2020. 03. 09.
+     * 작성자 : 김도령
+     * 문자열 공백검사
+     * @param object
+     *
+     */
+    //---------------------- AXIOS업로드 관련된 함수  ----------------------------------------
+
+    /**
+     *
+     * 일자 : 2020. 03. 04.
+     * 작성자 : 김도령
+     * POST 형태로 보내기 위한 param 가공
+     * @param object
+     * k : v 형태
+     *
+     */
+    postParam: function (param) {
+      if (param === null) return ''
+      var formData = new FormData()
+      for(let _k in param) {
+        formData.append(_k, JSON.stringify(param[_k]))
+      }
+      return formData
+    },
+    /**
+     *
+     * 일자 : 2020. 03. 04.
+     * 작성자 : 김도령
+     * PATCH 형태로 보내기 위한 param 가공
+     * @param object
+     * k : v 형태
+     *
+     */
+    patchParam: function (param) {
+      if (param === null) return ''
+      var formData = new URLSearchParams()
+      for(let _k in param) {
+        formData.append(_k, JSON.stringify(param[_k]))
+      }
+      return formData
+    },
+    /**
+     *
+     * 일자 : 2020. 03. 04.
+     * 작성자 : 김도령
+     * DELETE 형태로 보내기 위한 param 가공
+     * @param object
+     * k : v 형태
+     *
+     */
+    deleteParam: function (param) {
+      if (param === null) return ''
+      var formData = new URLSearchParams()
+      for(let _k in param) {
+        formData.append(_k, JSON.stringify(param[_k]))
+      }
+      return formData
+    },
+    /**
+     *
+     * 일자 : 2020. 03. 04.
+     * 작성자 : 김도령
+     * GET 형태로 Axios 전송
+     *
+     */
+    axiosGetRequest: function (url, param, callback, errback) {
+      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+      Axios.request({
+        url: url,
+        params: param
+      }).then(callback).catch(errorFn)
+    }, // param
+
+    /**
+     *
+     * 일자 : 2020. 03. 04.
+     * 작성자 : 김도령
+     * POST 형태로 Axios 전송
+     *
+     */
+    axiosPostRequest: function (url, param, callback, errback) {
+      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+      Axios.post(url, this.postParam(param), {header: {'Content-Type': 'multipart/form-data'}, withCredentials: false})
+        .then(callback)
+        .catch(errorFn)
+    },
+    /**
+     *
+     * 일자 : 2020. 03. 06.
+     * 작성자 : 김도령
+     * Delete 형태로 Axios 전송
+     *
+     */
+    axiosDeleteRequest: function (url, param, callback, errback) {
+      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+      Axios.delete(url, this.deleteParam(param))
+        .then(callback)
+        .catch(errorFn)
+    },
+
+    axiosPatchRequest: function (url, param, callback, errback) {
+      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+      Axios.patch(url, this.patchParam(param))
+        .then(callback)
+        .catch(errorFn)
+    },
+    //---------------------- 유틸 관련된 함수 ----------------------------------------
     isEmpty: function (str) {
       if (typeof str === 'undefined' || str === null || str === '') {
         return true
@@ -13,70 +167,19 @@ export default {
         return false
       }
     },
-    /**
-     * 
-     * 일자 : 2020. 03. 04.
-     * 작성자 : 김도령
-     * GET 형태로 보내기 위한 param 가공
-     * @param object
-     * k : v 형태 
-     * 
-     */
-    getParam: function (param) {
-      if (param === null) return ''
-      var paramText = ''
-      $.each(param, function (k, v) {
-        paramText += k + '=' + v + '&'
-      })
-      return paramText
+    numberWithCommasObj: function (event) {
+      var num = event.target.value
+      num = num.replace(/,/g, '')
+      event.target.value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      return true
     },
-
-    /**
-     * 
-     * 일자 : 2020. 03. 04.
-     * 작성자 : 김도령
-     * POST 형태로 보내기 위한 param 가공
-     * @param object
-     * k : v 형태 
-     * 
-     */
-    postParam: function (param) {
-      if (param === null) return ''
-      var formData = new FormData()
-      $.each(param, function (k, v) {
-        formData.append(k, JSON.stringify(v))
-      })
-      return formData
+    numberWithCommas: function (num) {
+      if (num < 1000) return num
+      num = num.toString().replace(/,/g, '')
+      return (isNaN(num) ? 0 : num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
     },
-
-    /**
-     * 
-     * 일자 : 2020. 03. 04.
-     * 작성자 : 김도령
-     * GET 형태로 Axios 전송
-     * 
-     */
-    axiosGetRequest: function (url, param, callback) {
-      Axios.get(url + '?' + this.getParam(param), {header: {'Content-Type': 'multipart/form-data'}, withCredentials: false})
-        .then(callback)
-        .catch(function (err) {
-          console.log(err)
-        })
-    },
-
-    /**
-     * 
-     * 일자 : 2020. 03. 04.
-     * 작성자 : 김도령
-     * POST 형태로 Axios 전송
-     * 
-     */
-    axiosPostRequest: function (url, param, callback) {
-      Axios.post(url, this.postParam(param), {header: {'Content-Type': 'multipart/form-data'}, withCredentials: false})
-        .then(callback)
-        .catch(function (err) {
-          console.log(err)
-        })
-    },
+    toNumber(str){
+      return parseFloat(str.replace(/[^0-9]/g,''))
+    }
   }
 }

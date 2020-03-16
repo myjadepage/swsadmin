@@ -1,5 +1,5 @@
 <template>
-    <div id="aside">
+    <div id="aside" style="z-index: 1">
         <h2>상품관리</h2>
         <dl>
             <dt>카테고리관리</dt>

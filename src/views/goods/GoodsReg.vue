@@ -27,15 +27,45 @@
                         <col width="*">
                     </colgroup>
                     <tbody>
-
+                        <tr>
+                            <th>상품판매 분류 <strong class="red">*</strong></th>
+                            <td colspan="3">
+                                <b-row cols="14">
+                                    <b-col cols="2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="prdtTypeCode" id="productSellingType1" value=1 v-model.number="productData.prdtTypeCode">
+                                            <label class="form-check-label" for="productSellingType1">
+                                                일반
+                                            </label>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="prdtTypeCode" id="productSellingType2" value=2 v-model.number="productData.prdtTypeCode">
+                                            <label class="form-check-label" for="productSellingType2">
+                                                공동구매
+                                            </label>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="prdtTypeCode" id="productSellingType3" value=3 v-model.number="productData.prdtTypeCode">
+                                            <label class="form-check-label" for="productSellingType3">
+                                                라이브
+                                            </label>
+                                        </div>
+                                    </b-col>
+                                </b-row>
+                            </td>
+                        </tr>
                         <!-- 상품분류(카테고리) -->
                         <tr>
                             <th rowspan="2">상품분류(카테고리) <strong class="red">*</strong></th>
                             <td colspan="3">
-                                <select id="category1" name="category1" v-on:change="onCategorySelector" data-index="1" data-required="true" data-target="category2">
-                                    <option value=''>1차카테고리 선택</option>
+                                <select id="category1" name="category1" v-on:change="onCategorySelector" data-index="1" data-required="true" data-target="category2" class="text-danger">
+                                    <option value=''>1차카테고리 필수</option>
                                 </select>
-                                <select id="category2" name="category2" v-on:change="onCategorySelector" data-index="2" data-required="true" data-target="category3">
+                                <select id="category2" name="category2" v-on:change="onCategorySelector" data-index="2" data-required="true" data-target="category3" class="text-danger">
                                     <option v-for="(option, inx) in category2" :key="inx" :value="option.value" :data-parent="option.parentId" :data-feerate="option.feeRate">{{ option.title }}</option>
                                 </select>
                                 <select id="category3" name="category3" v-on:change="onCategorySelector" data-index="3" data-required="false" data-target="category4">
@@ -87,20 +117,20 @@
                         <tr>
                             <th>간략한 설명<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3">
-                                <input type="text" name="briefComment" class="text_input" style="width:100%" value="" maxlength="20">
+                                <input type="text" name="briefComment" class="text_input" style="width:100%" value="" maxlength="20" v-model="productData.briefComment">
                             </td>
                         </tr>
                         <tr>
                             <th>상세 설명<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3">
-                                <input type="text" name="briefDescription" class="text_input" style="width:100%" value="" maxlength="50">
+                                <input type="text" name="briefDescription" class="text_input" style="width:100%" value="" maxlength="50" v-model="productData.briefDescription">
                             </td>
                         </tr>
                         <!-- 상품명 -->
                         <tr>
                             <th>상품명<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3">
-                                <input type="text" name="name" class="text_input" style="width:99%" value="" maxlength="100">
+                                <input type="text" name="name" class="text_input" style="width:99%" value="" maxlength="100" v-model="productData.name">
                             </td>
                         </tr>
                         <tr>
@@ -148,7 +178,7 @@
                                 <input type="file" name="bigImageUrl" id="bigImageUrl" v-on:change="onDirectImageUploader" accept="image/*" data-imageurl=""><br>
                                 <span class="light_gray">(1080px * 1080px)</span>, <span class="light_gray">(500px * 500px)</span>
                                 <label for="img_auto">
-                                    <input type="checkbox" id="img_auto" name="isImgAuto" value="T" v-on:click="changeImgRegAuto" checked>
+                                    <input type="checkbox" id="img_auto" name="isImgAuto" value="T" v-on:click="changeImgRegAuto" disabled>
                                 자동등록</label>
 
                                 <dl class="explain blue mgt5">
@@ -159,16 +189,16 @@
                             </td>
                         </tr>
 
-                        <tr class="imgManuals" style="display:none">
-                            <th>중간이미지</th>
+                        <tr class="imgManuals">
+                            <th>중간이미지<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3">
                                 <input type="file" name="middleImageUrl" id="middleImageUrl" v-on:change="onDirectImageUploader" accept="image/*"><br>
                                 <span class="light_gray">(540px * 540px)</span>
                             </td>
                         </tr>
 
-                        <tr class="imgManuals" style="display:none">
-                            <th>작은이미지</th>
+                        <tr class="imgManuals">
+                            <th>작은이미지<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3">
                                 <input type="file" name="smallImageUrl" id="smallImageUrl" v-on:change="onDirectImageUploader" accept="image/*"><br>
                                 <span class="light_gray">(280px * 280px)</span>
@@ -182,21 +212,23 @@
                                     <!-- <b-button variant="danger" size="sm" @click="removeImagesRow">이미지 삭제</b-button> -->
                                 </div>
                                 <div id="todo-list-example">
-                                <ul>
-                                    <li  v-for="(item, index) in images" :key="item.id" style="margin-bottom:3px">
-                                    <span style="width:20px">{{index + 1}}.</span>
-                                    <span class="w-25 mr-3">
-                                        <b-input-group size="sm">
-                                            <b-form-input disabled squared placeholder="썸네일 업로드" v-model="item.imageVisibleTitle"></b-form-input>
-                                            <b-input-group-append>
-                                            <b-button size="sm" squared text="Button" v-on:click="onImageObjOpenFn(item.imageObjName)">이미지 업로드</b-button>
-                                            </b-input-group-append>
-                                        </b-input-group>
-                                    </span>
-                                    <input type="file" :id="item.imageObjName" :name="item.imageObjName" accept="image/jpeg,image/png,image/jpg,image/gif" style="display:none" v-on:change="onAlternativeUploader(item)" data-imageurl="">
-                                    <b-button variant="light" v-on:click="removeImageRow(index)" size="sm" style="height:23px">이미지 삭제</b-button>
-                                    </li>
-                                </ul>
+                                    <b-row cols="12" class="mb-1" v-for="(item, index) in images" :key="item.id">
+                                        <b-col cols="2" style="padding-right:0px">
+                                            <span style="width:20px">{{index + 1}}.</span>&emsp;
+                                            <span>
+                                                <b-input-group size="sm" style="max-width:200px">
+                                                    <b-form-input disabled squared placeholder="썸네일 업로드" v-model="item.imageVisibleTitle"></b-form-input>
+                                                    <b-input-group-append>
+                                                    <b-button size="sm" squared text="Button" v-on:click="onImageObjOpenFn(item.imageObjName)">이미지 업로드</b-button>
+                                                    </b-input-group-append>
+                                                </b-input-group>
+                                            </span>
+                                            <input type="file" :id="item.imageObjName" :name="item.imageObjName" accept="image/jpeg,image/png,image/jpg,image/gif" style="display:none" v-on:change="onAlternativeUploader(item)" data-imageurl="">
+                                        </b-col>
+                                        <b-col class="px-0">
+                                            <b-button variant="light" v-on:click="removeImageRow(index)" size="sm" style="height:23px">이미지 삭제</b-button>
+                                        </b-col>
+                                    </b-row>
                                 </div>
                             </td>
                         </tr>
@@ -211,32 +243,46 @@
                                 <div class="tr mgt5">
                                     <b-button variant="info" size="sm" @click="addVideoRow">영상 추가</b-button>
                                 </div>
-                                <ul>
-                                    <li  v-for="(item, index) in videos" :key="item.id" style="margin-bottom:3px">
+                                <b-row cols="12" class="mb-1" v-for="(item, index) in videos" :key="item.id">
+                                    <b-col cols="3" style="padding-right:0px">
                                         <span style="width:20px">{{index + 1}}.</span>
-                                        <input type="text" style="width: 400px" :name="item.videoTitle" class="text_input w-25" placeholder="영상 타이틀" maxlength="50">
-                                        <span class="w-25 ml-3 mr-3">
-                                            <b-input-group size="sm">
-                                                <b-form-input disabled squared placeholder="영상 업로드" v-model="item.videoVisibleTitle"></b-form-input>
-                                                <b-input-group-append>
-                                                <b-button size="sm" squared text="Button" v-on:click="onVideoObjOpenFn(item.videoObjName)">영상 찾기</b-button>
-                                                </b-input-group-append>
-                                            </b-input-group>
-                                        </span>
-                                        <span class="w-25 mr-4">
-                                            <b-input-group size="sm">
-                                                <b-form-input disabled squared placeholder="썸네일 업로드" v-model="item.imageVisibleTitle"></b-form-input>
-                                                <b-input-group-append>
-                                                <b-button size="sm" squared text="Button" v-on:click="onImageObjOpenFn(item.imageObjName)">썸네일 업로드</b-button>
-                                                </b-input-group-append>
-                                            </b-input-group>
-                                        </span>
-                                        <input type="file" :id="item.videoObjName" :name="item.videoObjName" style="display: none" accept="video/*" v-on:change="onSingleVideoUploaderEvent(item)" data-videourl="">
-                                        <input type="file" :id="item.imageObjName" :name="item.imageObjName" style="display: none" accept="image/*" v-on:change="onAlternativeUploader(item)" data-imageurl="">
-                                        <!-- <b-spinner small type="grow"></b-spinner> -->
+                                        <select style="width: 120px">
+                                            <option>영상구분</option>
+                                            <option>인트로</option>
+                                            <option>언박싱</option>
+                                            <option>메인</option>
+                                        </select>
+                                        <input type="text" :name="item.videoTitle" class="text_input" placeholder="영상 타이틀" maxlength="50" style="width:100%; max-width:200px">
+                                    </b-col>
+                                    <b-col cols="2" class="px-1">
+                                        <b-input-group size="sm">
+                                            <b-form-input disabled squared placeholder="영상 업로드" v-model="item.videoVisibleTitle"></b-form-input>
+                                            <b-input-group-append>
+                                            <b-button size="sm" squared text="Button" v-on:click="onVideoObjOpenFn(item.videoObjName)">영상 찾기</b-button>
+                                            </b-input-group-append>
+                                        </b-input-group>
+                                        <input type="file" :id="item.videoObjName" name="optionalVideoUrl" style="display: none" accept="video/*" v-on:change="onSingleVideoUploaderEvent(index, item)" data-videourl="">
+                                    </b-col>
+                                    <b-col cols="3">
+                                        <b-input-group size="sm">
+                                            <b-form-input disabled squared placeholder="썸네일 업로드" v-model="item.imageVisibleTitle"></b-form-input>
+                                            <b-input-group-append>
+                                            <b-button size="sm" squared text="Button" v-on:click="onImageObjOpenFn(item.imageObjName)">썸네일 업로드</b-button>
+                                            </b-input-group-append>
+                                            <input type="file" :id="item.imageObjName" :name="item.imageObjName" style="display: none" accept="image/*" v-on:change="onAlternativeUploader(item)" data-imageurl="">
+                                        </b-input-group>
+                                    </b-col>
+                                    <b-col cols="1" class="px-1">
                                         <b-button variant="light" v-on:click="removeVideoRow(index)" size="sm">영상 삭제</b-button>
-                                    </li>
-                                </ul>
+                                    </b-col>
+                                    <b-col cols="3">
+                                        <template v-if="item.progressMax > 0">
+                                            <b-progress :max="item.progressMax" class="mt-2">
+                                                <b-progress-bar variant="success" class="text-light" :value="item.progressValue" :label="`${((item.progressValue/ item.progressMax) * 100).toFixed(1)}%`"></b-progress-bar>
+                                            </b-progress>
+                                        </template>
+                                    </b-col>
+                                </b-row>
                             </td>
                         </tr>
                         <!-- 영상 업로더 : 끝 -->
@@ -262,39 +308,97 @@
 
                                 <!-- 품절여부 -->
                                 <span class="mgl20">
-                                    <input type="checkbox" id="isSoldout" name="isSoldout">
+                                    <input type="checkbox" id="isSoldout" name="isSoldout" v-model.number="productData.isSoldout">
                                     <label for="isSoldout" class="red">일시품절</label>
                                 </span>
                             </td>
                             <th>진열설정</th>
                             <td>
-                                <input type="radio" id="isDisplay_T" name="isDisplay" value="T" checked><label for="isDisplay_T">진열</label>&nbsp;
-                                <input type="radio" id="isDisplay_F" name="isDisplay" value="F" class="mgl20"><label for="isDisplay_F">미진열</label>
+                                <input type="radio" id="isDisplay_T" name="isDisplay" value="0" v-model.number="productData.isDisplay"><label for="isDisplay_T">진열</label>&nbsp;
+                                <input type="radio" id="isDisplay_F" name="isDisplay" value="1" v-model.number="productData.isDisplay" class="mgl20"><label for="isDisplay_F">미진열</label>
                             </td>
                         </tr>
 
                         <!-- 시중가격 / 부가가치세설정 -->
+                        <template v-if="productData.prdtTypeCode === 1">
                         <tr>
-                            <th>시중가격<strong class="red">*</strong></th>
-                            <td>
-                                <input type="text" name="marketPrice" class="text_input number_input" v-on:keyup="numberWithCommasObj" /> 원
-                            </td>
-                            <th>부가가치세 설정</th>
-                            <td>
-                                <input type="radio" id="isVat_T" name="isVat" value="T" checked><label for="isVat_T">과세상품</label>
-                                <input type="radio" id="isVat_F" name="isVat" value="F" class="mgl20"><label for="isVat_F">면세상품</label>
+                            <th>네이버가격<strong class="red">*</strong></th>
+                            <td colspan="3">
+                                <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" v-on:keyup="numberWithCommasObj" /> 원
                             </td>
                         </tr>
-
+                        </template>
+                        <template v-else-if="productData.prdtTypeCode === 2">
+                        <tr>
+                            <th>공구가격설정<strong class="red">*</strong></th>
+                            <td colspan="3">
+                                <b-row>
+                                    <b-col cols="3">
+                                        <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" style="width:90%" v-on:keyup="numberWithCommasObj" maxlength="9"/> 원
+                                    </b-col>
+                                    <b-col cols="4">
+                                        <b-row class="d-flex flex-row">
+                                            <b-col>
+                                                <b-form-datepicker id="startDate" placeholder="시작일자 선택" size="sm" today-button reset-button close-button v-model="DateObject.startDate" @click="convertDateFormat('startDate')"></b-form-datepicker>
+                                            </b-col>
+                                            <b-col>
+                                                <b-form-timepicker id="startTime" placeholder="시작시간 선택" now-button reset-button show-seconds size="sm" v-model="DateObject.startTime" @change="convertDateFormat('startTime')"></b-form-timepicker>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                    <b-col style="text-align:center">~</b-col>
+                                    <b-col cols="4">
+                                        <b-row class="d-flex flex-row">
+                                            <b-col>
+                                                <b-form-datepicker id="endDate" placeholder="종료일자 선택" size="sm" today-button reset-button close-button  v-model="DateObject.endDate" @change="convertDateFormat('endDate')"></b-form-datepicker>
+                                            </b-col>
+                                            <b-col>
+                                                <b-form-timepicker id="endTime" placeholder="종료시간 선택" local="en" now-button reset-button show-seconds size="sm" v-model="DateObject.endTime" @change="convertDateFormat('endTime')"></b-form-timepicker>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                </b-row>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>공구가격 할인인원</th>
+                            <td colspan="3">
+                                <div class="tr mgt5">
+                                    <b-button variant="info" size="sm" @click="discountFn"><font-awesome-icon icon="plus-circle" /> 할인인원 추가</b-button>
+                                </div>
+                                <ul>
+                                    <li v-for="(item, index) in commonSellers" :key="item.id" class="mb-2">
+                                        <span style="width: 20px">{{index+1}}.</span>
+                                        <input type="text" class="text_input number_input" :id="item.peopleObjName" v-on:keyup="numberWithCommasObj" style="width: 50px" />명 
+                                        <input type="text" class="text_input number_input" :id="item.discountObjName" style="width: 150px" v-on:keyup="numberWithCommasObj"/>할인
+                                        <b-button variant="light" class="mx-3" size="sm" @click="commonSellers.splice(index, 1)">범위 삭제</b-button>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </template>
+                        <template v-else-if="productData.prdtTypeCode === 3">
+                        <tr>
+                            <th>라이브가격<strong class="red">*</strong></th>
+                            <td colspan="3">
+                                <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" v-on:keyup="numberWithCommasObj" /> 원
+                            </td>
+                        </tr>
+                        </template>
                         <!-- 수수료설정 -->
                         <tr>
                             <th>수수료 설정 <strong class="red">*</strong></th>
-                            <td colspan="3">
-                                <input type="radio" id="feeTypeCode1" name="feeTypeCode" value="1" v-on:click="onFeeTypeCodeEvent" checked>
+                            <td>
+                                <input type="radio" id="feeTypeCode1" name="feeTypeCode" value=1 v-model.number="productData.feeTypeCode" @click.passive="onFeeTypeCodeEvent">
                                 <label for="feeTypeCode1" class="pad_right10">기본 수수료설정 (입점업체 또는 카테고리)</label>
 
-                                <input type="radio" id="feeTypeCode2" name="feeTypeCode" value="2" class="mgl20" v-on:click="onFeeTypeCodeEvent">
+                                <input type="radio" id="feeTypeCode2" name="feeTypeCode" value=2 class="mgl20" v-model.number="productData.feeTypeCode" @click.passive="onFeeTypeCodeEvent">
                                 <label for="feeTypeCode2">개별 수수료 설정(상품별)</label>
+                            </td>
+                            <th>부가가치세 설정</th>
+                            <td>
+                                <input type="radio" id="isVat_T" name="isVat" value="0" v-model.number="productData.isVat"><label for="isVat_T">과세상품</label>
+                                <input type="radio" id="isVat_F" name="isVat" value="1" v-model.number="productData.isVat" class="mgl20"><label for="isVat_F">면세상품</label>
                             </td>
                         </tr>
 
@@ -303,23 +407,32 @@
                             <th>가격 <strong class="red">*</strong></th>
                             <td colspan="3" class="price">
                                 <div class="d-flex" style="width:100%">
-                                    <div>
-                                        <input type="radio" id="priceTypeCode1" name="priceTypeCode" v-on:click="onPriceTypeCode" value="1" checked>
-                                        <label for="priceTypeCode1">
-                                            공급가기준
-                                            <span>(수수료 자동입력)</span>
-                                        </label>
-                                        <br>
-                                        <input type="radio" id="priceTypeCode2" name="priceTypeCode" v-on:click="onPriceTypeCode" value="2" disabled>
-                                        <label for="priceTypeCode2">
-                                            수수료기준
-                                            <span>(공급가 자동입력)</span>
-                                        </label>
-                                    </div>
+                                    <template v-if="productData.feeTypeCode === 1">
+                                        <div style="width: 200px">
+                                            <input type="checkbox" id="defaultFeeRate" v-model="feeRateObject.defaultFeeRate" @click="defaultFeeRate('defaultFeeRate')"/>&emsp;<label for="defaultFeeRate"> 기본 <b>[9%]</b> </label><br>
+                                            <input type="checkbox" id="makeVideoFeeRate" v-model="feeRateObject.makeVideoFeeRate" @click="defaultFeeRate('makeVideoFeeRate')"/>&emsp;<label for="makeVideoFeeRate"> 영상제작 <b>[9%]</b> </label><br>
+                                            <input type="checkbox" id="influencerFeeRate" v-model="feeRateObject.influencerFeeRate" @click="defaultFeeRate('influencerFeeRate')"/>&emsp;<label for="influencerFeeRate"> 인플루언서 <b>[9%]</b> </label>
+                                        </div>
+                                    </template>
+                                    <template v-if="productData.feeTypeCode === 2">
+                                        <div style="width: 200px">
+                                            <input type="radio" id="priceTypeCode1" name="priceTypeCode" v-on:click="onPriceTypeCode" v-model.number="productData.priceTypeCode" value="1" checked>
+                                            <label for="priceTypeCode1">
+                                                공급가기준
+                                                <span>(수수료 자동입력)</span>
+                                            </label>
+                                            <br>
+                                            <input type="radio" id="priceTypeCode2" name="priceTypeCode" v-on:click="onPriceTypeCode" v-model.number="productData.priceTypeCode" value="2">
+                                            <label for="priceTypeCode2">
+                                                수수료기준
+                                                <span>(공급가 자동입력)</span>
+                                            </label>
+                                        </div>
+                                    </template>
                                     <ul style="margin-left:10px">
-                                        <li>판매가<br><input type="text" name="price" class="text_input" style="width:130px" v-on:keyup="onPriceEvnet()" v-on:keyup.passive="numberWithCommasObj"> 원</li>
-                                        <li>수수료율<br><input type="text" name="feeRate" maxlength="5" value="0" class="text_input" style="width:80px" v-on:keyup="onFeeRate()" disabled> %</li>
-                                        <li>공급가<br><input type="text" name="supplyPrice" class="text_input" style="width:130px" v-on:keyup="onSupplyPrice()" v-on:keyup.passive="numberWithCommasObj"> 원</li>
+                                        <li>판매가<br><input type="text" name="price" class="text_input" style="width:130px" v-on:keyup="onPriceEvnet" v-on:keyup.passive="numberWithCommasObj"> 원</li>
+                                        <li>수수료율<br><input type="text" name="feeRate" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" v-on:keyup="onFeeRate()" disabled> %</li>
+                                        <li>공급가<br><input type="text" name="supplyPrice" class="text_input" style="width:130px" v-on:keyup="onSupplyPrice" v-on:keyup.passive="numberWithCommasObj"> 원</li>
                                     </ul>
                                 </div>
                             </td>
@@ -434,7 +547,15 @@
                         <tr>
                             <th>상품설명<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3" style="padding: 0px">
-                                <vue-editor class="vue2editor" id="detailDescription" name="detailDescription"  @image-added="handleImageAdded" v-model="detailDescription" ></vue-editor>
+                                <quill-editor
+                                    ref="detailDescriptionRef"
+                                    class="quill-editor"
+                                    :options="detailDescriptionOption"
+                                    id="detailDescription"
+                                    name="detailDescription"
+                                    v-model="productData.detailDescription"
+                                ></quill-editor>
+                                <input type="file" id="detailDescriptionImage" accept="image/*" style="display:none" @change="detailDescriptionImage" />
                             </td>
                         </tr>
                     </tbody>
@@ -444,7 +565,7 @@
             <div class="box">
                 <!-- 배송 옵션 -->
                 <div class="section_head">
-                    <h4><i class="xi-check-circle"></i> 배송비 옵션 <em>(선택하지 않을시 기본설정에 따릅니다.)</em></h4>
+                    <h4><font-awesome-icon icon="info-circle" /> 배송비 옵션 <em>(선택하지 않을시 기본설정에 따릅니다.)</em></h4>
                 </div>
                 <table class="table t_form">
                     <tbody>
@@ -453,13 +574,13 @@
                             <td>
                                 <dl class="delivery_method">
                                     <dt>
-                                        <input type="radio" id="deliveryPriceTypeCode1" name="deliveryPriceTypeCode" value="1" @click="checkDeliveryMethod('deliveryPriceTypeCode1')">
+                                        <input type="radio" id="deliveryPriceTypeCode1" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="1" @click="checkDeliveryMethod('deliveryPriceTypeCode1')">
                                         <label for="deliveryPriceTypeCode1">무료배송</label>
                                     </dt>
                                     <dd>해당상품을 무료배송합니다.</dd>
 
                                     <dt>
-                                        <input type="radio" id="deliveryPriceTypeCode2" name="deliveryPriceTypeCode" value="2" @click="checkDeliveryMethod('deliveryPriceTypeCode2')">
+                                        <input type="radio" id="deliveryPriceTypeCode2" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="2" @click="checkDeliveryMethod('deliveryPriceTypeCode2')">
                                         <label for="deliveryPriceTypeCode2">착불</label>
                                     </dt>
                                     <dd>
@@ -467,7 +588,7 @@
                                         <input type="text" name="debitfreeMinAmount" class="text_input number_input debit" style="width: 70px" maxlength="10" v-on:keyup="numberWithCommasObj" disabled> 원 이상 주문시 무료)
                                     </dd>
                                     <dt>
-                                        <input type="radio" id="deliveryPriceTypeCode3" name="deliveryPriceTypeCode"  value="3"  @click="checkDeliveryMethod('deliveryPriceTypeCode3')">
+                                        <input type="radio" id="deliveryPriceTypeCode3" name="deliveryPriceTypeCode"  v-model.number="productData.deliveryPriceTypeCode" value="3"  @click="checkDeliveryMethod('deliveryPriceTypeCode3')">
                                         <label for="deliveryPriceTypeCode3">선불</label>
                                     </dt>
                                     <dd>
@@ -475,13 +596,13 @@
                                         <input type="text" name="prepayfreeMinAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-on:keyup="numberWithCommasObj" disabled> 원 이상 주문시 무료)
                                     </dd>
                                     <dt>
-                                        <input type="radio" id="deliveryPriceTypeCode4" name="deliveryPriceTypeCode"  value="4" @click="checkDeliveryMethod('deliveryPriceTypeCode4')">
+                                        <input type="radio" id="deliveryPriceTypeCode4" name="deliveryPriceTypeCode"  v-model.number="productData.deliveryPriceTypeCode" value="4" @click="checkDeliveryMethod('deliveryPriceTypeCode4')">
                                         <label for="deliveryPriceTypeCode4">판매자정책</label>
                                     </dt>
                                     <dd>판매자의 기본정책을 따릅니다.</dd>
 
                                     <dt>
-                                        <input type="radio" id="deliveryPriceTypeCode5" name="deliveryPriceTypeCode"  value="5" checked @click="checkDeliveryMethod('deliveryPriceTypeCode5')">
+                                        <input type="radio" id="deliveryPriceTypeCode5" name="deliveryPriceTypeCode"  v-model.number="productData.deliveryPriceTypeCode" value="5" checked @click="checkDeliveryMethod('deliveryPriceTypeCode5')">
                                         <label for="deliveryPriceTypeCode5">기본정책</label>
                                     </dt>
                                     <dd>쇼핑몰의 기본정책을 따릅니다.</dd>
@@ -498,7 +619,15 @@
                         </tr>
                         <tr>
                             <td colspan="2" style="padding: 0px">
-                                <vue-editor v-model="deliveryCommentHtml" class="vue2editor"></vue-editor>
+                                <quill-editor
+                                    ref="deliveryCommentHtmlRef"
+                                    class="quill-editor"
+                                    :options="deliveryCommentHtmlOption"
+                                    id="deliveryCommentHtml"
+                                    name="deliveryCommentHtml"
+                                    v-model="productData.deliveryCommentHtml"
+                                ></quill-editor>
+                                <input type="file" id="deliveryCommentHtmlImage" accept="image/*" style="display:none" @change="deliveryCommentHtmlImage" />
                             </td>
                         </tr>
                     </tbody>
@@ -508,7 +637,7 @@
             <!-- 상품 옵션 -->
             <div class="box">
                 <div class="section_head">
-                    <h4><i class="xi-check-circle"></i> 상품옵션</h4>
+                    <h4><font-awesome-icon icon="info-circle" /> 상품옵션</h4>
                 </div>
                 <table class="table t_form">
                     <tbody>
@@ -579,7 +708,7 @@
                                                 <td>{{ index + 1}}</td>
                                                 <td class="txt"><input type="text" :name=item.normalOptionName class="text_input" style="width: 90%;" maxlength="50"></td>
                                                 <td><textarea rows="3" :name=item.normalOptionContent class="text_input" maxlength="2000" style="width: 100%" @keyup="setKeyUpCounter(item)"></textarea></td>
-                                                <td class="size"><span :name=item.normalWordsize>0</span>자</td>
+                                                <td class="size"><span :name=item.normalWordsize>0</span><span style="color:black">/200</span></td>
                                                 <td><b-button variant="light" size="sm" @click="productsOptionRemove(index)">항목 삭제</b-button></td>
                                             </tr>
                                         </tbody>
@@ -609,7 +738,7 @@
             <!-- 추가 구성 -->
             <div class="box">
                 <div class="section_head">
-                    <h4><i class="xi-check-circle"></i> 추가구성</h4>
+                    <h4><font-awesome-icon icon="info-circle" /> 추가구성</h4>
                 </div>
                 <table summary="추가 구성 등록 폼 입니다." class="t_form">
                     <tbody>
@@ -617,8 +746,8 @@
                             <th>추가구성</th>
                             <td class="addition_usable">
                                 <ul>
-                                    <li><input type="radio" id="use_addition_0" name="isAddingProduct" value="0" @click="checkUseAddition(0)" checked><label for="use_addition_0">미사용</label></li>
-                                    <li><input type="radio" id="use_addition_1" name="isAddingProduct" value="1" @click="checkUseAddition(1)"><label for="use_addition_1">사용</label></li>
+                                    <li><input type="radio" id="use_addition_0" name="isAddingProduct" v-model.number="productData.isAddingProduct" value=0 @click="checkUseAddition(0)" checked><label for="use_addition_0">미사용</label></li>
+                                    <li><input type="radio" id="use_addition_1" name="isAddingProduct" v-model.number="productData.isAddingProduct" value=1 @click="checkUseAddition(1)"><label for="use_addition_1">사용</label></li>
                                 </ul>
                             </td>
                         </tr>
@@ -689,26 +818,33 @@
 </template>
 <script>
 import $ from 'jquery'
-import { VueEditor } from 'vue2-editor'
+import Quill from 'quill'
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
+import { ImageUpload } from 'quill-image-upload'
+import { quillEditor } from 'vue-quill-editor'
+import 'quill/dist/quill.snow.css'
 import commonJs from '@/assets/js/common.js'
+// 이미지 업로드 등록시 함수
+import ImagesUploader from '@/assets/js/ImagesUploader.js'
+// 비디오 업로드 등록시 함수
+import VideoUploader from '@/views/goods/GoodsReg/VideoUploader.js'
 // 클릭이벤트 Mixins
 import ClickEventMixin from '@/views/goods/ClickEventMixin.js'
 // 상품등록 이벤트
 import GoodsRegComponent from '@/views/goods/GoodsRegComponent.js'
 // 이미지 업로드 메뉴
-import ImageComponent from '@/views/goods/TemplateEle/ImageComponent.js'
-// 이미지 업로드 등록시 함수 
-import ImagesUploader from '@/views/goods/TemplateEle/ImagesUploader.js'
-// 비디오 업로드 등록시 함수
-import VideoUploader from '@/views/goods/TemplateEle/VideoUploader.js'
+import ImageComponent from '@/views/goods/GoodsReg/ImageComponent.js'
 // 영상 업로드 메뉴
-import VideoComponent from '@/views/goods/TemplateEle/VideoComponent.js'
+import VideoComponent from '@/views/goods/GoodsReg/VideoComponent.js'
 // 정보 고시 입력 메뉴
-import ProductNoticesComponent from '@/views/goods/TemplateEle/ProductNoticesComponent.js'
+import ProductNoticesComponent from '@/views/goods/GoodsReg/ProductNoticesComponent.js'
 // 상품옵션 메뉴
-import NormalOptionComponent from '@/views/goods/TemplateEle/NormalOptionComponent.js'
+import NormalOptionComponent from '@/views/goods/GoodsReg/NormalOptionComponent.js'
 // 추가구성 메뉴
-import AdditionOptionComponent from '@/views/goods/TemplateEle/AdditionOptionComponent.js'
+import AdditionOptionComponent from '@/views/goods/GoodsReg/AdditionOptionComponent.js'
+
+Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
+Quill.register('modules/imageUpload', ImageUpload)
 export default {
   name: 'GoodsReg',
   props: [],
@@ -724,46 +860,127 @@ export default {
     ClickEventMixin,
     GoodsRegComponent
   ],
+  components: {
+      quillEditor
+  },
   data () {
     return {
-      userId: 0,
-      brandId: 0,
-      privateKey: '',
-      detailDescription: '',
-      deliveryCommentHtml: '<p>상품 정책에 관련된 정보를 입력합니다.</p>',
+      commonSellerCounter: 2,
+
+      DateObject: {
+          startDate: '',
+          startTime: '',
+          endDate: '',
+          endTime: ''
+      },
+      feeRateObject: {
+          defaultFeeRate: true,
+          makeVideoFeeRate: false,
+          influencerFeeRate: false,
+      },
+      commonSellers: [{id: 1, peopleObjName: 'peopleObjectName1', discountObjName: 'discountObjName1'}],
+      detailDescriptionOption: {
+        modules: {
+            toolbar: {
+                container:[
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['clean'],
+                    ['link', 'image']
+                ],
+                handlers: {
+                    'image': function () {
+                        document.getElementById('detailDescriptionImage').click()
+                    }
+                }
+            },
+            imageDropAndPaste: {
+                handler: this.detailDescriptionimageHandler
+            }
+        },
+        placeholder: '내용을 입력해주세요...'
+      },
+      deliveryCommentHtmlOption: {
+        modules: {
+            toolbar: {
+                container:[
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['clean'],
+                    ['link', 'image']
+                ],
+                handlers: {
+                    'image': function () {
+                        document.getElementById('deliveryCommentHtmlImage').click()
+                    }
+                }
+            }
+            ,
+            imageDropAndPaste: {
+                handler: this.deliveryCommentHtmlimageHandler
+            }
+        },
+        placeholder: '내용을 입력해주세요...'
+      }
     }
   },
   mounted () {
     this.initial()
   },
-  components:
-  {
-    VueEditor
-  },
   methods: {
-    handleImageAdded: function(file) {
-      // An example of using FormData
-      // NOTE: Your key could be different such as:
-      // formData.append('file', file)
-      console.log(file)
-    //   console.log(file)
-    //   var formData = new FormData();
-    //   formData.append("image", file);
-
-    //   Axios({
-    //     url: "https://fakeapi.yoursite.com/images",
-    //     method: "POST",
-    //     data: formData
-    //   })
-    //     .then(result => {
-    //       console.log('test')
-    //       let url = result.data.url; // Get url from response
-    //       Editor.insertEmbed(cursorLocation, "image", url);
-    //       resetUploader();
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
+    discountFn: function (){
+        if (this.commonSellers.length >=10) {
+            alert('더이상 할인범위를 추가할수 없습니다.')
+            return false
+        }
+        var cnt = this.commonSellerCounter++
+        this.commonSellers.push({id: cnt, peopleObjName: 'peopleObjName' + cnt, discountObjName: 'discountObjName' + cnt})
+    },
+    detailDescriptionImage: function (event) {
+        var obj = this.$refs.detailDescriptionRef.quill
+        var cursorLocation = obj.getSelection(true)
+        this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index)
+    },
+    deliveryCommentHtmlImage: function (event) {
+        var obj = this.$refs.deliveryCommentHtmlRef.quill
+        var cursorLocation = obj.getSelection(true)
+        this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index)
+    },
+    detailDescriptionimageHandler: function (imageDataUrl, type) {
+        var ext = type.split('/')
+        var imageExt = ext[1]
+        var blob = this.dataURItoBlob(imageDataUrl)
+        var file = this.blobToFile(blob, 'temp.'+imageExt)
+        var cursorLocation = this.$refs.detailDescriptionRef.quill.getSelection(true)
+        this.onEditorImagesUploaderEvent(file, this.$refs.detailDescriptionRef.quill, cursorLocation.index)
+    },
+    deliveryCommentHtmlimageHandler: function (imageDataUrl, type) {
+        var ext = type.split('/')
+        var imageExt = ext[1]
+        var blob = this.dataURItoBlob(imageDataUrl)
+        var file = this.blobToFile(blob, 'temp.'+imageExt)
+        var cursorLocation = this.$refs.deliveryCommentHtmlRef.quill.getSelection(true)
+        this.onEditorImagesUploaderEvent(file, this.$refs.deliveryCommentHtmlRef.quill, cursorLocation.index)
     },
     SubmitAddProduct: function () {
       this.submitValidate(document.Frm)
@@ -785,7 +1002,7 @@ export default {
           $(productNoticeObj).append('<option value=' + productNoticeData[i].prdtNoticeBaseSysId + '>' + productNoticeData[i].groupName + '</option>')
         }
       }
-      this.axiosGetRequest('http://192.168.1.40:3000/api/v1/preferences/productNotices', '', productNoticesFn)
+      this.axiosGetRequest('http://api.shallwe.shop/api/v1/preferences/productNotices', '', productNoticesFn)
 
       // 판매자 초기 로딩
       var sellerInitFn = function (res) {
@@ -795,7 +1012,7 @@ export default {
           $(sellersObj).append('<option value=' + selleries[i].sellerSysId + '>' + selleries[i].name + '</option>')
         }
       }
-      this.axiosGetRequest('http://192.168.1.40:3000/api/v1/sellers/bases', '', sellerInitFn)
+      this.axiosGetRequest('http://api.shallwe.shop/api/v1/sellers/bases', '', sellerInitFn)
 
       // 카테고리 초기 로딩
       var categoryInitFn = function (res) {
@@ -807,14 +1024,20 @@ export default {
           $(categoryObj).append('<option value=' + object.categorySysId + ' data-parent=' + object.parentSysId + ' data-feerate=' + object.feeRate + '>' + object.name + '[' + (object.feeRate * 100) + '%]' + '</option>')
         }
       }
-      this.axiosGetRequest('http://192.168.1.40:3000/api/v1/categories', {categoryLevel: 1}, categoryInitFn)
+      this.axiosGetRequest('http://api.shallwe.shop/api/v1/categories', {categoryLevel: 1}, categoryInitFn)
     }
   }
 }
 </script>
 <style>
-    .vue2editor{
+    .quill-editor{
         width: 100%;
         height: 100%;
+    }
+    .ql-editor{
+        min-height: 350px;
+    }
+    .progress-bar span{
+        color: white;
     }
 </style>

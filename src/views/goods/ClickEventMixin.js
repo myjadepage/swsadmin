@@ -5,7 +5,7 @@ const clickEvent = {
   data () {
     return {
       categoryRow: [],
-      category2: [{id: '', value: '', title: '2차카테고리 선택', parentSysId: ''}],
+      category2: [{id: '', value: '', title: '2차카테고리 필수', parentSysId: ''}],
       category3: [{id: '', value: '', title: '3차카테고리 선택', parentSysId: ''}],
       category4: [{id: '', value: '', title: '4차카테고리 선택', parentSysId: ''}],
       category5: [{id: '', value: '', title: '5차카테고리 선택', parentSysId: ''}],
@@ -57,16 +57,38 @@ const clickEvent = {
     },
     // ------------- 가격 Event 시작 -------------
     // 수수료 설정 Event
-    onFeeTypeCodeEvent: function () {
-      var obj = document.Frm.feeTypeCode
-      if (obj.value === '1') { // 기본 수수료 설정
+    onFeeTypeCodeEvent: function (event) {
+      // var obj = document.Frm.feeTypeCode
+      // if (obj.value === '1') { // 기본 수수료 설정
+      //   // document.getElementById('priceTypeCode2').disabled = true
+      //   // document.getElementById('priceTypeCode1').checked = true
+      //   document.Frm.feeRate.value = 10 // 수수료율 설정하는부분에서 임의로 넣어줌
+      //   this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
+      // } else if (obj.value === '2') { // 개별 수수료 설정
+      //   document.getElementById('priceTypeCode2').disabled = false
+      // }
+
+      var obj = event.target.value
+      if (obj === '1') {
+        var cnt = 0
+        this.feeRateObject.defaultFeeRate ? cnt++ : ''
+        this.feeRateObject.makeVideoFeeRate ? cnt++ : ''
+        this.feeRateObject.influencerFeeRate ? cnt++ : ''
+        this.productData.feeRate = 9*cnt
+        this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
         document.getElementById('priceTypeCode2').disabled = true
         document.getElementById('priceTypeCode1').checked = true
-        document.Frm.feeRate.value = 10 // 수수료율 설정하는부분에서 임의로 넣어줌
+      } else if(obj === '2') {
+        this.productData.feeRate = 0
         this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
-      } else if (obj.value === '2') { // 개별 수수료 설정
-        document.getElementById('priceTypeCode2').disabled = false
+          document.getElementById('priceTypeCode2').disabled = false
       }
+    },
+    defaultFeeRate(bool) {
+      var obj = this.$data.feeRateObject[bool]
+      !obj ? this.productData.feeRate += 9 : this.productData.feeRate -= 9
+      this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
+       
     },
     // 공급가, 기준가 관련 Event
     onPriceTypeCode: function () {
@@ -78,17 +100,6 @@ const clickEvent = {
         document.Frm.feeRate.disabled = false
         document.Frm.supplyPrice.disabled = true
       }
-    },
-    numberWithCommasObj: function (event) {
-      var num = event.target.value
-      num = num.replace(/,/g, '')
-      event.target.value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-      return true
-    },
-    numberWithCommas: function (num) {
-      if (num < 1000) return num
-      num = num.toString().replace(/,/g, '')
-      return (isNaN(num) ? 0 : num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
     },
     onPriceEvnet: function () {
       var priceObj = document.Frm.price
@@ -120,7 +131,7 @@ const clickEvent = {
     // 판매가 -> 공급가
     priceToSupplyPrice: function (priceObj, feeRateObj) {
       var priceValue = priceObj.value.toString().replace(/,/g, '')
-      var feeRateValue = feeRateObj.value
+      var feeRateValue = this.productData.feeRate
       if ((feeRateValue === '') || (feeRateValue === 0)) {
         document.Frm.supplyPrice.value = this.numberWithCommas(priceValue)
       } else {
@@ -164,11 +175,8 @@ const clickEvent = {
       var param = {
         categoryLevel: parseInt(event.target.dataset.index) + 1,
         parentSysId: event.target[event.target.selectedIndex].value
-
       }
-      Axios.get('http://192.168.1.40:3000/api/v1/categories?' + this.getParam(param))
-        .then(this.onCategorySelectorResult)
-        .catch(this.inInitCategory(event.target))
+      this.axiosGetRequest('/api/v1/categories',param,this.onCategorySelectorResult,this.inInitCategory(event.target))
     },
     onCategorySelectorResult: function (response) {
       var categories = response.data.jsonData.categories
@@ -178,22 +186,27 @@ const clickEvent = {
     },
     CategorySelectorSetting: function (categories, level) {
       var obj = ''
+      var selectTitle= ''
       switch (level) {
         case 2:
           obj = this.category2
+          selectTitle = '필수'
           break
         case 3:
           obj = this.category3
+          selectTitle = '선택'
           break
         case 4:
           obj = this.category4
+          selectTitle = '선택'
           break
         case 5:
           obj = this.category5
+          selectTitle = '선택'
           break
       }
       obj.length = 0
-      obj.push({value: '', title: level + '차카테고리 선택', parentId: '', feeRate: ''})
+      obj.push({value: '', title: level + '차카테고리 '+selectTitle, parentId: '', feeRate: ''})
       for (var i = 0; i < categories.length; i++) {
         obj.push({value: categories[i].categorySysId, title: categories[i].name + '[' + (categories[i].feeRate * 100) + '%]', parentId: categories[i].parentSysId, feeRate: categories[i].feeRate})
       }
@@ -248,8 +261,7 @@ const clickEvent = {
     // ------------- 카테고리 Event 끝 -------------
     changeSellerFn: function (event) {
       if (event.target.value !== '') {
-        Axios.get('http://192.168.1.40:3000/api/v1/sellers/' + event.target.value + '/brands')
-          .then(this.onSellerToBrandFn)
+        this.axiosGetRequest('/api/v1/sellers/' + event.target.value + '/brands','',this.onSellerToBrandFn)
       }
     },
     onSellerToBrandFn: function (res) {

@@ -1,4 +1,3 @@
-import Axios from 'axios'
 export default {
   data () {
     return {
@@ -20,8 +19,7 @@ export default {
     productNoticesFn: function (event) {
       var obj = event.target
       if (obj.selectedIndex > 0) {
-        Axios.get('http://192.168.1.40:3000/api/v1/preferences/productNoticeDetails/' + obj[obj.selectedIndex].value)
-          .then(this.productNoticesLoadFn)
+        this.axiosGetRequest('http://api.shallwe.shop/api/v1/preferences/productNoticeDetails/' + obj[obj.selectedIndex].value, '', this.productNoticesLoadFn)
       }
     },
     productNoticesLoadFn: function (res) {
