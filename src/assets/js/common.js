@@ -2,8 +2,8 @@ import Axios from 'axios'
 
 export default {
   data () {
-    // Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
-    Axios.defaults.baseURL = 'http://192.168.1.40:3000/' // -- admin.shallwe.link
+    Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
+    // Axios.defaults.baseURL = 'http://192.168.1.40:3000/' // -- admin.shallwe.link
     // Axios.defaults.baseURL = 'http://api.shallwe.shop/' // -- admin.shallwe.shop
     Axios.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded';
   },

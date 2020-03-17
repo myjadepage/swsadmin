@@ -866,7 +866,6 @@ export default {
   data () {
     return {
       commonSellerCounter: 2,
-
       DateObject: {
           startDate: '',
           startTime: '',
