@@ -1,60 +1,121 @@
-/* eslint-disable no-unused-vars */
-import Axios from 'axios'
 import $ from 'jquery'
 const clickEvent = {
   data () {
     return {
-      categoryRow: [],
+      category1: [{id: '', value: '', title: '1차카테고리 필수', parentSysId: ''}],
       category2: [{id: '', value: '', title: '2차카테고리 필수', parentSysId: ''}],
       category3: [{id: '', value: '', title: '3차카테고리 선택', parentSysId: ''}],
       category4: [{id: '', value: '', title: '4차카테고리 선택', parentSysId: ''}],
       category5: [{id: '', value: '', title: '5차카테고리 선택', parentSysId: ''}],
-      brands: [{id: '', title: '::브랜드를 선택하십시오::'}]
+      brands: [{id: '', title: '::브랜드를 선택하십시오::'}],
+      detailDescriptionOption: {
+        modules: {
+            toolbar: {
+                container:[
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['clean'],
+                    ['link', 'image']
+                ],
+                handlers: {
+                    'image': function () {
+                        document.getElementById('detailDescriptionImage').click()
+                    }
+                }
+            },
+            imageDropAndPaste: {
+                handler: this.detailDescriptionimageHandler
+            }
+        },
+        placeholder: '내용을 입력해주세요...'
+      },
+      deliveryCommentHtmlOption: {
+        modules: {
+            toolbar: {
+                container:[
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['clean'],
+                    ['link', 'image']
+                ],
+                handlers: {
+                    'image': function () {
+                        document.getElementById('deliveryCommentHtmlImage').click()
+                    }
+                }
+            }
+            ,
+            imageDropAndPaste: {
+                handler: this.deliveryCommentHtmlimageHandler
+            }
+        },
+        placeholder: '내용을 입력해주세요...'
+      }
     }
   },
   methods: {
-    checkDeliveryMethod: function (id) {
-      //   var obj = $('#' + id)
-      if (id === 'deliveryPriceTypeCode1') {
-        $('.delivery_method .text_input').attr('disabled', true)
-      } else if (id === 'deliveryPriceTypeCode2') {
-        $('.delivery_method .text_input').attr('disabled', true)
-        $('.debit').attr('disabled', false)
-      } else if (id === 'deliveryPriceTypeCode3') {
-        $('.delivery_method .text_input').attr('disabled', true)
-        $('.prepay').attr('disabled', false)
-      } else if (id === 'deliveryPriceTypeCode4') {
-        $('.delivery_method .text_input').attr('disabled', true)
-      } else if (id === 'deliveryPriceTypeCode5') {
-        $('.delivery_method .text_input').attr('disabled', true)
-      }
-    },
-    checkOptionKind: function (id) {
-      if (id !== 'option_kind_1') {
-        $('.option_tab').css('display', 'none')
-        $('.' + id + '_tab').css('display', 'block')
-      } else {
-        $('.option_tab').css('display', 'none')
-      }
-    },
-    checkUseAddition: function (tgl) {
-      if (tgl > 0) {
-        $('.addition_container').css('display', 'block')
-      } else {
-        $('.addition_container').css('display', 'none')
-      }
-    },
-    changeImgRegAuto: function () {
-      $('.imgManuals').toggle()
-    },
-    checkStock: function (id) {
-      var obj = $('#' + id)
-      if (obj.data('bool')) {
-        $('input[name=stockQty]').attr('disabled', false)
-      } else {
-        $('input[name=stockQty]').attr('disabled', true)
-      }
-    },
+    // checkDeliveryMethod: function (id) {
+    //   //   var obj = $('#' + id)
+    //   if (id === 'deliveryPriceTypeCode1') {
+    //     $('.delivery_method .text_input').attr('disabled', true)
+    //   } else if (id === 'deliveryPriceTypeCode2') {
+    //     $('.delivery_method .text_input').attr('disabled', true)
+    //     $('.debit').attr('disabled', false)
+    //   } else if (id === 'deliveryPriceTypeCode3') {
+    //     $('.delivery_method .text_input').attr('disabled', true)
+    //     $('.prepay').attr('disabled', false)
+    //   } else if (id === 'deliveryPriceTypeCode4') {
+    //     $('.delivery_method .text_input').attr('disabled', true)
+    //   } else if (id === 'deliveryPriceTypeCode5') {
+    //     $('.delivery_method .text_input').attr('disabled', true)
+    //   }
+    // },
+    // checkOptionKind: function (id) {
+    //   if (id !== 'option_kind_1') {
+    //     $('.option_tab').css('display', 'none')
+    //     $('.' + id + '_tab').css('display', 'block')
+    //   } else {
+    //     $('.option_tab').css('display', 'none')
+    //   }
+    // },
+    // checkUseAddition: function (tgl) {
+    //   if (tgl > 0) {
+    //     $('.addition_container').css('display', 'block')
+    //   } else {
+    //     $('.addition_container').css('display', 'none')
+    //   }
+    // },
+    // changeImgRegAuto: function () {
+    //   $('.imgManuals').toggle()
+    // },
+    // checkStock: function (id) {
+    //   var obj = $('#' + id)
+    //   if (obj.data('bool')) {
+    //     $('input[name=stockQty]').attr('disabled', false)
+    //   } else {
+    //     $('input[name=stockQty]').attr('disabled', true)
+    //   }
+    // },
     // ------------- 가격 Event 시작 -------------
     // 수수료 설정 Event
     onFeeTypeCodeEvent: function (event) {
@@ -76,12 +137,10 @@ const clickEvent = {
         this.feeRateObject.influencerFeeRate ? cnt++ : ''
         this.productData.feeRate = 9*cnt
         this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
-        document.getElementById('priceTypeCode2').disabled = true
         document.getElementById('priceTypeCode1').checked = true
       } else if(obj === '2') {
         this.productData.feeRate = 0
         this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
-          document.getElementById('priceTypeCode2').disabled = false
       }
     },
     defaultFeeRate(bool) {
@@ -129,7 +188,7 @@ const clickEvent = {
       return true
     },
     // 판매가 -> 공급가
-    priceToSupplyPrice: function (priceObj, feeRateObj) {
+    priceToSupplyPrice: function (priceObj) {
       var priceValue = priceObj.value.toString().replace(/,/g, '')
       var feeRateValue = this.productData.feeRate
       if ((feeRateValue === '') || (feeRateValue === 0)) {
@@ -148,7 +207,7 @@ const clickEvent = {
     },
     // ------------- 가격 Event 끝 -------------
     // ------------- 카테고리 Event -------------
-    inInitCategory: function (obj) {
+    inInitCategory: function () {
       var selectIndex = event.target.dataset.index
       switch (selectIndex) {
         case '1':
@@ -211,7 +270,7 @@ const clickEvent = {
         obj.push({value: categories[i].categorySysId, title: categories[i].name + '[' + (categories[i].feeRate * 100) + '%]', parentId: categories[i].parentSysId, feeRate: categories[i].feeRate})
       }
     },
-    addCate: function (event) {
+    addCate: function () {
       var catetitle = new Array()
       var _id = ''
       var param = {
@@ -246,6 +305,7 @@ const clickEvent = {
         if (addCateFlag) { this.addCategoryFn(param) }
       } else {
         this.addCategoryFn(param)
+        console.log(param)
         setTimeout(function () { document.getElementsByName('check_category')[0].checked = true }, 10)
         document.Frm.feeRate.value = param.feeRate
       }
@@ -259,17 +319,44 @@ const clickEvent = {
       this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
     },
     // ------------- 카테고리 Event 끝 -------------
-    changeSellerFn: function (event) {
-      if (event.target.value !== '') {
-        this.axiosGetRequest('/api/v1/sellers/' + event.target.value + '/brands','',this.onSellerToBrandFn)
+    changeSellerFn: function () {
+      if (this.productData.sellerSysId !== 0){
+        this.axiosGetRequest('/api/v1/sellers/' + this.productData.sellerSysId + '/brands','',this.onSellerToBrandFn)
       }
     },
     onSellerToBrandFn: function (res) {
       var data = res.data.jsonData.brands
       this.brands.splice(1)
-      for (var i = 0; i < data.length; i++) {
-        this.brands.push({id: data[i].brandCode, title: data[i].name})
-      }
+      data.forEach(item => {
+        console.log(item)
+        this.brands.push({value: item.brandSysId, text: item.name})
+      })
+    },
+    detailDescriptionImage: function (event) {
+        var obj = this.$refs.detailDescriptionRef.quill
+        var cursorLocation = obj.getSelection(true)
+        this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index)
+    },
+    deliveryCommentHtmlImage: function (event) {
+        var obj = this.$refs.deliveryCommentHtmlRef.quill
+        var cursorLocation = obj.getSelection(true)
+        this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index)
+    },
+    detailDescriptionimageHandler: function (imageDataUrl, type) {
+        var ext = type.split('/')
+        var imageExt = ext[1]
+        var blob = this.dataURItoBlob(imageDataUrl)
+        var file = this.blobToFile(blob, 'temp.'+imageExt)
+        var cursorLocation = this.$refs.detailDescriptionRef.quill.getSelection(true)
+        this.onEditorImagesUploaderEvent(file, this.$refs.detailDescriptionRef.quill, cursorLocation.index)
+    },
+    deliveryCommentHtmlimageHandler: function (imageDataUrl, type) {
+        var ext = type.split('/')
+        var imageExt = ext[1]
+        var blob = this.dataURItoBlob(imageDataUrl)
+        var file = this.blobToFile(blob, 'temp.'+imageExt)
+        var cursorLocation = this.$refs.deliveryCommentHtmlRef.quill.getSelection(true)
+        this.onEditorImagesUploaderEvent(file, this.$refs.deliveryCommentHtmlRef.quill, cursorLocation.index)
     }
   }
 }

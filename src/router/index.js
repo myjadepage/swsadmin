@@ -29,6 +29,11 @@ const routes = [
         components: { LeftMenu: GoodsLeftMenu, Contents: GoodsReg}
       },
       {
+        path: '/goods_reg/:productSysId',
+        name: '상품 수정',
+        components: { LeftMenu: GoodsLeftMenu, Contents: GoodsReg}
+      },
+      {
         path: '/brand_list/',
         name: '브랜드 관리',
         components: { LeftMenu: GoodsLeftMenu, Contents: BrandList}

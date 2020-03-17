@@ -130,6 +130,7 @@
             :isBusy="isBusy"   
             :totalPage="totalPage"
             :currentPage="currentPage"
+            @refresh="searchFilteringFn"
         >
         </Goods-list-table>
     </div>
@@ -138,50 +139,53 @@
 import commonJs from '@/assets/js/common.js'
 import GoodsListTable from './GoodsList/GoodsListTable'
 export default {
-  data: () => ({
-    selectbox1: [
-        {value: 0, text:':: 1차 카테고리 ::'}
-    ],
-    selectbox2: [
-        {value: 0, text:':: 2차 카테고리 ::'}
-    ],
-    selectbox3: [
-        {value: 0, text:':: 3차 카테고리 ::'}
-    ],
-    selectbox4: [
-        {value: 0, text:':: 4차 카테고리 ::'}
-    ],
-    selectbox5: [
-        {value: 0, text:':: 5차 카테고리 ::'}
-    ],
-    brands: [
-        {value: 0, text:':: 브랜드를 선택하십시오 ::'}
-    ],
-    sellers: [
-        {value: 0, text:':: 판매자를 선택하십시오 ::'}
-    ],
-    FilterFields: {
-        categorySysId1: 0,
-        categorySysId2: 0,
-        categorySysId3: 0,
-        categorySysId4: 0,
-        categorySysId5: 0,
-        brandSysId: 0,
-        sellerSysId: 0,
-        minPrice: 0,
-        maxPrice: 0,
-        isDisplay: 2,
-        startDate: '',
-        endDate: '',
-        prdtCode: 'name',
-        FieldText: '',
-        valuable: 'all'
-    },
-    products: [],
-    isBusy: true,
-    totalPage: 0,
-    currentPage: 1,
-  }),
+  data () {
+    return {
+        code: 'testsetset',  
+        selectbox1: [
+            {value: 0, text:':: 1차 카테고리 ::'}
+        ],
+        selectbox2: [
+            {value: 0, text:':: 2차 카테고리 ::'}
+        ],
+        selectbox3: [
+            {value: 0, text:':: 3차 카테고리 ::'}
+        ],
+        selectbox4: [
+            {value: 0, text:':: 4차 카테고리 ::'}
+        ],
+        selectbox5: [
+            {value: 0, text:':: 5차 카테고리 ::'}
+        ],
+        brands: [
+            {value: 0, text:':: 브랜드를 선택하십시오 ::'}
+        ],
+        sellers: [
+            {value: 0, text:':: 판매자를 선택하십시오 ::'}
+        ],
+        FilterFields: {
+            categorySysId1: 0,
+            categorySysId2: 0,
+            categorySysId3: 0,
+            categorySysId4: 0,
+            categorySysId5: 0,
+            brandSysId: 0,
+            sellerSysId: 0,
+            minPrice: 0,
+            maxPrice: 0,
+            isDisplay: 2,
+            startDate: '',
+            endDate: '',
+            prdtCode: 'name',
+            FieldText: '',
+            valuable: 'all'
+        },
+        products: [],
+        isBusy: true,
+        totalPage: 0,
+        currentPage: 1,
+    }
+  },
   mixins: [commonJs],
   components: {
       GoodsListTable
@@ -202,12 +206,11 @@ export default {
                     }
                 } else if (_k === 'valuable'){
                     if (this.FilterFields[_k] === 'unlimit') {
-                        // params.isSoldout = 0
-                        params.stockQty = 0
+                        params.stockTypeCode = 1
                     } else if (this.FilterFields[_k] === 'limit') {
-                        params.isSoldout = 0
+                        params.stockTypeCode = 2
                     } else if (this.FilterFields[_k] === 'not_soldout') {
-                        // params.isSoldout = 0
+                        params.stockTypeCode = 2
                         params.stockQty = 0
                     } else if (this.FilterFields[_k] === 'soldout') {
                         params.isSoldout = 1
@@ -220,15 +223,18 @@ export default {
                     }
                 }
             }
-            console.log(params)
+            this.isBusy=true
             this.axiosGetRequest('/api/v1/products/lists', params, this.loadProductsList)
             this.products.splice(0)
         },
         loadProductsList(res) {
-            this.isBusy=true
             let result = res.data.jsonData.products
             let categoryTitle = ''
             this.products.splice(0)
+            if(this.isEmpty(result)){
+                this.isBusy=false
+                return false
+            }
             for (let i = 0 ; i < result.length ; i++) {
                 categoryTitle = this.convertCategoryTitle(result[i].categories[0])
                 this.products.push({

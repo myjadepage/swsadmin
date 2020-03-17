@@ -3,7 +3,8 @@ import $ from 'jquery'
 export default {
   data: () => ({
       productData: {
-        prdtTypeCode: 2,
+        productSysId: '',
+        prdtTypeCode: 1,
         name: '',
         briefComment: '',
         briefDescription: '',
@@ -60,13 +61,13 @@ export default {
         feeRate: 9,
         brandSysId: 0,
         sellerSysId: 0,
-        isDisplay: 0,
+        isDisplay: 1,
         isVat: 0,
         isSoldout: 0,
         isAddingProduct: 0,
         isAutoImageUpload: 0,
-        optionTypeCode: 0,
-        stockTypeCode: 0,
+        optionTypeCode: 1,
+        stockTypeCode: 1,
         feeTypeCode: 1,
         priceTypeCode: 0,
         pointTypeCode: 0,
@@ -294,13 +295,6 @@ export default {
       } else {
         this.productData.feeRate = parseFloat(feeRate / 100)
       }
-      // let FeeRateObj = obj.feeRate
-      // if (FeeRateObj.value.length < 1) {
-      //   return this.onFocusMethod(FeeRateObj, '수수료율')
-      // } else {
-      //   var feeRate = parseFloat(this.toNumber(FeeRateObj.value))
-      //   this.productData.feeRate = feeRate
-      // }
 
       // 적립금
       let pointObj = obj.pointTypeCode
@@ -341,13 +335,6 @@ export default {
         }
       }
       
-      // 배송정책 옵션
-      this.productData.deliveryCommentHtml = this.deliveryCommentHtml
-
-
-      // 배송비 옵션
-      // this.productData.deliveryPriceTypeCode = this.toNumber(obj.deliveryPriceTypeCode.value)
-
       let DeliveryPriceTypeCodeObj = this.productData.deliveryPriceTypeCode
       if (DeliveryPriceTypeCodeObj.value === '2') {
         // 착불비용
@@ -379,7 +366,7 @@ export default {
       //  상품 옵션유형 코드
       this.productData.optionTypeCode = this.toNumber(document.Frm.optionTypeCode.value)
 
-      if (document.Frm.optionTypeCode.value === '2') {
+      if (this.productData.optionTypeCode === 2) {
         // 상품옵션
         if (this.normalOptionCounter < 1) {
           return false
@@ -391,7 +378,7 @@ export default {
             }
           }
         }
-      } else if (document.Frm.optionTypeCode.value === '5') {
+      } else if (this.productData.optionTypeCode === 5) {
         this.productData.optionDescription = document.Frm.optionDescription.value
       }
 
@@ -415,20 +402,17 @@ export default {
       }
       // ------------------- Form Validate 체크 종료 -------------------
       // console.log(this.productData)
-      let CallbackFn = function (res) {
-        console.log(res)
-        alert('상품등록이 완료 되었습니다.')
-      }
-      this.axiosPostRequest('/api/v1/products', {jsonData: this.productData}, CallbackFn)
-      return false
+      // let CallbackFn = function (res) {
+      //   console.log(res)
+      //   alert('상품등록이 완료 되었습니다.')
+      // }
+      // this.axiosPostRequest('/api/v1/products', {jsonData: this.productData}, CallbackFn)
+      return this.productData
     },
     onFocusMethod (object, message) {
       alert(message + '을(를) 확인하여 주시기 바랍니다.')
       object.focus()
       return false
-    },
-    unitTest () {
-
     }
   }
 }

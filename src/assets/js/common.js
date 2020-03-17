@@ -152,8 +152,13 @@ export default {
         .then(callback)
         .catch(errorFn)
     },
-
     axiosPatchRequest: function (url, param, callback, errback) {
+      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+      Axios.patch(url, this.patchParam(param))
+        .then(callback)
+        .catch(errorFn)
+    },
+    axiosPutRequest: function (url, param, callback, errback) {
       var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
       Axios.patch(url, this.patchParam(param))
         .then(callback)

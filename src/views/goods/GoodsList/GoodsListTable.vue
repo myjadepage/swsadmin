@@ -48,24 +48,15 @@
             <template v-slot:cell(productCode)="code">
                 {{code.value.code}}
                 <div>
-                    <template v-if="code.value.isDisplay">
-                        <template v-if="code.value.stockQty > 0">
-                            <b-button class="float-left" variant="light" size="sm" @click="changeDisplayFn(code.value)">진열하기</b-button>
-                        </template>
-                        <template v-else>
-                            <b-button class="float-left mb-1" variant="light" size="sm" @click="changeDisplayFn(code.value)">상품진열 안하기</b-button>
-                        </template>
+                    <template v-if="code.value.isDisplay === 0">
+                        <b-button class="float-left mb-1" variant="light" size="sm" @click="changeDisplayFn(code.value, 1)">진열하기</b-button>
                     </template>
                     <template v-else>
-                        <b-button class="float-left" variant="danger" size="sm" @click="changeSoldoutFn(code.value)">품절로 표시</b-button>
+                        <b-button class="float-left mb-1" variant="light" size="sm" @click="changeDisplayFn(code.value, 0)">상품진열 안하기</b-button>
                     </template>
-                    <!-- <b-button class="float-left mb-1" variant="light" size="sm" @click="changeDisplayFn(code.value)">상품진열 안하기</b-button>
-                    <template v-if="code.value.salesQty === 0 && code.value.stockQty === 0">
-                        <b-button class="float-left" variant="light" size="sm" @click="changeDisplayFn(code.value)">진열하기</b-button>
+                    <template v-if="code.value.isSoldout === 0">
+                        <b-button class="float-left" variant="danger" size="sm" @click="changeSoldoutFn(code.value, 1)">품절로 표시</b-button>
                     </template>
-                    <template v-else>
-                        <b-button class="float-left" variant="danger" size="sm" @click="changeSoldoutFn(code.value)">품절로 표시</b-button>
-                    </template> -->
                 </div>
             </template>
             <template v-slot:cell(title)="title">
@@ -108,8 +99,8 @@
                     <b-button variant="light">이력</b-button>
                     <b-button variant="success" @click="savePriceData(setting.item.id)">저장</b-button>
                     <b-button variant="light">복사</b-button>
-                    <b-button variant="primary">수정</b-button>
-                    <b-button>삭제</b-button>
+                    <b-button variant="primary" @click="modifyProductData(setting.item.id)">수정</b-button>
+                    <b-button @click="deleteProductData(setting.item.id)">삭제</b-button>
                 </b-button-group>
             </template>
             <template v-slot:empty>
@@ -153,11 +144,39 @@ export default {
             this.totalPage = filteredItems.length
             this.currentPage = 1
         },
-        changeDisplayFn: function (item) {
-            console.log(item)
+        changeDisplayFn: function (item, value) {
+            if (confirm('상품진열 상태를 변경하시겠습니까?')){    
+                this.products.forEach(_item => {
+                    if(_item.id === item.code) {
+                        _item.productCode.isDisplay=value
+                    }
+                })
+                let param = { isDisplay : value }
+                let resultDisplayUpdateFn = function (res) {
+                    if(res.data.jsonData.code == 200) {
+                        alert('상품진열 상태가 변경되었습니다.')
+                        return true
+                    }
+                }
+                this.axiosPatchRequest('/api/v1/products/' + item.code + '/isdisplay',{jsonData : param}, resultDisplayUpdateFn)
+            }
         },
-        changeSoldoutFn: function (item) {
-            console.log(item)
+        changeSoldoutFn: function (item, value) {
+            if (confirm('품절상태로 변경하시겠습니까?')){
+                this.products.forEach(_item => {
+                    if(_item.id === item.code) {
+                        _item.productCode.isSoldout=value
+                    }
+                })
+                let param = { isSoldout : value }
+                let resultSoldoutUpdateFn = function (res) {
+                    if(res.data.jsonData.code == 200) {
+                        alert('품절상태가 변경되었습니다.')
+                        return true
+                    }
+                }
+                this.axiosPatchRequest('/api/v1/products/' + item.code + '/issoldout',{jsonData : param}, resultSoldoutUpdateFn)
+            }
         },
         savePriceData: function (id) {
             if (confirm('가격 및 재고 수량을 수정하시겠습니까?')){
@@ -167,13 +186,28 @@ export default {
                     supplyPrice: parseInt(this.$refs['supplyPrice_' + id].value),
                     stockQty: parseInt(this.$refs['stockQty_' + id].value)
                 }
-                this.axiosPatchRequest('/api/v1/products/' + id + '/listsave', {jsonData: params}, this.savePriceDataResultFn)
+                let resultPriceUpdateFn = function (res) {
+                    if(res.data.jsonData.code === 200) {
+                        alert('수정완료!')
+                    }
+                }
+                this.axiosPatchRequest('/api/v1/products/' + id + '/listsave', {jsonData: params}, resultPriceUpdateFn)
             }
         },
-        savePriceDataResultFn: function (res) {
-            if(res.data.jsonData.code === 200) {
-                alert('수정완료!')
+        deleteProductData: function (id) {
+            if (confirm('상품을 휴지통으로 이동하시겠습니까?')) {
+                let params = {isDelete : 1}
+                this.axiosPatchRequest('/api/v1/products/' + id + '/isdelete', {jsonData: params}, this.resultProductDeleteFn)
             }
+        }, 
+        resultProductDeleteFn: function (res) {
+            if(res.data.jsonData.code === 200) {
+                alert('상품이 휴지통으로 이동하였습니다.')
+                this.$emit('refresh')
+            }
+        },
+        modifyProductData: function (id) {
+            window.location.href='/goods_mod/'+id+'?goods_test=234'
         }
   }
 }
