@@ -1,11 +1,15 @@
 export default {
   methods: {
     getProductData(res) {
+        // 카테고리 정보
+        // const categories = res.data.jsonData.category.categories
+
         //상품 정보
         let data = res.data.jsonData
         for(let _k in data.product) {
             this.productData[_k] = data.product[_k]
         }
+        this.changeSellerFn()
 
         let noticeObject = data.productNotice
         this.productData.prdtNoticeBaseSysId = noticeObject.prdtNoticeBaseSysId

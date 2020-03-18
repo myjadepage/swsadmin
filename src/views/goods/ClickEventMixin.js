@@ -1,12 +1,20 @@
-import $ from 'jquery'
+// import $ from 'jquery'
 const clickEvent = {
   data () {
     return {
-      category1: [{id: '', value: '', title: '1차카테고리 필수', parentSysId: ''}],
-      category2: [{id: '', value: '', title: '2차카테고리 필수', parentSysId: ''}],
-      category3: [{id: '', value: '', title: '3차카테고리 선택', parentSysId: ''}],
-      category4: [{id: '', value: '', title: '4차카테고리 선택', parentSysId: ''}],
-      category5: [{id: '', value: '', title: '5차카테고리 선택', parentSysId: ''}],
+      selectedCategoryRow: [
+        {value: 0, text: '1차카테고리 필수', parentSysId: '', feeRate: ''},
+        {value: 0, text: '2차카테고리 필수', parentSysId: '', feeRate: ''},
+        {value: 0, text: '3차카테고리 선택', parentSysId: '', feeRate: ''},
+        {value: 0, text: '4차카테고리 선택', parentSysId: '', feeRate: ''},
+        {value: 0, text: '5차카테고리 선택', parentSysId: '', feeRate: ''}
+      ],
+      categoryTable: [],
+      category1: [{value: 0, text: '1차카테고리 필수', parentSysId: '', feeRate: ''}],
+      category2: [{value: 0, text: '2차카테고리 필수', parentSysId: '', feeRate: ''}],
+      category3: [{value: 0, text: '3차카테고리 선택', parentSysId: '', feeRate: ''}],
+      category4: [{value: 0, text: '4차카테고리 선택', parentSysId: '', feeRate: ''}],
+      category5: [{value: 0, text: '5차카테고리 선택', parentSysId: '', feeRate: ''}],
       brands: [{id: '', title: '::브랜드를 선택하십시오::'}],
       detailDescriptionOption: {
         modules: {
@@ -207,9 +215,17 @@ const clickEvent = {
     },
     // ------------- 가격 Event 끝 -------------
     // ------------- 카테고리 Event -------------
-    inInitCategory: function () {
-      var selectIndex = event.target.dataset.index
-      switch (selectIndex) {
+    onCategorySelector: function (event, myLevel) {
+      const mySelected = this.selectedCategoryRow[myLevel - 1]
+      var param = {
+        categoryLevel: myLevel + 1,
+        parentSysId: mySelected.value
+      }
+      this.axiosGetRequest('/api/v1/categories',param,this.onCategorySelectorResult,this.inInitCategory)
+    },
+    inInitCategory: function (err) {
+      const errParam = err.response.config.params
+      switch (errParam.categoryLevel) {
         case '1':
           this.category2.splice(1)
           this.category3.splice(1)
@@ -230,17 +246,10 @@ const clickEvent = {
           break
       }
     },
-    onCategorySelector: function (event) {
-      var param = {
-        categoryLevel: parseInt(event.target.dataset.index) + 1,
-        parentSysId: event.target[event.target.selectedIndex].value
-      }
-      this.axiosGetRequest('/api/v1/categories',param,this.onCategorySelectorResult,this.inInitCategory(event.target))
-    },
     onCategorySelectorResult: function (response) {
-      var categories = response.data.jsonData.categories
+      const categories = response.data.jsonData.categories
       if (categories === '') return false
-      var categoryLevel = response.data.jsonData.categoryLevel
+      const categoryLevel = response.data.jsonData.categoryLevel
       this.CategorySelectorSetting(categories, categoryLevel)
     },
     CategorySelectorSetting: function (categories, level) {
@@ -264,51 +273,33 @@ const clickEvent = {
           selectTitle = '선택'
           break
       }
-      obj.length = 0
-      obj.push({value: '', title: level + '차카테고리 '+selectTitle, parentId: '', feeRate: ''})
-      for (var i = 0; i < categories.length; i++) {
-        obj.push({value: categories[i].categorySysId, title: categories[i].name + '[' + (categories[i].feeRate * 100) + '%]', parentId: categories[i].parentSysId, feeRate: categories[i].feeRate})
-      }
+      obj.splice(0)
+      this.selectedCategoryRow[level-1] = {value: 0, text: level + '차카테고리 '+selectTitle, parentId: '', feeRate: ''}
+      obj.push({value: 0, text: level + '차카테고리 '+selectTitle, parentId: '', feeRate: ''})
+      categories.forEach(item => {
+        obj.push({value: item.categorySysId, text: item.name + '[' + (item.feeRate * 100) + '%]', parentId: item.parentSysId, feeRate: item.feeRate})
+      })
     },
     addCate: function () {
-      var catetitle = new Array()
-      var _id = ''
-      var param = {
-        checkName: 'check_category'
-      }
-      for (var i = 0; i < 5; i++) {
-        var category = $('#category' + (i + 1))
-        // 카테고리 1차 2차 널 방지
-        if (category.data('required') && category.find('option:selected').val() === '') {
+      // 1, 2 카테고리 검증
+      for(let i = 0 ; i < 2 ; i++) {
+        if (this.selectedCategoryRow[i].value === 0) {
           alert('1, 2차 카테고리는 필수 입니다.')
           return false
         }
-        var selectedOption = $('#category' + (i + 1)).find('option:selected')
-        param['categorySysId' + (i + 1)] = selectedOption.val()
-        if (!this.isEmpty(selectedOption.val())) {
-          _id += '' + selectedOption.val()
-          catetitle[i] = selectedOption.text()
-          param.feeRate = (selectedOption.data('feerate') * 100)
+      }
+
+      let param = { id: '', text: '', feeRate: '' }
+      let titleArray = new Array()
+      this.selectedCategoryRow.forEach(item => {
+        if(item.value !== 0) {
+          param.id += item.id
+          param.feeRate = item.feeRate
+          titleArray.push(item.text)
         }
-      }
-      param.id = _id
-      param.title = catetitle.join(' > ')
-      if (this.categoryRow.length > 0) {
-        var addCateFlag = true
-        this.categoryRow.filter(function (item) {
-          if (item.id === _id) {
-            alert('중복된 카테고리를 추가할수 없습니다.')
-            addCateFlag = false
-            return false
-          }
-        })
-        if (addCateFlag) { this.addCategoryFn(param) }
-      } else {
-        this.addCategoryFn(param)
-        console.log(param)
-        setTimeout(function () { document.getElementsByName('check_category')[0].checked = true }, 10)
-        document.Frm.feeRate.value = param.feeRate
-      }
+      })
+      param.text = titleArray.join(' > ')
+      this.categoryTable.push(param)
     },
     addCategoryFn: function (param) {
       this.categoryRow.push(param)
@@ -324,7 +315,7 @@ const clickEvent = {
         this.axiosGetRequest('/api/v1/sellers/' + this.productData.sellerSysId + '/brands','',this.onSellerToBrandFn)
       }
     },
-    onSellerToBrandFn: function (res) {
+    onSellerToBrandFn: function (res) { 
       var data = res.data.jsonData.brands
       this.brands.splice(1)
       data.forEach(item => {

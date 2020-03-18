@@ -62,20 +62,20 @@
                         <tr>
                             <th rowspan="2">상품분류(카테고리) <strong class="red">*</strong></th>
                             <td colspan="3">
-                                <select id="category1" name="category1" v-on:change="onCategorySelector" data-index="1" data-required="true" data-target="category2" class="text-danger">
-                                    <option v-for="(option, inx) in category1" :key="inx" :value="option.value" :data-parent="option.parentId" :data-feerate="option.feeRate">{{ option.title }}</option>
+                                <select id="category1" name="category1" @change="onCategorySelector($event, 1)" v-model="selectedCategoryRow[0]" class="text-danger">
+                                    <option v-for="(option, inx) in category1" :key="inx" :value="option">{{ option.text }}</option>
                                 </select>
-                                <select id="category2" name="category2" v-on:change="onCategorySelector" data-index="2" data-required="true" data-target="category3" class="text-danger">
-                                    <option v-for="(option, inx) in category2" :key="inx" :value="option.value" :data-parent="option.parentId" :data-feerate="option.feeRate">{{ option.title }}</option>
+                                <select id="category2" name="category2" @change="onCategorySelector($event, 2)" v-model="selectedCategoryRow[1]" class="text-danger">
+                                    <option v-for="(option, inx) in category2" :key="inx" :value="option">{{ option.text }}</option>
                                 </select>
-                                <select id="category3" name="category3" v-on:change="onCategorySelector" data-index="3" data-required="false" data-target="category4">
-                                    <option v-for="(option, inx) in category3" :key="inx" :value="option.value" :data-parent="option.parentId" :data-feerate="option.feeRate">{{ option.title }}</option>
+                                <select id="category3" name="category3" @change="onCategorySelector($event, 3)" v-model="selectedCategoryRow[2]">
+                                    <option v-for="(option, inx) in category3" :key="inx" :value="option">{{ option.text }}</option>
                                 </select>
-                                <select id="category4" name="category4" v-on:change="onCategorySelector" data-index="4" data-required="false" data-target="category5">
-                                    <option v-for="(option, inx) in category4" :key="inx" :value="option.value" :data-parent="option.parentId" :data-feerate="option.feeRate">{{ option.title }}</option>
+                                <select id="category4" name="category4" @change="onCategorySelector($event, 4)" v-model="selectedCategoryRow[3]">
+                                    <option v-for="(option, inx) in category4" :key="inx" :value="option">{{ option.text }}</option>
                                 </select>
-                                <select id="category5" name="category5" data-required="false">
-                                    <option v-for="(option, inx) in category5" :key="inx" :value="option.value" :data-parent="option.parentId" :data-feerate="option.feeRate">{{ option.title }}</option>
+                                <select id="category5" name="category5" data-required="false" v-model="selectedCategoryRow[4]">
+                                    <option v-for="(option, inx) in category5" :key="inx" :value="option">{{ option.text }}</option>
                                 </select>
                                 <button type="button" class="btn btn-sm btn-secondary" v-on:click="addCate">추가</button>
                             </td>
@@ -99,10 +99,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(row, index) in categoryRow" :key="index">
-                                            <td><input type="radio" :id="row.checkName" :name="row.checkName" v-on:change="onSelectCate" :data-feerate="row.feeRate"/></td>
-                                            <td style="text-align: left" :for="row.checkName" >{{ row.title }}</td>
-                                            <td><b-button variant="light" size="sm" style="height: 17px" v-on:click="categoryRow.splice(index, 1)">삭제</b-button></td>
+                                        <tr v-for="(row, index) in categoryTable" :key="index">
+                                            <td><input type="radio" :ref="row.id" :value="row.feeRate" name="selectCategory" @change="onSelectCate"/></td>
+                                            <td style="text-align: left">{{ row.text }}</td>
+                                            <td><b-button variant="light" size="sm" style="height: 18px" @click="categoryTable.splice(index, 1)">삭제</b-button></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -188,7 +188,7 @@
                                 </dl>
                             </td>
                         </tr>
-                        <template v-if="!productData.isAutoImageUpload">
+                        <template v-if="productData.isAutoImageUpload === 0">
                             <tr class="imgManuals">
                                 <th>중간이미지<strong class="red">&nbsp;*</strong></th>
                                 <td colspan="3">
@@ -673,7 +673,6 @@ export default {
   },
   data () {
     return {
-        categoryRow: [],
         images: [
             {id: 1, imageVisibleTitle: '', imageObjName: 'optionalImage1Url'},
             {id: 2, imageVisibleTitle: '', imageObjName: 'optionalImage2Url'}
@@ -711,7 +710,7 @@ export default {
   },
   mounted () {
     if(!this.isEmpty(this.$route.params.productSysId)){
-        this.productData.productSysId = this.$route.params.productSysId 
+        this.productData.productSysId = this.$route.params.productSysId
         this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId, '', this.getProductData)
     }
     this.axiosGetRequest('/api/v1/sellers/bases', '', this.resultSellersFn)
@@ -750,7 +749,7 @@ export default {
                 value: _item.categorySysId,
                 parentId: _item.parentSysId,
                 feeRate: _item.feeRate,
-                title:  _item.name + '[' + (_item.feeRate * 100) + '%]'
+                text:  _item.name + '[' + (_item.feeRate * 100) + '%]'
             })
         })
     }
