@@ -10,6 +10,7 @@ const clickEvent = {
         {value: 0, text: '5차카테고리 선택', parentSysId: '', feeRate: ''}
       ],
       categoryTable: [],
+      selectedCategoryTable: '',
       category1: [{value: 0, text: '1차카테고리 필수', parentSysId: '', feeRate: ''}],
       category2: [{value: 0, text: '2차카테고리 필수', parentSysId: '', feeRate: ''}],
       category3: [{value: 0, text: '3차카테고리 선택', parentSysId: '', feeRate: ''}],
@@ -82,60 +83,9 @@ const clickEvent = {
     }
   },
   methods: {
-    // checkDeliveryMethod: function (id) {
-    //   //   var obj = $('#' + id)
-    //   if (id === 'deliveryPriceTypeCode1') {
-    //     $('.delivery_method .text_input').attr('disabled', true)
-    //   } else if (id === 'deliveryPriceTypeCode2') {
-    //     $('.delivery_method .text_input').attr('disabled', true)
-    //     $('.debit').attr('disabled', false)
-    //   } else if (id === 'deliveryPriceTypeCode3') {
-    //     $('.delivery_method .text_input').attr('disabled', true)
-    //     $('.prepay').attr('disabled', false)
-    //   } else if (id === 'deliveryPriceTypeCode4') {
-    //     $('.delivery_method .text_input').attr('disabled', true)
-    //   } else if (id === 'deliveryPriceTypeCode5') {
-    //     $('.delivery_method .text_input').attr('disabled', true)
-    //   }
-    // },
-    // checkOptionKind: function (id) {
-    //   if (id !== 'option_kind_1') {
-    //     $('.option_tab').css('display', 'none')
-    //     $('.' + id + '_tab').css('display', 'block')
-    //   } else {
-    //     $('.option_tab').css('display', 'none')
-    //   }
-    // },
-    // checkUseAddition: function (tgl) {
-    //   if (tgl > 0) {
-    //     $('.addition_container').css('display', 'block')
-    //   } else {
-    //     $('.addition_container').css('display', 'none')
-    //   }
-    // },
-    // changeImgRegAuto: function () {
-    //   $('.imgManuals').toggle()
-    // },
-    // checkStock: function (id) {
-    //   var obj = $('#' + id)
-    //   if (obj.data('bool')) {
-    //     $('input[name=stockQty]').attr('disabled', false)
-    //   } else {
-    //     $('input[name=stockQty]').attr('disabled', true)
-    //   }
-    // },
     // ------------- 가격 Event 시작 -------------
     // 수수료 설정 Event
     onFeeTypeCodeEvent: function (event) {
-      // var obj = document.Frm.feeTypeCode
-      // if (obj.value === '1') { // 기본 수수료 설정
-      //   // document.getElementById('priceTypeCode2').disabled = true
-      //   // document.getElementById('priceTypeCode1').checked = true
-      //   document.Frm.feeRate.value = 10 // 수수료율 설정하는부분에서 임의로 넣어줌
-      //   this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
-      // } else if (obj.value === '2') { // 개별 수수료 설정
-      //   document.getElementById('priceTypeCode2').disabled = false
-      // }
 
       var obj = event.target.value
       if (obj === '1') {
@@ -288,19 +238,40 @@ const clickEvent = {
           return false
         }
       }
-
-      let param = { id: '', text: '', feeRate: '' }
-      let titleArray = new Array()
-      this.selectedCategoryRow.forEach(item => {
-        if(item.value !== 0) {
-          param.id += item.id
-          param.feeRate = item.feeRate
-          titleArray.push(item.text)
-        }
-      })
-      param.text = titleArray.join(' > ')
-      this.categoryTable.push(param)
+      this.addCateExtends('selectedCategoryRow')
     },
+    addCateExtends: function (id){
+      setTimeout(() => {
+        let arrayObj = this[id]
+        console.log(arrayObj)
+        let param = { id: '', text: '', feeRate: '' }
+        let titleArray = new Array()
+        for (let i = 0 ; i < arrayObj.length ; i++) {
+          let item = arrayObj[i]
+          if(item.value !== 0) {
+            param.id += item.value
+            param.feeRate = item.feeRate
+            param['categorySysId' + (i+1)] = item.value
+            titleArray.push(item.text + '[' + item.feeRate * 100 + '%]')
+          }
+        }
+        var addCateFlag = true
+        this.categoryTable.filter(function (item) {
+          if (item.id === param.id) {
+            alert('중복된 카테고리를 추가할수 없습니다.')
+            addCateFlag = false
+          }
+        })
+        if (addCateFlag){
+          param.text = titleArray.join(' > ')
+          this.categoryTable.push(param)
+          if (this.categoryTable.length === 1) {
+            this.selectedCategoryTable = param.id
+          }
+        }
+      },500)
+    }
+    ,
     addCategoryFn: function (param) {
       this.categoryRow.push(param)
       return true
@@ -319,7 +290,6 @@ const clickEvent = {
       var data = res.data.jsonData.brands
       this.brands.splice(1)
       data.forEach(item => {
-        console.log(item)
         this.brands.push({value: item.brandSysId, text: item.name})
       })
     },

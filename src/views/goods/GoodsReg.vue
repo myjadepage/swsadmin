@@ -100,7 +100,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(row, index) in categoryTable" :key="index">
-                                            <td><input type="radio" :ref="row.id" :value="row.feeRate" name="selectCategory" @change="onSelectCate"/></td>
+                                            <td><input type="radio" :id="row.id" :value="row.id"  name="selectCategory" @change="onSelectCate" v-model="selectedCategoryTable"/></td>
                                             <td style="text-align: left">{{ row.text }}</td>
                                             <td><b-button variant="light" size="sm" style="height: 18px" @click="categoryTable.splice(index, 1)">삭제</b-button></td>
                                         </tr>
@@ -175,7 +175,10 @@
                         <tr>
                             <th>큰이미지<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3">
-                                <input type="file" name="bigImageUrl" id="bigImageUrl" v-on:change="onDirectImageUploader" accept="image/*" data-imageurl=""><br>
+                                <input type="file" name="bigImageUrl" id="bigImageUrl" v-on:change="onDirectImageUploader" accept="image/*" :data-imageurl="productData.bigImageUrl">
+                                <template v-if="productData.bigImageUrl !== ''">
+                                    <p><b>이미지 존재함 : </b>{{productData.bigImageUrl}}</p>
+                                </template><br>
                                 <span class="light_gray">(1080px * 1080px)</span>, <span class="light_gray">(500px * 500px)</span>
                                 <label for="img_auto">
                                     <input type="checkbox" id="img_auto" name="isImgAuto" v-model.number="productData.isAutoImageUpload" disabled>
@@ -192,16 +195,22 @@
                             <tr class="imgManuals">
                                 <th>중간이미지<strong class="red">&nbsp;*</strong></th>
                                 <td colspan="3">
-                                    <input type="file" name="middleImageUrl" id="middleImageUrl" v-on:change="onDirectImageUploader" accept="image/*"><br>
+                                    <input type="file" name="middleImageUrl" id="middleImageUrl" v-on:change="onDirectImageUploader" accept="image/*" :data-imageurl="productData.middleImageUrl"><br>
                                     <span class="light_gray">(540px * 540px)</span>
+                                    <template v-if="productData.middleImageUrl !== ''">
+                                        <p><b>이미지 존재함 : </b>{{productData.middleImageUrl}}</p>
+                                    </template><br>
                                 </td>
                             </tr>
 
                             <tr class="imgManuals">
                                 <th>작은이미지<strong class="red">&nbsp;*</strong></th>
                                 <td colspan="3">
-                                    <input type="file" name="smallImageUrl" id="smallImageUrl" v-on:change="onDirectImageUploader" accept="image/*"><br>
+                                    <input type="file" name="smallImageUrl" id="smallImageUrl" v-on:change="onDirectImageUploader" accept="image/*" :data-imageurl="productData.smallImageUrl"><br>
                                     <span class="light_gray">(280px * 280px)</span>
+                                    <template v-if="productData.smallImageUrl !== ''">
+                                        <p><b>이미지 존재함 : </b>{{productData.bigImageUrl}}</p>
+                                    </template><br>
                                 </td>
                             </tr>
                         </template>
@@ -210,6 +219,7 @@
                             <td colspan="3" class="img_etc">
                                 <Image-uploader
                                     :images="images"
+                                    :imagesCounter="imagesCounter"
                                     @imageUploader="onAlternativeUploader" >
                                 </Image-uploader>
                             </td>
@@ -673,9 +683,10 @@ export default {
   },
   data () {
     return {
+        imagesCounter: 2,
         images: [
-            {id: 1, imageVisibleTitle: '', imageObjName: 'optionalImage1Url'},
-            {id: 2, imageVisibleTitle: '', imageObjName: 'optionalImage2Url'}
+            {id: 1, imageVisibleTitle: '', imageObjName: 'optionalImage1Url', url: ''},
+            {id: 2, imageVisibleTitle: '', imageObjName: 'optionalImage2Url', url: ''}
         ],
         videos: [
             {id: 1, videoTitle: 'videoTitle1', videoVisibleTitle: '', videoObjName: 'optionalVideo1Url', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage1', progressValue: 0, progressMax: 0},

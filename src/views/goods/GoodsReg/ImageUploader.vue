@@ -16,7 +16,7 @@
                             </b-input-group-append>
                         </b-input-group>
                     </span>
-                    <input type="file" :id="item.imageObjName" :name="item.imageObjName" accept="image/jpeg,image/png,image/jpg,image/gif" style="display:none" v-on:change="$emit('imageUploader', item)" data-imageurl="">
+                    <input type="file" :id="item.imageObjName" :name="item.imageObjName" accept="image/jpeg,image/png,image/jpg,image/gif" style="display:none" v-on:change="$emit('imageUploader', item)" :data-imageurl="item.url">
                 </b-col>
                 <b-col class="px-0">
                     <b-button variant="light" v-on:click="removeImageRow(index)" size="sm" style="height:23px">이미지 삭제</b-button>
@@ -27,12 +27,7 @@
 </template>
 <script>
 export default {
-  data () {
-    return {
-      imagesCounter: 2,
-    }
-  },
-  props: ['images'],
+  props: ['images','imagesCounter'],
   methods: {
     addImagesRow: function () {
       if (this.images.length >= 10) {
@@ -43,7 +38,8 @@ export default {
         this.images.push({
           id: this.imagesCounter, 
           imageVisibleTitle: '',
-          imageObjName: 'optionalImage' + this.imagesCounter + 'Url'
+          imageObjName: 'optionalImage' + this.imagesCounter + 'Url',
+          url: ''
         })
       }
     },
