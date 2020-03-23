@@ -1,0 +1,197 @@
+<template>
+   <div id="contents">
+                <h3>게시판통합관리</h3>
+                <ul class="navi">
+                    <li class="home"><a href="/" target="_top">홈</a></li>
+                    <li>운영관리</li>
+                    <li>상점운영관리</li>
+                    <li class="on">게시판통합관리</li>
+                </ul>
+                <ul class="helpbox">
+                    <li>공지사항 같은 경우는 관리자로그인을 하신 뒤에 일반게시판처럼 글쓰기를 하시면 됩니다.</li>
+                    <li>관리자 로그인을 하시면 모든 게시물의 비밀번호가 자동으로 보여집니다. 불필요한 게시물은 바로바로 삭제하세요~ ^^</li>
+                </ul>
+
+                <form name="Frm">
+                    <table class="t_list">
+                        <caption>등록된 게시판 리스트</caption>
+                        <colgroup>
+                            <col width="18%">
+                            <col width="23%">
+                            <col width="11%">
+                            <col width="11%">
+                            <col width="*">
+                            <col width="70">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>게시판명</th>
+                                <th>유형</th>
+                                <th>게시물수</th>
+                                <th>링크</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>notice</td>
+                                <td>
+                                    <div>공지사항</div>
+                                    <div style="font-size:11px; color:#FF6666; margin-top:1px;">(기본게시판)</div>
+                                </td>
+                                <td>기본형</td>
+                                <td>1</td>
+                                <td class="left"><a href="http://mimd.mallstore.co.kr/board/list?board=notice" target="_blank">/board/list.asp?board=notice</a></td>
+                                <td>
+                                    <div>
+                                        <button type="button" class="btn btn-sm btn-default" onclick="edit(2)">수정</button>
+                                    </div>
+                                    <div class="mgt5">
+                                        <a href="http://mimd.mallstore.co.kr/board/list.asp?board=notice" class="btn btn-sm btn-info" target="_blank">관리</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>community</td>
+                                <td>
+                                    <div>고객게시판</div>
+                                    <div style="color:#FF6666; margin-top:1px;">(기본게시판)</div>
+                                </td>
+                                <td>기본형</td>
+                                <td>0</td>
+                                <td class="left"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=community" target="_blank">/board/list.asp?board=community</a></td>
+                                <td>
+                                    <div><button type="button" class="btn btn-sm btn-default" onclick="edit(3)">수정</button></div>
+
+                                    <div class="mgt5"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=community" class="btn btn-sm btn-info" target="_blank">관리</a></div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>mim_notice</td>
+                                <td>
+                                    <div>입점업체 공지사항</div>
+                                    <div style="color:#FF6666; margin-top:1px;">(기본게시판)</div>
+                                </td>
+                                <td>기본형</td>
+                                <td>0</td>
+                                <td class="left"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=mim_notice" target="_blank">/board/list.asp?board=mim_notice</a></td>
+                                <td>
+                                    <div><button type="button" class="btn btn-sm btn-default" onclick="edit(4)">수정</button></div>
+
+                                    <div class="mgt5"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=mim_notice" class="btn btn-sm btn-info" target="_blank">관리</a></div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>mim_qna</td>
+                                <td>
+                                    <div>입점업체 게시판</div>
+                                    <div style="color:#FF6666; margin-top:1px;">(기본게시판)</div>
+                                </td>
+                                <td>기본형</td>
+                                <td>0</td>
+                                <td class="left"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=mim_qna" target="_blank">/board/list.asp?board=mim_qna</a></td>
+                                <td>
+                                    <div><button type="button" class="btn btn-sm btn-default" onclick="edit(5)">수정</button></div>
+
+                                    <div class="mgt5"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=mim_qna" class="btn btn-sm btn-info" target="_blank">관리</a></div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>mim_pds</td>
+                                <td>
+                                    <div>입점업체 자료실</div>
+                                    <div style="color:#FF6666; margin-top:1px;">(기본게시판)</div>
+                                </td>
+                                <td>자료실형</td>
+                                <td>0</td>
+                                <td class="left"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=mim_pds" target="_blank">/board/list.asp?board=mim_pds</a></td>
+                                <td>
+                                    <div><button type="button" class="btn btn-sm btn-default" onclick="edit(6)">수정</button></div>
+
+                                    <div class="mgt5"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=mim_pds" class="btn btn-sm btn-info" target="_blank">관리</a></div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>qna_board</td>
+                                <td>
+                                    <div>묻고 답하기</div>
+
+                                </td>
+                                <td>기본형</td>
+                                <td>0</td>
+                                <td class="left"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=qna_board" target="_blank">/board/list.asp?board=qna_board</a></td>
+                                <td>
+                                    <div><button type="button" class="btn btn-sm btn-default" onclick="edit(8)">수정</button></div>
+
+                                    <div class="mgt5"><button type="button" class="btn btn-sm btn-danger" onclick="del(8)">삭제</button>
+                                    </div>
+
+                                    <div class="mgt5"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=qna_board" class="btn btn-sm btn-info" target="_blank">관리</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>webzine</td>
+                                <td>
+                                    <div>웹진형게시판</div>
+
+                                </td>
+                                <td>웹진형</td>
+                                <td>0</td>
+                                <td class="left"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=webzine" target="_blank">/board/list.asp?board=webzine</a></td>
+                                <td>
+                                    <div><button type="button" class="btn btn-sm btn-default" onclick="edit(9)">수정</button></div>
+
+                                    <div class="mgt5"><button type="button" class="btn btn-sm btn-danger" onclick="del(9)">삭제</button></div>
+
+                                    <div class="mgt5"><a href="http://mimd.mallstore.co.kr/board/list.asp?board=webzine" class="btn btn-sm btn-info" target="_blank">관리</a></div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>album</td>
+                                <td>
+                                    <div>앨범형게시판</div>
+
+                                </td>
+                                <td>앨범형</td>
+                                <td>0</td>
+                                <td class="left"><a href="/board/list?board=album" target="_blank">/board/list.asp?board=album</a></td>
+                                <td>
+                                    <div><button type="button" class="btn btn-sm btn-default" onclick="edit(11)">수정</button>
+                                    </div>
+
+                                    <div class="mgt5"><button type="button" class="btn btn-sm btn-danger" onclick="del(11)">삭제</button></div>
+
+                                    <div class="mgt5"><a href="/board/list?board=album" class="btn btn-sm btn-info" target="_blank">관리</a></div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="btn_center">
+                        <button type="button" class="btn btn-info" onclick="reg()">게시판추가</button>
+                    </div>
+
+                </form>
+                </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,104 @@
+<template>
+  <div id="contents">
+                <h3>상품평관리</h3>
+                <ul class="navi">
+                    <li class="home"><a href="/" target="_top">홈</a></li>
+                    <li>운영관리</li>
+                    <li>고객운영관리</li>
+                    <li class="on">상품평관리</li>
+                </ul>
+                <ul class="helpbox">
+                    <li><span class="red">[회원정보보기]</span>를 클릭하시면 상품평을 적어주신 회원의 정보를 보실 수 있습니다.</li>
+                    <li>상품평을 삭제 하실려면 <span class="red">[삭제]</span> 버튼을 클릭해 주세요.</li>
+                </ul>
+
+
+                <form name="Frm">
+                    <div class="section_head">
+                        <h4>오늘 등록된 상품평은 총 <span><strong>0</strong></span>개입니다.</h4>
+                        <div class="mgb5">
+                            <select id="skey" name="skey" class="text_input">
+                                <option value="">전체</option>
+                                <option value="goods">상품명</option>
+                                <option value="subject">제목</option>
+                                <option value="content">내용</option>
+                                <option value="answer">답변</option>
+                                <option value="user">평가자</option>
+                                <option value="dealer">답변자</option>
+                            </select>
+
+                            <input type="text" name="sword" maxlength="50" class="text_input" style="width:150px">
+                            <button type="submit" class="btn btn-sm btn-default">검색</button>
+                        </div>
+                    </div>
+
+                    <table class="t_list">
+                        <caption>등록된 상품평 리스트</caption>
+                        <colgroup>
+                            <col width="70">
+                            <col width="*">
+                            <col width="150">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>상품평</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>1</td>
+                                <td style="padding:0">
+                                    <div class="over_h" style="padding:10px;">
+
+                                        <div class="fl" style="width:70px;"><img src="/img/201324253665762.jpg" width="50" height="50"></div>
+                                        <div class="fl" style="width:80%;text-align:left;padding-top:10px;"><a href="/goods/detail?gno=75" target="_blank">버든배낭</a></div>
+
+                                    </div>
+
+                                    <div class="over_h" style="padding:6px 10px 4px;background:#f6f6f6;border:solid 1px #ddd;">
+                                        <div class="fl"><img src="/img/star_04.png" alt="별점 4"></div>
+                                        <div class="fr">몰스토어 (2017-08-31 15:08:47)</div>
+                                    </div>
+
+                                    <div style="padding:15px 10px;text-align:left;">
+                                        <div><strong>물건 잘 받았습니다</strong></div>
+                                        <div class="mgt10">만족스럽습니다</div>
+                                    </div>
+
+                                </td>
+                                <td>
+
+                                    <div><button type="button" class="btn btn-sm btn-default" id="btnMemberInfo">회원정보보기</button></div>
+
+                                    <div class="mgt5">
+                                        <button type="button" class="btn btn-sm btn-default" id="btnReview">수정</button>
+                                        <button type="button" class="btn btn-sm btn-default" onclick="delReview(86)">삭제</button>
+                                    </div>
+
+                                    <div class="mgt5"><button type="button" class="btn btn-sm btn-default" id="btnAnswer">답변</button></div>
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="paging" style="margin-top:20px">
+                        <span><a href="/management/review_list?page=1&skey=&sword="><strong>1</strong></a></span>
+                    </div>
+                </form>
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>

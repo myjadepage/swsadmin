@@ -1,0 +1,212 @@
+<template>
+  <div id="contents">
+                <h3>{{ $route.name}}</h3>
+                <ul class="navi">
+                    <li class="home"><a href="/" target="_top">홈</a></li>
+                    <li>회원관리</li>
+                    <li>회원관련설정</li>
+                    <li class="on">{{ $route.name}}</li>
+                </ul>
+                <ul class="helpbox">
+                    <li>회원가입할 때 원하는 부분의 필수 및 선택 입력 및 추가할 사항을 관리하는 곳 입니다.</li>
+                </ul>
+
+
+                <form name="Frm">
+                    <div class="section_head">
+                        <h4><i class="xi-check-circle"></i> 회원가입 정책설정</h4>
+                    </div>
+
+                    <table class="t_form">
+                        <caption>차단 ID설정</caption>
+
+                        <tbody>
+                            <tr>
+                                <th rowspan="4">가입 차단 ID</th>
+                                <td class="gray_bg">기본 차단 ID</td>
+                            </tr>
+                            <tr>
+                                <td>base,guest</td>
+                            </tr>
+                            <tr>
+                                <td class="gray_bg">선택 차단 ID</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div><textarea name="blockID" rows="3" style="width:90%" class="text_input">admin,master,webmaster</textarea></div>
+                                    <div class="square_blue mgt10">회원가입시 회원아이디 사용을 제한할 ID을 입력해주세요.</div>
+                                    <div class="square_blue mgt3">","(콤마)로 구분 예) base,admin,webmaster,master</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section_head">
+                        <h4><i class="xi-check-circle"></i> 회원가입 기본항목설정</h4>
+                    </div>
+
+                    <table class="fields">
+                        <caption>기본항목 설정 폼</caption>
+                        <colgroup>
+                            <col width="200">
+                            <col width="*">
+                            <col width="*">
+                            <col width="200">
+                            <col width="*">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>항목명</th>
+                                <th>사용여부</th>
+                                <th>필수항목</th>
+                                <th>항목명</th>
+                                <th>사용여부</th>
+                                <th>필수항목</th>
+                            </tr>
+                            <tr>
+
+                                <th>성별</th>
+                                <td><input type="checkbox" name="fieldUse_101" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_101" value="2" onclick="checkField(this)" class="cb"></td>
+
+                                <th>생일</th>
+                                <td><input type="checkbox" name="fieldUse_102" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_102" value="2" onclick="checkField(this)" class="cb" checked></td>
+                            </tr>
+                            <tr>
+
+                                <th>회사명</th>
+                                <td><input type="checkbox" name="fieldUse_103" value="1" onclick="checkField(this)" class="cb"></td>
+                                <td><input type="checkbox" name="fieldRequire_103" value="2" onclick="checkField(this)" class="cb"></td>
+
+                                <th>사업자등록번호</th>
+                                <td><input type="checkbox" name="fieldUse_104" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_104" value="2" onclick="checkField(this)" class="cb"></td>
+                            </tr>
+                            <tr>
+
+                                <th>업태</th>
+                                <td><input type="checkbox" name="fieldUse_105" value="1" onclick="checkField(this)" class="cb"></td>
+                                <td><input type="checkbox" name="fieldRequire_105" value="2" onclick="checkField(this)" class="cb"></td>
+
+                                <th>종목</th>
+                                <td><input type="checkbox" name="fieldUse_106" value="1" onclick="checkField(this)" class="cb"></td>
+                                <td><input type="checkbox" name="fieldRequire_106" value="2" onclick="checkField(this)" class="cb"></td>
+                            </tr>
+                            <tr>
+
+                                <th>전화번호</th>
+                                <td><input type="checkbox" name="fieldUse_107" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_107" value="2" onclick="checkField(this)" class="cb"></td>
+
+                                <th>팩스번호</th>
+                                <td><input type="checkbox" name="fieldUse_108" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_108" value="2" onclick="checkField(this)" class="cb"></td>
+                            </tr>
+                            <tr>
+
+                                <th>휴대폰번호</th>
+                                <td><input type="checkbox" name="fieldUse_109" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_109" value="2" onclick="checkField(this)" class="cb" checked></td>
+
+                                <th>이메일</th>
+                                <td><input type="checkbox" name="fieldUse_110" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_110" value="2" onclick="checkField(this)" class="cb" checked></td>
+                            </tr>
+                            <tr>
+
+                                <th>주소</th>
+                                <td><input type="checkbox" name="fieldUse_111" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_111" value="2" onclick="checkField(this)" class="cb" checked></td>
+
+                                <th>메모</th>
+                                <td><input type="checkbox" name="fieldUse_112" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_112" value="2" onclick="checkField(this)" class="cb"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="section_head">
+                        <h4><i class="xi-check-circle"></i> 회원가입 추가항목설정</h4>
+                    </div>
+
+                    <table class="fields">
+                        <caption>추가항목 설정 폼</caption>
+                        <colgroup>
+                            <col width="130">
+                            <col width="*">
+                            <col width="*">
+                            <col width="130">
+                            <col width="*">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>항목명</th>
+                                <th>사용여부</th>
+                                <th>필수항목</th>
+                                <th>항목명</th>
+                                <th>사용여부</th>
+                                <th>필수항목</th>
+                            </tr>
+                            <tr>
+
+                                <th><input type="text" name="fieldTitle_201" value="결혼여부" class="text_input" maxlength="50" style="width:100px; text-align:center;">
+                                </th>
+                                <td><input type="checkbox" name="fieldUse_201" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_201" value="2" onclick="checkField(this)" class="cb"></td>
+
+                                <th><input type="text" name="fieldTitle_202" value="test1" class="text_input" maxlength="50" style="width:100px; text-align:center;">
+                                </th>
+                                <td><input type="checkbox" name="fieldUse_202" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_202" value="2" onclick="checkField(this)" class="cb"></td>
+                            </tr>
+                            <tr>
+
+                                <th><input type="text" name="fieldTitle_203" value="test1" class="text_input" maxlength="50" style="width:100px; text-align:center;">
+                                </th>
+                                <td><input type="checkbox" name="fieldUse_203" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_203" value="2" onclick="checkField(this)" class="cb"></td>
+
+                                <th><input type="text" name="fieldTitle_204" value="test1" class="text_input" maxlength="50" style="width:100px; text-align:center;">
+                                </th>
+                                <td><input type="checkbox" name="fieldUse_204" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_204" value="2" onclick="checkField(this)" class="cb"></td>
+                            </tr>
+                            <tr>
+
+                                <th><input type="text" name="fieldTitle_205" value="test1" class="text_input" maxlength="50" style="width:100px; text-align:center;">
+                                </th>
+                                <td><input type="checkbox" name="fieldUse_205" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_205" value="2" onclick="checkField(this)" class="cb"></td>
+
+                                <th><input type="text" name="fieldTitle_206" value="test1" class="text_input" maxlength="50" style="width:100px; text-align:center;">
+                                </th>
+                                <td><input type="checkbox" name="fieldUse_206" value="1" onclick="checkField(this)" class="cb" checked></td>
+                                <td><input type="checkbox" name="fieldRequire_206" value="2" onclick="checkField(this)" class="cb"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="btn_center">
+                        <button type="button" class="btn btn-default" onclick="validSubmit()">확인</button>
+                    </div>
+
+                </form>
+  </div>
+</template>
+
+<script>
+export default {
+    mounted () {
+        this.init()
+    }
+}
+</script>
+
+<style>
+
+</style>

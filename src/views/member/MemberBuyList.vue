@@ -1,0 +1,237 @@
+<template>
+  <div id="contents">
+                <h3>{{ $route.name }}</h3>
+                <ul class="navi">
+                    <li class="home"><a href="/" target="_top">홈</a></li>
+                    <li>회원관리</li>
+                    <li>회원관리</li>
+                    <li class="on">{{ $route.name}}</li>
+                </ul>
+                <ul class="helpbox">
+                    <li>다음은 상품구매 회원목록 입니다.</li>
+                    <li><strong>총구매금액</strong> 산출 = (판매자+옵션)*수량</li>
+                    <li>적립금, 쿠폰, 배송비, 할인내역은 금액에 포함되지 않습니다.</li>
+                </ul>
+
+
+                <form name="sFrm">
+
+                    <table class="t_form">
+                        <caption>회원 검색 폼</caption>
+                        <colgroup>
+                            <col width="130">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>가입일</th>
+                                <td>
+                                    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+                                        <input id="startpicker-input" type="text" aria-label="Date">
+                                        <span class="tui-ico-date"></span>
+                                        <div id="startpicker-container" style="margin-left: -1px;"></div>
+                                    </div>
+                                    <span>~</span>
+                                    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+                                        <input id="endpicker-input" type="text" aria-label="Date">
+                                        <span class="tui-ico-date"></span>
+                                        <div id="endpicker-container" style="margin-left: -1px;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>구매일</th>
+                                <td>
+                                    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+                                        <input id="startpicker-input" type="text" aria-label="Date">
+                                        <span class="tui-ico-date"></span>
+                                        <div id="startpicker-container" style="margin-left: -1px;"></div>
+                                    </div>
+                                    <span>~</span>
+                                    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+                                        <input id="endpicker-input" type="text" aria-label="Date">
+                                        <span class="tui-ico-date"></span>
+                                        <div id="endpicker-container" style="margin-left: -1px;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>그룹별</th>
+                                <td>
+                                    <select id="slevel" name="slevel" class="text_input" onchange="change()">
+                                        <option value="">회원등급</option>
+                                        <option value="1">일반회원</option>
+                                        <option value="4">코알라회원</option>
+                                    </select>
+                                    <select id="sgender" name="sgender" class="text_input" onchange="change()">
+                                        <option value="">성별</option>
+                                        <option value="100">남자</option>
+                                        <option value="200">여자</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>회원상태</th>
+                                <td>
+                                    <label><input type="radio" name="ssleep" value="0" checked="">전체</label>
+                                    <label><input type="radio" name="ssleep" value="1">일반</label>
+                                    <label><input type="radio" name="ssleep" value="2">휴면</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>총구매금액</th>
+                                <td>
+                                    <input type="text" name="sbuyprice" value="" class="text_input" style="width:100px" onkeyup="toCurrency(this)"> 원 ~
+                                    <input type="text" name="ebuyprice" value="" class="text_input" style="width:100px" onkeyup="toCurrency(this)"> 원
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>보유적립금</th>
+                                <td>
+                                    <input type="text" name="scmoney" value="" class="text_input" style="width:100px" onkeyup="toCurrency(this)"> 원 ~
+                                    <input type="text" name="ecmoney" value="" class="text_input" style="width:100px" onkeyup="toCurrency(this)"> 원
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>직접검색</th>
+                                <td>
+                                    <select id="skey" name="skey" class="text_input">
+                                        <option value="">전체</option>
+                                        <option value="id">회원아이디</option>
+                                        <option value="name">회원명</option>
+                                        <option value="tel">전화번호</option>
+                                        <option value="mobile">휴대폰번호</option>
+                                        <option value="email">이메일</option>
+                                    </select>
+
+                                    <input type="text" name="sword" class="text_input" style="width:300px">
+                                    <button type="submit" class="btn btn-sm btn-default">검색</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section_head">
+                        <h4><i class="xi-check-circle"></i> 총 <strong class="red">1</strong> 명의 회원이 조회 되었습니다.</h4>
+                        <div>
+                            <select id="psize" name="psize" class="text_input" onchange="change()">
+                                <option value="10" selected="">10명씩보기</option>
+                                <option value="20">20명씩보기</option>
+                                <option value="30">30명씩보기</option>
+                                <option value="50">50명씩보기</option>
+                                <option value="100">100명씩보기</option>
+                            </select>
+                            <select id="psort" name="psort" class="text_input" onchange="change()">
+                                <option value="regdt" selected="">회원가입일</option>
+                                <option value="visitcnt">접속수</option>
+                                <option value="buygoods">구매상품건수</option>
+                                <option value="buyprice">구매총금액</option>
+                                <option value="id">아이디순</option>
+                                <option value="name">이름순</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                </form>
+
+                <form name="Frm">
+                    <table class="t_list">
+                        <caption>상품구매 회원목록</caption>
+                        <colgroup>
+                            <col width="30">
+                            <col width="70">
+                            <col width="*">
+                            <col width="*">
+                            <col width="70">
+                            <col width="50">
+                            <col width="50">
+                            <col width="*">
+                            <col width="50">
+                            <col width="*">
+                            <col width="*">
+                            <col width="*">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="cbListAll" onclick="checkCbAll(this.form.cbList, this.checked)"></th>
+                                <th>회원상태</th>
+                                <th>아이디</th>
+                                <th>회원등급</th>
+                                <th>성명</th>
+                                <th>성별</th>
+                                <th>나이</th>
+                                <th>적립금</th>
+                                <th>접속수</th>
+                                <th>가입일</th>
+                                <th>구매상품건수</th>
+                                <th>구매총금액</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td><input type="checkbox" name="cbList" value="2"></td>
+                                <td>일반</td>
+                                <td><a href="javascript:;" ezi="2" onclick="ezpop.member.open(event)">mallstore</a></td>
+                                <td>코알라회원</td>
+                                <td>몰스토어</td>
+                                <td>-</td>
+                                <td>41</td>
+                                <td>92,280원</td>
+                                <td>174</td>
+                                <td>
+                                    2012-12-13
+                                </td>
+                                <td>1 건</td>
+                                <td>57,700 원</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="paging mgt20">
+                        <span><a href=""><strong>1</strong></a></span>
+                    </div>
+
+                    <div class="section_head">
+                        <h4><i class="xi-check-circle"></i> 일괄 수정</h4>
+                    </div>
+                    <table class="t_form">
+                        <caption>일괄 수정 폼</caption>
+
+                        <tbody>
+                            <tr>
+                                <th>회원등급</th>
+                                <td>
+                                    선택한 회원의 등급을
+                                    <select id="level" name="level" class="text_input">
+                                        <option value="">선택</option>
+                                        <option value="1">일반회원</option>
+                                        <option value="4">코알라회원</option>
+                                    </select> 으로 <button type="button" class="btn btn-sm btn-default" onclick="setBatchLevel()">일괄 수정</button>
+
+                                    <span class="square_blue"> 휴면회원도 선택된 등급으로 회원등급 변경이 가능합니다.</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="btn_right">
+                        <a href="" class="btn btn-default">엑셀로받기</a>
+                    </div>
+
+                </form>
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>

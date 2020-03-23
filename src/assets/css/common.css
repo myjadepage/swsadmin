@@ -3266,3 +3266,10 @@
         width: 150px;
         text-align: center;
     }
+
+    /* 회원관리/운영관/환경설정 추가 */
+    #header #menu ul li a.router-link-active,
+    .side_small_menu a.router-link-active {
+        color: #e61654;
+        font-weight: 600;
+    }
