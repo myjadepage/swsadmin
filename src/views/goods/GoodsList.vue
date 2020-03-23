@@ -236,7 +236,8 @@ export default {
                 return false
             }
             for (let i = 0 ; i < result.length ; i++) {
-                categoryTitle = this.convertCategoryTitle(result[i].categories[0])
+                categoryTitle = ''
+                if (!this.isEmpty(result[i].categories)) { categoryTitle = this.convertCategoryTitle(result[i].categories[0]) }
                 this.products.push({
                     selected: '',
                     id: result[i].prdtSysId, 

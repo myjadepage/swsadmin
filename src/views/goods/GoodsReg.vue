@@ -15,7 +15,6 @@
             <li><strong class="red">*</strong>로 설정된 부분은 필수 입력하셔야 합니다.</li>
             <li>시중가를 적으면 세일이 적용됩니다. (필요할 경우에만 입력하세요.)</li>
         </ul>
-        <b-button @click="test">테스트</b-button>
         <form name="Frm" enctype="multipart/form-data" onsubmit="return false" >
             <div class="box">
                 <table name="categories" class="t_form">
@@ -217,6 +216,7 @@
                             <th>
                                 영상 업로드<strong class="red">&nbsp;*</strong>
                                 <span class="light_gray">1개 이상 업로드</span>
+                                <b-button @click="test">테스트</b-button>
                             </th>
                             <td colspan="3" class="img_etc">
                                 <Video-uploader  
@@ -324,10 +324,10 @@
                         <tr>
                             <th>수수료 설정 <strong class="red">*</strong></th>
                             <td>
-                                <input type="radio" id="feeTypeCode1" name="feeTypeCode" value=1 v-model.number="productData.feeTypeCode" @click.passive="onFeeTypeCodeEvent">
+                                <input type="radio" id="feeTypeCode1" ref="feeTypeCode" value=1 v-model.number="productData.feeTypeCode" @click="onFeeTypeCodeEvent">
                                 <label for="feeTypeCode1" class="pad_right10">기본 수수료설정 (입점업체 또는 카테고리)</label>
 
-                                <input type="radio" id="feeTypeCode2" name="feeTypeCode" value=2 class="mgl20" v-model.number="productData.feeTypeCode" @click.passive="onFeeTypeCodeEvent">
+                                <input type="radio" id="feeTypeCode2" ref="feeTypeCode" value=2 class="mgl20" v-model.number="productData.feeTypeCode" @click="onFeeTypeCodeEvent">
                                 <label for="feeTypeCode2">개별 수수료 설정(상품별)</label>
                             </td>
                             <th>부가가치세 설정</th>
@@ -343,20 +343,20 @@
                                 <div class="d-flex" style="width:100%">
                                     <template v-if="productData.feeTypeCode === 1">
                                         <div style="width: 200px">
-                                            <input type="checkbox" id="defaultFeeRate" v-model="feeRateObject.defaultFeeRate" @click="defaultFeeRate('defaultFeeRate')"/>&emsp;<label for="defaultFeeRate"> 기본 <b>[9%]</b> </label><br>
-                                            <input type="checkbox" id="makeVideoFeeRate" v-model="feeRateObject.makeVideoFeeRate" @click="defaultFeeRate('makeVideoFeeRate')"/>&emsp;<label for="makeVideoFeeRate"> 영상제작 <b>[9%]</b> </label><br>
-                                            <input type="checkbox" id="influencerFeeRate" v-model="feeRateObject.influencerFeeRate" @click="defaultFeeRate('influencerFeeRate')"/>&emsp;<label for="influencerFeeRate"> 인플루언서 <b>[9%]</b> </label>
+                                            <input type="checkbox" id="feeRateBase" v-model="productData.feeRateBase" @click="calculFeeRateFn({type: '1'})"/>&emsp;<label for="feeRateBase"> 기본 <b>[9%]</b> </label><br>
+                                            <input type="checkbox" id="feeRateMedia" v-model="productData.feeRateMedia" @click="calculFeeRateFn({type: '1'})"/>&emsp;<label for="feeRateMedia"> 영상제작 <b>[9%]</b> </label><br>
+                                            <input type="checkbox" id="feeRateInfluencer" v-model="productData.feeRateInfluencer" @click="calculFeeRateFn({type: '1'})"/>&emsp;<label for="feeRateInfluencer"> 인플루언서 <b>[9%]</b> </label>
                                         </div>
                                     </template>
                                     <template v-if="productData.feeTypeCode === 2">
                                         <div style="width: 200px">
-                                            <input type="radio" id="priceTypeCode1" name="priceTypeCode" v-on:click="onPriceTypeCode" v-model.number="productData.priceTypeCode" value="1" checked>
+                                            <input type="radio" id="priceTypeCode1" ref="priceTypeCode" @click="onPriceTypeCode" v-model.number="productData.priceTypeCode" value="1">
                                             <label for="priceTypeCode1">
                                                 공급가기준
                                                 <span>(수수료 자동입력)</span>
                                             </label>
                                             <br>
-                                            <input type="radio" id="priceTypeCode2" name="priceTypeCode" v-on:click="onPriceTypeCode" v-model.number="productData.priceTypeCode" value="2">
+                                            <input type="radio" id="priceTypeCode2" ref="priceTypeCode"  @click="onPriceTypeCode" v-model.number="productData.priceTypeCode" value="2">
                                             <label for="priceTypeCode2">
                                                 수수료기준
                                                 <span>(공급가 자동입력)</span>
@@ -364,9 +364,9 @@
                                         </div>
                                     </template>
                                     <ul style="margin-left:10px">
-                                        <li>판매가<br><input type="text" name="price" class="text_input" style="width:130px" v-model="productData.price" v-on:keyup="onPriceEvnet"> 원</li>
-                                        <li>수수료율<br><input type="text" name="feeRate" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" v-on:keyup="onFeeRate()" disabled> %</li>
-                                        <li>공급가<br><input type="text" name="supplyPrice" class="text_input" style="width:130px" v-model="productData.supplyPrice" v-on:keyup="onSupplyPrice"> 원</li>
+                                        <li>판매가<br><input type="text" ref="price" name="price" id="price" class="text_input" style="width:130px" v-model="productData.price" @keyup="priceToSupplyPrice"> 원</li>
+                                        <li>수수료율<br><input type="text" ref="feeRate" name="feeRate" id="feeRate" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" @keyup="onFeeRate()" disabled> %</li>
+                                        <li>공급가<br><input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice" class="text_input" style="width:130px" v-model="productData.supplyPrice" @keyup="onSupplyPrice"> 원</li>
                                     </ul>
                                 </div>
                             </td>
@@ -604,8 +604,8 @@
                             <th>추가구성</th>
                             <td class="addition_usable">
                                 <ul>
-                                    <li><input type="radio" name="isAddingProduct" v-model.number="productData.isAddingProduct" value=0><label for="use_addition_0">미사용</label></li>
-                                    <li><input type="radio" name="isAddingProduct" v-model.number="productData.isAddingProduct" value=1><label for="use_addition_1">사용</label></li>
+                                    <li><input type="radio" id="use_addition_0" name="isAddingProduct" v-model.number="productData.isAddingProduct" value=0><label for="use_addition_0">미사용</label></li>
+                                    <li><input type="radio" id="use_addition_1" name="isAddingProduct" v-model.number="productData.isAddingProduct" value=1><label for="use_addition_1">사용</label></li>
                                 </ul>
                             </td>
                         </tr>
@@ -631,6 +631,7 @@
                     <b-button variant="success" @click="SubmitUpdateProduct()" style="margin-right: 5px">수정</b-button>
                 </template>
                 <b-button variant="danger">취소</b-button>
+                <b-button @click="test">테스트</b-button>   
             </div>
         </form>
     </div>
@@ -698,11 +699,11 @@ export default {
             {id: 2, imageVisibleTitle: '', imageObjName: 'optionalImage2Url', url: ''}
         ],
         videos: [
-            {id: 1, videoTitle: 'videoTitle1', videoVisibleTitle: '', videoObjName: 'optionalVideo1Url', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage1', progressValue: 0, progressMax: 0, videourl: '', imageurl: ''},
-            {id: 2, videoTitle: 'videoTitle2', videoVisibleTitle: '', videoObjName: 'optionalVideo2Url', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage2', progressValue: 0, progressMax: 0, videourl: '', imageurl: ''}
+            {id: 1, title: '', videoTitle: '', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage1', progressValue: 0, progressMax: 0, videourl: '', imageurl: ''},
+            {id: 2, title: '', videoTitle: '', imageVisibleTitle: '' ,imageObjName: 'thumbNailImage2', progressValue: 0, progressMax: 0, videourl: '', imageurl: ''}
         ],
         additionOptions: [
-            {id: 1, itemGroupName: 'itemGroupName1', detailsTable: 'detailsTable1', subAdditionOptions: [{id: 1, item: 'item1', price: 'price1', stockQty: 'stockQty1', isSoldout: 'isSoldout1', isHide: 'isHide1'}]}
+            {itemGroupName: '',  subAdditionOptions: [{item: '', price: '', stockQty: '', isSoldout: false, isHide: false, procTypeCode: 2}], procTypeCode: 2}
         ],
         commonSellers: [
             {id: 1, peopleObjName: 'peopleObjectName1', discountObjName: 'discountObjName1'}
@@ -720,11 +721,6 @@ export default {
             startTime: '',
             endDate: '',
             endTime: ''
-        },
-        feeRateObject: {
-            defaultFeeRate: true,
-            makeVideoFeeRate: false,
-            influencerFeeRate: false,
         }
     }
   },
@@ -735,6 +731,7 @@ export default {
     }
     this.axiosGetRequest('/api/v1/sellers/bases', '', this.resultSellersFn)
     this.axiosGetRequest('/api/v1/categories',{categoryLevel: 1}, this.resultCategoryFn)
+    this.calculFeeRateFn({type: '1'})
   },
   methods: {
     SubmitAddProduct: function () {

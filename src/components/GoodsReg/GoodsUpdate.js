@@ -88,7 +88,14 @@ export default {
      */
     setCategory: function (category) {
       category.forEach(item => {
-        item
+        let categoryArray = new Array()
+
+        if(!this.isEmpty(item.categorySysId1)) {categoryArray[0] = {value: item.categorySysId1, text: item.categoryName1, feeRate: 0}}
+        if(!this.isEmpty(item.categorySysId2)) {categoryArray[1] = {value: item.categorySysId2, text: item.categoryName2, feeRate: 0}}
+        if(!this.isEmpty(item.categorySysId3)) {categoryArray[2] = {value: item.categorySysId3, text: item.categoryName3, feeRate: 0}}
+        if(!this.isEmpty(item.categorySysId4)) {categoryArray[3] = {value: item.categorySysId4, text: item.categoryName4, feeRate: 0}}
+        if(!this.isEmpty(item.categorySysId5)) {categoryArray[4] = {value: item.categorySysId5, text: item.categoryName5, feeRate: 0}}
+        this.addCateExtends(categoryArray,1000)
         // for (let i = 0 ; i < 5 ; i++) {
         //   if (item['categorySysId' + (i + 1)] !== 'undefined') {
         //     this.axiosGetRequest('/api/v1/categories',{ categoryLevel: (i + 1), categorySysId: item['categorySysId' + (i + 1)], parentSysId: item['categorySysId' + i]}, this.resultCategorySearch)
@@ -116,9 +123,9 @@ export default {
     getProductData(res) {
         this.resourceData = res.data.jsonData
         // 카테고리 
-        this.productData.category = res.data.jsonData.category
-        this.setCategory(res.data.jsonData.category.categories)
-        this.addCateExtends('reqCategory', 500)
+        // this.productData.category = res.data.jsonData.listPrdtCate
+        this.setCategory(res.data.jsonData.listPrdtCate)
+        // this.addCateExtends('reqCategory', 500)
 
         //상품 정보
         let product = res.data.jsonData.product
@@ -147,7 +154,7 @@ export default {
         }
 
         this.changeSellerFn()
-
+        // 상품 고시 로딩 시에 세팅 
         let noticeObject = res.data.jsonData.productNotice
         this.productData.prdtNoticeBaseSysId = noticeObject.prdtNoticeBaseSysId
         this.notify.splice(0)
@@ -159,7 +166,7 @@ export default {
             prdtNoticeSysId: _item.prdtNoticeSysId
           })
         })        
-
+        // 일반 옵션시에 세팅
         let normalOptions = res.data.jsonData.normalOptions
         if (normalOptions.length > 0) {
           this.nomarlOptions.splice(0)
@@ -173,22 +180,28 @@ export default {
           })
         }
 
+        // 추가 구성 데이터 세팅
+        
+
+
+        // 추가 구성 사항
+        
+
     },
     // Update Validate
     updateSubmitValidate (obj) {
       // ------------------- Form Validate 체크 시작 -------------------
-      let categories = this.productData.category.categories
-      console.log(categories)
-      let categoriesString = ''
-      categories.forEach(item => {
-        categoriesString = ''
-        if (item['categorySysId1'] == undefined) { categoriesString = item['categorySysId1']}
-        if (item['categorySysId2'] == undefined) { categoriesString += new String(item['categorySysId2'])}
-        if (item['categorySysId3'] == undefined) { categoriesString += new String(item['categorySysId3'])}
-        if (item['categorySysId4'] == undefined) { categoriesString += new String(item['categorySysId4'])}
-        if (item['categorySysId5'] == undefined) { categoriesString += new String(item['categorySysId5'])}
-      })
-      categoriesString
+      // let categories = this.productData.category.categories
+      // eslint-disable-next-line no-unused-vars
+      // let categoriesString = ''
+      // categories.forEach(item => {
+      //   categoriesString = ''
+      //   if (item['categorySysId1'] == undefined) { categoriesString = item['categorySysId1']}
+      //   if (item['categorySysId2'] == undefined) { categoriesString += new String(item['categorySysId2'])}
+      //   if (item['categorySysId3'] == undefined) { categoriesString += new String(item['categorySysId3'])}
+      //   if (item['categorySysId4'] == undefined) { categoriesString += new String(item['categorySysId4'])}
+      //   if (item['categorySysId5'] == undefined) { categoriesString += new String(item['categorySysId5'])}
+      // })
 
       // if (this.categoryRow <= 0) {
       //   return this.onFocusMethod(obj.category1, '카테고리')
@@ -540,55 +553,74 @@ export default {
       let isAddition = (document.Frm.isAddingProduct.value==='0'? false : true)
       if (isAddition) {
         for (let k = 0 ;k < this.additionOptions.length; k++) {
-          let subAdditionArray = this.additionOptions[k].subAdditionOptions
-          let details = new Array();
-          for(let sub = 0; sub < subAdditionArray.length; sub++) {
-            details[sub] = {
-              item: $('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].item + ']').val(),
-              price: this.toNumber($('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].price + ']').val()),
-              stockQty: this.toNumber($('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].stockQty + ']').val()),
-              isSoldout: $('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].isSoldout + ']').is(':checked'),
-              isHide: $('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].isHide + ']').is(':checked'),
+          if (this.additionOptions.procTypeCode !== 4) {
+            let subAdditionArray = this.additionOptions[k].subAdditionOptions
+            let details = new Array();
+            for(let sub = 0; sub < subAdditionArray.length; sub++) {
+              if (subAdditionArray[sub].procTypeCode !== 4) {
+                details[sub] = {
+                  item: subAdditionArray[sub].item,
+                  price: this.toNumber(String(this.isEmpty(subAdditionArray[sub].price) ? 0 : subAdditionArray[sub].price)),
+                  stockQty: this.toNumber(String(this.isEmpty(subAdditionArray[sub].stockQty) ? 0 : subAdditionArray[sub].stockQty)),
+                  isSoldout: (subAdditionArray[sub].isSoldout ? 1 : 0),
+                  isHide: (subAdditionArray[sub].isHide ? 1 : 0),
+                }
+              }
             }
+            this.productData.addingProducts[k] = {base: {itemGroup: this.additionOptions[k].itemGroupName}, details: details}
           }
-          this.updateProductData.addingProducts[k] = {base: {itemGroup: $('input[name=' + this.additionOptions[k].itemGroupName + ']').val()}, details: details}
         }
       }
-      // ------------------- Form Validate 체크 종료 -------------------
-      // console.log(this.productData)
-      // let CallbackFn = function (res) {
-      //   console.log(res)
-      //   alert('상품등록이 완료 되었습니다.')
-      // }
-      // this.axiosPostRequest('/api/v1/products', {jsonData: this.productData}, CallbackFn)
+      
       return this.updateProductData
     },
     test: function () {
 
-      if (this.productData.optionTypeCode === 2) {
-        // 상품옵션
-        let optionData = this.nomarlOptions;
-        optionData.forEach(_item => {
-          this.productData.normalOptions.push({
-            name: _item.name,
-            content: _item.content,
-            procTypeCode: _item.procTypeCode
+      // 영상 업로드
+      let videos = this.videos
+      if (videos.length <= 0) {
+        alert('1개 이상의 영상을 업로드 해야 합니다.')
+        return false
+      } else {
+        let vaildatArray = this.videos[0]
+        if (this.isEmpty(vaildatArray.videourl)) {
+          alert('1개 이상의 영상을 업로드 해야 합니다.')
+          return false
+        } else {
+          this.videos.forEach(item => {
+            this.productData.media.push({
+              'mediaId': item.videourl,
+              'title': item.title,
+              'thumnailUrl': $('input[name=' + item.imageObjName + ']').data('imageurl')
+            })
           })
-        })
-        // if (this.normalOptionCounter < 1) {
-        //   return false
-        // } else {
-        //   for (var optionCnt = 0; optionCnt < this.nomarlOptions.length; optionCnt++) {
-        //     this.productData.normalOptions[optionCnt] = {
-        //       name: $('input[name=' + this.nomarlOptions[optionCnt].normalOptionName + ']').val(),
-        //       content: $('textarea[name=' + this.nomarlOptions[optionCnt].normalOptionContent + ']').val()
-        //     }
-        //   }
-        // }
-      } else if (this.productData.optionTypeCode === 5) {
-        this.productData.optionDescription = document.Frm.optionDescription.value
+        }
       }
-
+      
+      console.log(this.productData.media)
+      // let videoCount = this.videos
+      // let validateCount = 0
+      // for (let forCnt = 0 ; forCnt < videoCount ; forCnt++) {
+      //   if (obj.optionalVideoUrl[forCnt].files.length > 0) {
+      //     validateCount += 1
+      //   }
+      // }
+      // if (validateCount === 0){
+      //   alert('1개 이상의 영상을 업로드 해야 합니다.')
+      //   return false
+      // } else {
+      //   let targetObj
+      //   for(let videoCnt = 0; videoCnt < this.videos.length; videoCnt++) {
+      //     targetObj = this.videos[videoCnt]
+      //     if ($('#' + targetObj.videoObjName).data('videourl') !== '') {
+      //       this.productData.media[videoCnt] = {
+      //         'mediaId':  document.getElementById(targetObj.videoObjName).dataset.videourl,
+      //         'title': this.$refs.videoRef.$refs[targetObj.videoTitle][0].value,
+      //         'thumnailUrl': $('input[name=' + targetObj.imageObjName + ']').data('imageurl')
+      //       }
+      //     }
+      //   }
+      // }
     }
   }
 }

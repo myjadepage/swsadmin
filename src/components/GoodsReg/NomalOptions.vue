@@ -16,7 +16,7 @@
         </dl>
 
         <div class="tr mgb5">
-            <b-button @click="addProductOptionRow()" size="sm">옵션 추가</b-button>
+            <b-button @click="addProductOptionRow" size="sm">옵션 추가</b-button>
         </div>
         <table id="tb_option_100" summary="상품 일반옵션 폼 테이블 입니다." class="option_gnenral">
             <caption>상품 일반옵션 폼 테이블</caption>
@@ -52,8 +52,6 @@
 
 <script>
 export default {
-  data () {
-  },
   props: ['nomarlOptions','productData'],
   methods: {
     productsOptionRemove: function (item) {

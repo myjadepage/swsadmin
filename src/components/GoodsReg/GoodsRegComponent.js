@@ -58,7 +58,11 @@ export default {
         pointRate: 0.0,
         salesQty: 0,
         stockQty: 0,
-        feeRate: 9,
+        feeRate: 0,
+        feeTypeCode: 1,
+        feeRateBase: true,
+        feeRateMedia: false,
+        feeRateInfluencer: false,
         brandSysId: 0,
         sellerSysId: 0,
         isDisplay: 1,
@@ -68,8 +72,7 @@ export default {
         isAutoImageUpload: true,
         optionTypeCode: 1,
         stockTypeCode: 1,
-        feeTypeCode: 1,
-        priceTypeCode: 0,
+        priceTypeCode: 1,
         pointTypeCode: 0,
         deliveryPriceTypeCode: 5,
         optionDescription: '',
@@ -155,46 +158,9 @@ export default {
         this.productData.bigImageUrl = imagesCdnUrl
       }
 
-      // 이미지 자동등록 여부
-      // if(this.productData.isAutoImageUpload) {
-
-      //   let img = document.createElement('img')
-      //   img.src = imagesCdnUrl
-
-      //   let canvas = document.createElement('canvas')
-      //   let ctx = canvas.getContext('2d')
-      //   ctx.drawImage(img,0,0)
-      //   let MIDDLE_MAX_WIDTH = 510
-      //   let MIDDLE_MAX_HEIGHT = 510
-      //   let middel_width = img.width
-      //   let middel_height = img.height
-
-      //   middel_width *= MIDDLE_MAX_WIDTH/middel_width
-      //   middel_height *= MIDDLE_MAX_HEIGHT/middel_height
-      //   canvas.width = middel_width
-      //   canvas.height= middel_height
-
-      //   let ctx_d = canvas.getContext('2d')
-      //   ctx_d.drawImage(img,0,0,middel_width, middel_height)
-      //   let dataurl = canvas.toDataURL('image/png')
-      //   document.getElementById('middleImageUrl').src= dataurl
-
-
-      // } else {
-      //   let MiddleImageObj = obj.middleImageUrl
-      //   let SmallImageObj = obj.smallImageUrl
-
-      //   if (this.isEmpty(MiddleImageObj.dataset.imageurl)) {
-      //     return this.onFocusMethod(MiddleImageObj, '중간 이미지')
-      //   } else if (this.isEmpty(SmallImageObj.dataset.imageurl)){
-      //     return this.onFocusMethod(MiddleImageObj, '작은 이미지')
-      //   } else {
-      //     this.productData.middleImageUrl = MiddleImageObj.dataset.imageurl
-      //     this.productData.smallImageUrl = SmallImageObj.dataset.imageurl
-      //   }
-      // }
-
       this.productData.isAutoImageUpload = 1
+      this.productData.middleImageUrl = document.getElementById('middleImageUrl').dataset.imageurl
+      this.productData.smallImageUrl = document.getElementById('smallImageUrl').dataset.imageurl
 
 
       // 다른이미지 Validate
@@ -209,31 +175,28 @@ export default {
         }
       }
 
+
       // 영상 업로드
-      let videoCount = obj.optionalVideoUrl.length
-      let validateCount = 0
-      for (let forCnt = 0 ; forCnt < videoCount ; forCnt++) {
-        if (obj.optionalVideoUrl[forCnt].files.length > 0) {
-          validateCount += 1
-        }
-      }
-      if (validateCount === 0){
+      let videos = this.videos
+      if (videos.length <= 0) {
         alert('1개 이상의 영상을 업로드 해야 합니다.')
         return false
       } else {
-        let targetObj
-        for(let videoCnt = 0; videoCnt < this.videos.length; videoCnt++) {
-          targetObj = this.videos[videoCnt]
-          if ($('#' + targetObj.videoObjName).data('videourl') !== '') {
-            this.productData.media[videoCnt] = {
-              'mediaId':  document.getElementById(targetObj.videoObjName).dataset.videourl,
-              'title': this.$refs.videoRef.$refs[targetObj.videoTitle][0].value,
-              'thumnailUrl': $('input[name=' + targetObj.imageObjName + ']').data('imageurl')
-            }
-          }
+        let vaildatArray = this.videos[0]
+        if (this.isEmpty(vaildatArray.videourl)) {
+          alert('1개 이상의 영상을 업로드 해야 합니다.')
+          return false
+        } else {
+          this.videos.forEach(item => {
+            this.productData.media.push({
+              'mediaId': item.videourl,
+              'title': item.title,
+              'thumnailUrl': $('input[name=' + item.imageObjName + ']').data('imageurl')
+            })
+          })
         }
       }
-
+      
       // 재고설정
       let StockTypeCodeObj = obj.stockTypeCode
       if (StockTypeCodeObj[0].checked) {
@@ -250,8 +213,7 @@ export default {
         }
       }
 
-      this.productData.feeTypeCode = this.toNumber(obj.feeTypeCode.value) 
-      this.productData.pointTypeCode = this.toNumber(obj.pointTypeCode.value)
+      this.productData.feeTypeCode 
 
       // 
 
@@ -284,41 +246,61 @@ export default {
           return false
         } else {
           let firstObject = this.commonSellers[0]
-          let peopleObject = document.getElementById(firstObject.peopleObjName)
-          let discountObject = document.getElementById(firstObject.discountObjName)
-          if (this.isEmpty(peopleObject.value) || this.isEmpty(discountObject.value)) {
+          let peopleObject = firstObject.people
+          let discountObject = firstObject.discount
+          if (this.isEmpty(peopleObject) || this.isEmpty(discountObject)) {
             alert('할인인원 범위 정책을 확인하여 주시기바랍니다.')
             return false
           } else {
-            for (let i = 0 ; i < this.commonSellers.length ; i++) {
-              peopleObject = document.getElementById(this.commonSellers[i].peopleObjName)
-              discountObject = document.getElementById(this.commonSellers[i].discountObjName)
-              this.productData.productGroupBuy.productGroupBuyDiscount[i] = {
-                peopleQty: this.toNumber(peopleObject.value),
-                discount: this.toNumber(discountObject.value),
+            this.commonSellers.forEach(item => {
+              this.productData.productGroupBuy.productGroupBuyDiscount.push({
+                peopleQty: this.toNumber(String(item.people)),
+                discount: this.toNumber(String(item.discount)),
                 isUse: 1
-              }
-            }
+              })
+            })
+            // for (let i = 0 ; i < this.commonSellers.length ; i++) {
+            //   this.productData.productGroupBuy.productGroupBuyDiscount[i] = {
+            //     peopleQty: this.toNumber(String(this.commonSellers[i].people)),
+            //     discount: this.toNumber(String(this.commonSellers[i].discount)),
+            //     isUse: 1
+            //   }
+            // }
           }
         }
       }
 
+      this.productData.feeRateBase = (this.productData.feeRateBase ? 9.00 : 0)
+      this.productData.feeRateMedia = (this.productData.feeRateMedia ? 9.00 : 0)
+      this.productData.feeRateInfluencer = (this.productData.feeRateInfluencer ? 9.00 : 0)
       
       // 판매가
-      let PriceObj = obj.price
-      if (PriceObj.value.length < 1) {
-        return this.onFocusMethod(PriceObj, '판매가')
+      if (this.productData.price <= 0) {
+        alert('판매가를 확인하여 주시기 바랍니다')
+        return false
       } else {
-        this.productData.price = this.toNumber(String(PriceObj.value))
+        this.productData.price = this.toNumber(String(this.productData.price))
       }
+      // let PriceObj = obj.price
+      // if (PriceObj.value.length < 1) {
+      //   return this.onFocusMethod(PriceObj, '판매가')
+      // } else {
+      //   this.productData.price = this.toNumber(String(PriceObj.value))
+      // }
 
       // 공급가
-      let SupplyPriceObj = obj.supplyPrice
-      if (SupplyPriceObj.value.length < 1) {
-        return this.onFocusMethod(SupplyPriceObj, '공급가')
+      if (this.productData.supplyPrice <= 0) {
+        alert('공급가를 확인하여 주시기 바랍니다.')
+        return false
       } else {
-        this.productData.supplyPrice = this.toNumber(String(SupplyPriceObj.value))
+        this.productData.supplyPrice = this.toNumber(String(this.productData.supplyPrice))
       }
+      // let SupplyPriceObj = obj.supplyPrice
+      // if (SupplyPriceObj.value.length < 1) {
+      //   return this.onFocusMethod(SupplyPriceObj, '공급가')
+      // } else {
+      //   this.productData.supplyPrice = this.toNumber(String(SupplyPriceObj.value))
+      // }
 
       // 수수료율
       let feeRate = this.toNumber(String(this.productData.feeRate))
@@ -397,8 +379,17 @@ export default {
       }
       //  상품 옵션유형 코드
       this.productData.optionTypeCode = this.toNumber(document.Frm.optionTypeCode.value)
-
       if (this.productData.optionTypeCode === 2) {
+        if (this.nomarlOptions.length > 0) {
+          this.nomarlOptions.forEach(item => {
+            if (item.procTypeCode !== 4) {
+              this.productData.normalOptions.push({
+                name: item.name,
+                content: item.content
+              })
+            }
+          })
+        }
         // 상품옵션
         // if (this.normalOptionCounter < 1) {
         //   return false
@@ -424,18 +415,22 @@ export default {
       let isAddition = (document.Frm.isAddingProduct.value==='0'? false : true)
       if (isAddition) {
         for (let k = 0 ;k < this.additionOptions.length; k++) {
-          let subAdditionArray = this.additionOptions[k].subAdditionOptions
-          let details = new Array();
-          for(let sub = 0; sub < subAdditionArray.length; sub++) {
-            details[sub] = {
-              item: $('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].item + ']').val(),
-              price: this.toNumber($('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].price + ']').val()),
-              stockQty: this.toNumber($('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].stockQty + ']').val()),
-              isSoldout: $('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].isSoldout + ']').is(':checked'),
-              isHide: $('table[name=' + this.additionOptions[k].detailsTable + '] input[name=' + subAdditionArray[sub].isHide + ']').is(':checked'),
+          if (this.additionOptions.procTypeCode !== 4) {
+            let subAdditionArray = this.additionOptions[k].subAdditionOptions
+            let details = new Array();
+            for(let sub = 0; sub < subAdditionArray.length; sub++) {
+              if (subAdditionArray[sub].procTypeCode !== 4) {
+                details[sub] = {
+                  item: subAdditionArray[sub].item,
+                  price: this.toNumber(String(this.isEmpty(subAdditionArray[sub].price) ? 0 : subAdditionArray[sub].price)),
+                  stockQty: this.toNumber(String(this.isEmpty(subAdditionArray[sub].stockQty) ? 0 : subAdditionArray[sub].stockQty)),
+                  isSoldout: (subAdditionArray[sub].isSoldout ? 1 : 0),
+                  isHide: (subAdditionArray[sub].isHide ? 1 : 0),
+                }
+              }
             }
+            this.productData.addingProducts[k] = {base: {itemGroup: this.additionOptions[k].itemGroupName}, details: details}
           }
-          this.productData.addingProducts[k] = {base: {itemGroup: $('input[name=' + this.additionOptions[k].itemGroupName + ']').val()}, details: details}
         }
       }
       // ------------------- Form Validate 체크 종료 -------------------

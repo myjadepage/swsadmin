@@ -72,49 +72,49 @@ const clickEvent = {
     // ------------- 가격 Event 시작 -------------
     // 수수료 설정 Event
     onFeeTypeCodeEvent: function (event) {
-
-      var obj = event.target.value
-      if (obj === '1') {
+      this.calculFeeRateFn({type: event.target.value}) 
+    },
+    async calculFeeRateFn (obj) {
+      await this.sleep(100)
+      let typeCode = obj.type
+      if (typeCode === '1') {
         var cnt = 0
-        this.feeRateObject.defaultFeeRate ? cnt++ : ''
-        this.feeRateObject.makeVideoFeeRate ? cnt++ : ''
-        this.feeRateObject.influencerFeeRate ? cnt++ : ''
+        this.productData.feeRateBase ? cnt++ : ''
+        this.productData.feeRateMedia ? cnt++ : ''
+        this.productData.feeRateInfluencer ? cnt++ : ''
         this.productData.feeRate = 9*cnt
-        this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
-        document.getElementById('priceTypeCode1').checked = true
-      } else if(obj === '2') {
+        this.priceToSupplyPrice()
+      } else if(typeCode === '2') {
+        this.productData.priceTypeCode = 1
         this.productData.feeRate = 0
-        this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
+        this.priceToSupplyPrice()
       }
     },
-    defaultFeeRate(bool) {
-      var obj = this.$data.feeRateObject[bool]
-      !obj ? this.productData.feeRate += 9 : this.productData.feeRate -= 9
-      this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate)
+    // defaultFeeRate(bool) {
+    //   var obj = this.$data.feeRateObject[bool]
+    //   !obj ? this.productData.feeRate += 9 : this.productData.feeRate -= 9
+    //   this.priceToSupplyPrice()
        
-    },
+    // },
     // 공급가, 기준가 관련 Event
-    onPriceTypeCode: function () {
-      var obj = document.Frm.priceTypeCode
-      if (obj.value === '1') {
-        document.Frm.feeRate.disabled = true
-        document.Frm.supplyPrice.disabled = false
-      } else if (obj.value === '2') {
-        document.Frm.feeRate.disabled = false
-        document.Frm.supplyPrice.disabled = true
+    onPriceTypeCode: function (event) {
+      let obj = event.target.value
+      if (obj === '1') {
+        document.getElementById('feeRate').disabled = true
+        document.getElementById('supplyPrice').disabled = false
+      } else if (obj === '2') {
+        document.getElementById('feeRate').disabled = false
+        document.getElementById('supplyPrice').disabled = true
       }
     },
-    onPriceEvnet: function () {
-      var priceObj = document.Frm.price
-      var feeRate = document.Frm.feeRate
-      var supplyPrice = document.Frm.supplyPrice
-      if (document.Frm.feeTypeCode.value === '1') {
-        this.priceToSupplyPrice(priceObj, feeRate)
-      } else if (document.Frm.feeTypeCode.value === '2') {
-        if (document.Frm.priceTypeCode.value === '1') {
-          this.priceToFeeRate(priceObj, supplyPrice)
-        } else if (document.Frm.priceTypeCode.value === '2') {
-          this.priceToSupplyPrice(priceObj, feeRate)
+    onPriceEvent: function () {
+      if (this.$refs.feeTypeCode.value === '1') {
+        this.priceToSupplyPrice()
+      } else if (this.$refs.feeTypeCode.value === '2') {
+        if (this.productData.priceTypeCode === 1) {
+          this.priceToFeeRate()
+        } else if (this.productData.priceTypeCode === 2) {
+          this.priceToSupplyPrice()
         }
       }
       return true
@@ -220,19 +220,19 @@ const clickEvent = {
           return false
         }
       }
-      this.addCateExtends('selectedCategoryRow', 0)
+      this.addCateExtends(this.selectedCategoryRow, 0)
     },
-    addCateExtends: function (id, delayTime){
+    addCateExtends: function (arry, delayTime){
       setTimeout(() => {
-        let arrayObj = this[id]
         let param = { id: '', text: '', feeRate: '' }
         let titleArray = new Array()
-        for (let i = 0 ; i < arrayObj.length ; i++) {
-          let item = arrayObj[i]
+        for (let i = 0 ; i < arry.length ; i++) {
+          let item = arry[i]
           if(item.value !== 0) {
             param.id += item.value
             param.feeRate = item.feeRate
             param['categorySysId' + (i+1)] = item.value
+
             titleArray.push(item.text)
           }
         }

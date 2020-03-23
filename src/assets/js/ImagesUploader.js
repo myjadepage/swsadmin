@@ -73,18 +73,6 @@ export default {
       }
       return true
     },
-    // },
-    // type="file"을 직접적으로 사용
-    // onDirectImageUploader: function (event) {
-    //   if (event.target.dataset.valid === 'true') {
-    //     let param = {
-    //       obj: event.target,
-    //       bool: false
-    //     }
-    //     this.onSingleImagesUploaderEvent(param)
-    //   }
-      
-    // },    
     // type="file"을 hidden처리 하여 사용
     onAlternativeUploader: function (item) {
       let param = {
@@ -301,6 +289,7 @@ export default {
                       .then(function (res) {
                         // console.log(res)
                         // console.log(file)
+                        console.log(targetObj)
                         document.getElementById(targetObj).dataset.imageurl=cdnUrl+''+dir+'/'+file.name
                         // Editor.insertEmbed(cursorLocation, 'image', cdnUrl+''+dir+'/'+file.name)
                         // if (param.bool) {

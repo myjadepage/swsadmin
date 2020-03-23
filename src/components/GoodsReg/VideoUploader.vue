@@ -12,16 +12,16 @@
                     <option>언박싱</option>
                     <option>메인</option>
                 </select>
-                <input type="text" :ref="item.videoTitle" :id="item.videoTitle" class="text_input" placeholder="영상 타이틀" maxlength="50" style="width:100%; max-width:200px">
+                <input type="text" v-model="item.title" class="text_input" placeholder="영상 타이틀" maxlength="50" style="width:100%; max-width:200px">
             </b-col>
             <b-col cols="2" class="px-1">
                 <b-input-group size="sm">
-                    <b-form-input disabled squared placeholder="영상 업로드" v-model="item.videoVisibleTitle"></b-form-input>
+                    <b-form-input disabled squared placeholder="영상 업로드" v-model="item.videoTitle"></b-form-input>
                     <b-input-group-append>
-                    <b-button size="sm" squared text="Button" v-on:click="onObjOpenFn(item.videoObjName)">영상 찾기</b-button>
+                    <b-button size="sm" squared text="Button" @click="onObjOpenFn(`videoObject`+index)">영상 찾기</b-button>
                     </b-input-group-append>
                 </b-input-group>
-                <input type="file" :id="item.videoObjName" name="optionalVideoUrl" style="display: none" accept="video/*" v-on:change="onSingleVideoUploaderEvent(index, item)" data-videourl="">
+                <input type="file" name="optionalVideoUrl" :id='`videoObject`+index' style="display: none" accept="video/*" @change="onSingleVideoUploaderEvent(index, item, $event)">
             </b-col>
             <b-col cols="3">
                 <b-input-group size="sm">
@@ -29,7 +29,7 @@
                     <b-input-group-append>
                     <b-button size="sm" squared text="Button" v-on:click="onObjOpenFn(item.imageObjName)">썸네일 업로드</b-button>
                     </b-input-group-append>
-                    <input type="file" :id="item.imageObjName" :name="item.imageObjName" style="display: none" accept="image/*" v-on:change="$emit('imageUploader',item)" data-imageurl="">
+                    <input type="file" :id="item.imageObjName" :name="item.imageObjName" style="display: none" accept="image/*" @change="$emit('imageUploader',item)" data-imageurl="">
                 </b-input-group>
             </b-col>
             <b-col cols="1" class="px-1">
@@ -50,7 +50,6 @@ import Axios from 'axios'
 export default {
   data () {
     return {
-      videoCounter: 2,
       selectedindex: ''
     }
   },
@@ -61,15 +60,15 @@ export default {
         alert('10개이상 영상을 추가할수 없습니다.')
         return false
       } else {
-        this.videoCounter++
-        var count = this.videoCounter
         this.videos.push({
-          id: count, 
-          videoVisibleTitle: '',
-          videoTitle: 'videoTitle' + count,
-          videoObjName: 'optionalVideo' + count + 'Url', 
+          title: '',
+          videoTitle: '',
           imageVisibleTitle: '',
-          imageObjName: 'thumbNailImage' + count
+          imageObjName: 'thumbNailImage', 
+          progressValue: 0, 
+          progressMax: 0, 
+          videourl: '', 
+          imageurl: ''
         })
       }
     },
@@ -84,17 +83,13 @@ export default {
       this.videos[this.selectedindex].progressValue= event.loaded
       this.videos[this.selectedindex].progressMax= event.total
     },
-    onSingleVideoUploaderEvent: function (index, obj) {
+    async onSingleVideoUploaderEvent (index, obj, event) {
       this.selectedindex = index
-      var callback = function (res) {
-        alert('업로드가 완료되었습니다.')
-        targetObj.dataset.videourl = res.data.mediaId
-        obj.videoVisibleTitle = targetObj.files[0].name
-      }
-      var targetObj = document.getElementById(obj.videoObjName)
+    
+      var targetObj = event.target
       var formData = new FormData()
       formData.append('file', targetObj.files[0])
-      Axios.request({
+      let result =  await Axios.request({
         method: 'post',
         url: 'https://api.midibus.kinxcdn.com/v1/upload/450',
         headers: {
@@ -103,10 +98,17 @@ export default {
         },
         onUploadProgress: this.progressBarEvent,
         data: formData
-      }).then(callback)
+      })
+        .then(function (res) {
+          return res
+        })
         .catch(function (err) {
           console.log(err)
         })
+      obj.videoTitle= targetObj.files[0].name
+      obj.videourl = result.data.mediaId
+      console.log(this.videos)
+      alert('업로드가 완료되었습니다.')
       return true
     }
   }
