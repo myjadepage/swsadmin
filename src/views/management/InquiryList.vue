@@ -1,19 +1,17 @@
 <template>
   <div id="contents">
-                <h3>1:1문의관리</h3>
+                <h3>{{ $route.name }}</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
                     <li>고객운영관리</li>
-                    <li class="on">1:1문의관리</li>
+                    <li class="on">{{ $route.name }}</li>
                 </ul>
                 <ul class="helpbox">
                     <li>1:1문의를 관리하실 수 있습니다.</li>
                 </ul>
 
-
                 <form name="sFrm">
-
                     <div class="section_head">
                         <h4>
                             <select id="sconsult" name="sconsult" class="text_input" onchange="change()">
@@ -35,8 +33,8 @@
                                 <option value="id">아이디</option>
                             </select>
 
-                            <input type="text" name="sword" value="" maxlength="50" class="text_input" style="width:150px">
-                            <button type="submit" class="btn btn-sm btn-default">검색</button>
+                            <input type="text" name="sword" value="" maxlength="50" class="text_input" style="width:150px; margin: 0 5px">
+                            <b-button variant="secondary">검색</b-button>
                         </div>
                     </div>
 
@@ -63,11 +61,10 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         <tr>
                             <td>3</td>
                             <td>배송관련</td>
-                            <td class="left"><a href="/management/inquiry_detail?idx=27&params=sconsult=^skey=^sword=^page=">배송문의</a></td>
+                            <td class="left"><a href="/inquiry_detail">배송문의</a></td>
                             <td>mallstore</td>
                             <td>2019-06-18</td>
                             <td><span style="color:red">미답변</span></td>
@@ -76,7 +73,7 @@
                         <tr>
                             <td>2</td>
                             <td>상품문의</td>
-                            <td class="left"><a href="/management/inquiry_detail?idx=26&params=sconsult=^skey=^sword=^page=">상품정보</a></td>
+                            <td class="left"><a href="/inquiry_detail">상품정보</a></td>
                             <td>mallstore</td>
                             <td>2019-06-18</td>
                             <td><span style="color:red">미답변</span></td>
@@ -85,7 +82,7 @@
                         <tr>
                             <td>1</td>
                             <td>회원정보</td>
-                            <td class="left"><a href="/management/inquiry_detail?idx=25&params=sconsult=^skey=^sword=^page=">일대일 문의</a></td>
+                            <td class="left"><a href="/inquiry_detail">일대일 문의</a></td>
                             <td>wonej999</td>
                             <td>2019-05-03</td>
                             <td><span style="color:red">미답변</span></td>
@@ -95,7 +92,7 @@
                 </table>
 
                 <div class="paging" style="margin-top:20px">
-                    <span><a href="/management/inquiry_list?page=1&sconsult=&skey=&sword="><strong>1</strong></a></span>
+                    <span><a href="/"><strong>1</strong></a></span>
                 </div>
   </div>
 </template>

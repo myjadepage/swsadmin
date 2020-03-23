@@ -1,10 +1,11 @@
 import Axios from 'axios'
 
 export default {
-  data () {
-    Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
+  data () {    
+    // Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
     // Axios.defaults.baseURL = 'http://192.168.1.40:3000/' // -- admin.shallwe.link
     // Axios.defaults.baseURL = 'http://api.shallwe.shop/' // -- admin.shallwe.shop
+    Axios.defaults.baseURL = 'http://shallwe.shop:3000/' // --dev
     Axios.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded';
   },
   methods: {
@@ -157,7 +158,7 @@ export default {
     },
     axiosPatchRequest: function (url, param, callback, errback) {
       var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
-      Axios.patch(url, this.patchParam(param))
+      Axios.patch(url, this.patchParam(param), Axios.defaults.headers.patch)
         .then(callback)
         .catch(errorFn)
     },

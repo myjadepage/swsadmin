@@ -11,7 +11,6 @@
                     <li>회원가입할 때 원하는 부분의 필수 및 선택 입력 및 추가할 사항을 관리하는 곳 입니다.</li>
                 </ul>
 
-
                 <form name="Frm">
                     <div class="section_head">
                         <h4><i class="xi-check-circle"></i> 회원가입 정책설정</h4>
@@ -19,7 +18,6 @@
 
                     <table class="t_form">
                         <caption>차단 ID설정</caption>
-
                         <tbody>
                             <tr>
                                 <th rowspan="4">가입 차단 ID</th>
@@ -192,7 +190,7 @@
                     </table>
 
                     <div class="btn_center">
-                        <button type="button" class="btn btn-default" onclick="validSubmit()">확인</button>
+                        <b-button variant="secondary" onclick="validSubmit()">확인</b-button>
                     </div>
 
                 </form>
@@ -200,10 +198,7 @@
 </template>
 
 <script>
-export default {
-    mounted () {
-        this.init()
-    }
+export default { 
 }
 </script>
 

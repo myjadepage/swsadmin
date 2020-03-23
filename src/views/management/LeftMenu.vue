@@ -4,10 +4,10 @@
     <dl>
         <dt>고객운영관리</dt>
         <dd class="side_small_menu">
-            <router-link to="/review_list">상품평관리</router-link>
-            <router-link to="/review_list">상품Q＆A관리</router-link>
-            <router-link to="/faq_list">FAQ관리</router-link>
-            <router-link to="/inquiry_list">1:1문의관리</router-link>
+            <router-link to="/management/review_list">상품평관리</router-link>
+            <router-link to="/management/qna_list">상품Q＆A관리</router-link>
+            <router-link to="/management/faq_list">FAQ관리</router-link>
+            <router-link to="/management/inquiry_list">1:1문의관리</router-link>
         </dd>
 
         <!-- <dt>게시판관리</dt>

@@ -29,6 +29,7 @@ import ReviewList from '@/views/management/ReviewList'
 import QnaList from '@/views/management/QnaList'
 import FaqList from '@/views/management/FaqList'
 import InquiryList from '@/views/management/InquiryList'
+import InquiryDetail from '@/views/management/InquiryDetail'
 import CouponList from '@/views/management/CouponList'
 
 /** 환경설정 */
@@ -140,32 +141,37 @@ const routes = [
     redirect: '/management/',
     children: [
       {
-        path: '/',
+        path: '/management/',
         name: '운영관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: ManagementIndex }
       }, 
       {
-        path: '/review_list',
+        path: '/management/review_list',
         name: '상품평관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: ReviewList }
       }, 
       {
-        path: '/review_list',
+        path: '/management/qna_list',
         name: '상품Q＆A관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: QnaList }
       }, 
       {
-        path: '/faq_list',
+        path: '/management/faq_list',
         name: 'FAQ관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: FaqList }
       }, 
       {
-        path: '/inquiry_list',
+        path: '/management/inquiry_list',
         name: '1:1문의관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: InquiryList }
+      },
+      {
+        path: '/management/inquiry_detail',
+        name: '1:1문의관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: InquiryDetail }
       }, 
       {
-        path: '/coupon_list',
+        path: '/management/coupon_list',
         name: '상품쿠폰관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: CouponList }
       }  
@@ -175,10 +181,10 @@ const routes = [
     path: '/setup',
     name: '환경설정',    
     component: AdminBoardLayout,
-    redirect: '/management/',
+    redirect: '/setup/',
     children: [
       {
-        path: '/',
+        path: '/setup/',
         name: '환경설정',
         components: { LeftMenu: SetupLeftMenu, Contents: SetupIndex }
       }, 
@@ -191,7 +197,7 @@ const routes = [
     redirect: '/statistics/',
     children: [
       {
-        path: '/',
+        path: '/statistics/',
         name: '통계',
         components: { LeftMenu: StatisticsLeftMenu, Contents: StatisticsIndex }
       }, 
