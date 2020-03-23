@@ -12,7 +12,7 @@
                     <option>언박싱</option>
                     <option>메인</option>
                 </select>
-                <input type="text" :name="item.videoTitle" class="text_input" placeholder="영상 타이틀" maxlength="50" style="width:100%; max-width:200px">
+                <input type="text" :ref="item.videoTitle" :id="item.videoTitle" class="text_input" placeholder="영상 타이틀" maxlength="50" style="width:100%; max-width:200px">
             </b-col>
             <b-col cols="2" class="px-1">
                 <b-input-group size="sm">
@@ -54,7 +54,7 @@ export default {
       selectedindex: ''
     }
   },
-  props: ['videos'],
+  props: ['videos','productData'],
   methods: {
     addVideoRow: function () {
       if (this.videos.length >= 10) {

@@ -15,7 +15,7 @@ export default {
           endDate: '',
           productGroupBuyDiscount: []
         },
-        iconList: '',
+        iconList: [],
         bigImageUrl: '',
         middleImageUrl: '',
         smallImageUrl: '',
@@ -65,7 +65,7 @@ export default {
         isVat: 0,
         isSoldout: 0,
         isAddingProduct: 0,
-        isAutoImageUpload: 0,
+        isAutoImageUpload: true,
         optionTypeCode: 1,
         stockTypeCode: 1,
         feeTypeCode: 1,
@@ -73,28 +73,27 @@ export default {
         pointTypeCode: 0,
         deliveryPriceTypeCode: 5,
         optionDescription: '',
-        productNotice: {notices: []},
+        productNotice: {prdtNoticeBaseSysId:0, notices: []},
         addingProducts: [],
         normalOptions: []
       }
   }),
   methods: {
-    submitValidate (obj) {
+    insertSubmitValidate (obj) {
+
       // ------------------- Form Validate 체크 시작 -------------------
-      // 카테고리 Validate
       if (this.categoryRow <= 0) {
-        // console.log(this.categoryRow)
         return this.onFocusMethod(obj.category1, '카테고리')
       } else {
-        for (let i = 0; i < this.categoryRow.length; i++) {
-          this.productData.category.categories[i] = {
-            categorySysId1: this.categoryRow[i].categorySysId1,
-            categorySysId2: this.categoryRow[i].categorySysId2,
-            categorySysId3: this.categoryRow[i].categorySysId3,
-            categorySysId4: this.categoryRow[i].categorySysId4,
-            categorySysId5: this.categoryRow[i].categorySysId5
-          }
-        }
+        this.categoryTable.forEach(item => {
+          this.productData.category.categories.push({
+            categorySysId1: item.categorySysId1,
+            categorySysId2: (item.categorySysId2 !== undefined ? item.categorySysId2 : 0),
+            categorySysId3: (item.categorySysId3 !== undefined ? item.categorySysId3 : 0),
+            categorySysId4: (item.categorySysId4 !== undefined ? item.categorySysId4 : 0),
+            categorySysId5: (item.categorySysId5 !== undefined ? item.categorySysId5 : 0)
+          })
+        })
       }
 
       // 간략한 설명 Validate
@@ -102,27 +101,18 @@ export default {
       if (BriefCommentObj.value.length < 1) {
         return this.onFocusMethod(BriefCommentObj, '간략한 설명')
       }
-      //  else {
-      //   this.productData.briefComment = BriefCommentObj.value
-      // }
 
       // 상세 설명 Validate
       let BriefDescriptionObj = obj.briefDescription
       if (BriefDescriptionObj.value.length < 1) {
         return this.onFocusMethod(BriefDescriptionObj, '상세 설명')
       }
-      //  else {
-      //   this.productData.briefDescription = BriefDescriptionObj.value
-      // }
 
       // 상품명  Validate
       let ProductNameObj = obj.name
       if (ProductNameObj.value.length < 1) {
         return this.onFocusMethod(ProductNameObj, '상품명')
-      } 
-      // else {
-      //   this.productData.name = ProductNameObj.value
-      // }
+      }
       
       // 판매자
       let SellerSysIdObj = obj.sellers
@@ -154,6 +144,7 @@ export default {
         }
         this.productData.iconList = IconTempArray.join(';')
       }
+      this.productData.isSoldout = (this.productData.isSoldout ? 1 : 0)
 
       // 큰 이미지 Validate
       let BigimagesObj = obj.bigImageUrl
@@ -164,16 +155,56 @@ export default {
         this.productData.bigImageUrl = imagesCdnUrl
       }
 
+      // 이미지 자동등록 여부
+      // if(this.productData.isAutoImageUpload) {
+
+      //   let img = document.createElement('img')
+      //   img.src = imagesCdnUrl
+
+      //   let canvas = document.createElement('canvas')
+      //   let ctx = canvas.getContext('2d')
+      //   ctx.drawImage(img,0,0)
+      //   let MIDDLE_MAX_WIDTH = 510
+      //   let MIDDLE_MAX_HEIGHT = 510
+      //   let middel_width = img.width
+      //   let middel_height = img.height
+
+      //   middel_width *= MIDDLE_MAX_WIDTH/middel_width
+      //   middel_height *= MIDDLE_MAX_HEIGHT/middel_height
+      //   canvas.width = middel_width
+      //   canvas.height= middel_height
+
+      //   let ctx_d = canvas.getContext('2d')
+      //   ctx_d.drawImage(img,0,0,middel_width, middel_height)
+      //   let dataurl = canvas.toDataURL('image/png')
+      //   document.getElementById('middleImageUrl').src= dataurl
+
+
+      // } else {
+      //   let MiddleImageObj = obj.middleImageUrl
+      //   let SmallImageObj = obj.smallImageUrl
+
+      //   if (this.isEmpty(MiddleImageObj.dataset.imageurl)) {
+      //     return this.onFocusMethod(MiddleImageObj, '중간 이미지')
+      //   } else if (this.isEmpty(SmallImageObj.dataset.imageurl)){
+      //     return this.onFocusMethod(MiddleImageObj, '작은 이미지')
+      //   } else {
+      //     this.productData.middleImageUrl = MiddleImageObj.dataset.imageurl
+      //     this.productData.smallImageUrl = SmallImageObj.dataset.imageurl
+      //   }
+      // }
+
+      this.productData.isAutoImageUpload = 1
+
+
       // 다른이미지 Validate
-      if(this.imagesCounter > 1) {
-        let otherImageObj
+      if(this.images.length > 0) {
         let targetObjName
         for(let othercnt = 0; othercnt < this.images.length; othercnt++) {
-          targetObjName = this.images[othercnt].imageObjName
-          otherImageObj = $('input[name=' + targetObjName + ']')
-          if (otherImageObj.data('imageurl') !== '') {
+          targetObjName = this.images[othercnt]
+          if (targetObjName.url !== '') {
             this.productData['isUsedOptionalImage' +(othercnt+1)] = 1
-            this.productData['optionalImage' +(othercnt+1) + 'Url'] = otherImageObj.data('imageurl')
+            this.productData['optionalImage' +(othercnt+1) + 'Url'] = targetObjName.url
           }
         }
       }
@@ -196,7 +227,7 @@ export default {
           if ($('#' + targetObj.videoObjName).data('videourl') !== '') {
             this.productData.media[videoCnt] = {
               'mediaId':  document.getElementById(targetObj.videoObjName).dataset.videourl,
-              'title': $('input[name=' + targetObj.videoTitle + ']').val(),
+              'title': this.$refs.videoRef.$refs[targetObj.videoTitle][0].value,
               'thumnailUrl': $('input[name=' + targetObj.imageObjName + ']').data('imageurl')
             }
           }
@@ -233,6 +264,7 @@ export default {
         this.productData.marketPrice = this.toNumber(String(this.productData.marketPrice))
       }
      
+      
       // 공구가격에 관련한 데이터 처리
       if (this.productData.prdtTypeCode === 2) {
         for(let _k in this.DateObject) {
@@ -244,32 +276,33 @@ export default {
 
         this.productData.productGroupBuy.startDate = ((this.DateObject.startDate).replace(/-/g,''))+(this.DateObject.startTime).replace(/:/g,'')
         this.productData.productGroupBuy.endDate = ((this.DateObject.endDate).replace(/-/g,''))+(this.DateObject.endTime).replace(/:/g,'')
-        console.log(this.productData.productGroupBuy)
-      }
 
-      // 할인인원 범위 Validate
-      if (this.commonSellers.length < 1) {
-        alert('최소 1개의 할인인원 범위가 존재해야 합니다.')
-        return false
-      } else {
-        let firstObject = this.commonSellers[0]
-        let peopleObject = document.getElementById(firstObject.peopleObjName)
-        let discountObject = document.getElementById(firstObject.discountObjName)
-        if (this.isEmpty(peopleObject.value) || this.isEmpty(discountObject.value)) {
-          alert('할인인원 범위 정책을 확인하여 주시기바랍니다.')
+
+        // 할인인원 범위 Validate
+        if (this.commonSellers.length < 1) {
+          alert('최소 1개의 할인인원 범위가 존재해야 합니다.')
           return false
         } else {
-          for (let i = 0 ; i < this.commonSellers.length ; i++) {
-            peopleObject = document.getElementById(this.commonSellers[i].peopleObjName)
-            discountObject = document.getElementById(this.commonSellers[i].discountObjName)
-            this.productData.productGroupBuy.productGroupBuyDiscount[i] = {
-              peopleQty: this.toNumber(peopleObject.value),
-              discount: this.toNumber(discountObject.value),
-              isUse: 1
+          let firstObject = this.commonSellers[0]
+          let peopleObject = document.getElementById(firstObject.peopleObjName)
+          let discountObject = document.getElementById(firstObject.discountObjName)
+          if (this.isEmpty(peopleObject.value) || this.isEmpty(discountObject.value)) {
+            alert('할인인원 범위 정책을 확인하여 주시기바랍니다.')
+            return false
+          } else {
+            for (let i = 0 ; i < this.commonSellers.length ; i++) {
+              peopleObject = document.getElementById(this.commonSellers[i].peopleObjName)
+              discountObject = document.getElementById(this.commonSellers[i].discountObjName)
+              this.productData.productGroupBuy.productGroupBuyDiscount[i] = {
+                peopleQty: this.toNumber(peopleObject.value),
+                discount: this.toNumber(discountObject.value),
+                isUse: 1
+              }
             }
           }
         }
       }
+
       
       // 판매가
       let PriceObj = obj.price
@@ -321,18 +354,17 @@ export default {
       } else {
         this.productData.origin = OrigionObj.value
       }
-      {
+      
       
       // Notify 공지부분
-      let NotifyObj = document.Frm.productNotice
-      if(NotifyObj.selectedIndex > 0) 
-        this.productData.productNotice.prdtNoticeBaseSysId = NotifyObj[NotifyObj.selectedIndex].value
-        for (let notifyCnt = 0; notifyCnt < this.notify.length; notifyCnt++) {
-          this.productData.productNotice.notices[notifyCnt] = {
-            item: $('input[name=' + this.notify[notifyCnt].itemObjName + ']').val(),
-            content: $('textarea[name=' + this.notify[notifyCnt].contentObjName + ']').val()
-          }
-        }
+      let NotifyObj = this.notify
+      if(NotifyObj.length > 0) {
+        NotifyObj.forEach(_item => {
+          this.productData.productNotice.notices.push({
+            item: _item.item,
+            content: _item.content
+          })
+        })
       }
       
       let DeliveryPriceTypeCodeObj = this.productData.deliveryPriceTypeCode
@@ -368,16 +400,22 @@ export default {
 
       if (this.productData.optionTypeCode === 2) {
         // 상품옵션
-        if (this.normalOptionCounter < 1) {
-          return false
-        } else {
-          for (var optionCnt = 0; optionCnt < this.productsOptions.length; optionCnt++) {
-            this.productData.normalOptions[optionCnt] = {
-              name: $('input[name=' + this.productsOptions[optionCnt].normalOptionName + ']').val(),
-              content: $('textarea[name=' + this.productsOptions[optionCnt].normalOptionContent + ']').val()
-            }
-          }
-        }
+        // if (this.normalOptionCounter < 1) {
+        //   return false
+        // } else {
+        //   for (var optionCnt = 0; optionCnt < this.nomarlOptions.length; optionCnt++) {
+        //     this.productData.normalOptions[optionCnt] = {
+        //       name: $('input[name=' + this.nomarlOptions[optionCnt].normalOptionName + ']').val(),
+        //       content: $('textarea[name=' + this.nomarlOptions[optionCnt].normalOptionContent + ']').val()
+        //     }
+        //   }
+        // }
+        // let nomarlOptions = this.nomarlOptions
+        // if (nomarlOptions.length > 0) {
+        //   nomarlOptions.forEach(_item => {
+        //     this.productData.
+        //   })
+        // }
       } else if (this.productData.optionTypeCode === 5) {
         this.productData.optionDescription = document.Frm.optionDescription.value
       }

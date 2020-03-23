@@ -50,6 +50,9 @@ export default {
         theBlob.name = fileName;
         return theBlob;
     },
+    sleep: function (t) {
+      return new Promise(resolve => setTimeout(resolve,t))
+    },
     /**
      *
      * 일자 : 2020. 03. 09.
@@ -160,7 +163,7 @@ export default {
     },
     axiosPutRequest: function (url, param, callback, errback) {
       var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
-      Axios.patch(url, this.patchParam(param))
+      Axios.put(url, this.patchParam(param))
         .then(callback)
         .catch(errorFn)
     },

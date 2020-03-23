@@ -18,7 +18,7 @@ export default {
     data : () =>({
         commonSellerCounter: 2,
     }),
-    props: ['commonSellers'],
+    props: ['commonSellers','productData'],
     methods: {
         discountFn: function (){
             if (this.commonSellers.length >=10) {

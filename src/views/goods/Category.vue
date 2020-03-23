@@ -280,7 +280,7 @@ import { ImageUpload } from 'quill-image-upload'
 import { quillEditor } from 'vue-quill-editor'
 import 'quill/dist/quill.snow.css'
 import commonJs from '@/assets/js/common.js'
-import CategoryComponent from '@/views/goods/Category/Category.js'
+import CategoryComponent from '@/components/Category/Category.js'
 // 이미지 업로드 등록시 함수 
 import ImagesUploader from '@/assets/js/ImagesUploader.js'
 

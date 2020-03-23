@@ -36,12 +36,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in nomarlOptions" :key="item.id">
-                    <td>{{ index + 1}}</td>
-                    <td class="txt"><input type="text" :name=item.normalOptionName class="text_input" style="width: 90%;" maxlength="50"></td>
-                    <td><textarea rows="3" :name=item.normalOptionContent class="text_input" maxlength="2000" style="width: 100%" @keyup="setKeyUpCounter(item)"></textarea></td>
-                    <td class="size"><span :name=item.normalWordsize>0</span><span style="color:black">/200</span></td>
-                    <td><b-button variant="light" size="sm" @click="productsOptionRemove(index)">항목 삭제</b-button></td>
+                <tr v-for="(item, index) in nomarlOptions" :key="index">
+                    <template v-if="item.procTypeCode !== 4">
+                      <td>-</td>
+                      <td class="txt"><input type="text" class="text_input" style="width: 90%;" maxlength="50" v-model="item.name"></td>
+                      <td><textarea rows="3" class="text_input" maxlength="2000" style="width: 100%" v-model="item.content"></textarea></td>
+                      <td class="size"><span>0</span><span style="color:black">/200</span></td>
+                      <td><b-button variant="light" size="sm" @click="productsOptionRemove(item)">항목 삭제</b-button></td>
+                    </template>
                 </tr>
             </tbody>
         </table>
@@ -49,30 +51,24 @@
 </template>
 
 <script>
-import $ from 'jquery'
 export default {
-
   data () {
-    return {
-      normalOptionCounter: 1
-    }
   },
-  props: ['nomarlOptions'],
+  props: ['nomarlOptions','productData'],
   methods: {
-    productsOptionRemove: function (index) {
-      this.nomarlOptions.splice(index, 1)
+    productsOptionRemove: function (item) {
+      item.procTypeCode = 4
     },
-    setKeyUpCounter: function (obj) {
-      var wordSizer = document.getElementsByName(obj.normalWordsize)
-      var content = document.getElementsByName(obj.normalOptionContent)
-      $(wordSizer).html(content[0].textLength)
-    },
+    // setKeyUpCounter: function (obj) {
+    //   var wordSizer = document.getElementsByName(obj.normalWordsize)
+    //   var content = document.getElementsByName(obj.normalOptionContent)
+    //   $(wordSizer).html(content[0].textLength)
+    // },
     addProductOptionRow: function () {
-      this.normalOptionCounter++
-      this.nomarlOptions.push({id: this.normalOptionCounter,
-        normalOptionName: 'normalOptionName' + this.normalOptionCounter,
-        normalOptionContent: 'normalOptionContent' + this.normalOptionCounter,
-        normalWordsize: 'wordSize' + this.normalOptionCounter
+      this.nomarlOptions.push({
+        name: '',
+        content: '',
+        procTypeCode: 2
       })
     }
   }

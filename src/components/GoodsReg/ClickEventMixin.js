@@ -2,20 +2,6 @@
 const clickEvent = {
   data () {
     return {
-      selectedCategoryRow: [
-        {value: 0, text: '1차카테고리 필수', parentSysId: '', feeRate: ''},
-        {value: 0, text: '2차카테고리 필수', parentSysId: '', feeRate: ''},
-        {value: 0, text: '3차카테고리 선택', parentSysId: '', feeRate: ''},
-        {value: 0, text: '4차카테고리 선택', parentSysId: '', feeRate: ''},
-        {value: 0, text: '5차카테고리 선택', parentSysId: '', feeRate: ''}
-      ],
-      categoryTable: [],
-      selectedCategoryTable: '',
-      category1: [{value: 0, text: '1차카테고리 필수', parentSysId: '', feeRate: ''}],
-      category2: [{value: 0, text: '2차카테고리 필수', parentSysId: '', feeRate: ''}],
-      category3: [{value: 0, text: '3차카테고리 선택', parentSysId: '', feeRate: ''}],
-      category4: [{value: 0, text: '4차카테고리 선택', parentSysId: '', feeRate: ''}],
-      category5: [{value: 0, text: '5차카테고리 선택', parentSysId: '', feeRate: ''}],
       brands: [{id: '', title: '::브랜드를 선택하십시오::'}],
       detailDescriptionOption: {
         modules: {
@@ -134,33 +120,29 @@ const clickEvent = {
       return true
     },
     onFeeRate: function () {
-      var priceObj = document.Frm.price
-      var feeRate = document.Frm.feeRate
-      this.priceToSupplyPrice(priceObj, feeRate)
+      this.priceToSupplyPrice()
       return true
     },
     onSupplyPrice: function () {
-      var priceObj = document.Frm.price
-      var supplyPrice = document.Frm.supplyPrice
-      this.priceToFeeRate(priceObj, supplyPrice)
+      this.priceToFeeRate()
       return true
     },
     // 판매가 -> 공급가
-    priceToSupplyPrice: function (priceObj) {
-      var priceValue = priceObj.value.toString().replace(/,/g, '')
+    priceToSupplyPrice: function () {
+      var priceValue = this.productData.price.toString().replace(/,/g, '')
       var feeRateValue = this.productData.feeRate
       if ((feeRateValue === '') || (feeRateValue === 0)) {
-        document.Frm.supplyPrice.value = this.numberWithCommas(priceValue)
+        this.productData.supplyPrice = priceValue //this.numberWithCommas()
       } else {
-        document.Frm.supplyPrice.value = this.numberWithCommas(Math.floor(priceValue - (priceValue * (feeRateValue / 100))))
+        this.productData.supplyPrice = Math.floor(priceValue - (priceValue * (feeRateValue / 100))) // this.numberWithCommas()
       }
       return true
     },
     // 판매가 -> 수수료율
-    priceToFeeRate: function (priceObj, supplyPriceObj) {
-      var priceValue = priceObj.value.toString().replace(/,/g, '')
-      var supplyPriceValue = supplyPriceObj.value.toString().replace(/,/g, '')
-      document.Frm.feeRate.value = Math.floor((priceValue - supplyPriceValue) / priceValue * 100)
+    priceToFeeRate: function () {
+      let priceValue = this.productData.price.toString().replace(/,/g, '')
+      let supplyPriceValue = this.productData.supplyPrice.toString().replace(/,/g, '')
+      this.productData.feeRate = Math.floor((priceValue - supplyPriceValue) / priceValue * 100)
       return true
     },
     // ------------- 가격 Event 끝 -------------
@@ -238,12 +220,11 @@ const clickEvent = {
           return false
         }
       }
-      this.addCateExtends('selectedCategoryRow')
+      this.addCateExtends('selectedCategoryRow', 0)
     },
-    addCateExtends: function (id){
+    addCateExtends: function (id, delayTime){
       setTimeout(() => {
         let arrayObj = this[id]
-        console.log(arrayObj)
         let param = { id: '', text: '', feeRate: '' }
         let titleArray = new Array()
         for (let i = 0 ; i < arrayObj.length ; i++) {
@@ -252,7 +233,7 @@ const clickEvent = {
             param.id += item.value
             param.feeRate = item.feeRate
             param['categorySysId' + (i+1)] = item.value
-            titleArray.push(item.text + '[' + item.feeRate * 100 + '%]')
+            titleArray.push(item.text)
           }
         }
         var addCateFlag = true
@@ -269,7 +250,7 @@ const clickEvent = {
             this.selectedCategoryTable = param.id
           }
         }
-      },500)
+      }, delayTime)
     }
     ,
     addCategoryFn: function (param) {

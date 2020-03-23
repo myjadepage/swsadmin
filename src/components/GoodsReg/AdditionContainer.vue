@@ -57,7 +57,7 @@ export default {
       subAdditionOptionsCounter: 1,
     }
   },
-  props: ['additionOptions'],
+  props: ['additionOptions','productData'],
   methods: {
     addAdditionOptionRow: function () {
       this.additionOptionsCounter++

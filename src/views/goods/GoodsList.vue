@@ -137,7 +137,7 @@
 </template>
 <script>
 import commonJs from '@/assets/js/common.js'
-import GoodsListTable from './GoodsList/GoodsListTable'
+import GoodsListTable from '@/components/GoodsList/GoodsListTable'
 export default {
   data () {
     return {
