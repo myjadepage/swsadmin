@@ -1,31 +1,29 @@
 <template>
   <div id="contents">
-                <h3>FAQ관리</h3>
+                <h3>{{ $route.name }}</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
                     <li>고객운영관리</li>
-                    <li class="on">FAQ관리</li>
+                    <li class="on">{{ $route.name }}</li>
                 </ul>
                 <ul class="helpbox">
                     <li>FAQ를 관리하실 수 있습니다.</li>
                 </ul>
 
-
-
                 <form name="Frm">
 
                     <div class="section_head">
                         <h4>
-                            <select id="sconsult" name="sconsult" class="text_input" onchange="change()">
+                            <select name="sconsult" class="text_input">
                                 <option value="">전체</option>
-                                <option value="01">아이디/비밀번호찾기</option>
-                                <option value="02">회원정보</option>
-                                <option value="03">배송관련</option>
-                                <option value="04">상품문의</option>
-                                <option value="05">반품/교환/취소/환불</option>
-                                <option value="06">주문결제</option>
-                                <option value="07">적립금/쿠폰</option>
+                                <option value="1">아이디/비밀번호찾기</option>
+                                <option value="2">회원정보</option>
+                                <option value="3">배송관련</option>
+                                <option value="4">상품문의</option>
+                                <option value="5">반품/교환/취소/환불</option>
+                                <option value="6">주문결제</option>
+                                <option value="7">적립금/쿠폰</option>
                             </select>
                         </h4>
                         <div class="mgb5">
@@ -33,22 +31,20 @@
                                 <option value="subject">제목</option>
                                 <option value="content">내용</option>
                             </select>
-
-                            <input type="text" name="sword" maxlength="50" class="text_input" style="width:150px">
-                            <button type="submit" class="btn btn-sm btn-default">검색</button>
+                            <input type="text" name="sword" maxlength="50" class="text_input" style="width:150px; margin:0 5px">
+                            <b-button variant="secondary">검색</b-button>
                         </div>
                     </div>
-
 
                     <table class="t_list">
                         <caption>FAQ 리스트</caption>
                         <colgroup>
                             <col width="50">
-                            <col width="150">
+                            <col width="250">
                             <col width="*">
-                            <col width="80">
-                            <col width="60">
-                            <col width="60">
+                            <col width="250">
+                            <col width="100">
+                            <col width="100">
                         </colgroup>
                         <thead>
                             <tr>
@@ -61,53 +57,80 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <tr>
-                                <td>2</td>
-                                <td>아이디/비밀번호찾기</td>
+                            <tr v-for="item in faqData" :key="item.siteFaqSysId">
+                                <td>{{ item.siteFaqSysId }}</td>
+                                <td>{{ chanegValue(item.faqTypeCode)}}</td>
                                 <td class="left">
-                                    <a href="/management/faq_reg?idx=2&params=sconsult=^skey=^sword=^page=">아이디/비번 찾기시 꼭 실명확인을 하셔야 합니다.</a>
-                                    <a href="javascript:;" onclick="setTop10(2); return false;"><img src="/img/icon_top10_on.gif" alt="TOP10" class="vm"></a>
+                                    <router-link :to="'/management/faq_reg/'+ item.siteFaqSysId">{{ item.title }}</router-link>
                                 </td>
-                                <td>2013-08-23</td>
-                                <td>31</td>
+                                <td>{{ changeDate(item.createdAt) }}</td>
+                                <td>{{ item.viewCount }}</td>
                                 <td>
-                                    <span class="button small"><button type="button" onclick="del(2)">삭제</button></span>
+                                    <span class="button small">
+                                        <b-button variant="danger" @click="deleteFaq(item.siteFaqSysId)">삭제</b-button>
+                                    </span>
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td>1</td>
-                                <td>아이디/비밀번호찾기</td>
-                                <td class="left">
-                                    <a href="/management/faq_reg?idx=1&params=sconsult=^skey=^sword=^page=">아이디와 비밀번호를 잊어 버렸습니다.</a>
-                                    <a href="javascript:;" onclick="setTop10(1); return false;"><img src="/img/icon_top10_on.gif" alt="TOP10" class="vm"></a>
-                                </td>
-                                <td>2013-05-21</td>
-                                <td>83</td>
-                                <td>
-                                    <span class="button small"><button type="button" onclick="del(1)">삭제</button></span>
-                                </td>
-                            </tr>
-
                         </tbody>
                     </table>
 
                     <div class="paging" style="margin-top:20px">
-                        <span><a href="/management/faq_list?page=1&sconsult=&skey=&sword="><strong>1</strong></a></span>
+                        <span><router-link to="/"><strong>1</strong></router-link></span>
                     </div>
 
                     <div class="btn_center">
-                        <button type="button" class="btn btn-info" onclick="reg()">등록</button>
+                        <b-button variant="secondary" @click="$router.push('/management/faq_reg')">등록</b-button>
                     </div>
-
                 </form>
   </div>
 </template>
 
 <script>
-export default {
+import commonJs from '@/assets/js/common.js'
 
+export default {
+    mixins: [
+      commonJs
+    ],
+    data() {
+        return {
+            faqData: []
+        }
+    },
+    mounted () {     
+      this.axiosGetRequest('/api/v1/operations/faqs','',this.loadFaqList)  
+    },
+    methods: {
+        loadFaqList(res) {
+           this.faqData = res.data.jsonData.siteFaqs
+        },
+        chanegValue(type) {            
+            switch (type) {
+                case 1: type = '아이디/비밀번호찾기'; break;
+                case 2: type = '회원정보'; break;
+                case 3: type = '배송관련'; break;
+                case 4: type = '상품문의'; break;
+                case 5: type = '반품/교환/취소/환불'; break;
+                case 6: type = '주문결제'; break;
+                case 7: type = '적립금/쿠폰'; break;
+            }
+            return type
+        },
+        changeDate(date) {
+            var y = date.substr(0, 4)
+            var m = date.substr(4, 2)
+            var d = date.substr(6, 2)
+            return y + '-' + m + '-' + d
+        },
+        deleteFaq(siteFaqSysId) {
+            this.axiosDeleteRequest('/api/v1/operations/faqs/' + siteFaqSysId,'',this.deleteFaqStatus)  
+        },
+        deleteFaqStatus(res) {
+            console.log(res)
+            alert('삭제하였습니다.')
+            this.$router.replace('/management/faq_list')
+        }
+    }
 }
 </script>
 

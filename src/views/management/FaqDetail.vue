@@ -18,7 +18,7 @@
                             <tr>
                                 <th>분류</th>
                                 <td>
-                                    <select name="faqTypeCode" class="text_input" @change="onChange">
+                                    <select name="faqTypeCode" class="text_input" @change="onChange" :value="faqTypeCode">
                                         <option value="">선택</option>
                                         <option value="1">아이디/비밀번호찾기</option>
                                         <option value="2">회원정보</option>
@@ -33,19 +33,20 @@
                             <tr>
                                 <th>제목</th>
                                 <td>
-                                    <input name="title" class="text_input" maxlength="50" style="width:98%" v-model="jsonData.title">
+                                    <input name="title" class="text_input" maxlength="50" style="width:98%" 
+                                      v-model="title">
                                 </td>
                             </tr>
                             <tr>
                                 <th>내용</th>
                                 <td>
-                                    <quill-editor class="quill-editor" name="faqContent" v-model="jsonData.content"></quill-editor>
+                                    <quill-editor class="quill-editor" name="faqContent" v-model="content"></quill-editor>
                                 </td>
                             </tr>
                             <tr>
                                 <th>TOP10</th>
                                 <td>
-                                    <input type="checkbox" name="isTOP10" v-model="jsonData.isTop10"> TOP10 FAQ로 설정
+                                    <input type="checkbox" name="isTOP10" :checked="isTop10" @input="isTop10=$event.target.value"> TOP10 FAQ로 설정
                                 </td>
                             </tr>
                         </tbody>
@@ -73,36 +74,58 @@ export default {
   },
   data() {
       return {
-          jsonData: {}
+          jsonData: {},      
+          title: null,
+          content: null,
+          faqTypeCode: null,
+          isTop10:false,
+          siteFaqSysId: this.$route.params.siteFaqSysId
       }
   },
+  mounted() {
+      // 1. faq 정보 불러오기
+      this.axiosGetRequest('/api/v1/operations/faqs/' + this.siteFaqSysId,'',this.loadFaqDetail)  
+  },
   methods: {
+      loadFaqDetail(res) {       
+        this.faqTypeCode = res.data.jsonData.faqTypeCode
+        this.title = res.data.jsonData.title
+        this.content = res.data.jsonData.content
+        this.isTop10 = res.data.jsonData.isTop10
+        console.log('res', res)
+      },
       onChange(e) {
-          this.jsonData.faqTypeCode = Number(e.target.value)
-          console.log('select', this.jsonData.faqTypeCode)
-      },      
+          this.faqTypeCode = Number(e.target.value)
+      },
+      // 2. faq 정보수정 
       submitFaq() {
-           var vm = this
-          if(this.jsonData.faqTypeCode === null) {
+          var vm = this
+          if(this.faqTypeCode === null) {
             alert('FAQ 분류를 선택해 주세요')
             return false
           }
-          if(this.jsonData.title === null) {
+          if(this.title === null) {
             alert('FAQ 제목을 입력해 주세요')
             return false
           }
-          if(this.jsonData.content === null) {
+          if(this.content === null) {
             alert('FAQ 내용을 입력해 주세요')
             return false
-          }
-          this.jsonData.isTop10 = this.jsonData.isTop10 ? 2 : 1
-          console.log(this.jsonData)
+          }          
+          this.isTop10 = this.isTop10 ? 2 : 1
           let CallbackFn = function (res) {
               console.log(res)
+              alert('FAQ수정이 완료 되었습니다.')
               vm.$router.replace('/management/faq_list')
-              alert('FAQ등록이 완료 되었습니다.')
-          }         
-          this.axiosPostRequest('/api/v1/operations/faqs', {jsonData : this.jsonData}, CallbackFn)
+          }
+          let jsonData = {
+              "faqTypeCode" : this.faqTypeCode,
+              "title": this.title,
+              "content": this.content,
+              "isTOP10":  this.isTop10
+          }
+          console.log('jsonData', jsonData)
+          this.axiosPatchRequest('/api/v1/operations/faqs/'+ this.siteFaqSysId, {jsonData : jsonData}, CallbackFn)
       }
   }
 }
