@@ -1289,6 +1289,7 @@ export default {
   },
   data() {
     return {
+      imageDir: "/product/image/0/0",
       selectedCategoryRow: [
         { value: 0, text: "1차카테고리 필수", parentSysId: "", feeRate: "" },
         { value: 0, text: "2차카테고리 필수", parentSysId: "", feeRate: "" },
@@ -1341,15 +1342,10 @@ export default {
     if (!this.isEmpty(this.$route.params.productSysId)) {
       this.productData.productSysId = this.$route.params.productSysId;
       this.updateProductData.prdtSysId = this.$route.params.productSysId
-      this.axiosGetRequest(
-        "/api/v1/products/" + this.$route.params.productSysId,
-        "",
-        this.getProductData
-      );
+      this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,"",this.getProductData);
     }
-    this.axiosGetRequest("/api/v1/sellers/bases", "", this.resultSellersFn);
-    this.axiosGetRequest(
-      "/api/v1/categories",
+    this.axiosGetRequest('/api/v1/sellers/bases', "", this.resultSellersFn);
+    this.axiosGetRequest('/api/v1/categories',
       { categoryLevel: 1 },
       this.resultCategoryFn
     );
@@ -1358,17 +1354,16 @@ export default {
   methods: {
     SubmitAddProduct: function() {
       let object = this.insertSubmitValidate(document.Frm);
-      console.log(object);
-      //   let CallbackFn = function (res) {
-      //     console.log(res)
-      //     if (!res.data.jsonData.resultCode==='0001') {
-      //         alert('상품등록이 완료 되었습니다.')
-      //         window.location.href='/goods_list'
-      //     }else {
-      //         alert('등록에 실패하였습니다.')
-      //     }
-      //   }
-      //   this.axiosPostRequest('/api/v1/products', {jsonData: object}, CallbackFn)
+      let CallbackFn = function (res) {
+        console.log(res)
+        if (!res.data.jsonData.resultCode==='0001') {
+            alert('상품등록이 완료 되었습니다.')
+            window.location.href='/goods_list'
+        }else {
+            alert('등록에 실패하였습니다.')
+        }
+      }
+      this.axiosPostRequest('/api/v1/products', {jsonData: object}, CallbackFn)
     },
     SubmitUpdateProduct: function () {
       this.updateProductData.productSysId = this.productData.productSysId;

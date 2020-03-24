@@ -4,11 +4,6 @@ import Axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import ImageResize from "image-resize";
 export default {
-  data: () => ({
-    privateKey: "",
-    userId: 0,
-    brandId: 0
-  }),
   methods: {
     // 이미지 비율검사 함수
     resizeSmallImages: function(res) {
@@ -86,7 +81,7 @@ export default {
      * 이미지업로드시에 item으로 리턴해줌 Async/ await
      */
     async onNewSingleImageUploadEvent(event, params) {
-      var dir = "/product/image/" + this.userId + "/" + this.brandId;
+      var dir = this.imageDir;
       var cdnUrl = "http://cdn.shallwe.link";
 
       // 1. 사용자 인증
@@ -96,12 +91,7 @@ export default {
         stoid: "epienscdn",
         stopwd: "dlvldpstm2020!!"
       };
-      let auth = await Axios.request({
-        url: "https://stats.kinxcdn.com/api/auth?",
-        params: loginParam
-      }).then(function(res) {
-        return res;
-      });
+      let auth = await Axios.request({url: "https://stats.kinxcdn.com/api/auth?",params: loginParam}).then((res) => {return res;});
 
       // 2. 디렉토리를 체크한다.
       let dirFindParam = {
@@ -110,10 +100,7 @@ export default {
         path: dir,
         type: "dir"
       };
-      let isDirectory = await Axios.request({
-        url: "https://stats.kinxcdn.com/api/exists?",
-        params: dirFindParam
-      });
+      let isDirectory = await Axios.request({url: "https://stats.kinxcdn.com/api/exists?",params: dirFindParam}).then((res) => {return res});
 
       let directory = "";
       //3. 디렉토리가 없을경우는 생성한다.
@@ -125,27 +112,19 @@ export default {
           work: "C",
           type: "D"
         };
-        directory = await Axios.request({
-          url: "https://stats.kinxcdn.com/api/directorys?",
-          params: dirFindParam
-        });
+        directory = await Axios.request({url: "https://stats.kinxcdn.com/api/directorys?",params: dirFindParam}).then((res) =>{return res})
       }
 
       // 4. 디렉토리가 존재할경우는 바로 업로드진행한다.
       var ext = event.target.files[0].name.split(".");
       var imageExt = ext[1];
       var uuid = uuidv4();
-
       var formData = new FormData();
       formData.append("key", auth.data.Response.key);
       formData.append("path", dir);
       formData.append("stoid", "epienscdn");
       formData.append("file1", event.target.files[0], uuid + "." + imageExt);
-      let upload = await Axios.post(
-        "https://stats.kinxcdn.com/api/upload",
-        formData,
-        { "Content-Type": "multipart/form-data" }
-      );
+      let upload = await Axios.post("https://stats.kinxcdn.com/api/upload",formData,{ "Content-Type": "multipart/form-data" });
       let item = params.item;
       let field = params.field;
       item[field] = cdnUrl + "" + dir + "/" + uuid + "." + imageExt;
@@ -160,7 +139,7 @@ export default {
      */
     onSingleImagesUploaderEvent(param) {
       var target = param.obj;
-      var dir = "/product/image/" + this.userId + "/" + this.brandId;
+      var dir = this.imageDir;
       var cdnUrl = "http://cdn.shallwe.link";
       // 사용자 인증 Param
       var loginParam = {
@@ -293,7 +272,7 @@ export default {
 
     // 이미지 리사이징
     autoImageResize(file, targetObj) {
-      var dir = "/product/image/" + this.userId + "/" + this.brandId;
+      var dir = this.imageDir;
       var cdnUrl = "http://cdn.shallwe.link";
       // 사용자 인증 Param
       var loginParam = {
@@ -424,7 +403,7 @@ export default {
 
     // editor 용
     onEditorImagesUploaderEvent(file, Editor, cursorLocation) {
-      var dir = "/product/image/" + this.userId + "/" + this.brandId;
+      var dir = this.imageDir;
       var cdnUrl = "http://cdn.shallwe.link";
       // 사용자 인증 Param
       var loginParam = {

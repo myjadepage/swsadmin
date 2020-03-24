@@ -70,6 +70,11 @@ const routes = [
         components: { LeftMenu: GoodsLeftMenu, Contents: BrandReg}
       },
       {
+        path: '/brand_reg/:brandSysId',
+        name: '브랜드 수정',
+        components: { LeftMenu: GoodsLeftMenu, Contents: BrandReg}
+      },
+      {
         path: '/category',
         name: '카테고리 관리',
         components: { LeftMenu: GoodsLeftMenu, Contents: Category}
