@@ -15,8 +15,8 @@
 
                     <div class="section_head">
                         <h4>
-                            <select name="sconsult" class="text_input">
-                                <option value="">전체</option>
+                            <select name="searchFilter" class="text_input">
+                                <option value="0">전체</option>
                                 <option value="1">아이디/비밀번호찾기</option>
                                 <option value="2">회원정보</option>
                                 <option value="3">배송관련</option>
@@ -27,12 +27,12 @@
                             </select>
                         </h4>
                         <div class="mgb5">
-                            <select id="skey" name="skey" class="text_input">
-                                <option value="subject">제목</option>
-                                <option value="content">내용</option>
+                            <select id="skey" name="skey" class="text_input" @change="loadSearchFaq">
+                                <option value="1">제목</option>
+                                <option value="2">내용</option>
                             </select>
-                            <input type="text" name="sword" maxlength="50" class="text_input" style="width:150px; margin:0 5px">
-                            <b-button variant="secondary">검색</b-button>
+                            <input type="text" name="keyword" v-model="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
+                            <b-button variant="secondary" @click="searchButton">검색</b-button>
                         </div>
                     </div>
 
@@ -94,15 +94,28 @@ export default {
     ],
     data() {
         return {
-            faqData: []
+            faqData: [],
+            mode: null,
+            keyword: null
+
         }
     },
     mounted () {     
       this.axiosGetRequest('/api/v1/operations/faqs','',this.loadFaqList)  
     },
     methods: {
+        //  검색
+        loadSearchFaq(e) {
+          this.mode  =  Number(e.target.value)
+        },
         loadFaqList(res) {
            this.faqData = res.data.jsonData.siteFaqs
+        },
+        searchFaqList(res) {
+            this.faqData = res.data.jsonData.siteFaqs
+        },
+        searchButton() {
+            this.axiosGetRequest('/api/v1/operations/faqs', {'keywordCode':this.mode, 'keyword': this.keyword},this.searchFaqList) 
         },
         chanegValue(type) {            
             switch (type) {
@@ -127,8 +140,8 @@ export default {
         },
         deleteFaqStatus(res) {
             console.log(res)
+            window.location.reload()
             alert('삭제하였습니다.')
-            this.$router.replace('/management/faq_list')
         }
     }
 }

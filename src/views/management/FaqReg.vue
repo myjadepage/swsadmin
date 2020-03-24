@@ -45,7 +45,7 @@
                             <tr>
                                 <th>TOP10</th>
                                 <td>
-                                    <input type="checkbox" name="isTOP10" v-model="jsonData.isTop10"> TOP10 FAQ로 설정
+                                    <input type="checkbox" name="isTop10" v-model="jsonData.isTop10"> TOP10 FAQ로 설정
                                 </td>
                             </tr>
                         </tbody>
@@ -95,7 +95,7 @@ export default {
             alert('FAQ 내용을 입력해 주세요')
             return false
           }
-          this.jsonData.isTop10 = this.jsonData.isTop10 ? 2 : 1
+          this.jsonData.isTop10 = this.jsonData.isTop10 ? 1 : 0
           console.log(this.jsonData)
           let CallbackFn = function (res) {
               console.log(res)

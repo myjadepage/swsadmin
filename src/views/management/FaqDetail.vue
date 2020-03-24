@@ -46,7 +46,7 @@
                             <tr>
                                 <th>TOP10</th>
                                 <td>
-                                    <input type="checkbox" name="isTOP10" :checked="isTop10" @input="isTop10=$event.target.value"> TOP10 FAQ로 설정
+                                    <input type="checkbox" name="isTop10" v-model="isTop10"> TOP10 FAQ로 설정
                                 </td>
                             </tr>
                         </tbody>
@@ -91,8 +91,7 @@ export default {
         this.faqTypeCode = res.data.jsonData.faqTypeCode
         this.title = res.data.jsonData.title
         this.content = res.data.jsonData.content
-        this.isTop10 = res.data.jsonData.isTop10
-        console.log('res', res)
+        this.isTop10 = res.data.jsonData.isTop10       
       },
       onChange(e) {
           this.faqTypeCode = Number(e.target.value)
@@ -112,7 +111,7 @@ export default {
             alert('FAQ 내용을 입력해 주세요')
             return false
           }          
-          this.isTop10 = this.isTop10 ? 2 : 1
+          this.isTop10 = this.isTop10 ? 1 : 0
           let CallbackFn = function (res) {
               console.log(res)
               alert('FAQ수정이 완료 되었습니다.')
@@ -122,7 +121,7 @@ export default {
               "faqTypeCode" : this.faqTypeCode,
               "title": this.title,
               "content": this.content,
-              "isTOP10":  this.isTop10
+              "isTop10":  this.isTop10
           }
           console.log('jsonData', jsonData)
           this.axiosPatchRequest('/api/v1/operations/faqs/'+ this.siteFaqSysId, {jsonData : jsonData}, CallbackFn)
