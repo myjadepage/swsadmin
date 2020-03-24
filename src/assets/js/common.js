@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios from "axios";
 
 export default {
   data () {    
@@ -18,24 +18,26 @@ export default {
      * @param object
      *
      */
-    dataURItoBlob: function (dataURI) {
-        // convert base64/URLEncoded data component to raw binary data held in a string
-        var byteString;
-        if (dataURI.split(',')[0].indexOf('base64') >= 0)
-            byteString = atob(dataURI.split(',')[1]);
-        else
-            byteString = unescape(dataURI.split(',')[1]);
+    dataURItoBlob: function(dataURI) {
+      // convert base64/URLEncoded data component to raw binary data held in a string
+      var byteString;
+      if (dataURI.split(",")[0].indexOf("base64") >= 0)
+        byteString = atob(dataURI.split(",")[1]);
+      else byteString = unescape(dataURI.split(",")[1]);
 
-        // separate out the mime component
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      // separate out the mime component
+      var mimeString = dataURI
+        .split(",")[0]
+        .split(":")[1]
+        .split(";")[0];
 
-        // write the bytes of the string to a typed array
-        var ia = new Uint8Array(byteString.length);
-        for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-        }
+      // write the bytes of the string to a typed array
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
 
-        return new Blob([ia], {type:mimeString});
+      return new Blob([ia], { type: mimeString });
     },
     /**
      *
@@ -45,14 +47,14 @@ export default {
      * @param object
      *
      */
-    blobToFile: function (theBlob, fileName){
-        //A Blob() is almost a File() - it's just missing the two properties below which we will add
-        theBlob.lastModifiedDate = new Date();
-        theBlob.name = fileName;
-        return theBlob;
+    blobToFile: function(theBlob, fileName) {
+      //A Blob() is almost a File() - it's just missing the two properties below which we will add
+      theBlob.lastModifiedDate = new Date();
+      theBlob.name = fileName;
+      return theBlob;
     },
-    sleep: function (t) {
-      return new Promise(resolve => setTimeout(resolve,t))
+    sleep: function(t) {
+      return new Promise(resolve => setTimeout(resolve, t));
     },
     /**
      *
@@ -73,13 +75,13 @@ export default {
      * k : v 형태
      *
      */
-    postParam: function (param) {
-      if (param === null) return ''
-      var formData = new FormData()
-      for(let _k in param) {
-        formData.append(_k, JSON.stringify(param[_k]))
+    postParam: function(param) {
+      if (param === null) return "";
+      var formData = new FormData();
+      for (let _k in param) {
+        formData.append(_k, JSON.stringify(param[_k]));
       }
-      return formData
+      return formData;
     },
     /**
      *
@@ -90,13 +92,13 @@ export default {
      * k : v 형태
      *
      */
-    patchParam: function (param) {
-      if (param === null) return ''
-      var formData = new URLSearchParams()
-      for(let _k in param) {
-        formData.append(_k, JSON.stringify(param[_k]))
+    patchParam: function(param) {
+      if (param === null) return "";
+      var formData = new URLSearchParams();
+      for (let _k in param) {
+        formData.append(_k, JSON.stringify(param[_k]));
       }
-      return formData
+      return formData;
     },
     /**
      *
@@ -107,13 +109,13 @@ export default {
      * k : v 형태
      *
      */
-    deleteParam: function (param) {
-      if (param === null) return ''
-      var formData = new URLSearchParams()
-      for(let _k in param) {
-        formData.append(_k, JSON.stringify(param[_k]))
+    deleteParam: function(param) {
+      if (param === null) return "";
+      var formData = new URLSearchParams();
+      for (let _k in param) {
+        formData.append(_k, JSON.stringify(param[_k]));
       }
-      return formData
+      return formData;
     },
     /**
      *
@@ -122,12 +124,19 @@ export default {
      * GET 형태로 Axios 전송
      *
      */
-    axiosGetRequest: function (url, param, callback, errback) {
-      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+    axiosGetRequest: function(url, param, callback, errback) {
+      var errorFn =
+        typeof errback === "undefined"
+          ? function(err) {
+              console.log(err);
+            }
+          : errback;
       Axios.request({
         url: url,
         params: param
-      }).then(callback).catch(errorFn)
+      })
+        .then(callback)
+        .catch(errorFn);
     }, // param
 
     /**
@@ -137,11 +146,19 @@ export default {
      * POST 형태로 Axios 전송
      *
      */
-    axiosPostRequest: function (url, param, callback, errback) {
-      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
-      Axios.post(url, this.postParam(param), {header: {'Content-Type': 'multipart/form-data'}, withCredentials: false})
+    axiosPostRequest: function(url, param, callback, errback) {
+      var errorFn =
+        typeof errback === "undefined"
+          ? function(err) {
+              console.log(err);
+            }
+          : errback;
+      Axios.post(url, this.postParam(param), {
+        header: { "Content-Type": "multipart/form-data" },
+        withCredentials: false
+      })
         .then(callback)
-        .catch(errorFn)
+        .catch(errorFn);
     },
     /**
      *
@@ -150,45 +167,57 @@ export default {
      * Delete 형태로 Axios 전송
      *
      */
-    axiosDeleteRequest: function (url, param, callback, errback) {
-      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+    axiosDeleteRequest: function(url, param, callback, errback) {
+      var errorFn =
+        typeof errback === "undefined"
+          ? function(err) {
+              console.log(err);
+            }
+          : errback;
       Axios.delete(url, this.deleteParam(param))
         .then(callback)
-        .catch(errorFn)
+        .catch(errorFn);
     },
     axiosPatchRequest: function (url, param, callback, errback) {
       var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
       Axios.patch(url, this.patchParam(param), Axios.defaults.headers.patch)
         .then(callback)
-        .catch(errorFn)
+        .catch(errorFn);
     },
-    axiosPutRequest: function (url, param, callback, errback) {
-      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+    axiosPutRequest: function(url, param, callback, errback) {
+      var errorFn =
+        typeof errback === "undefined"
+          ? function(err) {
+              console.log(err);
+            }
+          : errback;
       Axios.put(url, this.patchParam(param))
         .then(callback)
-        .catch(errorFn)
+        .catch(errorFn);
     },
     //---------------------- 유틸 관련된 함수 ----------------------------------------
-    isEmpty: function (str) {
-      if (typeof str === 'undefined' || str === null || str === '') {
-        return true
+    isEmpty: function(str) {
+      if (typeof str === "undefined" || str === null || str === "") {
+        return true;
       } else {
-        return false
+        return false;
       }
     },
-    numberWithCommasObj: function (event) {
-      var num = event.target.value
-      num = num.replace(/,/g, '')
-      event.target.value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-      return true
+    numberWithCommasObj: function(event) {
+      var num = event.target.value;
+      num = num.replace(/,/g, "");
+      event.target.value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return true;
     },
-    numberWithCommas: function (num) {
-      if (num < 1000) return num
-      num = num.toString().replace(/,/g, '')
-      return (isNaN(num) ? 0 : num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+    numberWithCommas: function(num) {
+      if (num < 1000) return num;
+      num = num.toString().replace(/,/g, "");
+      return isNaN(num)
+        ? 0
+        : num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-    toNumber(str){
-      return parseFloat(str.replace(/[^0-9]/g,''))
+    toNumber(str) {
+      return parseFloat(str.replace(/[^0-9]/g, ""));
     }
   }
-}
+};
