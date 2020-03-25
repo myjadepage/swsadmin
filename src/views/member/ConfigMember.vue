@@ -1,11 +1,11 @@
 <template>
   <div id="contents">
-                <h3>{{ $route.name}}</h3>
+                <h3>{{ $route.name }}</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>회원관리</li>
                     <li>회원관련설정</li>
-                    <li class="on">{{ $route.name}}</li>
+                    <li class="on">{{ $route.name }}</li>
                 </ul>
                 <ul class="helpbox">
                     <li>회원가입할 때 원하는 부분의 필수 및 선택 입력 및 추가할 사항을 관리하는 곳 입니다.</li>

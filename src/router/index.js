@@ -28,6 +28,8 @@ import ManagementIndex from '@/views/management/ManagementIndex'
 import ReviewList from '@/views/management/ReviewList'
 import QnaList from '@/views/management/QnaList'
 import FaqList from '@/views/management/FaqList'
+import FaqReg from '@/views/management/FaqReg'
+import FaqDetail from '@/views/management/FaqDetail'
 import InquiryList from '@/views/management/InquiryList'
 import InquiryDetail from '@/views/management/InquiryDetail'
 import CouponList from '@/views/management/CouponList'
@@ -160,6 +162,16 @@ const routes = [
         name: 'FAQ관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: FaqList }
       }, 
+      {
+        path: '/management/faq_reg',
+        name: 'FAQ관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: FaqReg }
+      },
+      {
+        path: '/management/faq_reg/:siteFaqSysId',
+        name: 'FAQ관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: FaqDetail }
+      },
       {
         path: '/management/inquiry_list',
         name: '1:1문의관리',
