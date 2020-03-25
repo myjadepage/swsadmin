@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios from 'axios';
 
 export default {
   data () {    
@@ -21,15 +21,15 @@ export default {
     dataURItoBlob: function(dataURI) {
       // convert base64/URLEncoded data component to raw binary data held in a string
       var byteString;
-      if (dataURI.split(",")[0].indexOf("base64") >= 0)
-        byteString = atob(dataURI.split(",")[1]);
-      else byteString = unescape(dataURI.split(",")[1]);
+      if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+      else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
       var mimeString = dataURI
-        .split(",")[0]
-        .split(":")[1]
-        .split(";")[0];
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
@@ -76,7 +76,7 @@ export default {
      *
      */
     postParam: function(param) {
-      if (param === null) return "";
+      if (param === null) return '';
       var formData = new FormData();
       for (let _k in param) {
         formData.append(_k, JSON.stringify(param[_k]));
@@ -93,7 +93,7 @@ export default {
      *
      */
     patchParam: function(param) {
-      if (param === null) return "";
+      if (param === null) return '';
       var formData = new URLSearchParams();
       for (let _k in param) {
         formData.append(_k, JSON.stringify(param[_k]));
@@ -110,7 +110,7 @@ export default {
      *
      */
     deleteParam: function(param) {
-      if (param === null) return "";
+      if (param === null) return '';
       var formData = new URLSearchParams();
       for (let _k in param) {
         formData.append(_k, JSON.stringify(param[_k]));
@@ -126,7 +126,7 @@ export default {
      */
     axiosGetRequest: function(url, param, callback, errback) {
       var errorFn =
-        typeof errback === "undefined"
+        typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
@@ -148,18 +148,19 @@ export default {
      */
     axiosPostRequest: function(url, param, callback, errback) {
       var errorFn =
-        typeof errback === "undefined"
+        typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
           : errback;
       Axios.post(url, this.postParam(param), {
-        header: { "Content-Type": "multipart/form-data" },
+        header: { 'Content-Type': 'multipart/form-data' },
         withCredentials: false
       })
         .then(callback)
         .catch(errorFn);
     },
+
     /**
      *
      * 일자 : 2020. 03. 06.
@@ -169,7 +170,7 @@ export default {
      */
     axiosDeleteRequest: function(url, param, callback, errback) {
       var errorFn =
-        typeof errback === "undefined"
+        typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
@@ -186,7 +187,7 @@ export default {
     },
     axiosPutRequest: function(url, param, callback, errback) {
       var errorFn =
-        typeof errback === "undefined"
+        typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
@@ -197,27 +198,27 @@ export default {
     },
     //---------------------- 유틸 관련된 함수 ----------------------------------------
     isEmpty: function(str) {
-      if (typeof str === "undefined" || str === null || str === "") {
+      if (typeof str === 'undefined' || str === null || str === '') {
         return true;
       } else {
         return false;
       }
     },
     numberWithCommasObj: function(event) {
-      var num = event.target.value;
-      num = num.replace(/,/g, "");
-      event.target.value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      return true;
+      const fomatter = new Intl.NumberFormat('en', {
+        notation: 'standard'
+      }) 
+      console.log(fomatter.format(event.target.value))
+      return fomatter.format(event.target.value)
     },
     numberWithCommas: function(num) {
-      if (num < 1000) return num;
-      num = num.toString().replace(/,/g, "");
-      return isNaN(num)
-        ? 0
-        : num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const fomatter = new Intl.NumberFormat('en', {
+        notation: 'standard'
+      }) 
+      return fomatter.format(num)
     },
     toNumber(str) {
-      return parseFloat(str.replace(/[^0-9]/g, ""));
+      return parseFloat(str.replace(/[^0-9]/g, ''));
     }
   }
 };

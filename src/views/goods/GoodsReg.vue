@@ -514,12 +514,7 @@
                   <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
-                  <input
-                    type="text"
-                    name="marketPrice"
-                    v-model="productData.marketPrice"
-                    class="text_input number_input"
-                  /> 원
+                  <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input"/> 원
                 </td>
               </tr>
             </template>
@@ -755,46 +750,17 @@
                     <li>
                       판매가
                       <br />
-                      <input
-                        type="text"
-                        ref="price"
-                        name="price"
-                        id="price"
-                        class="text_input"
-                        style="width:130px"
-                        v-model="productData.price"
-                        @keyup="priceToSupplyPrice"
-                      /> 원
+                      <input type="text" ref="price" name="price" id="price" class="text_input" style="width:130px" v-model="productData.price" @keyup="priceToSupplyPrice" /> 원
                     </li>
                     <li>
                       수수료율
                       <br />
-                      <input
-                        type="text"
-                        ref="feeRate"
-                        name="feeRate"
-                        id="feeRate"
-                        maxlength="5"
-                        value="0"
-                        class="text_input"
-                        style="width:80px"
-                        v-model.number="productData.feeRate"
-                        @keyup="onFeeRate()"
-                        disabled
-                      /> %
+                      <input type="text" ref="feeRate" name="feeRate" id="feeRate" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" @keyup="onFeeRate()" disabled /> %
                     </li>
                     <li>
                       공급가
                       <br />
-                      <input
-                        type="text"
-                        ref="supplyPrice"
-                        name="supplyPrice"
-                        id="supplyPrice"
-                        class="text_input"
-                        style="width:130px"
-                        v-model="productData.supplyPrice"
-                        @keyup="onSupplyPrice"
+                      <input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice" class="text_input" style="width:130px" v-model="productData.supplyPrice" @keyup="onSupplyPrice"
                       /> 원
                     </li>
                   </ul>
@@ -1254,17 +1220,17 @@ import { ImageUpload } from "quill-image-upload";
 import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.snow.css";
 import commonJs from "@/assets/js/common.js";
-import CategoryComponent from "@/components/GoodsReg/CategoryComponent";
+import CategoryComponent from "@/components/goodsReg/CategoryComponent";
 import ImagesUploader from "@/assets/js/ImagesUploader.js";
-import GoodsRegComponent from "@/components/GoodsReg/GoodsRegComponent.js";
-import GoodsUpdate from "@/components/GoodsReg/GoodsUpdate.js";
-import ClickEventMixin from "@/components/GoodsReg/ClickEventMixin.js";
-import ImageUploader from "@/components/GoodsReg/ImageUploader";
-import VideoUploader from "@/components/GoodsReg/VideoUploader";
-import AdditionContainer from "@/components/GoodsReg/AdditionContainer";
-import CommonSellers from "@/components/GoodsReg/CommonSellers";
-import NomalOptions from "@/components/GoodsReg/NomalOptions";
-import ProductNotics from "@/components/GoodsReg/ProductNotics";
+import GoodsRegComponent from "@/components/goodsReg/GoodsRegComponent.js";
+import GoodsUpdate from "@/components/goodsReg/GoodsUpdate.js";
+import ClickEventMixin from "@/components/goodsReg/ClickEventMixin.js";
+import ImageUploader from "@/components/goodsReg/ImageUploader";
+import VideoUploader from "@/components/goodsReg/VideoUploader";
+import AdditionContainer from "@/components/goodsReg/AdditionContainer";
+import CommonSellers from "@/components/goodsReg/CommonSellers";
+import NomalOptions from "@/components/goodsReg/NomalOptions";
+import ProductNotics from "@/components/goodsReg/ProductNotics";
 
 Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
 Quill.register("modules/imageUpload", ImageUpload);
@@ -1289,6 +1255,7 @@ export default {
   },
   data() {
     return {
+      imageDir: "/product/image/0/0",
       selectedCategoryRow: [
         { value: 0, text: "1차카테고리 필수", parentSysId: "", feeRate: "" },
         { value: 0, text: "2차카테고리 필수", parentSysId: "", feeRate: "" },
@@ -1341,15 +1308,10 @@ export default {
     if (!this.isEmpty(this.$route.params.productSysId)) {
       this.productData.productSysId = this.$route.params.productSysId;
       this.updateProductData.prdtSysId = this.$route.params.productSysId
-      this.axiosGetRequest(
-        "/api/v1/products/" + this.$route.params.productSysId,
-        "",
-        this.getProductData
-      );
+      this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,"",this.getProductData);
     }
-    this.axiosGetRequest("/api/v1/sellers/bases", "", this.resultSellersFn);
-    this.axiosGetRequest(
-      "/api/v1/categories",
+    this.axiosGetRequest('/api/v1/sellers/bases', "", this.resultSellersFn);
+    this.axiosGetRequest('/api/v1/categories',
       { categoryLevel: 1 },
       this.resultCategoryFn
     );
@@ -1358,17 +1320,16 @@ export default {
   methods: {
     SubmitAddProduct: function() {
       let object = this.insertSubmitValidate(document.Frm);
-      console.log(object);
-      //   let CallbackFn = function (res) {
-      //     console.log(res)
-      //     if (!res.data.jsonData.resultCode==='0001') {
-      //         alert('상품등록이 완료 되었습니다.')
-      //         window.location.href='/goods_list'
-      //     }else {
-      //         alert('등록에 실패하였습니다.')
-      //     }
-      //   }
-      //   this.axiosPostRequest('/api/v1/products', {jsonData: object}, CallbackFn)
+      let CallbackFn = function (res) {
+        console.log(res)
+        if (!res.data.jsonData.resultCode==='0001') {
+            alert('상품등록이 완료 되었습니다.')
+            window.location.href='/goods_list'
+        }else {
+            alert('등록에 실패하였습니다.')
+        }
+      }
+      this.axiosPostRequest('/api/v1/products', {jsonData: object}, CallbackFn)
     },
     SubmitUpdateProduct: function () {
       this.updateProductData.productSysId = this.productData.productSysId;
