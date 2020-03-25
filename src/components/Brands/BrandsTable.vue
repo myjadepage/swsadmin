@@ -11,7 +11,7 @@
                 <img :src="row.value" width="150px"/>
             </template>
             <template v-slot:cell(setting)="row">
-                <b-button variant="outline-success" :href="'/brand_reg/'+row.item.no">수정</b-button>
+                <b-button variant="outline-success" :href="'/goods/brand_reg/'+row.item.no">수정</b-button>
                 &emsp;
                 <b-button variant="outline-danger" @click="$emit('delete', row.item.no)">삭제</b-button>
             </template>

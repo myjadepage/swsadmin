@@ -85,7 +85,6 @@ export default {
     mixins: [commonJs, ImagesUploader, submitReg],
     data() {
         return {
-            imageDir: '/brand/image',
             editorOption: {
                 modules: {
                     toolbar: {
@@ -124,6 +123,7 @@ export default {
         if((!this.isEmpty(this.$route.params.brandSysId))) {
             this.loadBrandData(this.$route.params.brandSysId)
         }
+        this.getImageUrl('/brand/image')
     },
     components: {
         quillEditor
@@ -147,16 +147,18 @@ export default {
         // 브랜드 등록
         registBrand: function () {
             this.brandReg.proposerSysId = 0
-            this.brandReg.sellerSysId = 0
+            this.brandReg.sellerSysId = 2
             this.brandReg.managerName = 'test'
             this.brandReg.managerRank = 'ranker'
-            this.brandReg.tel = '010-3035-0403'
-            this.brandReg.mobile = '010-3035-0403'
-            this.brandReg.email = 'kimehfud1@epiens.com'
+            this.brandReg.tel = '010-1111-2222'
+            this.brandReg.mobile = '010-1111-2222'
+            this.brandReg.email = 'aaaa@test.com'
             this.axiosPostRequest('/api/v1/brands', {jsonData: this.brandReg},this.resultRegistBrand)
         },
         resultRegistBrand: function (res) {
             console.log(res)
+            alert('브랜드 등록이 완료되었습니다.')
+            window.location.href="/goods/brand_list"
         },
         // 브랜드 업데이트
         updateBrand: function (){

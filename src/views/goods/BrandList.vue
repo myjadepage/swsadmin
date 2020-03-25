@@ -20,7 +20,7 @@
             ></Brands-list>
         </b-row>
         <div class="float-right">
-            <b-button href="/brand_reg"><font-awesome-icon icon="plus-circle" /> 추가하기</b-button>
+            <b-button href="/goods/brand_reg"><font-awesome-icon icon="plus-circle" /> 추가하기</b-button>
         </div>
     </div>
 </template>
@@ -38,23 +38,25 @@ export default {
         BrandsList
     },
     mounted () {
-        this.axiosGetRequest('/api/v1/brands','',this.refreshBrandsList)
+        this.loadBrandList()
     },
     methods: {
+        loadBrandList: function () {
+            this.axiosGetRequest('/api/v1/brands','',this.refreshBrandsList)
+        },
         deleteBrandsFn: function (key) {
             if (confirm('브랜드를 삭제하시겠습니까?')) {
-                this.axiosDeleteRequest('/api/v1/brands/'+key, {jsonData: {brandSysId: key}}, function (res) {
-                    console.log(res)
-                    alert('삭제가 완료되었습니다.')
-                })
+                this.axiosDeleteRequest('/api/v1/brands/'+key, {jsonData: {brandSysId: key}}, this.loadBrandList)
             }
         },
+
         searchBrandsList: function () {
             
         },
         // 브랜드 리스트 리로딩 및 초기 로딩     
         refreshBrandsList: function (res) {
             let loadData = res.data.jsonData.brands
+            this.items.splice(0)
             for (const item of loadData) {
                 this.items.push({no: item.brandSysId, brandName: item.name, image: item.imageUrl})
             }

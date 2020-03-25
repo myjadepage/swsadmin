@@ -207,7 +207,7 @@ export default {
             }
         },
         modifyProductData: function (id) {
-            window.location.href='/goods_reg/'+id
+            window.location.href='/goods/goods_reg/'+id
         }
   }
 }

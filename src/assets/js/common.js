@@ -219,6 +219,9 @@ export default {
     },
     toNumber(str) {
       return parseFloat(str.replace(/[^0-9]/g, ''));
+    },
+    getImageUrl: function (url) {
+      return url
     }
   }
 };

@@ -15,7 +15,7 @@ import Marketing from '@/views/goods/Marketing.vue'
 
 /** 주문/매출관리 */
 import OrderLeftMenu from '@/views/order/LeftMenu'
-import OrderList from '@/views/order/OrderList'
+import OrderAllList from '@/views/order/OrderAllList'
 
 /** 회원관리 */
 import MemberLeftMenu from '@/views/member/LeftMenu'
@@ -237,7 +237,7 @@ const routes = [
       {
         path: '/order/order_list/',
         name: '전체 주문',
-        components: { LeftMenu: OrderLeftMenu, Contents: OrderList }
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderAllList }
       }, 
     ]
 

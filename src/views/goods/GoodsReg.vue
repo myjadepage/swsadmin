@@ -206,15 +206,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input
-                  type="text"
-                  name="name"
-                  class="text_input"
-                  style="width:99%"
-                  value
-                  maxlength="100"
-                  v-model="productData.name"
-                />
+                <input type="text" name="name" class="text_input" style="width:99%" maxlength="100" v-model="productData.name" />
               </td>
             </tr>
             <tr>
@@ -223,12 +215,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <select
-                  id="sellers"
-                  name="sellers"
-                  v-on:change="changeSellerFn"
-                  v-model="productData.sellerSysId"
-                >
+                <select id="sellers" class="text_input" name="sellers" @change="changeSellerFn" v-model="productData.sellerSysId">
                   <option
                     v-for="(item, index) in sellers"
                     :key="index"
@@ -243,12 +230,8 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <select id="brandSysId" name="brandSysId" v-model="productData.brandSysId">
-                  <option
-                    v-for="(item, index) in brands"
-                    :key="index"
-                    :value="item.value"
-                  >{{ item.text }}</option>
+                <select class="text_input" id="brandSysId" name="brandSysId" v-model="productData.brandSysId">
+                  <option v-for="(item, index) in brands" :key="index" :value="item.value">{{ item.text }}</option>
                 </select>
               </td>
             </tr>
@@ -343,7 +326,7 @@
                     type="file"
                     name="middleImageUrl"
                     id="middleImageUrl"
-                    @change.prevent="validateImageRatioFn($event, {width: 510, height: 510})"
+                    @change.prevent="validateImageRatioFn($event, {width: 360, height: 340})"
                     data-valid="false"
                     accept="image/*"
                     :data-imageurl="productData.middleImageUrl"
@@ -370,7 +353,7 @@
                     type="file"
                     name="smallImageUrl"
                     id="smallImageUrl"
-                    @change.prevent="validateImageRatioFn($event, {width: 280, height: 280})"
+                    @change.prevent="validateImageRatioFn($event, {width: 100, height: 100})"
                     data-valid="false"
                     accept="image/*"
                     :data-imageurl="productData.smallImageUrl"
@@ -1255,7 +1238,6 @@ export default {
   },
   data() {
     return {
-      imageDir: "/product/image/0/0",
       selectedCategoryRow: [
         { value: 0, text: "1차카테고리 필수", parentSysId: "", feeRate: "" },
         { value: 0, text: "2차카테고리 필수", parentSysId: "", feeRate: "" },
@@ -1316,6 +1298,7 @@ export default {
       this.resultCategoryFn
     );
     this.calculFeeRateFn({ type: "1" });
+    this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
   },
   methods: {
     SubmitAddProduct: function() {
@@ -1324,7 +1307,7 @@ export default {
         console.log(res)
         if (!res.data.jsonData.resultCode==='0001') {
             alert('상품등록이 완료 되었습니다.')
-            window.location.href='/goods_list'
+            window.location.href='/goods/goods_list'
         }else {
             alert('등록에 실패하였습니다.')
         }

@@ -34,41 +34,31 @@ export default {
     data () {
         return {
             initialCategory: [
-                {value: 0, text: '::1차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::2차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::3차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::4차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::5차 카테고리::', feeRate: 0, parentSysId: ''}
+                {value: 0, text: '::1차 카테고리::', feeRate: 0, parentSysId: 0},
+                {value: 0, text: '::2차 카테고리::', feeRate: 0, parentSysId: 0},
+                {value: 0, text: '::3차 카테고리::', feeRate: 0, parentSysId: 0},
+                {value: 0, text: '::4차 카테고리::', feeRate: 0, parentSysId: 0},
+                {value: 0, text: '::5차 카테고리::', feeRate: 0, parentSysId: 0}
             ],
-            selectedCategory: [
-                {value: 0, text: '::1차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::2차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::3차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::4차 카테고리::', feeRate: 0, parentSysId: ''},
-                {value: 0, text: '::5차 카테고리::', feeRate: 0, parentSysId: ''}
-            ],
-            category1: [
-                {value: 0, text: '::1차 카테고리::', feeRate: 0, parentSysId: ''}
-            ],
-            category2: [
-                {value: 0, text: '::2차 카테고리::', feeRate: 0, parentSysId: ''}
-            ],
-            category3: [
-                {value: 0, text: '::3차 카테고리::', feeRate: 0, parentSysId: ''}
-            ],
-            category4: [
-                {value: 0, text: '::4차 카테고리::', feeRate: 0, parentSysId: ''}
-            ],
-            category5: [
-                {value: 0, text: '::5차 카테고리::', feeRate: 0, parentSysId: ''}
-            ]
+            category1: [{value: 0, text: '::1차 카테고리::', feeRate: 0, parentSysId: 0}],
+            category2: [{value: 0, text: '::2차 카테고리::', feeRate: 0, parentSysId: 0}],
+            category3: [{value: 0, text: '::3차 카테고리::', feeRate: 0, parentSysId: 0}],
+            category4: [{value: 0, text: '::4차 카테고리::', feeRate: 0, parentSysId: 0}],
+            category5: [{value: 0, text: '::5차 카테고리::', feeRate: 0, parentSysId: 0}]
         }
     },
+    props: ['selectedCategory'],
     mixins: [commmonJs],
     mounted() {
         this.axiosGetRequest('/api/v1/categories', {categoryLevel: 1}, this.loadCategoryList)
+        this.initSelectCategory()
     },
     methods: {
+        initSelectCategory: function () {
+            for (let i = 0 ; i < 5; i++){
+                this.selectedCategory.push(this.initialCategory[i])
+            }
+        }, 
         loadCategoryList: function (res) {
             const reqParams = res.config.params
             let categories = res.data.jsonData.categories
@@ -91,7 +81,11 @@ export default {
             }
         },
         findCategory: function (item, nextCategoryLevel) {
-            this.axiosGetRequest('/api/v1/categories',{parentSysId: item.value, categoryLevel: nextCategoryLevel}, this.loadCategoryList, this.exceptionCategory)
+            if (!this.isEmpty(item.value) && item.value !== 0){
+                this.axiosGetRequest('/api/v1/categories',{parentSysId: item.value, categoryLevel: nextCategoryLevel}, this.loadCategoryList, this.exceptionCategory)
+            } else {
+                this.initCategoryDept(2)
+            }
         },
         exceptionCategory: function (err) {
             console.log(err)
@@ -100,8 +94,8 @@ export default {
             for (let i = level; i < 6 ; i++) {
                 let row = this['category'+i]
                 row.splice(0)
-                row[0] = this.initialCategory[i-1]
-                this.selectedCategory[i-1] = this.initialCategory[i-1]
+                // row[0] = this.initialCategory[i-1]
+                row.push(this.initialCategory[i-1])
             }
         }
     }

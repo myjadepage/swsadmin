@@ -10,27 +10,18 @@ export default {
       var imageExt = "png";
       var blob = this.dataURItoBlob(res);
       var file = this.blobToFile(blob, "temp." + imageExt);
-      this.autoImageResize(file, "middleImageUrl");
+      this.autoImageResize(file, "smallImageUrl");
     },
     resizeMiddleImages: function(res) {
       var imageExt = "png";
       var blob = this.dataURItoBlob(res);
       var file = this.blobToFile(blob, "temp." + imageExt);
-      this.autoImageResize(file, "smallImageUrl");
+      this.autoImageResize(file, "middleImageUrl");
     },
     async validateImageRatioFn(event, sizeParam) {
       event.target.dataset.valid = false;
       let img = document.createElement("img");
       img.onload = function() {
-        // if (this.width !== this.height) {
-        //   alert('업로드 이미지 비율을 확인해주시기 바랍니다.')
-        //   return false
-        // } else if (this.width < sizeParam.width){
-        //   alert('업로드 이미지 사이즈를 확인해주시기 바랍니다.')
-        //   return false
-        // } else {
-        //   event.target.dataset.valid = true
-        // }
         event.target.dataset.valid = true;
       };
       let fileReader = new FileReader();
@@ -43,15 +34,15 @@ export default {
 
         let middleImageResize = new ImageResize({
           format: ext[1],
-          width: 510,
-          height: 510
+          width: 360,
+          height: 340
         });
         middleImageResize.play(event.target).then(this.resizeMiddleImages);
 
         let smallImageResize = new ImageResize({
           format: ext[1],
-          width: 280,
-          height: 280
+          width: 100,
+          height: 100
         });
         smallImageResize.play(event.target).then(this.resizeSmallImages);
       }
@@ -81,7 +72,7 @@ export default {
      * 이미지업로드시에 item으로 리턴해줌 Async/ await
      */
     async onNewSingleImageUploadEvent(event, params) {
-      var dir = this.imageDir;
+      let dir = '/product/image/0/'+this.sellerSysId
       var cdnUrl = "http://cdn.shallwe.link";
 
       // 1. 사용자 인증
@@ -138,11 +129,11 @@ export default {
      * 삭제 예정
      */
     onSingleImagesUploaderEvent(param) {
-      var target = param.obj;
-      var dir = this.imageDir;
-      var cdnUrl = "http://cdn.shallwe.link";
+      let target = param.obj;
+      let dir = '/product/image/0/'+this.productData.sellerSysId;
+      let cdnUrl = "http://cdn.shallwe.link";
       // 사용자 인증 Param
-      var loginParam = {
+      let loginParam = {
         user: "l2e2e2@epiens.com",
         pwd: "ny3yQaQumeje",
         stoid: "epienscdn",
@@ -272,8 +263,8 @@ export default {
 
     // 이미지 리사이징
     autoImageResize(file, targetObj) {
-      var dir = this.imageDir;
-      var cdnUrl = "http://cdn.shallwe.link";
+      let dir = '/product/image/0/'+this.productData.sellerSysId;
+      let cdnUrl = "http://cdn.shallwe.link";
       // 사용자 인증 Param
       var loginParam = {
         user: "l2e2e2@epiens.com",
