@@ -26,8 +26,8 @@
 </template>
 <script>
 import commonJs from '@/assets/js/common.js'
-import TextAlign from '@/components/Brands/TextAlign'
-import BrandsList from '@/components/Brands/BrandsTable'
+import TextAlign from '@/components/brands/TextAlign'
+import BrandsList from '@/components/brands/BrandsTable'
 export default {
     data: () => ({
         items: []

@@ -205,17 +205,17 @@ export default {
       }
     },
     numberWithCommasObj: function(event) {
-      var num = event.target.value;
-      num = num.replace(/,/g, '');
-      event.target.value = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      return true;
+      const fomatter = new Intl.NumberFormat('en', {
+        notation: 'standard'
+      }) 
+      console.log(fomatter.format(event.target.value))
+      return fomatter.format(event.target.value)
     },
     numberWithCommas: function(num) {
-      if (num < 1000) return num;
-      num = num.toString().replace(/,/g, '');
-      return isNaN(num)
-        ? 0
-        : num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      const fomatter = new Intl.NumberFormat('en', {
+        notation: 'standard'
+      }) 
+      return fomatter.format(num)
     },
     toNumber(str) {
       return parseFloat(str.replace(/[^0-9]/g, ''));

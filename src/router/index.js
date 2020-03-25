@@ -13,6 +13,10 @@ import GoodsSort from '@/views/goods/GoodsSort.vue'
 import TrashList from '@/views/goods/TrashList.vue'
 import Marketing from '@/views/goods/Marketing.vue'
 
+/** 주문/매출관리 */
+import OrderLeftMenu from '@/views/order/LeftMenu'
+import OrderList from '@/views/order/OrderList'
+
 /** 회원관리 */
 import MemberLeftMenu from '@/views/member/LeftMenu'
 import ConfigMember from '@/views/member/ConfigMember'
@@ -45,57 +49,61 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: '쉘위샵',
+    redirect: '/goods/goods_list'
+  },
+  {
+    path: '/goods',
+    name: '상품관리',
     component: AdminBoardLayout,
-    redirect: '/goods_reg',
+    redirect: '/goods/goods_list',
     children: [
       {
-        path: '/goods_reg',
+        path: '/goods/goods_reg',
         name: '상품 등록',
         components: { LeftMenu: GoodsLeftMenu, Contents: GoodsReg}
       },
       {
-        path: '/goods_reg/:productSysId',
+        path: '/goods/goods_reg/:productSysId',
         name: '상품 수정',
         components: { LeftMenu: GoodsLeftMenu, Contents: GoodsReg}
       },
       {
-        path: '/brand_list/',
+        path: '/goods/brand_list/',
         name: '브랜드 관리',
         components: { LeftMenu: GoodsLeftMenu, Contents: BrandList}
       },
       {
-        path: '/brand_reg/',
+        path: '/goods/brand_reg/',
         name: '브랜드 추가',
         components: { LeftMenu: GoodsLeftMenu, Contents: BrandReg}
       },
       {
-        path: '/brand_reg/:brandSysId',
+        path: '/goods/brand_reg/:brandSysId',
         name: '브랜드 수정',
         components: { LeftMenu: GoodsLeftMenu, Contents: BrandReg}
       },
       {
-        path: '/category',
+        path: '/goods/category',
         name: '카테고리 관리',
         components: { LeftMenu: GoodsLeftMenu, Contents: Category}
       },
       {
-        path: '/goods_list',
+        path: '/goods/goods_list',
         name: '상품 목록',
         components: { LeftMenu: GoodsLeftMenu, Contents: GoodsList }
       },
       {
-        path: '/goods_sort',
+        path: '/goods/goods_sort',
         name: '상품진열설정',
         components: { LeftMenu: GoodsLeftMenu, Contents: GoodsSort }
       },
       {
-        path: '/trash_list',
+        path: '/goods/trash_list',
         name: '상품휴지통',
         components: { LeftMenu: GoodsLeftMenu, Contents: TrashList }
       },
       {
-        path: '/marketing',
+        path: '/goods/marketing',
         name: '상품연동관리',
         components: { LeftMenu: GoodsLeftMenu, Contents: Marketing }
       }
@@ -207,6 +215,20 @@ const routes = [
         components: { LeftMenu: StatisticsLeftMenu, Contents: StatisticsIndex }
       }, 
     ]
+  },
+  {
+    path: '/order/',
+    name: '주문/매출관리',
+    component: AdminBoardLayout,
+    redirect: '/order/order_list',
+    children:[
+      {
+        path: '/order/order_list/',
+        name: '전체 주문',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderList }
+      }, 
+    ]
+
   }
 ]
 

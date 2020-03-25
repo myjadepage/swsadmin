@@ -76,7 +76,7 @@ import 'quill/dist/quill.snow.css'
 import commonJs from '@/assets/js/common.js'
 // 이미지 업로드 등록시 함수 
 import ImagesUploader from '@/assets/js/ImagesUploader.js'
-import submitReg from '@/components/Brands/BrandReg.js'
+import submitReg from '@/components/brands/BrandReg.js'
 
 Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
 Quill.register('modules/imageUpload', ImageUpload)
