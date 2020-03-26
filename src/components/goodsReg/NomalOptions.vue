@@ -2,7 +2,7 @@
     <div class="option_tab option_kind_2_tab">
         <ul class="option_explain">
             <li>재고를 설정할 수 없는 입력방식입니다. (옵션가격 설정가능)</li>
-            <li>각 옵션항목은 " <strong>;</strong> "로 구분하여 입력하고, 옵션가격이 있는 경우 각 옵션항목내에서 " <strong>^</strong> "로 구분하여 입력합니다.<br>(옵션가격이 없는 경우 제외 가능)</li>
+            <li>각 옵션항목은 " <strong>;</strong> "로 구분하여 입력하고, 옵션가격이 있는 경우 각 옵션항목내에서 " <strong>^</strong> "로 구분하여 입력합니다.<br>옵션가격이 없는 경우 0 입력 (필수)</li>
             <li><strong class="red">옵션가격은 반드시 ","(콤마) 없이 숫자로만 입력해야 합니다.</strong></li>
             <li>품절된 옵션항목은 각 옵션항목의 마지막에 구분자를 삽입하고 <strong class="red">"품절"</strong> 을 입력해 주세요. 예)옵션^0^품절</li>
             <li>옵션항목은 최대 <strong class="red">2,000자</strong> 까지 입력할 수 있습니다.</li>

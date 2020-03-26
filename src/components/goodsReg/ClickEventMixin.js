@@ -290,53 +290,23 @@ const clickEvent = {
       this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate);
     },
     // ------------- 카테고리 Event 끝 -------------
-    changeSellerFn: function() {
-      if (this.productData.sellerSysId !== 0) {
-        this.axiosGetRequest(
-          "/api/v1/sellers/" + this.productData.sellerSysId + "/brands",
-          "",
-          this.onSellerToBrandFn
-        );
-      }
-    },
-    onSellerToBrandFn: function(res) {
-      var data = res.data.jsonData.brands;
-      this.brands.splice(1);
-      data.forEach(item => {
-        this.brands.push({ value: item.brandSysId, text: item.name });
-      });
-    },
     detailDescriptionImage: function(event) {
       var obj = this.$refs.detailDescriptionRef.quill;
       var cursorLocation = obj.getSelection(true);
-      this.onEditorImagesUploaderEvent(
-        event.target.files[0],
-        obj,
-        cursorLocation.index
-      );
+      this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index);
     },
     deliveryCommentHtmlImage: function(event) {
       var obj = this.$refs.deliveryCommentHtmlRef.quill;
       var cursorLocation = obj.getSelection(true);
-      this.onEditorImagesUploaderEvent(
-        event.target.files[0],
-        obj,
-        cursorLocation.index
-      );
+      this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index);
     },
     detailDescriptionimageHandler: function(imageDataUrl, type) {
       var ext = type.split("/");
       var imageExt = ext[1];
       var blob = this.dataURItoBlob(imageDataUrl);
       var file = this.blobToFile(blob, "temp." + imageExt);
-      var cursorLocation = this.$refs.detailDescriptionRef.quill.getSelection(
-        true
-      );
-      this.onEditorImagesUploaderEvent(
-        file,
-        this.$refs.detailDescriptionRef.quill,
-        cursorLocation.index
-      );
+      var cursorLocation = this.$refs.detailDescriptionRef.quill.getSelection(true);
+      this.onEditorImagesUploaderEvent( file, this.$refs.detailDescriptionRef.quill, cursorLocation.index);
     },
     deliveryCommentHtmlimageHandler: function(imageDataUrl, type) {
       var ext = type.split("/");

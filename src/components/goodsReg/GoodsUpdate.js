@@ -154,9 +154,8 @@ export default {
           this.productData[_k] = product[_k];
         }
       }
-
       // 판매자 브랜드 세팅
-      this.changeSellerFn();
+      this.resultSeller(this.productData.sellerSysId);
 
       // 영상정보 세팅
       let media = res.data.jsonData.listProductMedia;
@@ -229,7 +228,6 @@ export default {
     },
     // Update Validate
     updateSubmitValidate(obj) {
-      // 카테 고리 추가
       this.updateProductData.category.categories.splice(0);
       if (this.categoryTable.length <= 0) {
         alert("카테고리를 확인하여 주시기 바랍니다.");
@@ -328,7 +326,6 @@ export default {
       this.updateProductData.isAutoImageUpload = 1;
       this.updateProductData.middleImageUrl = document.getElementById("middleImageUrl").dataset.imageurl;
       this.updateProductData.smallImageUrl = document.getElementById("smallImageUrl").dataset.imageurl;
-      this.updateProductData.isAutoImageUpload = 1;
 
       // 다른이미지 Validate
       if (this.images.length > 0) {
@@ -370,7 +367,8 @@ export default {
       this.updateProductData.feeRateBase = (this.productData.feeRateBase ? 9 : 0)
       this.updateProductData.feeRateMedia = (this.productData.feeRateMedia ? 9 : 0)
       this.updateProductData.feeRateInfluencer = (this.productData.feeRateInfluencer ? 9 : 0)
-
+      this.updateProductData.detailDescription = this.productData.detailDescription
+      this.updateProductData.deliveryCommentHtml = this.productData.deliveryCommentHtml
 
       // 재고설정
       let StockTypeCodeObj = obj.stockTypeCode;
@@ -538,50 +536,37 @@ export default {
         });
       }
 
+      this.updateProductData.deliveryPriceTypeCode = this.productData.deliveryPriceTypeCode
       let DeliveryPriceTypeCodeObj = this.productData.deliveryPriceTypeCode;
-      if (DeliveryPriceTypeCodeObj.value === "2") {
+      if (DeliveryPriceTypeCodeObj === 2) {
         // 착불비용
-        if (obj.debitAmount.value.length < 1) {
+        if (this.productData.debitAmount < 1) {
           return this.onFocusMethod(obj.debitAmount, "착불비용");
         } else {
-          this.updateProductData.debitAmount = this.toNumber(
-            obj.debitAmount.value
-          );
+          this.updateProductData.debitAmount = this.toNumber(String(this.productData.debitAmount));
         }
         // 착불시 무료비용
-        if (obj.debitfreeMinAmount.value.length < 1) {
-          return this.onFocusMethod(
-            obj.debitfreeMinAmount,
-            "착불비용시 무료배송비"
-          );
+        if (this.productData.debitfreeMinAmount < 1) {
+          return this.onFocusMethod(obj.debitfreeMinAmount,"착불비용시 무료배송비");
         } else {
-          this.updateProductData.debitfreeMinAmount = this.toNumber(
-            obj.debitfreeMinAmount.value
-          );
+          this.updateProductData.debitfreeMinAmount = this.toNumber(String(this.productData.debitfreeMinAmount));
         }
-      } else if (DeliveryPriceTypeCodeObj.value === "3") {
+      } else if (DeliveryPriceTypeCodeObj === 3) {
         // 선불비용
-        if (obj.prepaymentAmount.value.length < 1) {
+        if (this.productData.prepaymentAmount < 1) {
           return this.onFocusMethod(obj.prepaymentAmount, "선불비용");
         } else {
-          this.updateProductData.prepaymentAmount = this.toNumber(
-            obj.prepaymentAmount.value
-          );
+          this.updateProductData.prepaymentAmount = this.toNumber(String(this.productData.prepaymentAmount));
         }
         // 착불시 무료비용
-        if (obj.prepayfreeMinAmount.value.length < 1) {
-          return this.onFocusMethod(
-            obj.prepayfreeMinAmount,
-            "선불비용시 무료배송비"
-          );
+        if (this.productData.prepayfreeMinAmount < 1) {
+          return this.onFocusMethod(obj.prepayfreeMinAmount, "선불비용시 무료배송비");
         } else {
-          this.updateProductData.prepayfreeMinAmount = this.toNumber(
-            obj.prepayfreeMinAmount.value
-          );
+          this.updateProductData.prepayfreeMinAmount = this.toNumber(this.productData.prepayfreeMinAmount);
         }
       }
       //  상품 옵션유형 코드
-      this.updateProductData.optionTypeCode = this.toNumber(document.Frm.optionTypeCode.value);
+      this.updateProductData.optionTypeCode = this.toNumber(String(this.productData.optionTypeCode));
 
       if (this.updateProductData.optionTypeCode === 2) {
         // 상품옵션
@@ -598,6 +583,7 @@ export default {
       }
 
       // 추가 구성
+      this.updateProductData.isAddingProduct = (this.productData.isAddingProduct? 1 : 0)
       let isAddition = document.Frm.isAddingProduct.value === "0" ? false : true;
       if (isAddition) {
         this.additionOptions.forEach(addOption => {
@@ -610,41 +596,13 @@ export default {
           }
           addOption.subAdditionOptions.forEach(item => {
             if (item.procTypeCode !==4 || !this.isEmpty(item.prdtAddingProductDetailSysId)) {
+              item.isHide = (item.isHide ? 1 : 0)
+              item.isSoldout = (item.isSoldout ? 1 : 0)
               row.details.push(item)
             }
           })
           this.updateProductData.addingProducts.push(row)
         })
-        // for (let k = 0; k < this.additionOptions.length; k++) {
-        //   if (this.additionOptions[k].procTypeCode !== 4 || !this.isEmpty(this.additionOptions[k].prdtAddingProductSysId)) {
-        //     let subAdditionArray = this.additionOptions[k].subAdditionOptions;
-        //     let details = new Array();
-        //     for (let sub = 0; sub < subAdditionArray.length; sub++) {
-        //       if (subAdditionArray[sub].procTypeCode !== 4 || !this.isEmpty(subAdditionArray[sub].prdtAddingProductDetailSysId)) {
-        //         details[sub] = {
-        //           item: subAdditionArray[sub].item,
-        //           price: this.toNumber(String(this.isEmpty(subAdditionArray[sub].price)? 0: subAdditionArray[sub].price)),
-        //           stockQty: this.toNumber(String(this.isEmpty(subAdditionArray[sub].stockQty)? 0: subAdditionArray[sub].stockQty)),
-        //           isSoldout: subAdditionArray[sub].isSoldout ? 1 : 0,
-        //           isHide: subAdditionArray[sub].isHide ? 1 : 0,
-        //           proctTypecode : subAdditionArray[sub].procTypeCode
-        //         };
-        //         if (!this.isEmpty(subAdditionArray[sub].prdtAddingProductDetailSysId)) {
-        //           details.prdtAddingProductDetailSysId = subAdditionArray[sub].prdtAddingProductDetailSysId
-        //         }
-        //       }
-        //     }
-        //     let row = {
-        //       base: { 
-        //         itemGroup: this.additionOptions[k].itemGroup,
-        //         procTypeCode : this.additionOptions[k].procTypeCode,
-        //         prdtAddingProductSysId: this.additionOptions[k].prdtAddingProductSysId
-        //       },
-        //       details: details
-        //     }
-        //     this.updateProductData.addingProducts.push(row)
-        //   }
-        // }
       }
 
       return this.updateProductData;

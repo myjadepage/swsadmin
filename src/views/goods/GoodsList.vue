@@ -30,11 +30,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>그룹별</th>
+                            <th>상품판매자</th>
                             <td>
-                                <select id="sbrand" name="sbrand" v-model="FilterFields.brandSysId">
-                                    <option v-for="(item, index) in brands" :key="index" :value="item.value">{{item.text}}</option>
-                                </select>
+                                <Sws-seller
+                                    @changeFn="resultSeller"
+                                ></Sws-seller>
                             </td>
                         </tr>
                         <tr>
@@ -51,10 +51,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>상품판매자</th>
+                            <th>그룹별</th>
                             <td>
-                                <select id="sdealer" name="sdealer" v-model="FilterFields.sellerSysId">
-                                    <option v-for="(item, index) in sellers" :key="index" :value="item.value">{{ item.text }}</option>
+                                <select id="sbrand" name="sbrand" v-model="FilterFields.brandSysId">
+                                    <option v-for="(item, index) in brands" :key="index" :value="item.value">{{item.text}}</option>
                                 </select>
                             </td>
                         </tr>
@@ -114,6 +114,7 @@
 import commonJs from '@/assets/js/common.js'
 import GoodsListTable from '@/components/goodsList/GoodsListTable'
 import SwsCategory from '@/components/common/SwsCategory.vue'
+import SwsSeller from '@/components/common/SwsSeller'
 export default {
     data () {
         return {
@@ -144,12 +145,12 @@ export default {
     },
     mixins: [commonJs],
     components: {
+        SwsSeller,
         GoodsListTable,
         SwsCategory
     },
     mounted () {  
         this.axiosGetRequest('/api/v1/brands','',this.initialBrands)
-        this.axiosGetRequest('/api/v1/sellers/bases', '', this.initialSellers)
         this.axiosGetRequest('/api/v1/products/lists','',this.loadProductsList)
     },
     methods: {
@@ -248,11 +249,8 @@ export default {
                 this.brands.push({value: item.brandSysId, text: item.name})
             })
         },
-        initialSellers: function (res) {
-            var data = res.data.jsonData.sellers
-            data.forEach(item => {
-                this.sellers.push({value: item.sellerSysId, text: item.name})
-            })
+        resultSeller: function (val) {
+            this.FilterFields.sellerSysId = val
         }
     }
 }

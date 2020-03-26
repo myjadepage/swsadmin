@@ -117,10 +117,6 @@ export default {
     removeVideoRow: function(item) {
       item.procTypeCode = 4
     },
-    progressBarEvent: function(event) {
-      this.videos[this.selectedindex].progressValue = event.loaded;
-      this.videos[this.selectedindex].progressMax = event.total;
-    },
     async onSingleVideoUploaderEvent(index, obj, event) {
       this.selectedindex = index;
 
@@ -132,10 +128,12 @@ export default {
         url: "https://api.midibus.kinxcdn.com/v1/upload/450",
         headers: {
           "Content-Type": "multipart/form-data",
-          "X-Mbus-Token":
-            "D51D768EDB699F30ABBD16569FB07A630FED100A9D7AFF899EA24079F9C5BBECFF28C464E1AD49E6748BB409D9A4F0A227040A68503B771A8B78953AFAD4AA5B"
+          "X-Mbus-Token": "D51D768EDB699F30ABBD16569FB07A630FED100A9D7AFF899EA24079F9C5BBECFF28C464E1AD49E6748BB409D9A4F0A227040A68503B771A8B78953AFAD4AA5B"
         },
-        onUploadProgress: this.progressBarEvent,
+        onUploadProgress: function (event) {    
+          this.videos[this.selectedindex].progressValue = event.loaded;
+          this.videos[this.selectedindex].progressMax = event.total;
+        }.bind(this),
         data: formData
       })
         .then(function(res) {
@@ -146,7 +144,6 @@ export default {
         });
       obj.videoTitle = targetObj.files[0].name;
       obj.mediaId = result.data.mediaId;
-      console.log(this.videos);
       alert("업로드가 완료되었습니다.");
       return true;
     }

@@ -126,7 +126,10 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-
+                <Sws-seller
+                  :selected="productData.sellerSysId"
+                  @changeFn="resultSeller"
+                ></Sws-seller>
               </td>
             </tr>
             <tr>
@@ -135,9 +138,15 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <select class="text_input" id="brandSysId" name="brandSysId" v-model="productData.brandSysId">
+                <Sws-brand
+                  ref="brand"
+                  :selected="productData.brandSysId"
+                  @changeFn="function (val) { this.productData.brandSysId = val }"
+                >
+                </Sws-brand>
+                <!-- <select class="text_input" id="brandSysId" name="brandSysId" v-model="productData.brandSysId">
                   <option v-for="(item, index) in brands" :key="index" :value="item.value">{{ item.text }}</option>
-                </select>
+                </select> -->
               </td>
             </tr>
 
@@ -287,7 +296,7 @@
                   <label for="stockTypeCode2">수량</label>
                 </span>
                 <span>
-                  <input type="text" name="stockQty" @keyup="numberWithCommasObj" @keydown="numberWithCommasObj" maxlength="7" class="text_input number_input" style="width: 60px;" v-model="productData.stockQty" :disabled="productData.stockTypeCode === 1"/>
+                  <input type="text" name="stockQty" maxlength="7" class="text_input number_input" style="width: 60px;" v-model="productData.stockQty" :disabled="productData.stockTypeCode === 1"/>
                 </span>
 
                 <!-- 품절여부 -->
@@ -312,7 +321,7 @@
                   <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="text" name="marketPrice" @keyup="numberWithCommasObj" @keydown="numberWithCommasObj" v-model="productData.marketPrice" class="text_input number_input"/> 원
+                  <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input"/> 원
                 </td>
               </tr>
             </template>
@@ -325,7 +334,7 @@
                 <td colspan="3">
                   <b-row>
                     <b-col cols="3">
-                      <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" @keyup="numberWithCommasObj" @keydown="numberWithCommasObj" style="width:90%" maxlength="9" /> 원
+                      <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" style="width:90%" maxlength="9" /> 원
                     </b-col>
                     <b-col cols="4">
                       <b-row class="d-flex flex-row">
@@ -394,7 +403,6 @@
                   <Common-sellers
                     :productData="productData"
                     :commonSellers="commonSellers"
-                    @keyup="numberWithCommasObj"
                   ></Common-sellers>
                 </td>
               </tr>
@@ -406,7 +414,7 @@
                   <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="text" name="marketPrice" @keyup="numberWithCommasObj" @keydown="numberWithCommasObj" v-model="productData.marketPrice" class="text_input number_input" /> 원
+                  <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" /> 원
                 </td>
               </tr>
             </template>
@@ -464,17 +472,17 @@
                     <li>
                       판매가
                       <br />
-                      <input type="text" ref="price" name="price" id="price" @keyup="numberWithCommasObj" @keyup.stop="priceToSupplyPrice" @keydown="numberWithCommasObj" class="text_input" style="width:130px" v-model="productData.price" /> 원
+                      <input type="text" ref="price" name="price" id="price"  @keyup.stop="priceToSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.price" /> 원
                     </li>
                     <li>
                       수수료율
                       <br />
-                      <input type="text" ref="feeRate" name="feeRate" id="feeRate" @keyup="numberWithCommasObj" @keyup.stop="onFeeRate()" @keydown="numberWithCommasObj" maxlength="5" value="0" class="text_input" style="width:80px" v-model="productData.feeRate" disabled /> %
+                      <input type="text" ref="feeRate" name="feeRate" id="feeRate"  @keyup.stop="onFeeRate()" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" disabled /> %
                     </li>
                     <li>
                       공급가
                       <br />
-                      <input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice" @keyup="numberWithCommasObj" @keyup.stop="onSupplyPrice" @keydown="numberWithCommasObj" class="text_input" style="width:130px" v-model="productData.supplyPrice"
+                      <input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice"  @keyup.stop="onSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.supplyPrice"
                       /> 원
                     </li>
                   </ul>
@@ -779,7 +787,7 @@
                   <Addition-container
                     :productData="productData"
                     :additionOptions="additionOptions"
-                    @keyup="numberWithCommasObj"
+                    
                   ></Addition-container>
                 </template>
               </td>
@@ -800,23 +808,26 @@
   </div>
 </template>
 <script>
-import Quill from "quill";
-import QuillImageDropAndPaste from "quill-image-drop-and-paste";
-import { ImageUpload } from "quill-image-upload";
-import { quillEditor } from "vue-quill-editor";
-import "quill/dist/quill.snow.css";
-import commonJs from "@/assets/js/common.js";
-import CategoryComponent from "@/components/goodsReg/CategoryComponent";
-import ImagesUploader from "@/assets/js/ImagesUploader.js";
-import GoodsRegComponent from "@/components/goodsReg/GoodsRegComponent.js";
-import GoodsUpdate from "@/components/goodsReg/GoodsUpdate.js";
-import ClickEventMixin from "@/components/goodsReg/ClickEventMixin.js";
-import ImageUploader from "@/components/goodsReg/ImageUploader";
-import VideoUploader from "@/components/goodsReg/VideoUploader";
-import AdditionContainer from "@/components/goodsReg/AdditionContainer";
-import CommonSellers from "@/components/goodsReg/CommonSellers";
-import NomalOptions from "@/components/goodsReg/NomalOptions";
-import ProductNotics from "@/components/goodsReg/ProductNotics";
+import Quill from "quill"
+import QuillImageDropAndPaste from "quill-image-drop-and-paste"
+import { ImageUpload } from "quill-image-upload"
+import { quillEditor } from "vue-quill-editor"
+import "quill/dist/quill.snow.css"
+import commonJs from "@/assets/js/common.js"
+import ImagesUploader from "@/assets/js/ImagesUploader.js"
+import GoodsRegComponent from "@/components/goodsReg/GoodsRegComponent.js"
+import ClickEventMixin from "@/components/goodsReg/ClickEventMixin.js"
+import GoodsUpdate from "@/components/goodsReg/GoodsUpdate.js"
+import CategoryComponent from "@/components/goodsReg/CategoryComponent"
+import ImageUploader from "@/components/goodsReg/ImageUploader"
+import VideoUploader from "@/components/goodsReg/VideoUploader"
+import AdditionContainer from "@/components/goodsReg/AdditionContainer"
+import CommonSellers from "@/components/goodsReg/CommonSellers"
+import NomalOptions from "@/components/goodsReg/NomalOptions"
+import ProductNotics from "@/components/goodsReg/ProductNotics"
+import SwsSeller from '@/components/common/SwsSeller'
+import SwsBrand from '@/components/common/SwsBrand'
+
 
 Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
 Quill.register("modules/imageUpload", ImageUpload);
@@ -837,54 +848,56 @@ export default {
     AdditionContainer,
     CommonSellers,
     NomalOptions,
-    ProductNotics
+    ProductNotics,
+    SwsSeller,
+    SwsBrand
   },
   data() {
     return {
       selectedCategoryRow: [
-        { value: 0, text: "1차카테고리 필수", parentSysId: "", feeRate: "" },
-        { value: 0, text: "2차카테고리 필수", parentSysId: "", feeRate: "" },
-        { value: 0, text: "3차카테고리 선택", parentSysId: "", feeRate: "" },
-        { value: 0, text: "4차카테고리 선택", parentSysId: "", feeRate: "" },
-        { value: 0, text: "5차카테고리 선택", parentSysId: "", feeRate: "" }
+        { value: 0, text: "1차카테고리 필수", parentSysId: '', feeRate: '' },
+        { value: 0, text: "2차카테고리 필수", parentSysId: '', feeRate: '' },
+        { value: 0, text: "3차카테고리 선택", parentSysId: '', feeRate: '' },
+        { value: 0, text: "4차카테고리 선택", parentSysId: '', feeRate: '' },
+        { value: 0, text: "5차카테고리 선택", parentSysId: '', feeRate: '' }
       ],
       categoryTable: [],
-      selectedCategoryTable: "",
+      selectedCategoryTable: '',
       category1: [
-        { value: 0, text: "1차카테고리 필수", parentSysId: "", feeRate: "" }
+        { value: 0, text: "1차카테고리 필수", parentSysId: '', feeRate: '' }
       ],
       category2: [
-        { value: 0, text: "2차카테고리 필수", parentSysId: "", feeRate: "" }
+        { value: 0, text: "2차카테고리 필수", parentSysId: '', feeRate: '' }
       ],
       category3: [
-        { value: 0, text: "3차카테고리 선택", parentSysId: "", feeRate: "" }
+        { value: 0, text: "3차카테고리 선택", parentSysId: '', feeRate: '' }
       ],
       category4: [
-        { value: 0, text: "4차카테고리 선택", parentSysId: "", feeRate: "" }
+        { value: 0, text: "4차카테고리 선택", parentSysId: '', feeRate: '' }
       ],
       category5: [
-        { value: 0, text: "5차카테고리 선택", parentSysId: "", feeRate: "" }
+        { value: 0, text: "5차카테고리 선택", parentSysId: '', feeRate: '' }
       ],
       // 큰 이미지 업로드시에 로딩바
-      images: [{ imageurl: "" }],
+      images: [{ imageurl: '' }],
       videos: [
-        {mediaTypeCode: 1, title: "", videoTitle: "", progressValue: 0, progressMax: 0, mediaId: "", thumnailUrl: "", procTypeCode: 2},
-        {mediaTypeCode: 1, title: "", videoTitle: "", progressValue: 0, progressMax: 0, mediaId: "", thumnailUrl: "", procTypeCode: 2}
+        {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2},
+        {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2}
       ],
       additionOptions: [
-        {itemGroup: "", subAdditionOptions: [ { item: "", price: "", stockQty: "", isSoldout: false, isHide: false, procTypeCode: 2 }], procTypeCode: 2}
+        {itemGroup: '', subAdditionOptions: [ { item: '', price: '', stockQty: '', isSoldout: false, isHide: false, procTypeCode: 2 }], procTypeCode: 2}
       ],
       commonSellers: [
         {id:1, peopleObjName: "peopleObjectName1", discountObjName: "discountObjName1" }
       ],
-      nomarlOptions: [{ name: "", content: "", procTypeCode: 2 }],
-      notify: [{ item: "", content: "", procTypeCode: 2 }],
+      nomarlOptions: [{ name: '', content: '', procTypeCode: 2 }],
+      notify: [{ item: '', content: '', procTypeCode: 2 }],
       brands: [{ value: 0, text: "::브랜드를 선택해주세요::" }],
       DateObject: {
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: ""
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: ''
       }
     };
   },
@@ -892,46 +905,10 @@ export default {
     if (!this.isEmpty(this.$route.params.productSysId)) {
       this.productData.productSysId = this.$route.params.productSysId;
       this.updateProductData.prdtSysId = this.$route.params.productSysId
-      this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,"",this.getProductData);
+      this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,'',this.getProductData);
     }
-    this.axiosGetRequest('/api/v1/categories',
-      { categoryLevel: 1 },
-      this.resultCategoryFn
-    );
-    this.calculFeeRateFn({ type: "1" });
-    this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
-  },
-  methods: {
-    SubmitAddProduct: function() {
-      let object = this.insertSubmitValidate(document.Frm);
-      let CallbackFn = function (res) {
-        console.log(res)
-        if (!res.data.jsonData.resultCode==='0001') {
-            alert('상품등록이 완료 되었습니다.')
-            window.location.href='/goods/goods_list'
-        }else {
-            alert('등록에 실패하였습니다.')
-        }
-      }
-      this.axiosPostRequest('/api/v1/products', {jsonData: object}, CallbackFn)
-    },
-    SubmitUpdateProduct: function () {
-      this.updateProductData.productSysId = this.productData.productSysId;
-      let object = this.updateSubmitValidate(document.Frm);
-      let CallbackFn = function (res) {
-          console.log(res)
-      }
-      this.axiosPutRequest('/api/v1/products/' + this.productData.productSysId, {jsonData: object}, CallbackFn)
-    },
-    resultSellersFn: function(res) {
-      var selleries = res.data.jsonData.sellers;
-      this.sellers.push({ value: 0, text: "::판매자를 선택해주십시오::" });
-      selleries.forEach(item => [
-        this.sellers.push({ value: item.sellerSysId, text: item.name })
-      ]);
-      this.changeSellerFn();
-    },
-    resultCategoryFn: function(res) {
+    // 카테고리 초기화
+    this.axiosGetRequest('/api/v1/categories',{ categoryLevel: 1 },function (res) {
       let data = res.data.jsonData.categories;
       data.forEach(_item => {
         this.category1.push({
@@ -941,7 +918,69 @@ export default {
           text: _item.name + "[" + _item.feeRate * 100 + "%]"
         });
       });
-    }
+    }.bind(this));
+    this.calculFeeRateFn({ type: "1" });
+    this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
+  },
+  methods: {
+    SubmitAddProduct: function () {
+      let object = this.insertSubmitValidate(document.Frm);
+      this.axiosPostRequest('/api/v1/products', {jsonData: object}, (res) => {
+        if (!res.data.jsonData.resultCode==='0001') {
+            alert('상품등록이 완료 되었습니다.')
+            window.location.href='/goods/goods_list'
+        }else {
+            alert('등록에 실패하였습니다.')
+        }
+      })
+    },
+    SubmitUpdateProduct: function () {
+      this.updateProductData.productSysId = this.productData.productSysId;
+      let object = this.updateSubmitValidate(document.Frm);
+      this.axiosPutRequest('/api/v1/products/' + this.productData.productSysId, {jsonData: object}, (res) => {
+        let result = res.data.jsonData
+        if (result.resultCode === '0001') {
+          alert('상품이 수정되었습니다.')
+          window.location.href='/goods/goods_list'
+        }
+      })
+    },
+    resultSeller: function (val) {
+      this.productData.sellerSysId = val
+      this.$refs.brand.changeSellerFn(val)
+    },
+    // resultSellersFn: function(res) {
+    //   var selleries = res.data.jsonData.sellers;
+    //   this.sellers.push({ value: 0, text: "::판매자를 선택해주십시오::" });
+    //   selleries.forEach(item => [
+    //     this.sellers.push({ value: item.sellerSysId, text: item.name })
+    //   ]);
+    //   this.changeSellerFn();
+    // },
+    // changeSellerFn: function(val) {
+    //   this.productData.sellerSysId = val
+    //   if (this.productData.sellerSysId !== 0) {
+    //     this.axiosGetRequest("/api/v1/sellers/" + val + "/brands",'',this.onSellerToBrandFn);
+    //   }
+    // },
+    // onSellerToBrandFn: function(res) {
+    //   var data = res.data.jsonData.brands;
+    //   this.brands.splice(1);
+    //   data.forEach(item => {
+    //     this.brands.push({ value: item.brandSysId, text: item.name });
+    //   });
+    // },
+    // resultCategoryFn: function(res) {
+    //   let data = res.data.jsonData.categories;
+    //   data.forEach(_item => {
+    //     this.category1.push({
+    //       value: _item.categorySysId,
+    //       parentId: _item.parentSysId,
+    //       feeRate: _item.feeRate,
+    //       text: _item.name + "[" + _item.feeRate * 100 + "%]"
+    //     });
+    //   });
+    // }
   }
 };
 </script>

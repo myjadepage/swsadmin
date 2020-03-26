@@ -7,15 +7,15 @@ export default {
   methods: {
     // 이미지 비율검사 함수
     resizeSmallImages: function(res) {
-      var imageExt = "png";
-      var blob = this.dataURItoBlob(res);
-      var file = this.blobToFile(blob, "temp." + imageExt);
+      let imageExt = "png";
+      let blob = this.dataURItoBlob(res);
+      let file = this.blobToFile(blob, "temp." + imageExt);
       this.autoImageResize(file, "smallImageUrl");
     },
     resizeMiddleImages: function(res) {
-      var imageExt = "png";
-      var blob = this.dataURItoBlob(res);
-      var file = this.blobToFile(blob, "temp." + imageExt);
+      let imageExt = "png";
+      let blob = this.dataURItoBlob(res);
+      let file = this.blobToFile(blob, "temp." + imageExt);
       this.autoImageResize(file, "middleImageUrl");
     },
     async validateImageRatioFn(event, sizeParam) {
@@ -72,45 +72,29 @@ export default {
      * 이미지업로드시에 item으로 리턴해줌 Async/ await
      */
     async onNewSingleImageUploadEvent(event, params) {
-      let dir = '/product/image/0/'+this.sellerSysId
-      var cdnUrl = "http://cdn.shallwe.link";
+      let dir = '/product/image/0/'+this.productData.sellerSysId
+      let cdnUrl = "http://cdn.shallwe.link";
 
       // 1. 사용자 인증
-      var loginParam = {
-        user: "l2e2e2@epiens.com",
-        pwd: "ny3yQaQumeje",
-        stoid: "epienscdn",
-        stopwd: "dlvldpstm2020!!"
-      };
+      let loginParam = {user: "l2e2e2@epiens.com",pwd: "ny3yQaQumeje",stoid: "epienscdn",stopwd: "dlvldpstm2020!!"};
       let auth = await Axios.request({url: "https://stats.kinxcdn.com/api/auth?",params: loginParam}).then((res) => {return res;});
 
       // 2. 디렉토리를 체크한다.
-      let dirFindParam = {
-        key: auth.data.Response.key,
-        stoid: "epienscdn",
-        path: dir,
-        type: "dir"
-      };
+      let dirFindParam = {key: auth.data.Response.key, stoid: "epienscdn", path: dir, type: "dir"};
       let isDirectory = await Axios.request({url: "https://stats.kinxcdn.com/api/exists?",params: dirFindParam}).then((res) => {return res});
 
       let directory = "";
       //3. 디렉토리가 없을경우는 생성한다.
       if (this.isEmpty(isDirectory.dataItem)) {
-        var createDirParam = {
-          key: auth.data.Response.key,
-          stoid: "epienscdn",
-          path: dir,
-          work: "C",
-          type: "D"
-        };
+        let createDirParam = {key: auth.data.Response.key, stoid: "epienscdn", path: dir, work: "C", type: "D"};
         directory = await Axios.request({url: "https://stats.kinxcdn.com/api/directorys?",params: dirFindParam}).then((res) =>{return res})
       }
 
       // 4. 디렉토리가 존재할경우는 바로 업로드진행한다.
-      var ext = event.target.files[0].name.split(".");
-      var imageExt = ext[1];
-      var uuid = uuidv4();
-      var formData = new FormData();
+      let ext = event.target.files[0].name.split(".");
+      let imageExt = ext[1];
+      let uuid = uuidv4();
+      let formData = new FormData();
       formData.append("key", auth.data.Response.key);
       formData.append("path", dir);
       formData.append("stoid", "epienscdn");
@@ -145,8 +129,8 @@ export default {
       })
         .then(function(res) {
           // 2. 디렉토리 검사한다.
-          var privateKey = res.data.Response.key;
-          var dirFindParam = {
+          let privateKey = res.data.Response.key;
+          let dirFindParam = {
             key: privateKey,
             stoid: "epienscdn",
             path: dir,
@@ -157,9 +141,9 @@ export default {
             params: dirFindParam
           })
             .then(function(res) {
-              var response = res.data;
+              let response = res.data;
               // 3. 디렉토리가 없을 경우, 생성한다.
-              var createDirParam = {
+              let createDirParam = {
                 key: privateKey,
                 stoid: "epienscdn",
                 path: dir,
@@ -173,11 +157,11 @@ export default {
                 })
                   .then(function(res) {
                     // rename uuid
-                    var ext = target.files[0].name.split(".");
-                    var imageExt = ext[1];
-                    var uuid = uuidv4();
+                    let ext = target.files[0].name.split(".");
+                    let imageExt = ext[1];
+                    let uuid = uuidv4();
 
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append("key", privateKey);
                     formData.append("path", dir);
                     formData.append("stoid", "epienscdn");
@@ -215,11 +199,11 @@ export default {
                 })
                   .then(function(res) {
                     // rename uuid
-                    var ext = target.files[0].name.split(".");
-                    var imageExt = ext[1];
-                    var uuid = uuidv4();
+                    let ext = target.files[0].name.split(".");
+                    let imageExt = ext[1];
+                    let uuid = uuidv4();
 
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append("key", privateKey);
                     formData.append("path", dir);
                     formData.append("stoid", "epienscdn");
@@ -266,13 +250,13 @@ export default {
       let dir = '/product/image/0/'+this.productData.sellerSysId;
       let cdnUrl = "http://cdn.shallwe.link";
       // 사용자 인증 Param
-      var loginParam = {
+      let loginParam = {
         user: "l2e2e2@epiens.com",
         pwd: "ny3yQaQumeje",
         stoid: "epienscdn",
         stopwd: "dlvldpstm2020!!"
       };
-      var userjson = "";
+      let userjson = "";
       $.each(loginParam, function(k, v) {
         userjson += k + "=" + v + "&";
       });
@@ -283,29 +267,29 @@ export default {
       Axios.get("https://stats.kinxcdn.com/api/auth?" + userjson)
         .then(function(res) {
           // 2. 디렉토리 검사한다.
-          var privateKey = res.data.Response.key;
-          var dirFindParam = {
+          let privateKey = res.data.Response.key;
+          let dirFindParam = {
             key: privateKey,
             stoid: "epienscdn",
             path: dir,
             type: "dir"
           };
-          var dirjson = "";
+          let dirjson = "";
           $.each(dirFindParam, function(k, v) {
             dirjson += k + "=" + v + "&";
           });
           Axios.get("https://stats.kinxcdn.com/api/exists?" + dirjson)
             .then(function(res) {
-              var response = res.data;
+              let response = res.data;
               // 3. 디렉토리가 없을 경우, 생성한다.
-              var createDirParam = {
+              let createDirParam = {
                 key: privateKey,
                 stoid: "epienscdn",
                 path: dir,
                 work: "C",
                 type: "D"
               };
-              var createdirjson = "";
+              let createdirjson = "";
               $.each(createDirParam, function(k, v) {
                 createdirjson += k + "=" + v + "&";
               });
@@ -315,11 +299,11 @@ export default {
                 )
                   .then(function(res) {
                     // rename uuid
-                    var ext = file.name.split(".");
-                    var imageExt = ext[1];
-                    var uuid = uuidv4();
+                    let ext = file.name.split(".");
+                    let imageExt = ext[1];
+                    let uuid = uuidv4();
 
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append("key", privateKey);
                     formData.append("path", dir);
                     formData.append("stoid", "epienscdn");
@@ -351,7 +335,7 @@ export default {
                   "https://stats.kinxcdn.com/api/directorys?" + createdirjson
                 )
                   .then(function(res) {
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append("key", privateKey);
                     formData.append("path", dir);
                     formData.append("stoid", "epienscdn");
@@ -393,141 +377,37 @@ export default {
     },
 
     // editor 용
-    onEditorImagesUploaderEvent(file, Editor, cursorLocation) {
-      var dir = this.imageDir;
-      var cdnUrl = "http://cdn.shallwe.link";
-      // 사용자 인증 Param
-      var loginParam = {
-        user: "l2e2e2@epiens.com",
-        pwd: "ny3yQaQumeje",
-        stoid: "epienscdn",
-        stopwd: "dlvldpstm2020!!"
-      };
-      var userjson = "";
-      $.each(loginParam, function(k, v) {
-        userjson += k + "=" + v + "&";
-      });
-      // item.imageVisibleTitle = target.files[0].name
-      // var fileName = moment().format('YYYYMMDDHH24mmss') + '_' + md5(target.files[0].name)
-      // var fileFormat = target.files[0].name.split('.').pop().toLowerCase()
-      // target.files[0].name = fileName + '.' + fileFormat
-      Axios.get("https://stats.kinxcdn.com/api/auth?" + userjson)
-        .then(function(res) {
-          // 2. 디렉토리 검사한다.
-          var privateKey = res.data.Response.key;
-          var dirFindParam = {
-            key: privateKey,
-            stoid: "epienscdn",
-            path: dir,
-            type: "dir"
-          };
-          var dirjson = "";
-          $.each(dirFindParam, function(k, v) {
-            dirjson += k + "=" + v + "&";
-          });
-          Axios.get("https://stats.kinxcdn.com/api/exists?" + dirjson)
-            .then(function(res) {
-              var response = res.data;
-              // 3. 디렉토리가 없을 경우, 생성한다.
-              var createDirParam = {
-                key: privateKey,
-                stoid: "epienscdn",
-                path: dir,
-                work: "C",
-                type: "D"
-              };
-              var createdirjson = "";
-              $.each(createDirParam, function(k, v) {
-                createdirjson += k + "=" + v + "&";
-              });
-              if (!response.dataItem) {
-                Axios.get(
-                  "https://stats.kinxcdn.com/api/directorys?" + createdirjson
-                )
-                  .then(function(res) {
-                    // rename uuid
-                    var ext = file.name.split(".");
-                    var imageExt = ext[1];
-                    var uuid = uuidv4();
+    async onEditorImagesUploaderEvent(file, Editor, cursorLocation){
+      let dir = '/product/image/0/'+this.productData.sellerSysId
+      let cdnUrl = "http://cdn.shallwe.link";
 
-                    var formData = new FormData();
-                    formData.append("key", privateKey);
-                    formData.append("path", dir);
-                    formData.append("stoid", "epienscdn");
-                    formData.append("file1", file, uuid + "." + imageExt);
-                    Axios.post(
-                      "https://stats.kinxcdn.com/api/upload",
-                      formData,
-                      { "Content-Type": "multipart/form-data" }
-                    )
-                      .then(function(res) {
-                        // console.log(res)
-                        // console.log(file)
-                        Editor.insertEmbed(
-                          cursorLocation,
-                          "image",
-                          cdnUrl + "" + dir + "/" + uuid + "." + imageExt
-                        );
-                        // if (param.bool) {
-                        //   param.item.imageVisibleTitle = target.files[0].name
-                        // }
-                        // target.dataset.imageurl = cdnUrl + '' + dir + '/' + target.files[0].name
-                      })
-                      .catch(function(err) {
-                        console.log(err);
-                      });
-                  })
-                  .catch(function(err) {
-                    console.log(err);
-                  });
-              } else {
-                Axios.get(
-                  "https://stats.kinxcdn.com/api/directorys?" + createdirjson
-                )
-                  .then(function(res) {
-                    var formData = new FormData();
-                    formData.append("key", privateKey);
-                    formData.append("path", dir);
-                    formData.append("stoid", "epienscdn");
-                    formData.append("file1", file);
-                    Axios.post(
-                      "https://stats.kinxcdn.com/api/upload",
-                      formData,
-                      { "Content-Type": "multipart/form-data" }
-                    )
-                      .then(function(res) {
-                        // console.log(res)
-                        // console.log(file)
-                        Editor.insertEmbed(
-                          cursorLocation,
-                          "image",
-                          cdnUrl + "" + dir + "/" + file.name
-                        );
-                        // if (param.bool) {
-                        //   param.item.imageVisibleTitle = target.files[0].name
-                        // }
-                        // target.dataset.imageurl = cdnUrl + '' + dir + '/' + target.files[0].name
-                      })
-                      .catch(function(err) {
-                        console.log(err);
-                      });
-                  })
-                  .catch(function(err) {
-                    console.log(err);
-                  });
-              }
-              return false;
-            })
-            .catch(function(err) {
-              console.log(err);
-            });
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-    },
-    onImagesUploadResult: function(item, titleName) {
-      console.log(item);
+      // 1. 사용자 인증
+      let loginParam = { user: "l2e2e2@epiens.com", pwd: "ny3yQaQumeje", stoid: "epienscdn", stopwd: "dlvldpstm2020!!"};
+      let auth = await Axios.request({url: "https://stats.kinxcdn.com/api/auth?",params: loginParam}).then((res) => {return res;});
+
+      // 2. 디렉토리를 체크한다.
+      let dirFindParam = { key: auth.data.Response.key, stoid: "epienscdn", path: dir, type: "dir"};
+      let isDirectory = await Axios.request({url: "https://stats.kinxcdn.com/api/exists?",params: dirFindParam}).then((res) => {return res});
+
+      let directory = "";
+      //3. 디렉토리가 없을경우는 생성한다.
+      if (this.isEmpty(isDirectory.dataItem)) {
+        let createDirParam = { key: auth.data.Response.key, stoid: "epienscdn", path: dir, work: "C", type: "D"};
+        directory = await Axios.request({url: "https://stats.kinxcdn.com/api/directorys?",params: dirFindParam}).then((res) =>{return res})
+      }
+
+      // 4. 디렉토리가 존재할경우는 바로 업로드진행한다.
+      let ext = file.name.split(".");
+      let imageExt = ext[1];
+      let uuid = uuidv4();
+      var formData = new FormData();
+      formData.append("key", auth.data.Response.key);
+      formData.append("path", dir);
+      formData.append("stoid", "epienscdn");
+      formData.append("file1", file, uuid + "." + imageExt);
+      let upload = await Axios.post("https://stats.kinxcdn.com/api/upload",formData,{ "Content-Type": "multipart/form-data" });
+      Editor.insertEmbed(cursorLocation, "image", cdnUrl + "" + dir + "/" + uuid + "." + imageExt);
+      return true;
     }
   }
 };
