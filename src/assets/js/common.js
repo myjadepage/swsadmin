@@ -205,17 +205,12 @@ export default {
       }
     },
     numberWithCommasObj: function(event) {
-      const fomatter = new Intl.NumberFormat('en', {
-        notation: 'standard'
-      }) 
-      console.log(fomatter.format(event.target.value))
-      return fomatter.format(event.target.value)
+      let num = event.target.value
+      event.target.value = new Intl.NumberFormat().format(num.replace(/,/gi,''))
+      return true
     },
     numberWithCommas: function(num) {
-      const fomatter = new Intl.NumberFormat('en', {
-        notation: 'standard'
-      }) 
-      return fomatter.format(num)
+      return new Intl.NumberFormat().format(num.replace(/,/gi,''))
     },
     toNumber(str) {
       return parseFloat(str.replace(/[^0-9]/g, ''));

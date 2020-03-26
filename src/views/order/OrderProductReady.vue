@@ -4,28 +4,26 @@
         <ul class="navi">
             <li class="home"><a href="/" target="_top">홈</a></li>
             <li>주문/매출관리</li>
-            <li>전체주문</li>
+            <li>주문관리</li>
             <li class="on">{{$route.name}}</li>
         </ul>   
         <ul class="helpbox">
-            <li>전체 주문목록을 보실 수 있습니다.</li>
+            <li>주문된 상품에 대한 배송 전 목록을 보실 수 있습니다.</li>
         </ul>
         <!--검색 필터  -->
         <Order-filter-board
-            :isProgress="true"
+            :isProgress="false"
             :orderFilter="orderFilter"
             :items="items"
             @search="filterRequest"
         >
         </Order-filter-board>
         <!-- 조회 테이블 -->
-        <Order-all-table></Order-all-table>
     </div>
 </template>
 
 <script>
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
-import OrderAllTable from '@/components/order/OrderAllTable'
 export default {
     data () {
         return {
@@ -34,8 +32,7 @@ export default {
         }
     },
     components: {
-        OrderFilterBoard,
-        OrderAllTable
+        OrderFilterBoard
     },
     methods: {
         filterRequest: function (req) {

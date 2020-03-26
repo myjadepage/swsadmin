@@ -8,11 +8,11 @@
             </dd>
             <dt>주문관리</dt>
             <dd class="side_small_menu">
-                <a href="/order/order_list" class="">입금확인중</a>
-                <a href="/order/order_list?menu=confirm" class="">결제완료</a>
-                <a href="/order/order_list?menu=ready" class="">상품준비중</a>
-                <a href="/order/order_list?menu=delivery" class="">발송완료</a>
-                <a href="/order/order_list?menu=cancel" class="">주문취소</a>
+                <a href="/order/order_price_before" class="">입금확인중</a>
+                <a href="/order/order_price_complete" class="">결제완료</a>
+                <a href="/order/order_product_ready" class="">상품준비중</a>
+                <a href="/order/order_product_leave" class="">발송완료</a>
+                <a href="/order/order_cancel" class="">주문취소</a>
                 <a href="/order/order_list?menu=account" class="">구매확정</a>
                 <a href="/order/consult_list" class="">주문상담</a>
                 <a href="/order/invoice" class="">일괄배송관리</a>

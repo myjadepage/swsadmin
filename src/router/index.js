@@ -16,6 +16,12 @@ import Marketing from '@/views/goods/Marketing.vue'
 /** 주문/매출관리 */
 import OrderLeftMenu from '@/views/order/LeftMenu'
 import OrderAllList from '@/views/order/OrderAllList'
+import OrderPriceBefore from '@/views/order/OrderPriceBefore'
+import OrderPriceComplete from '@/views/order/OrderPriceComplete'
+import OrderProductReady from '@/views/order/OrderProductReady'
+import OrderProductLeave from '@/views/order/OrderProductLeave'
+import OrderCancel from '@/views/order/OrderCancel'
+
 
 /** 회원관리 */
 import MemberLeftMenu from '@/views/member/LeftMenu'
@@ -238,6 +244,31 @@ const routes = [
         path: '/order/order_list/',
         name: '전체 주문',
         components: { LeftMenu: OrderLeftMenu, Contents: OrderAllList }
+      }, 
+      {
+        path: '/order/order_price_before/',
+        name: '입금확인중',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderPriceBefore }
+      }, 
+      {
+        path: '/order/order_price_complete/',
+        name: '결재완료',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderPriceComplete }
+      }, 
+      {
+        path: '/order/order_product_ready/',
+        name: '상품준비중',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderProductReady }
+      }, 
+      {
+        path: '/order/order_product_leave/',
+        name: '발송완료',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderProductLeave }
+      }, 
+      {
+        path: '/order/order_cancel/',
+        name: '주문취소',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderCancel }
       }, 
     ]
 

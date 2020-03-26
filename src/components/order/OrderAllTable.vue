@@ -1,20 +1,30 @@
 <template>
   <b-row>
-      <b-col cols="12">
+      <b-col cols="12" class="mb-2">
           <div class="float-left">
-              총 9건의 주문이 조회되었습니다.
+              <b>총 9건의 주문이 조회되었습니다.</b>
           </div>
           <div class="float-right">
-              TEST111
+              <select class="text_input mr-2">
+                  <option>10줄씩 보기</option>
+              </select>
+              <select class="text_input">
+                  <option>주문일자</option>
+                  <option>주문번호</option>
+              </select>
           </div>
       </b-col>
       <b-col cols="12">
           <b-table
             :fields="fields"
+            :items="items"
             :busy="true" 
             head-variant="light"
             :select-mode="'single'"
           >
+            <template v-slot:empty>
+                <p class="text-center">죄송합니다. 데이터를 찾을수 없습니다.</p>
+            </template>
           </b-table>
       </b-col>
   </b-row>
@@ -22,6 +32,7 @@
 
 <script>
 export default {
+    props: ['items'],
     data: () => ({
         fields: [
             {key: 'no', label: 'NO', class: 'text-center'},
