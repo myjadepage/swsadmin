@@ -2,7 +2,7 @@
   <div id="contents">
                 <h3>운영관리</h3>
                 <ul class="navi">
-                    <li class="home"><a href="/" target="_top">홈</a></li>
+                    <li class="home"><a href="/setup/" target="_top">홈</a></li>
                     <li class="on">운영관리</li>
                 </ul>
                 <ul class="helpbox">
@@ -15,8 +15,8 @@
                         <h4><i class="xi-check-circle"></i> 상점기본정보관리</h4>
                     </div>
                     <dl class="menu_list">
-                        <dt><a href="/config_manager">상점환경설정</a></dt>
-                        <dd><a href="/config_manager">관리자 로그인정보 변경 및 상점의 기본적인 정보를 입력하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_manager">상점환경설정</a></dt>
+                        <dd><a href="/setup/config_manager">관리자 로그인정보 변경 및 상점의 기본적인 정보를 입력하실 수 있습니다.</a></dd>
                     </dl>
                 </div>
 
@@ -26,8 +26,8 @@
                     </div>
                     <dl class="menu_list">
 
-                        <dt><a href="/config_site">사이트환경설정</a></dt>
-                        <dd><a href="/config_site">사이트의 기본정보 및 상품관련환경을 설정하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_site">사이트환경설정</a></dt>
+                        <dd><a href="/setup/config_site">사이트의 기본정보 및 상품관련환경을 설정하실 수 있습니다.</a></dd>
                     </dl>
                 </div>
 
@@ -36,8 +36,8 @@
                         <h4><i class="xi-check-circle"></i> 판매자 승인관리</h4>
                     </div>
                     <dl class="menu_list">
-                        <dt><a href="/config_dealer">판매자 승인환경설정</a></dt>
-                        <dd><a href="/config_dealer">판매자의 승인 및 상품승인을 관리합니다.</a></dd>
+                        <dt><a href="/setup/config_dealer">판매자 승인환경설정</a></dt>
+                        <dd><a href="/setup/config_dealer">판매자의 승인 및 상품승인을 관리합니다.</a></dd>
                     </dl>
                 </div>
 
@@ -46,18 +46,18 @@
                         <h4><i class="xi-check-circle"></i> 전체운영설정</h4>
                     </div>
                     <dl class="menu_list">
-                        <dt><a href="/config_vocab">어휘설정</a></dt>
-                        <dd><a href="/config_vocab">사이트에서 사용되는 어휘를 설정합니다.</a></dd>
-                        <dt><a href="/config_delivery">배송설정</a></dt>
-                        <dd><a href="/config_delivery">전체 배송환경을 설정합니다.</a></dd>
-                        <dt><a href="/config_discount">할인액부담설정</a></dt>
-                        <dd><a href="/config_discount">할인액을 누가 부담할지 설정합니다.</a></dd>
-                        <dt><a href="/member_level">회원등급관리</a></dt>
-                        <dd><a href="/member_level">회원등급을 관리합니다.</a></dd>
-                        <dt><a href="/config_cmoney">적립금설정</a></dt>
-                        <dd><a href="/config_cmoney">적립금설정을 관리합니다.</a></dd>
-                        <dt><a href="/notify_tpl">상품정보고시관리</a></dt>
-                        <dd><a href="/notify_tpl">상품등록시 사용되는 상품정보고시 템플릿을 설정합니다.</a></dd>
+                        <dt><a href="/setup/config_vocab">어휘설정</a></dt>
+                        <dd><a href="/setup/config_vocab">사이트에서 사용되는 어휘를 설정합니다.</a></dd>
+                        <dt><a href="/setup/config_delivery">배송설정</a></dt>
+                        <dd><a href="/setup/config_delivery">전체 배송환경을 설정합니다.</a></dd>
+                        <dt><a href="/setup/config_discount">할인액부담설정</a></dt>
+                        <dd><a href="/setup/config_discount">할인액을 누가 부담할지 설정합니다.</a></dd>
+                        <dt><a href="/setup/member_level">회원등급관리</a></dt>
+                        <dd><a href="/setup/member_level">회원등급을 관리합니다.</a></dd>
+                        <dt><a href="/setup/config_cmoney">적립금설정</a></dt>
+                        <dd><a href="/setup/config_cmoney">적립금설정을 관리합니다.</a></dd>
+                        <dt><a href="/setup/notify_tpl">상품정보고시관리</a></dt>
+                        <dd><a href="/setup/notify_tpl">상품등록시 사용되는 상품정보고시 템플릿을 설정합니다.</a></dd>
                     </dl>
                 </div>
 
@@ -66,8 +66,8 @@
                         <h4><i class="xi-check-circle"></i> 관리자설정</h4>
                     </div>
                     <dl class="menu_list">
-                        <dt><a href="/manager_list">부운영자관리</a></dt>
-                        <dd><a href="/manager_list">쇼핑몰을 운영할 수 있는 운영자를 설정합니다.</a></dd>
+                        <dt><a href="/setup/manager_list">부운영자관리</a></dt>
+                        <dd><a href="/setup/manager_list">쇼핑몰을 운영할 수 있는 운영자를 설정합니다.</a></dd>
                     </dl>
                 </div>
 
@@ -76,26 +76,26 @@
                         <h4><i class="xi-check-circle"></i> 상점운영정책</h4>
                     </div>
                     <dl class="menu_list">
-                        <dt><a href="/config_policy">상점운영정책</a></dt>
-                        <dd><a href="/config_policy">상점운영정책을 관리할수있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=101">회원 이용약관</a></dt>
-                        <dd><a href="/config_terms_history?code=101">회원에 대한 이용약관 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=102">회원 개인정보취급방침</a></dt>
-                        <dd><a href="/config_terms_history?code=102">회원에 대한 개인정보취급방침 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=103">회원 제3자정보제공동의</a></dt>
-                        <dd><a href="/config_terms_history?code=103">회원에 대한 제3자정보제공동의 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=201">비회원 이용약관</a></dt>
-                        <dd><a href="/config_terms_history?code=201">비회원에 대한 이용약관 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=202">비회원 개인정보취급방침</a></dt>
-                        <dd><a href="/config_terms_history?code=202">비회원에 대한 개인정보취급방침 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=203">비회원 제3자정보제공동의</a></dt>
-                        <dd><a href="/config_terms_history?code=203">비회원에 대한 제3자정보제공동의 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=301">입점사 이용약관</a></dt>
-                        <dd><a href="/config_terms_history?code=301">입점사에 대한 이용약관 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=302">입점사 개인정보취급방침</a></dt>
-                        <dd><a href="/config_terms_history?code=302">입점사에 대한 개인정보취급방침 내용을 버전별로 관리하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_terms_history?code=401">마케팅정보수집및이용동의</a></dt>
-                        <dd><a href="/config_terms_history?code=401">마케팅용 정보에 대한 수집/이용 동의 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_policy">상점운영정책</a></dt>
+                        <dd><a href="/setup/config_policy">상점운영정책을 관리할수있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=101">회원 이용약관</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=101">회원에 대한 이용약관 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=102">회원 개인정보취급방침</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=102">회원에 대한 개인정보취급방침 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=103">회원 제3자정보제공동의</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=103">회원에 대한 제3자정보제공동의 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=201">비회원 이용약관</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=201">비회원에 대한 이용약관 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=202">비회원 개인정보취급방침</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=202">비회원에 대한 개인정보취급방침 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=203">비회원 제3자정보제공동의</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=203">비회원에 대한 제3자정보제공동의 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=301">입점사 이용약관</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=301">입점사에 대한 이용약관 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=302">입점사 개인정보취급방침</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=302">입점사에 대한 개인정보취급방침 내용을 버전별로 관리하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_terms_history?code=401">마케팅정보수집및이용동의</a></dt>
+                        <dd><a href="/setup/config_terms_history?code=401">마케팅용 정보에 대한 수집/이용 동의 내용을 버전별로 관리하실 수 있습니다.</a></dd>
                     </dl>
                 </div>
 
@@ -104,10 +104,10 @@
                         <h4><i class="xi-check-circle"></i> 결제정보관리</h4>
                     </div>
                     <dl class="menu_list">
-                        <dt><a href="/config_pay">결제정보설정</a></dt>
-                        <dd><a href="/config_pay">결제 환경을 설정 하실 수 있습니다.</a></dd>
-                        <dt><a href="/config_pay_online">온라인입금계좌</a></dt>
-                        <dd><a href="/config_pay_online">온라인입금계좌를 설정 하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_pay">결제정보설정</a></dt>
+                        <dd><a href="/setup/config_pay">결제 환경을 설정 하실 수 있습니다.</a></dd>
+                        <dt><a href="/setup/config_pay_online">온라인입금계좌</a></dt>
+                        <dd><a href="/setup/config_pay_online">온라인입금계좌를 설정 하실 수 있습니다.</a></dd>
                     </dl>
                 </div>
   </div>

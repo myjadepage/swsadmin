@@ -47,6 +47,7 @@ import CouponList from '@/views/management/CouponList'
 /** 환경설정 */
 import SetupLeftMenu from '@/views/setup/LeftMenu'
 import SetupIndex from '@/views/setup/SetupIndex'
+import ConfigManager from '@/views/setup/ConfigManager'
 
 /** 통계 */
 import StatisticsLeftMenu from '@/views/statistics/LeftMenu'
@@ -209,7 +210,7 @@ const routes = [
     ]
   },
   {
-    path: '/setup',
+    path: '/setup/',
     name: '환경설정',    
     component: AdminBoardLayout,
     redirect: '/setup/',
@@ -218,6 +219,11 @@ const routes = [
         path: '/setup/',
         name: '환경설정',
         components: { LeftMenu: SetupLeftMenu, Contents: SetupIndex }
+      }, 
+      {
+        path: '/setup/config_manager',
+        name: '상점환경설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigManager }
       }, 
     ]
   },
@@ -228,7 +234,7 @@ const routes = [
     redirect: '/statistics/',
     children: [
       {
-        path: '/statistics/',
+        path: '/setup/statistics/',
         name: '통계',
         components: { LeftMenu: StatisticsLeftMenu, Contents: StatisticsIndex }
       }, 
