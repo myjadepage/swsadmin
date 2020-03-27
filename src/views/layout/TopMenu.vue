@@ -7,7 +7,7 @@
         <li><router-link to="/order/">주문/매출관리</router-link></li>
         <li><router-link to="/management/">운영관리</router-link></li>
         <li><router-link to="/member/">회원관리</router-link></li>
-        <li><router-link to="/statistics/">통계/분석</router-link></li>
+        <li><router-link to="/statistic/">통계/분석</router-link></li>
         <li><router-link to="/mim/">입점업체관리</router-link></li>
         <li><router-link to="/account/">정산관리</router-link></li>
     </ul>

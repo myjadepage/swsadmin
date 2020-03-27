@@ -50,8 +50,8 @@ import SetupIndex from '@/views/setup/SetupIndex'
 import ConfigManager from '@/views/setup/ConfigManager'
 
 /** 통계 */
-import StatisticsLeftMenu from '@/views/statistics/LeftMenu'
-import StatisticsIndex from '@/views/statistics/StatisticsIndex'
+import StatisticsLeftMenu from '@/views/statistic/LeftMenu'
+import StatisticsIndex from '@/views/statistic/StatisticsIndex'
 
 Vue.use(VueRouter)
 
