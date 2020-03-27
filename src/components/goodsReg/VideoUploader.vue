@@ -48,20 +48,9 @@
           <b-input-group size="sm">
             <b-form-input disabled squared placeholder="썸네일 업로드" v-model="item.thumnailUrl"></b-form-input>
             <b-input-group-append>
-              <b-button
-                size="sm"
-                squared
-                text="Button"
-                v-on:click="onObjOpenFn('thumbmailObject'+index)"
-              >썸네일 업로드</b-button>
+              <b-button size="sm" squared text="Button" v-on:click="onObjOpenFn('thumbmailObject'+index)" >썸네일 업로드</b-button>
             </b-input-group-append>
-            <input
-              type="file"
-              style="display: none"
-              :id="'thumbmailObject'+index"
-              accept="image/*"
-              @change="$emit('imageUploader',$event, {item: item, field: 'thumnailUrl'})"
-            />
+            <input type="file" style="display: none" :id="'thumbmailObject'+index" accept="image/*" @change="$emit('imageUploader',$event, {item: item, field: 'thumnailUrl', imageDir: '/product/image/0/'+productData.sellerSysId})" />
           </b-input-group>
         </b-col>
         <b-col cols="1" class="px-1">
@@ -70,12 +59,7 @@
         <b-col cols="3">
           <template v-if="item.progressMax > 0">
             <b-progress :max="item.progressMax" class="mt-2">
-              <b-progress-bar
-                variant="success"
-                class="text-light"
-                :value="item.progressValue"
-                :label="`${((item.progressValue/ item.progressMax) * 100).toFixed(1)}%`"
-              ></b-progress-bar>
+              <b-progress-bar variant="success" class="text-light" :value="item.progressValue" :label="`${((item.progressValue/ item.progressMax) * 100).toFixed(1)}%`" ></b-progress-bar>
             </b-progress>
           </template>
         </b-col>

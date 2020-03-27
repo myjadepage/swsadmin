@@ -10,38 +10,16 @@
           <span style="width:20px">{{index + 1}}.</span>&emsp;
           <span>
             <b-input-group size="sm">
-              <b-form-input
-                disabled
-                squared
-                placeholder="썸네일 업로드"
-                style="width: 240px"
-                v-model="item.imageurl"
-              ></b-form-input>
+              <b-form-input disabled squared placeholder="썸네일 업로드" style="width: 240px" v-model="item.imageurl" ></b-form-input>
               <b-input-group-append>
-                <b-button
-                  size="sm"
-                  squared
-                  text="Button"
-                  @click="onImageObjOpenFn('imageObject'+index)"
-                >이미지 업로드</b-button>
+                <b-button size="sm" squared text="Button" @click="onImageObjOpenFn('imageObject'+index)">이미지 업로드</b-button>
               </b-input-group-append>
             </b-input-group>
           </span>
-          <input
-            type="file"
-            :id="'imageObject'+index"
-            accept="image/jpeg, image/png, image/jpg, image/gif"
-            style="display:none"
-            @change="$emit('imageUploader',$event, {item: item, field: 'imageurl'})"
-          />
+          <input type="file" :id="'imageObject'+index" accept="image/jpeg, image/png, image/jpg, image/gif" style="display:none" @change="$emit('imageUploader',$event, {item: item, field: 'imageurl', imageDir: '/product/image/0/'+productData.sellerSysId})"/>
         </b-col>
         <b-col class="px-0">
-          <b-button
-            variant="light"
-            @click="removeImageRow(index)"
-            size="sm"
-            style="height:23px"
-          >이미지 삭제</b-button>
+          <b-button variant="light" @click="images.splice(index, 1)" size="sm" style="height:23px">이미지 삭제</b-button>
         </b-col>
       </b-row>
     </div>
@@ -61,9 +39,6 @@ export default {
           imageurl: ""
         });
       }
-    },
-    removeImageRow: function(index) {
-      this.images.splice(index, 1);
     },
     onImageObjOpenFn: function(id) {
       document.getElementById(id).click();

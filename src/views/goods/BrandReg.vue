@@ -16,34 +16,60 @@
                 <h4><i class="xi-check-circle"></i> 브랜드 추가하기</h4>
             </div>
             <table class="t_form">
-                <caption>배너 등록 폼</caption>
+                <col width="150px">
+                <col width="*">
+                <col width="150px">
+                <col width="*">
                 <tbody>
                     <tr>
                         <th>브랜드명</th>
-                        <td>
+                        <td colspan="3">
                             <input type="text" class="text_input" v-model="brandReg.name" maxlength="100" style="width:98%">
                         </td>
                     </tr>
                     <tr>
                         <th>이미지</th>
-                        <td>
+                        <td colspan="3">
                             <div class="adjust_image_container fclear mgb5">
                                 <div class="fr mgt5">
                                     <label><input type="checkbox"> 이미지 삭제</label>
                                 </div>
                             </div>
                             <div>
-                                <input type="file" accept="image/jpeg, image/gif" @change="onNewSingleImageUploadEvent($event, {item: brandReg, field: 'imageUrl'})">
-                                <template v-if="brandReg.imageUrl">
-                                    이미지 존재함
-                                </template>
+                                <input type="file" accept="image/jpeg, image/gif" @change="onNewSingleImageUploadEvent($event, {item: brandReg, field: 'imageUrl', imageDir: '/brand/image'})">
+                                <img width="50" :src="brandReg.imageUrl" />
                             </div>
                             <div class="mgt3 blue">※ 이미지파일은 GIF, JPG로 올려주시기 바랍니다.</div>
                         </td>
                     </tr>
                     <tr>
+                        <th>판매자정보</th>
+                        <td colspan="3">
+                            <Sws-seller
+                                :selected="brandReg.sellerSysId"
+                                @changeFn="(val) => {this.brandReg.sellerSysId = val}"
+                            >    
+                            </Sws-seller>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>담당자명</th>
+                        <td><input type="text" class="text_input w-100" placeholder="담당자명을 입력해주세요..." v-model="brandReg.managerName" /></td>
+                        <th>담당자직급</th>
+                        <td><input type="text" class="text_input w-100" placeholder="직급을 입력해주세요..." v-model="brandReg.managerRank" /> </td>
+                    </tr>
+                    <tr>
+                        <th>연락처</th>
+                        <td>
+                            <p><input type="tel" class="text_input w-100" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="일반번호 입력해주세요..." v-model="brandReg.tel" /> </p>
+                            <p class="pt-1"><input type="tel" class="text_input w-100" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="휴대폰번호를 입력해주세요..." v-model="brandReg.mobile" /> </p>
+                        </td>
+                        <th>이메일 주소</th>
+                        <td><input type="email" class="text_input w-100" placeholder="이메일 주소를 입력해주세요..." v-model="brandReg.email" /> </td>
+                    </tr>
+                    <tr>
                         <th rowspan="2">상단 디자인</th>
-                        <td style="padding: 0px">
+                        <td colspan="3" style="padding: 0px">
                             <quill-editor
                                 ref="editorOptionRef"
                                 class="quill-editor" 
@@ -71,12 +97,12 @@ import Quill from 'quill'
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import { ImageUpload } from 'quill-image-upload'
 import { quillEditor } from 'vue-quill-editor'
-import Axios from 'axios'
 import 'quill/dist/quill.snow.css'
 import commonJs from '@/assets/js/common.js'
 // 이미지 업로드 등록시 함수 
 import ImagesUploader from '@/assets/js/ImagesUploader.js'
 import submitReg from '@/components/brands/BrandReg.js'
+import SwsSeller from '@/components/common/SwsSeller'
 
 Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
 Quill.register('modules/imageUpload', ImageUpload)
@@ -123,17 +149,20 @@ export default {
         if((!this.isEmpty(this.$route.params.brandSysId))) {
             this.loadBrandData(this.$route.params.brandSysId)
         }
-        this.getImageUrl('/brand/image')
+        // this.getImageUrl('/brand/image')
     },
     components: {
-        quillEditor
+        quillEditor,
+        SwsSeller
     },
     methods: {
-        async loadBrandData (SysId){
-            let loadData = await Axios.get('/api/v1/brands/'+SysId).then((res) => {return res.data.jsonData})// this.axiosGetRequest('/api/v1/brands/'+SysId, '', (res) => {return res.data.jsonData})
-            for(let _k in loadData) {
-                this.brandReg[_k] = loadData[_k]
-            }
+        loadBrandData (SysId){
+            this.axiosGetRequest('/api/v1/brands/'+SysId, '', function (res) {
+                let loadData = res.data.jsonData
+                for(let _k in loadData) {
+                    this.brandReg[_k] = loadData[_k]
+                }
+            }.bind(this))
         },
         // 이미지 에디터에서 올림
         categorCommentHtmlimageHandler: function (imageDataUrl, type){
@@ -142,31 +171,30 @@ export default {
             var blob = this.dataURItoBlob(imageDataUrl)
             var file = this.blobToFile(blob, 'temp.'+imageExt)
             var cursorLocation = this.$refs.editorOptionRef.quill.getSelection(true) 
-            this.onEditorImagesUploaderEvent(file, this.$refs.editorOptionRef.quill, cursorLocation.index)
+            this.onEditorImagesUploaderEvent(file, this.$refs.editorOptionRef.quill, cursorLocation.index, '/brand/image')
         },
-        // 브랜드 등록
         registBrand: function () {
-            this.brandReg.proposerSysId = 0
-            this.brandReg.sellerSysId = 2
-            this.brandReg.managerName = 'test'
-            this.brandReg.managerRank = 'ranker'
-            this.brandReg.tel = '010-1111-2222'
-            this.brandReg.mobile = '010-1111-2222'
-            this.brandReg.email = 'aaaa@test.com'
-            this.axiosPostRequest('/api/v1/brands', {jsonData: this.brandReg},this.resultRegistBrand)
+            this.axiosPostRequest('/api/v1/brands', {jsonData: this.brandReg}, (res) => {
+                if (res.data.jsonData.resultCode==='0001'){
+                    alert('브랜드 등록이 완료되었습니다.')
+                    window.location.href="/goods/brand_list"
+                } else {
+                    alert('브랜드 등록에 실패하였습니다.')
+                    console.log(res.data.jsonData)
+                }
+            })
         },
-        resultRegistBrand: function (res) {
-            console.log(res)
-            alert('브랜드 등록이 완료되었습니다.')
-            window.location.href="/goods/brand_list"
-        },
-        // 브랜드 업데이트
         updateBrand: function (){
             let key = this.brandReg.brandSysId
-            this.axiosPatchRequest('/api/v1/brands/'+key, {jsonData: this.brandReg}, this.resultUpdateBrand)
-        },
-        resultUpdateBrand: function (res) {
-            console.log(res)
+            this.axiosPatchRequest('/api/v1/brands/'+key, {jsonData: this.brandReg}, (res) => {
+                if (res.data.jsonData.resultCode==='0001'){
+                    alert('브랜드 수정이 완료되었습니다.')
+                    window.location.href="/goods/brand_list"
+                } else {
+                    alert('브랜드 등록에 실패하였습니다.')
+                    console.log(res.data.jsonData)
+                }
+            })
         }
     }
 }

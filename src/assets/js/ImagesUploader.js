@@ -72,7 +72,7 @@ export default {
      * 이미지업로드시에 item으로 리턴해줌 Async/ await
      */
     async onNewSingleImageUploadEvent(event, params) {
-      let dir = '/product/image/0/'+this.productData.sellerSysId
+      let dir = params.imageDir
       let cdnUrl = "http://cdn.shallwe.link";
 
       // 1. 사용자 인증
@@ -377,8 +377,8 @@ export default {
     },
 
     // editor 용
-    async onEditorImagesUploaderEvent(file, Editor, cursorLocation){
-      let dir = '/product/image/0/'+this.productData.sellerSysId
+    async onEditorImagesUploaderEvent(file, Editor, cursorLocation, imageDir){
+      let dir = imageDir
       let cdnUrl = "http://cdn.shallwe.link";
 
       // 1. 사용자 인증

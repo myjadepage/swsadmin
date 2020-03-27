@@ -4,7 +4,7 @@ export default {
             brandReg: {
                 name: '',
                 topDesignHTML: '',
-                proposerSysId: '',
+                proposerSysId: 0,
                 sellerSysId: '',
                 managerName: '',
                 managerRank: '',

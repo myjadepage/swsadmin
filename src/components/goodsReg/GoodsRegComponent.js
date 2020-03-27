@@ -420,27 +420,10 @@ export default {
             }
           });
         }
-        // 상품옵션
-        // if (this.normalOptionCounter < 1) {
-        //   return false
-        // } else {
-        //   for (var optionCnt = 0; optionCnt < this.nomarlOptions.length; optionCnt++) {
-        //     this.productData.normalOptions[optionCnt] = {
-        //       name: $('input[name=' + this.nomarlOptions[optionCnt].normalOptionName + ']').val(),
-        //       content: $('textarea[name=' + this.nomarlOptions[optionCnt].normalOptionContent + ']').val()
-        //     }
-        //   }
-        // }
-        // let nomarlOptions = this.nomarlOptions
-        // if (nomarlOptions.length > 0) {
-        //   nomarlOptions.forEach(_item => {
-        //     this.productData.
-        //   })
-        // }
-      } else if (this.productData.optionTypeCode === 5) {
-        this.productData.optionDescription =
-          document.Frm.optionDescription.value;
       }
+      //  else if (this.productData.optionTypeCode === 5) {
+      //   this.productData.optionDescription = this.productData.optionDescription
+      // }
 
       // 추가 구성
       let isAddition =
@@ -454,8 +437,8 @@ export default {
               if (subAdditionArray[sub].procTypeCode !== 4) {
                 details[sub] = {
                   item: subAdditionArray[sub].item,
-                  price: this.toNumber(String(this.isEmpty(subAdditionArray[sub].price)? 0: subAdditionArray[sub].price)),
-                  stockQty: this.toNumber(String(this.isEmpty(subAdditionArray[sub].stockQty)? 0: subAdditionArray[sub].stockQty)),
+                  price: this.toNumber(String(this.isEmpty(subAdditionArray[sub].price) ? 0: subAdditionArray[sub].price)),
+                  stockQty: this.toNumber(String(this.isEmpty(subAdditionArray[sub].stockQty) ? 0: subAdditionArray[sub].stockQty)),
                   isSoldout: subAdditionArray[sub].isSoldout ? 1 : 0,
                   isHide: subAdditionArray[sub].isHide ? 1 : 0
                 };
@@ -468,13 +451,6 @@ export default {
           }
         }
       }
-      // ------------------- Form Validate 체크 종료 -------------------
-      // console.log(this.productData)
-      // let CallbackFn = function (res) {
-      //   console.log(res)
-      //   alert('상품등록이 완료 되었습니다.')
-      // }
-      // this.axiosPostRequest('/api/v1/products', {jsonData: this.productData}, CallbackFn)
       return this.productData;
     },
     onFocusMethod(object, message) {

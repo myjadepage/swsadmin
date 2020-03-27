@@ -293,12 +293,12 @@ const clickEvent = {
     detailDescriptionImage: function(event) {
       var obj = this.$refs.detailDescriptionRef.quill;
       var cursorLocation = obj.getSelection(true);
-      this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index);
+      this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index, '/product/image/0/'+this.productData.sellerSysId);
     },
     deliveryCommentHtmlImage: function(event) {
       var obj = this.$refs.deliveryCommentHtmlRef.quill;
       var cursorLocation = obj.getSelection(true);
-      this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index);
+      this.onEditorImagesUploaderEvent(event.target.files[0], obj, cursorLocation.index, '/product/image/0/'+this.productData.sellerSysId);
     },
     detailDescriptionimageHandler: function(imageDataUrl, type) {
       var ext = type.split("/");
@@ -306,7 +306,7 @@ const clickEvent = {
       var blob = this.dataURItoBlob(imageDataUrl);
       var file = this.blobToFile(blob, "temp." + imageExt);
       var cursorLocation = this.$refs.detailDescriptionRef.quill.getSelection(true);
-      this.onEditorImagesUploaderEvent( file, this.$refs.detailDescriptionRef.quill, cursorLocation.index);
+      this.onEditorImagesUploaderEvent( file, this.$refs.detailDescriptionRef.quill, cursorLocation.index, '/product/image/0/'+this.productData.sellerSysId);
     },
     deliveryCommentHtmlimageHandler: function(imageDataUrl, type) {
       var ext = type.split("/");
@@ -316,11 +316,7 @@ const clickEvent = {
       var cursorLocation = this.$refs.deliveryCommentHtmlRef.quill.getSelection(
         true
       );
-      this.onEditorImagesUploaderEvent(
-        file,
-        this.$refs.deliveryCommentHtmlRef.quill,
-        cursorLocation.index
-      );
+      this.onEditorImagesUploaderEvent(file,this.$refs.deliveryCommentHtmlRef.quill,cursorLocation.index, '/product/image/0/'+this.productData.sellerSysId);
     }
   }
 };

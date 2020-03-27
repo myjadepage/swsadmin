@@ -136,12 +136,8 @@ export default {
         if (_k.indexOf("isUsedOptionalImage") > -1) {
           if (product[_k] !== 0) {
             let num = _k.replace("isUsedOptionalImage", '');
-            this.imagesCounter++;
             this.images.push({
-              id: this.imagesCounter,
-              imageVisibleTitle: product["optionalImage" + num + "Url"],
-              imageObjName: "optionalImage" + num + "Url",
-              url: product["optionalImage" + num + "Url"]
+              imageurl: product["optionalImage" + num + "Url"]
             });
           }
         } else if (_k.indexOf("iconList") > -1) {
@@ -592,12 +588,18 @@ export default {
             details: []
           }
           if (addOption.procTypeCode !==4 || !this.isEmpty(addOption.prdtAddingProductSysId)) {
-            row.base = addOption
+            row.base = {
+              itemGroup: addOption.itemGroup,
+              procTypeCode: addOption.procTypeCode,
+              prdtAddingProductSysId: addOption.prdtAddingProductSysId
+            }
           }
           addOption.subAdditionOptions.forEach(item => {
             if (item.procTypeCode !==4 || !this.isEmpty(item.prdtAddingProductDetailSysId)) {
               item.isHide = (item.isHide ? 1 : 0)
               item.isSoldout = (item.isSoldout ? 1 : 0)
+              item.price = (this.isEmpty(item.price) ? 0 : item.price)
+              item.stockQty = (this.isEmpty(item.stockQty) ? 0 : item.stockQty)
               row.details.push(item)
             }
           })

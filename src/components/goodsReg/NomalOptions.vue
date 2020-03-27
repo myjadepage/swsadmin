@@ -41,7 +41,7 @@
                       <td>-</td>
                       <td class="txt"><input type="text" class="text_input" style="width: 90%;" maxlength="50" v-model="item.name"></td>
                       <td><textarea rows="3" class="text_input" maxlength="2000" style="width: 100%" v-model="item.content"></textarea></td>
-                      <td class="size"><span>0</span><span style="color:black">/200</span></td>
+                      <td class="size"><span :id="'nomarlTextLength'+index">0</span><span style="color:black">/200</span></td>
                       <td><b-button variant="light" size="sm" @click="productsOptionRemove(item)">항목 삭제</b-button></td>
                     </template>
                 </tr>

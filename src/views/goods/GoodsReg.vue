@@ -948,39 +948,7 @@ export default {
     resultSeller: function (val) {
       this.productData.sellerSysId = val
       this.$refs.brand.changeSellerFn(val)
-    },
-    // resultSellersFn: function(res) {
-    //   var selleries = res.data.jsonData.sellers;
-    //   this.sellers.push({ value: 0, text: "::판매자를 선택해주십시오::" });
-    //   selleries.forEach(item => [
-    //     this.sellers.push({ value: item.sellerSysId, text: item.name })
-    //   ]);
-    //   this.changeSellerFn();
-    // },
-    // changeSellerFn: function(val) {
-    //   this.productData.sellerSysId = val
-    //   if (this.productData.sellerSysId !== 0) {
-    //     this.axiosGetRequest("/api/v1/sellers/" + val + "/brands",'',this.onSellerToBrandFn);
-    //   }
-    // },
-    // onSellerToBrandFn: function(res) {
-    //   var data = res.data.jsonData.brands;
-    //   this.brands.splice(1);
-    //   data.forEach(item => {
-    //     this.brands.push({ value: item.brandSysId, text: item.name });
-    //   });
-    // },
-    // resultCategoryFn: function(res) {
-    //   let data = res.data.jsonData.categories;
-    //   data.forEach(_item => {
-    //     this.category1.push({
-    //       value: _item.categorySysId,
-    //       parentId: _item.parentSysId,
-    //       feeRate: _item.feeRate,
-    //       text: _item.name + "[" + _item.feeRate * 100 + "%]"
-    //     });
-    //   });
-    // }
+    }
   }
 };
 </script>
