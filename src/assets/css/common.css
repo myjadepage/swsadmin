@@ -1041,7 +1041,7 @@
         /* background: url(../img/icon_square_ring.gif) 5px 6px no-repeat; */
         color: #3191b7;
         font-size: 12px;
-        padding-left: 14px
+        /* padding-left: 14px */
     }
     .square_orange {
         background: url(../img/icon_square_ring_orange.gif) 5px 6px no-repeat;

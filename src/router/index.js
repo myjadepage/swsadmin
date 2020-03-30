@@ -48,6 +48,7 @@ import CouponList from '@/views/management/CouponList'
 import SetupLeftMenu from '@/views/setup/LeftMenu'
 import SetupIndex from '@/views/setup/SetupIndex'
 import ConfigManager from '@/views/setup/ConfigManager'
+import ConfigSite from '@/views/setup/ConfigSite'
 
 /** 통계 */
 import StatisticsLeftMenu from '@/views/statistic/LeftMenu'
@@ -225,6 +226,12 @@ const routes = [
         name: '상점환경설정',
         components: { LeftMenu: SetupLeftMenu, Contents: ConfigManager }
       }, 
+      {
+        path: '/setup/config_site',
+        name: '사이트설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigSite }
+      }, 
+      
     ]
   },
   {
