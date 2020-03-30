@@ -4,7 +4,6 @@ import AdminBoardLayout from '@/views/layout/AdminBoardLayout.vue'
 
 /** 상품관리 */
 import GoodsLeftMenu from '@/views/goods/LeftMenu'
-import GoodsIndex from '@/views/goods/index.vue'
 import BrandList from '@/views/goods/BrandList.vue'
 import BrandReg from '@/views/goods/BrandReg.vue'
 import GoodsReg from '@/views/goods/GoodsReg.vue'
@@ -55,12 +54,6 @@ import ConfigSite from '@/views/setup/ConfigSite'
 import StatisticsLeftMenu from '@/views/statistic/LeftMenu'
 import StatisticsIndex from '@/views/statistic/StatisticsIndex'
 
-/** 정산관리 */
-import AccountMenu from '@/views/account/LeftMenu'
-import AccountIndex from '@/views/account/index'
-import Account from '@/views/account/Account'
-import AccountForSeller from '@/views/account/AccountForSeller'
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -72,13 +65,8 @@ const routes = [
     path: '/goods',
     name: '상품관리',
     component: AdminBoardLayout,
-    redirect: '/goods/index',
+    redirect: '/goods/goods_list',
     children: [
-      {
-        path: '/goods/index',
-        name: '상품 관리',
-        components: { LeftMenu: GoodsLeftMenu, Contents: GoodsIndex}
-      },
       {
         path: '/goods/goods_reg',
         name: '상품 등록',
@@ -296,29 +284,7 @@ const routes = [
         components: { LeftMenu: OrderLeftMenu, Contents: OrderCancel }
       }, 
     ]
-  },
-  {
-    path: '/account/',
-    name: '정산관리',
-    component: AdminBoardLayout,
-    redirect: '/account/index',
-    children:[
-      {
-        path: '/account/index',
-        name: '본사정산',
-        components: { LeftMenu: AccountMenu, Contents: AccountIndex }
-      },
-      {
-        path: '/account/account',
-        name: '정산관리',
-        components: { LeftMenu: AccountMenu, Contents: Account }
-      },
-      {
-        path: '/account/dealer_account',
-        name: '판매자정산',
-        components: { LeftMenu: AccountMenu, Contents: AccountForSeller }
-      }
-    ]
+
   }
 ]
 
