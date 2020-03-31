@@ -25,7 +25,9 @@
                     <tr>
                         <th>판매자</th>
                         <td>
-                            <sws-seller @changeFn="function (val) {SearchForm.sellerSysId = val}"></sws-seller>
+                            <sws-seller 
+                                :parentData="SearchForm"
+                            ></sws-seller>
                         </td>
                         <th>판매자ID</th>
                         <td>
@@ -179,6 +181,7 @@ export default {
         onSubmit: function () {
             return false
         }
+
     }
 
 }
