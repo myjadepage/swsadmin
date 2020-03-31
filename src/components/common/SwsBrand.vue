@@ -1,5 +1,5 @@
 <template>
-    <select id="brandSysId" name="brandSysId" @change="$emit('changeFn', brandSysId)" v-model="brandSysId">
+    <select id="brandSysId" name="brandSysId" v-model="parentData.brandSysId">
         <option v-for="(item, index) in brands" :key="index" :value="item.value">{{ item.text }}</option>
     </select>
 </template>
@@ -7,22 +7,21 @@
 <script>
 import commonJs from '@/assets/js/common.js'
 export default {
-    props: ['selected'],
+    props: ['parentData'],
     data: () => ({
-        brands: [{ value: 0, text: "::브랜드를 선택해주세요::" }],
-        brandSysId: 0
+        brands: [{ value: 0, text: "::브랜드를 선택해주세요::" }]
     }),
-    watch: {
-        selected: function (val) {
-            this.brandSysId = val
-        }
-    },
     mixins: [commonJs],
+    mounted () {
+        this.changeSellerFn()
+    },
     methods: {
         changeSellerFn: function(val) {
             this.brandSysId = 0
-            if (val !== 0) {
+            if (val !== undefined) {
                 this.axiosGetRequest("/api/v1/sellers/" + val + "/brands","",this.onSellerToBrandFn);
+            } else {
+                this.axiosGetRequest("/api/v1/brands/searchlists","",this.onSellerToBrandFn);
             }
         },
         onSellerToBrandFn: function(res) {

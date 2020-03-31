@@ -1,5 +1,5 @@
 <template>
-    <select id="sellers" name="sellers" @change="$emit('changeFn', sellerSysId)" v-model="sellerSysId">
+    <select id="sellers" name="sellers" v-model="parentData.sellerSysId" @change="$emit('changeFn', parentData.sellerSysId)">
         <option v-for="(item, index) in sellers" :key="index" :value="item.value">{{ item.text }}</option>
     </select>
 </template>
@@ -7,16 +7,10 @@
 <script>
 import commonJs from '@/assets/js/common.js'
 export default {
-  props: ['selected'],
+  props: ['parentData'],
   data:() => ({
-      sellers: [],
-      sellerSysId: 0
+      sellers: []
   }),
-  watch: {
-    selected: function (val) {
-      this.sellerSysId = val
-    }
-  },
   mixins: [commonJs],
   mounted () {
     this.axiosGetRequest('/api/v1/sellers/bases', "", this.resultSellersFn);
