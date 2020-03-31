@@ -32,30 +32,19 @@
                         <tr>
                             <th>상품판매자</th>
                             <td>
-                                <Sws-seller
-                                    @changeFn="resultSeller"
-                                ></Sws-seller>
+                                <Sws-seller :parentData="FilterFields"  @changeFn="changeBrand"></Sws-seller>
                             </td>
                         </tr>
                         <tr>
                             <th>상품등록일</th>
                             <td>
-                                <b-row>
-                                    <b-col cols="2">
-                                        <b-form-datepicker id="startDate" placeholder="시작일자 선택" v-model="FilterFields.startDate"></b-form-datepicker>
-                                    </b-col>
-                                    <b-col cols="2">
-                                        <b-form-datepicker id="endDate" placeholder="종료일자 선택" v-model="FilterFields.endDate"></b-form-datepicker>
-                                    </b-col>
-                                </b-row>
+                                <sws-date :parentData="FilterFields"></sws-date>
                             </td>
                         </tr>
                         <tr>
                             <th>그룹별</th>
                             <td>
-                                <select id="sbrand" name="sbrand" v-model="FilterFields.brandSysId">
-                                    <option v-for="(item, index) in brands" :key="index" :value="item.value">{{item.text}}</option>
-                                </select>
+                                <sws-brand ref="brand" :parentData="FilterFields"></sws-brand>
                             </td>
                         </tr>
                         <tr>
@@ -114,7 +103,9 @@
 import commonJs from '@/assets/js/common.js'
 import GoodsListTable from '@/components/goodsList/GoodsListTable'
 import SwsCategory from '@/components/common/SwsCategory.vue'
+import SwsDate from '@/components/common/SwsDate'
 import SwsSeller from '@/components/common/SwsSeller'
+import SwsBrand from '@/components/common/SwsBrand'
 export default {
     data () {
         return {
@@ -146,8 +137,10 @@ export default {
     mixins: [commonJs],
     components: {
         SwsSeller,
+        SwsBrand,
         GoodsListTable,
-        SwsCategory
+        SwsCategory,
+        SwsDate
     },
     mounted () {  
         this.axiosGetRequest('/api/v1/brands','',this.initialBrands)
@@ -243,14 +236,8 @@ export default {
             if (typeof category['categoryName5'] !== 'undefined') { categoryTitle += ' > ' + category['categoryName5'] }
             return categoryTitle
         },
-        initialBrands: function (res) {
-            var data = res.data.jsonData.brands
-            data.forEach(item => {
-                this.brands.push({value: item.brandSysId, text: item.name})
-            })
-        },
-        resultSeller: function (val) {
-            this.FilterFields.sellerSysId = val
+        changeBrand: function (item) {
+            this.$refs.brand.changeSellerFn(item)
         }
     }
 }

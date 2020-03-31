@@ -127,7 +127,7 @@
               </th>
               <td colspan="3">
                 <Sws-seller
-                  :selected="productData.sellerSysId"
+                  :parentData="productData"
                   @changeFn="resultSeller"
                 ></Sws-seller>
               </td>
@@ -140,8 +140,7 @@
               <td colspan="3">
                 <Sws-brand
                   ref="brand"
-                  :selected="productData.brandSysId"
-                  @changeFn="function (val) { this.productData.brandSysId = val }"
+                  :parentData="productData"
                 >
                 </Sws-brand>
                 <!-- <select class="text_input" id="brandSysId" name="brandSysId" v-model="productData.brandSysId">
@@ -946,7 +945,6 @@ export default {
       })
     },
     resultSeller: function (val) {
-      this.productData.sellerSysId = val
       this.$refs.brand.changeSellerFn(val)
     }
   }

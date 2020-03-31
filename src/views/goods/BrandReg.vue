@@ -45,11 +45,7 @@
                     <tr>
                         <th>판매자정보</th>
                         <td colspan="3">
-                            <Sws-seller
-                                :selected="brandReg.sellerSysId"
-                                @changeFn="(val) => {this.brandReg.sellerSysId = val}"
-                            >    
-                            </Sws-seller>
+                            <sws-seller :parentData="brandReg"></sws-seller>
                         </td>
                     </tr>
                     <tr>

@@ -4,6 +4,7 @@ import AdminBoardLayout from '@/views/layout/AdminBoardLayout.vue'
 
 /** 상품관리 */
 import GoodsLeftMenu from '@/views/goods/LeftMenu'
+import GoodsIndex from '@/views/goods/index.vue'
 import BrandList from '@/views/goods/BrandList.vue'
 import BrandReg from '@/views/goods/BrandReg.vue'
 import GoodsReg from '@/views/goods/GoodsReg.vue'
@@ -15,12 +16,15 @@ import Marketing from '@/views/goods/Marketing.vue'
 
 /** 주문/매출관리 */
 import OrderLeftMenu from '@/views/order/LeftMenu'
+import OrderIndex from '@/views/order/index'
 import OrderAllList from '@/views/order/OrderAllList'
 import OrderPriceBefore from '@/views/order/OrderPriceBefore'
 import OrderPriceComplete from '@/views/order/OrderPriceComplete'
 import OrderProductReady from '@/views/order/OrderProductReady'
 import OrderProductLeave from '@/views/order/OrderProductLeave'
 import OrderCancel from '@/views/order/OrderCancel'
+import OrderDecide from '@/views/order/OrderDecide'
+import OrderConsult from '@/views/order/OrderConsult'
 
 
 /** 회원관리 */
@@ -55,6 +59,12 @@ import ConfigSite from '@/views/setup/ConfigSite'
 import StatisticsLeftMenu from '@/views/statistic/LeftMenu'
 import StatisticsIndex from '@/views/statistic/StatisticsIndex'
 
+/** 정산관리 */
+import AccountMenu from '@/views/account/LeftMenu'
+import AccountIndex from '@/views/account/index'
+import Account from '@/views/account/Account'
+import AccountForSeller from '@/views/account/AccountForSeller'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -66,8 +76,13 @@ const routes = [
     path: '/goods',
     name: '상품관리',
     component: AdminBoardLayout,
-    redirect: '/goods/goods_list',
+    redirect: '/goods/index',
     children: [
+      {
+        path: '/goods/index',
+        name: '상품 관리',
+        components: { LeftMenu: GoodsLeftMenu, Contents: GoodsIndex}
+      },
       {
         path: '/goods/goods_reg',
         name: '상품 등록',
@@ -257,8 +272,13 @@ const routes = [
     path: '/order/',
     name: '주문/매출관리',
     component: AdminBoardLayout,
-    redirect: '/order/order_list',
+    redirect: '/order/index',
     children:[
+      {
+        path: '/order/index',
+        name: '주문 관리',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderIndex }
+      }, 
       {
         path: '/order/order_list/',
         name: '전체 주문',
@@ -289,8 +309,40 @@ const routes = [
         name: '주문취소',
         components: { LeftMenu: OrderLeftMenu, Contents: OrderCancel }
       }, 
+      {
+        path: '/order/order_decide/',
+        name: '주문확정',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderDecide }
+      }, 
+      {
+        path: '/order/order_consult/',
+        name: '구매상담',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderConsult }
+      }
     ]
-
+  },
+  {
+    path: '/account/',
+    name: '정산관리',
+    component: AdminBoardLayout,
+    redirect: '/account/index',
+    children:[
+      {
+        path: '/account/index',
+        name: '본사정산',
+        components: { LeftMenu: AccountMenu, Contents: AccountIndex }
+      },
+      {
+        path: '/account/account',
+        name: '정산관리',
+        components: { LeftMenu: AccountMenu, Contents: Account }
+      },
+      {
+        path: '/account/dealer_account',
+        name: '판매자정산',
+        components: { LeftMenu: AccountMenu, Contents: AccountForSeller }
+      }
+    ]
   }
 ]
 
