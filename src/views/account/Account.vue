@@ -32,7 +32,9 @@
                     <tr>
                         <th>기간</th>
                         <td>
-                            <sws-date ref="swsDate"></sws-date>
+                            <sws-date 
+                                :parentData="SearchForm"
+                            ></sws-date>
                         </td>
                     </tr>
                     <tr>
@@ -135,6 +137,8 @@ export default {
         SearchForm: {
             sellerDivid: '',
             category: [],
+            startDate: '',
+            endDate: '',
             searchRange: '',
             searchText: ''
         }
@@ -146,8 +150,6 @@ export default {
     methods: {
         onSubmit: function (obj) {
             console.log(obj)
-            this.SearchForm.startDate = this.$refs.swsDate.startDate
-            this.SearchForm.endDate = this.$refs.swsDate.endDate
             return false
         }
     }

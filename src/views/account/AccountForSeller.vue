@@ -55,7 +55,9 @@
                     <tr>
                         <th>기간별</th>
                         <td colspan="3">
-                            <sws-date ref="swsDate"></sws-date>
+                            <sws-date 
+                                :parentData="SearchForm"
+                            ></sws-date>
                             <div class="mt-1">
                                 <b-button size="sm" type="submit" variant="outline-secondary"><font-awesome-icon icon="search" /> 검색</b-button>
                             </div>
@@ -166,18 +168,15 @@ export default {
             SearchForm: {
                 sellerSysId: 0,
                 sellerId: '',
-                category: [],
-                accountStatus: '',
                 startDate: '',
-                endDate: ''
+                endDate: '',
+                category: [],
+                accountStatus: ''
             }
         }
     },
     methods: {
         onSubmit: function () {
-            this.SearchForm.startDate = this.$refs.swsDate.startDate
-            this.SearchForm.endDate = this.$refs.swsDate.endDate
-            
             return false
         }
     }

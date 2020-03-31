@@ -5,7 +5,7 @@ export default {
                 name: '',
                 topDesignHTML: '',
                 proposerSysId: 0,
-                sellerSysId: '',
+                sellerSysId: 0,
                 managerName: '',
                 managerRank: '',
                 tel: '',
