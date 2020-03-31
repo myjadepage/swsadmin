@@ -43,6 +43,7 @@ import FaqDetail from '@/views/management/FaqDetail'
 import InquiryList from '@/views/management/InquiryList'
 import InquiryDetail from '@/views/management/InquiryDetail'
 import CouponList from '@/views/management/CouponList'
+import CouponReg from '@/views/management/CouponReg'
 
 /** 환경설정 */
 import SetupLeftMenu from '@/views/setup/LeftMenu'
@@ -207,7 +208,12 @@ const routes = [
         path: '/management/coupon_list',
         name: '상품쿠폰관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: CouponList }
-      }  
+      },
+      {
+        path: '/management/coupon_reg',
+        name: '상품쿠폰관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: CouponReg }
+      }    
     ]
   },
   {

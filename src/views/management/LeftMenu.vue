@@ -17,7 +17,7 @@
         
         <dt>쿠폰관리</dt>
         <dd class="side_small_menu">
-            <router-link to="/coupon_list">상품쿠폰관리</router-link>
+            <router-link to="/management/coupon_list">상품쿠폰관리</router-link>
         </dd>
         <!-- <dt>SMS관리</dt>
         <dd class="side_small_menu">

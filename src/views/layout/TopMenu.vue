@@ -2,7 +2,6 @@
     <ul>
         <li class="logo_home"><router-link to="/"><img src="@/assets/img/sws-bi-black.png" style="margin-right: 5px; margin-bottom: 5px;"/>ADMIN</router-link></li>
         <li><router-link to="/setup/">환경설정</router-link></li>
-        <li><router-link to="/design/">디자인관리</router-link></li>
         <li><router-link to="/goods/">상품관리</router-link></li>
         <li><router-link to="/order/">주문/매출관리</router-link></li>
         <li><router-link to="/management/">운영관리</router-link></li>

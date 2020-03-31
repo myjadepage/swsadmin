@@ -1,11 +1,11 @@
 <template>
   <div id="contents">
-                <h3>상품쿠폰관리</h3>
+                <h3>{{ this.$route.name }}</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
                     <li>상점운영관리</li>
-                    <li class="on">상품쿠폰관리</li>
+                    <li class="on">{{ this.$route.name }}</li>
                 </ul>
                 <ul class="helpbox">
                     <li>쿠폰을 발행하고 쿠폰지급 내역을 확인할 수 있습니다.</li>
@@ -80,51 +80,20 @@
 
                                 <td><a href="javascript:;" onclick="openIssueList(57); return false;">0/0장</a></td>
                                 <td>2017.08.31</td>
-                                <td><button type="button" class="btn btn-sm btn-default" onclick="reg(57)">수정</button></td>
+                                <td><b-button variant="secondary" onclick="reg(57)">수정</b-button></td>
                             </tr>
-
-                            <tr>
-                                <td><input type="checkbox" name="cbList" value="56"></td>
-                                <td>2</td>
-                                <td>상품 발급</td>
-                                <td class="left">상품 1000원 할인 쿠폰</td>
-
-                                <td>1,000원</td>
-
-                                <td>2017.08.01~<br>2018.08.31</td>
-                                <td>일반회원<br>코알라회원</td>
-
-                                <td><a href="javascript:;" onclick="openIssueList(56); return false;">0/0장</a></td>
-                                <td>2017.08.31</td>
-                                <td><button type="button" class="btn btn-sm btn-default" onclick="reg(56)">수정</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="checkbox" name="cbList" value="55"></td>
-                                <td>1</td>
-                                <td>상품 발급</td>
-                                <td class="left">상품 10000원 할인 쿠폰</td>
-
-                                <td>10,000원</td>
-
-                                <td>2017.08.01~<br>2018.08.31</td>
-                                <td>일반회원<br>코알라회원</td>
-
-                                <td><a href="javascript:;" onclick="openIssueList(55); return false;">0/0장</a></td>
-                                <td>2017.08.31</td>
-                                <td><button type="button" class="btn btn-sm btn-default" onclick="reg(55)">수정</button></td>
-                            </tr>
+                         
 
                         </tbody>
                     </table>
 
                     <div class="paging" style="margin-top:20px">
-                        <span><a href="/management/coupon_list?page=1&kind=100&smethod="><strong>1</strong></a></span>
+                        <span><a href=""><strong>1</strong></a></span>
                     </div>
 
                     <div class="btn_center">
-                        <button type="button" class="btn btn-default" onclick="reg('100')">쿠폰등록</button>
-                        <button type="button" class="btn btn-danger" onclick="delList()">선택삭제</button>
+                        <b-button variant="secondary"  @click="$router.push('/management/coupon_reg')" style="margin-right:5px">쿠폰등록</b-button>
+                        <b-button variant="danger" onclick="delList()">선택삭제</b-button>
                     </div>
 
                 </form>
