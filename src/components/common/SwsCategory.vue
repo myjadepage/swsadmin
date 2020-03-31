@@ -36,7 +36,7 @@ export default {
             category4: [{value: 0, text: '::4차 카테고리::', level: 4, feeRate: 0, parentSysId: 0}],
             category5: [{value: 0, text: '::5차 카테고리::', level: 5, feeRate: 0, parentSysId: 0}]
         }
-    },
+    }, 
     props: ['selectedCategory'],
     mixins: [commmonJs],
     mounted() {

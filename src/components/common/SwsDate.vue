@@ -15,7 +15,7 @@
                     <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="parentData.endDate" button-only right></b-form-datepicker>
                 </b-input-group-append>
             </b-input-group>
-        </b-col>
+        </b-col> 
         <b-col cols="12" class="mt-2">
             <b-button variant="outline-secondary" @click="selectedDate('today')" size="sm">오늘</b-button>&emsp;
             <b-button variant="outline-secondary" @click="selectedDate('yester')" size="sm">어제</b-button>&emsp;

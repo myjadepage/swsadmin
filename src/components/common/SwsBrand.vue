@@ -14,7 +14,7 @@ export default {
     mixins: [commonJs],
     mounted () {
         this.changeSellerFn()
-    },
+    }, 
     methods: {
         changeSellerFn: function(val) {
             this.brandSysId = 0

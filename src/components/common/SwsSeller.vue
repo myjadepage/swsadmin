@@ -7,11 +7,11 @@
 <script>
 import commonJs from '@/assets/js/common.js'
 export default {
-  props: ['parentData'],
   data:() => ({
       sellers: []
   }),
   mixins: [commonJs],
+  props: ['parentData'],
   mounted () {
     this.axiosGetRequest('/api/v1/sellers/bases', "", this.resultSellersFn);
   },
