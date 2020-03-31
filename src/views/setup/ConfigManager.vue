@@ -18,7 +18,7 @@
             <!-- 관리자정보 -->
             <div class="box">
                 <div class="section_head">
-                    <h4><i class="xi-check-circle"></i> 관리자정보</h4>
+                    <h4> 관리자정보</h4>
                 </div>
 
                 <table class="t_form">
@@ -68,7 +68,7 @@
             <!-- 사업자정보 -->
             <div class="box">
                 <div class="section_head">
-                    <h4><i class="xi-check-circle"></i> 사업자정보</h4>
+                    <h4> 사업자정보</h4>
                 </div>
 
                 <table class="t_form">
@@ -109,10 +109,10 @@
                         <tr>
                             <th>회사 주소<strong class="red">&nbsp;*</strong></th>
                             <td colspan="3">
-                                <input type="text" placeholder="우편번호" v-model="form.zoneCode" maxlength="7" class="text_input" disabled  required>&emsp;
-                                <b-button size="sm" variant="secondary" @click="$refs.addressModal.show()">우편번호 찾기</b-button>
+                                <input type="text" placeholder="우편번호" v-model="form.zoneCode" maxlength="7" class="text_input" disabled required>&emsp;
+                                <b-button size="sm" variant="outline-secondary" @click="$refs.addressModal.show()">우편번호 찾기</b-button>
                                 <div class="mgt3">
-                                    <input type="text" v-model="form.roadAddress" placeholder="도로명주소" maxlength="50" class="text_input" style="width: 50%" readonly  required>
+                                    <input type="text" v-model="form.roadAddress" placeholder="도로명주소" maxlength="50" class="text_input" style="width: 50%" readonly required>
                                 </div>
                                 <div class="mgt3">
                                     <input type="text" v-model="form.detailAddress" placeholder="상세주소" maxlength="50" class="text_input" style="width: 50%"  required>
@@ -157,8 +157,8 @@
             <!-- 설명 -->
 
             <div class="btn_center">
-                <b-button type="submit" variant="info">확인</b-button>
-                <b-button type="reset" variant="secondary">취소</b-button>
+                <b-button type="submit" variant="outline-info">확인</b-button>&emsp;
+                <b-button type="reset" variant="outline-danger">취소</b-button>
             </div>
         </b-form>
         <b-modal ref="addressModal">

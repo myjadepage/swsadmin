@@ -16,12 +16,15 @@ import Marketing from '@/views/goods/Marketing.vue'
 
 /** 주문/매출관리 */
 import OrderLeftMenu from '@/views/order/LeftMenu'
+import OrderIndex from '@/views/order/index'
 import OrderAllList from '@/views/order/OrderAllList'
 import OrderPriceBefore from '@/views/order/OrderPriceBefore'
 import OrderPriceComplete from '@/views/order/OrderPriceComplete'
 import OrderProductReady from '@/views/order/OrderProductReady'
 import OrderProductLeave from '@/views/order/OrderProductLeave'
 import OrderCancel from '@/views/order/OrderCancel'
+import OrderDecide from '@/views/order/OrderDecide'
+import OrderConsult from '@/views/order/OrderConsult'
 
 
 /** 회원관리 */
@@ -263,8 +266,13 @@ const routes = [
     path: '/order/',
     name: '주문/매출관리',
     component: AdminBoardLayout,
-    redirect: '/order/order_list',
+    redirect: '/order/index',
     children:[
+      {
+        path: '/order/index',
+        name: '주문 관리',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderIndex }
+      }, 
       {
         path: '/order/order_list/',
         name: '전체 주문',
@@ -294,6 +302,16 @@ const routes = [
         path: '/order/order_cancel/',
         name: '주문취소',
         components: { LeftMenu: OrderLeftMenu, Contents: OrderCancel }
+      }, 
+      {
+        path: '/order/order_decide/',
+        name: '주문확정',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderDecide }
+      }, 
+      {
+        path: '/order/order_consult/',
+        name: '구매상담',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderConsult }
       }
     ]
   },
