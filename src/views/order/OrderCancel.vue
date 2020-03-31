@@ -13,9 +13,7 @@
         <!--검색 필터  -->
         <Order-filter-board
             :isProgress="false"
-            :orderFilter="orderFilter"
-            :items="items"
-            @search="filterRequest"
+            @search="loadData"
         >
         </Order-filter-board>
         <!-- 조회 테이블 -->
@@ -35,7 +33,7 @@ export default {
         OrderFilterBoard
     },
     methods: {
-        filterRequest: function (req) {
+        loadData: function (req) {
             console.log(req)
         }
     }
