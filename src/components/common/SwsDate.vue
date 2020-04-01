@@ -16,7 +16,7 @@
                 </b-input-group-append>
             </b-input-group>
         </b-col> 
-        <b-col cols="12" class="mt-2">
+        <b-col cols="12" class="mt-2 dateLimitDisplay">
             <b-button variant="outline-secondary" @click="selectedDate('today')" size="sm">오늘</b-button>&emsp;
             <b-button variant="outline-secondary" @click="selectedDate('yester')" size="sm">어제</b-button>&emsp;
             <b-button variant="outline-secondary" @click="selectedDate('3date')" size="sm">3일간</b-button>&emsp;
@@ -75,5 +75,9 @@ export default {
 </script>
 
 <style>
-
+.dropdown-menu.show { 
+    transform: none !important;
+    top: 25px !important;
+    left: -255px !important;
+}
 </style>
