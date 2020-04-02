@@ -1,6 +1,6 @@
 <template>
   <div id="contents">
-                <h3>{{ $route.name }}</h3>
+                <h3><font-awesome-icon icon="play-circle" /> {{ $route.name }}</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
@@ -34,7 +34,7 @@
                             </select>
 
                             <input type="text" name="sword" value="" maxlength="50" class="text_input" style="width:150px; margin: 0 5px">
-                            <b-button variant="secondary">검색</b-button>
+                            <b-button variant="outline-secondary" size="sm">검색</b-button>
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                         <tr>
                             <td>3</td>
                             <td>배송관련</td>
-                            <td class="left"><a href="/inquiry_detail">배송문의</a></td>
+                            <td class="left"><a href="/management/inquiry_detail">배송문의</a></td>
                             <td>mallstore</td>
                             <td>2019-06-18</td>
                             <td><span style="color:red">미답변</span></td>
@@ -73,7 +73,7 @@
                         <tr>
                             <td>2</td>
                             <td>상품문의</td>
-                            <td class="left"><a href="/inquiry_detail">상품정보</a></td>
+                            <td class="left"><a href="/management/inquiry_detail">상품정보</a></td>
                             <td>mallstore</td>
                             <td>2019-06-18</td>
                             <td><span style="color:red">미답변</span></td>
@@ -82,7 +82,7 @@
                         <tr>
                             <td>1</td>
                             <td>회원정보</td>
-                            <td class="left"><a href="/inquiry_detail">일대일 문의</a></td>
+                            <td class="left"><a href="/management/inquiry_detail">일대일 문의</a></td>
                             <td>wonej999</td>
                             <td>2019-05-03</td>
                             <td><span style="color:red">미답변</span></td>

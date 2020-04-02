@@ -1,6 +1,6 @@
 <template>
   <div id="contents">
-                <h3>{{ this.$route.name }}</h3>
+                <h3><font-awesome-icon icon="play-circle" /> {{ this.$route.name }}</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
@@ -80,7 +80,9 @@
 
                                 <td><a href="javascript:;" onclick="openIssueList(57); return false;">0/0장</a></td>
                                 <td>2017.08.31</td>
-                                <td><b-button variant="secondary" onclick="reg(57)">수정</b-button></td>
+                                <td>
+                                    <b-button variant="outline-secondary" size="sm">수정</b-button>
+                                </td>
                             </tr>
                          
 
@@ -92,8 +94,8 @@
                     </div>
 
                     <div class="btn_center">
-                        <b-button variant="secondary"  @click="$router.push('/management/coupon_reg')" style="margin-right:5px">쿠폰등록</b-button>
-                        <b-button variant="danger" onclick="delList()">선택삭제</b-button>
+                        <b-button variant="outline-info" size="lg"  @click="$router.push('/management/coupon_reg')" style="margin-right:5px">쿠폰등록</b-button>
+                        <b-button variant="outline-danger" size="lg" onclick="delList()">선택삭제</b-button>
                     </div>
 
                 </form>

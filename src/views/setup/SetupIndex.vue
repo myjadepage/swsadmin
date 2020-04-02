@@ -1,9 +1,9 @@
 <template>
   <div id="contents">
-                <h3>운영관리</h3>
+                <h3><font-awesome-icon icon="play-circle" /> 환경설정</h3>
                 <ul class="navi">
                     <li class="home"><a href="/setup/" target="_top">홈</a></li>
-                    <li class="on">운영관리</li>
+                    <li class="on">환경설정</li>
                 </ul>
                 <ul class="helpbox">
                     <li>쇼핑몰의 기본적인 정보를 입력하는 곳입니다.</li>

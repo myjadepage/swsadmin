@@ -2,12 +2,13 @@
   <div id="aside">
     <h2>운영관리</h2>
     <dl>
-        <dt>고객운영관리</dt>
+        <dt><font-awesome-icon icon="minus" /> 게시판운영관리</dt>
         <dd class="side_small_menu">
-            <router-link to="/management/review_list">상품평관리</router-link>
-            <router-link to="/management/qna_list">상품Q＆A관리</router-link>
-            <router-link to="/management/faq_list">FAQ관리</router-link>
-            <router-link to="/management/inquiry_list">1:1문의관리</router-link>
+            <router-link to="/management/notice_list">공지사항</router-link>
+            <router-link to="/management/faq_list">자주묻는질문(FAQ)</router-link>
+            <router-link to="/management/review_list">상품평</router-link>
+            <router-link to="/management/qna_list">상품Q＆A</router-link>
+            <router-link to="/management/inquiry_list">1:1문의</router-link>
         </dd>
 
         <!-- <dt>게시판관리</dt>
@@ -15,9 +16,9 @@
             <router-link to="/board_manage">게시판통합관리</router-link>
         </dd> -->
         
-        <dt>쿠폰관리</dt>
+        <dt><font-awesome-icon icon="minus" /> 쿠폰관리</dt>
         <dd class="side_small_menu">
-            <router-link to="/management/coupon_list">상품쿠폰관리</router-link>
+            <router-link to="/management/coupon_list">상품쿠폰</router-link>
         </dd>
         <!-- <dt>SMS관리</dt>
         <dd class="side_small_menu">

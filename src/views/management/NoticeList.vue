@@ -8,26 +8,13 @@
                     <li class="on">{{ $route.name }}</li>
                 </ul>
                 <ul class="helpbox">
-                    <li>FAQ를 관리하실 수 있습니다.</li>
+                    <li>공지사항을 관리하실 수 있습니다.</li>
                 </ul>
 
                 <form name="Frm">
-
-                    <div class="section_head">
-                        <h4>
-                            <select name="searchFilter" class="text_input">
-                                <option value="0">전체</option>
-                                <option value="1">아이디/비밀번호찾기</option>
-                                <option value="2">회원정보</option>
-                                <option value="3">배송관련</option>
-                                <option value="4">상품문의</option>
-                                <option value="5">반품/교환/취소/환불</option>
-                                <option value="6">주문결제</option>
-                                <option value="7">적립금/쿠폰</option>
-                            </select>
-                        </h4>
+                    <div class="section_head">                       
                         <div class="mgb5">
-                            <select id="skey" name="skey" class="text_input" @change="loadSearchFaq">
+                            <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
                                 <option value="1">제목</option>
                                 <option value="2">내용</option>
                             </select>
@@ -37,7 +24,7 @@
                     </div>
 
                     <table class="t_list">
-                        <caption>FAQ 리스트</caption>
+                        <caption>공지사항 리스트</caption>
                         <colgroup>
                             <col width="50">
                             <col width="250">
@@ -57,17 +44,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in faqData" :key="item.siteFaqSysId">
-                                <td>{{ item.siteFaqSysId }}</td>
-                                <td>{{ chanegValue(item.faqTypeCode)}}</td>
+                            <tr v-for="item in noticeData" :key="item.siteNoticeSysId">
+                                <td>{{ item.siteNoticeSysId }}</td>
+                                <td>{{ chanegValue(item.NoticeTypeCode)}}</td>
                                 <td class="left">
-                                    <router-link :to="'/management/faq_reg/'+ item.siteFaqSysId">{{ item.title }}</router-link>
+                                    <router-link :to="'/management/notice_reg/'+ item.siteNoticeSysId">{{ item.title }}</router-link>
                                 </td>
                                 <td>{{ changeDate(item.createdAt) }}</td>
                                 <td>{{ item.viewCount }}</td>
                                 <td>
                                     <span class="button small">
-                                        <b-button variant="outline-danger" size="sm"  @click="deleteFaq(item.siteFaqSysId)">삭제</b-button>
+                                        <b-button variant="outline-danger" size="sm" @click="deleteNotice(item.siteNoticeSysId)">삭제</b-button>
                                     </span>
                                 </td>
                             </tr>
@@ -79,7 +66,7 @@
                     </div>
 
                     <div class="btn_center">
-                        <b-button variant="outline-info" size="lg" @click="$router.push('/management/faq_reg')">등록</b-button>
+                        <b-button variant="outline-info" size="lg" @click="$router.push('/management/notice_reg')">등록</b-button>
                     </div>
                 </form>
   </div>
@@ -94,51 +81,39 @@ export default {
     ],
     data() {
         return {
-            faqData: [],
+            noticeData: [],
             mode: null,
             keyword: null
-
         }
     },
     mounted () {     
-      this.axiosGetRequest('/api/v1/operations/faqs','',this.loadFaqList)  
+      this.axiosGetRequest('/api/v1/operations/notices/alllist','',this.loadNoticeList)  
     },
     methods: {
         //  검색
-        loadSearchFaq(e) {
+        loadSearchNotice(e) {
           this.mode  =  Number(e.target.value)
         },
-        loadFaqList(res) {
-           this.faqData = res.data.jsonData.siteFaqs
+        loadNoticeList(res) {
+           console.log(res)
+           this.faqData = res.data.jsonData.siteNotices
         },
-        searchFaqList(res) {
-            this.faqData = res.data.jsonData.siteFaqs
+        searchNoticeList(res) {
+            this.faqData = res.data.jsonData.siteNotices
         },
         searchButton() {
-            this.axiosGetRequest('/api/v1/operations/faqs', {'keywordCode':this.mode, 'keyword': this.keyword},this.searchFaqList) 
-        },
-        chanegValue(type) {            
-            switch (type) {
-                case 1: type = '아이디/비밀번호찾기'; break;
-                case 2: type = '회원정보'; break;
-                case 3: type = '배송관련'; break;
-                case 4: type = '상품문의'; break;
-                case 5: type = '반품/교환/취소/환불'; break;
-                case 6: type = '주문결제'; break;
-                case 7: type = '적립금/쿠폰'; break;
-            }
-            return type
-        },
+            this.axiosGetRequest('/api/v1/operations/notices', {'keywordCode':this.mode, 'keyword': this.keyword},this.searchNoticeList) 
+        },       
         changeDate(date) {
             var y = date.substr(0, 4)
             var m = date.substr(4, 2)
             var d = date.substr(6, 2)
             return y + '-' + m + '-' + d
         },
-        deleteFaq(siteFaqSysId) {
-            this.axiosDeleteRequest('/api/v1/operations/faqs/' + siteFaqSysId,'',this.deleteFaqStatus)  
+        deleteNotice(siteNoticeSysId) {
+            this.axiosDeleteRequest('/api/v1/operations/notices/' + siteNoticeSysId,'',this.deleteNoticeStatus)  
         },
-        deleteFaqStatus(res) {
+        deleteNoticeStatus(res) {
             console.log(res)
             window.location.reload()
             alert('삭제하였습니다.')

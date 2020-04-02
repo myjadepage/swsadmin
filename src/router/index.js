@@ -39,6 +39,8 @@ import MemberMail from '@/views/member/MemberMail'
 /** 운영관리 */
 import ManagementLeftMenu from '@/views/management/LeftMenu'
 import ManagementIndex from '@/views/management/ManagementIndex'
+import NoticeList from '@/views/management/NoticeList'
+import NoticeReg from '@/views/management/NoticeReg'
 import ReviewList from '@/views/management/ReviewList'
 import QnaList from '@/views/management/QnaList'
 import FaqList from '@/views/management/FaqList'
@@ -183,7 +185,17 @@ const routes = [
         path: '/management/',
         name: '운영관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: ManagementIndex }
-      }, 
+      },
+      {
+        path: '/management/notice_list',
+        name: '공지사항',
+        components: { LeftMenu: ManagementLeftMenu, Contents: NoticeList }
+      },
+      {
+        path: '/management/notice_reg',
+        name: '공지사항등록',
+        components: { LeftMenu: ManagementLeftMenu, Contents: NoticeReg }
+      },  
       {
         path: '/management/review_list',
         name: '상품평관리',

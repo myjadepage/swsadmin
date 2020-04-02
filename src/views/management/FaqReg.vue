@@ -52,8 +52,8 @@
                     </table>
 
                     <div class="btn_center">
-                        <b-button variant="secondary" style="margin-right:5px" @click="submitFaq">확인</b-button>
-                        <b-button variant="danger">취소</b-button>
+                        <b-button variant="outline-info" size="lg" style="margin-right:5px" @click="submitFaq">확인</b-button>
+                        <b-button variant="outline-danger" size="lg">취소</b-button>
                     </div>
                 </form>
   </div>

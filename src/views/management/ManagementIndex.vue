@@ -1,6 +1,6 @@
 <template>
    <div id="contents">
-                <h3>운영관리</h3>
+                <h3><font-awesome-icon icon="play-circle" /> 운영관리</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li class="on">운영관리</li>
@@ -13,22 +13,24 @@
                     <h4><i class="xi-check-circle"></i> 고객운영관리</h4>
                 </div>
                 <dl class="menu_list"> 
+                    <dt><a href="/management/notice_list">공지사항관리</a></dt>
+                    <dd><a href="/management/notice_list">공지사항을 관리하실 수 있습니다.</a></dd>
+                    <dt><a href="/management/faq_list">FAQ관리</a></dt>
+                    <dd><a href="/management/faq_list">FAQ를 관리하실 수 있습니다.</a></dd>
                     <dt><a href="/management/review_list">상품평관리</a></dt>
                     <dd><a href="/management/review_list">상품에 대한 고객평들을 한곳에 모았습니다.</a></dd>
                     <dt><a href="/management/qna_list">상품Q&amp;A관리</a></dt>
                     <dd><a href="/management/qna_list">상품에 대한 고객들의 Q&amp;A를 관리합니다.</a></dd>
-                    <dt><a href="/management/faq_list">FAQ관리</a></dt>
-                    <dd><a href="/management/faq_list">FAQ를 관리하실 수 있습니다.</a></dd>
                     <dt><a href="/management/inquiry_list">1:1문의관리</a></dt>
                     <dd><a href="/management/inquiry_list">1:1문의를 관리하실 수 있습니다.</a></dd>
                 </dl>
-                <div class="section_head">
+                <!-- <div class="section_head">
                     <h4><i class="xi-check-circle"></i> 게시판관리</h4>
                 </div>
                 <dl class="menu_list">
                     <dt><a href="/management/board_manage">게시판통합관리</a></dt>
                     <dd><a href="/management/board_manage">게시판을 관리하실 수 있습니다.</a></dd>
-                </dl>
+                </dl> -->
                 <div class="section_head">
                     <h4><i class="xi-check-circle"></i> 쿠폰관리</h4>
                 </div>
@@ -36,7 +38,7 @@
                     <dt><a href="/management/coupon_list?kind=100">상품쿠폰관리</a></dt>
                     <dd><a href="/management/coupon_list?kind=100">상품쿠폰을 관리합니다.</a></dd>
                 </dl>
-                <div class="section_head">
+                <!-- <div class="section_head">
                     <h4><i class="xi-check-circle"></i> SMS관리</h4>
                 </div>
                 <dl class="menu_list">
@@ -54,7 +56,7 @@
                     <dd><a href="/sms/msbridge?mode=reservelist" target="_blank">예약 발송내역을 확인 하실 수 있습니다.</a></dd>
                     <dt><a href="/sms/msbridge?mode=charge" target="_blank">SMS충전하기</a></dt>
                     <dd><a href="/sms/msbridge?mode=charge" target="_blank">SMS 발송건수를 충전할 수 있습니다.</a></dd>
-                </dl>
+                </dl> -->
    </div>
 </template>
 

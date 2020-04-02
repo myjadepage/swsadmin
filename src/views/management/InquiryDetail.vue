@@ -1,6 +1,6 @@
 <template>
    <div id="contents">
-                <h3>{{ $route.name }}</h3>
+                <h3><font-awesome-icon icon="play-circle" /> {{ $route.name }}</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
@@ -11,7 +11,7 @@
                     <li>1:1문의를 관리하실 수 있습니다.</li>
                 </ul>
               
-                    <div class="section_head"><h4><i class="xi-check-circle"></i> 질문</h4></div>
+                    <div class="section_head"><h4><font-awesome-icon icon="info-circle" /> 질문</h4></div>
 
                     <table class="t_form">
                         <caption>등록된 질문 내역</caption>
@@ -46,14 +46,14 @@
 
                     <div class="over_h mgt5">
                         <div class="fl">
-                            <b-button variant="secondary">목록으로</b-button>
+                            <b-button variant="outline-secondary">목록으로</b-button>
                         </div>
                         <div class="fr">
-                            <b-button variant="danger">삭제하기</b-button>
+                            <b-button variant="outline-danger">삭제하기</b-button>
                         </div>
                     </div>
 
-                    <div class="section_head"><h4>답변</h4></div>
+                    <div class="section_head"><h4><font-awesome-icon icon="info-circle" /> 답변</h4></div>
 
                 <form name="Frm">
                     <table class="t_form">
@@ -75,7 +75,7 @@
                     </table>
 
                     <div class="btn_center">
-                        <button type="button" class="btn btn-info" @click="submitAnswer">확인</button>
+                        <b-button variant="outline-info" size="lg" @click="submitAnswer">확인</b-button>
                     </div>
                 </form>
    </div>

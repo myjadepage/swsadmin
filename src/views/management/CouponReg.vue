@@ -84,11 +84,12 @@
                                             <ul class="arrange">
                                                 <li>발행 후</li>
                                                 <li>
-                                                    <input type="text" id="useLimitDay" name="useLimitDay" min="0" class="text_input" 
-                                                      :disabled="isUseLimitDay !== 1">
-                                                    <button type="button" adjust="+"><i class="xi-plus-square" style="font-size: 20px;"></i></button>
-                                                    <button type="button" adjust="-"><i class="xi-minus-square" style="font-size: 20px;"></i></button>
-                                                     일간 사용
+                                                    <input type="text" id="useLimitDay" name="useLimitDay" min="0" class="text_input" style="width:100px; margin-right:5px; text-align:right" 
+                                                      :disabled="isUseLimitDay !== 1" v-model="useLimitDay">
+                                                      <b-button-group size="sm">
+                                                        <b-button variant="outline-secondary" :disabled="isUseLimitDay !== 1" @click="increment" ><font-awesome-icon icon="angle-up" /></b-button>
+                                                        <b-button variant="outline-secondary" :disabled="isUseLimitDay !== 1" @click="decrement" ><font-awesome-icon icon="angle-down" /></b-button>
+                                                      </b-button-group> 일간 사용 
                                                 </li>
                                             </ul>
                                         </div>
@@ -171,7 +172,13 @@
                             <tr>
                                 <th><span style="color:red;">*</span> 쿠폰이미지</th>
                                 <td colspan="3">
-                                   
+                                    <input type="file" name="couponImageUrl" id="couponImageUrl" @change.prevent="validateImageRatioFn($event, {width: 1080, height: 1080})" data-valid="false" accept="image/*" :data-imageurl="couponImageUrl"/>
+                                    <template v-if="couponImageUrl !== ''">
+                                    <p>
+                                        <b>이미지 존재함 :</b>
+                                        {{couponImageUrl}}
+                                    </p>
+                                    </template>
                                 </td>
                             </tr>
 
@@ -194,8 +201,8 @@
                                             <select id="applyGoods" name="applyGoods" class="text_input" multiple="" size="5" style="width:100%; height: auto;"></select>
                                             <div class="mgt5">
                                                 <div class="btn_right">
-                                                    <b-button variant="danger" style="margin-right:5px">삭제</b-button>
-                                                    <b-button variant="secondary">상품선택</b-button>
+                                                    <b-button variant="outline-danger" style="margin-right:5px">삭제</b-button>
+                                                    <b-button variant="outline-secondary">상품선택</b-button>
                                                 </div>
                                             </div>
                                         </div>
@@ -210,7 +217,6 @@
                                                 <input type="radio" id="apply_mode_cate" name="applyMode" value="3" v-model.number="applyMode">해당 카테고리이하 상품
                                             </label>
                                         </div>
-
                                         <div class="fl mgr20">
                                             <sws-category :selectedCategory="categoryList"></sws-category>
                                         </div>
@@ -250,9 +256,11 @@
                                         <div class="fl">
                                             <ul class="arrange">
                                                 <li>발행 후</li>
-                                                <li><input type="text" id="useLimitDay" name="useLimitDay" min="0" class="text_input" style="width:35px;" onkeypress="blockNotNumber(event)" onkeyup="onlyInt(this)">
+                                                <li>
+                                                    <input type="text" id="useLimitDay" name="useLimitDay" min="0" class="text_input" style="width:35px;" onkeypress="blockNotNumber(event)" onkeyup="onlyInt(this)">
                                                     <button type="button" adjust="+" onclick="controlNum(this, 'useLimitDay');"><i class="xi-plus-square" style="font-size: 20px;"></i></button>
-                                                    <button type="button" adjust="-" onclick="controlNum(this, 'useLimitDay');"><i class="xi-minus-square" style="font-size: 20px;"></i></button> 일간 사용</li>
+                                                    <button type="button" adjust="-" onclick="controlNum(this, 'useLimitDay');"><i class="xi-minus-square" style="font-size: 20px;"></i></button> 일간 사용
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -479,12 +487,12 @@
                                         <div class="over_h mgt5">
                                             <div class="fl">
                                                 <span class="button small">
-                                                    <b-button variant="danger" onClick="delSelect('applyGoods');">삭제</b-button>
+                                                    <b-button variant="outline-danger">삭제</b-button>
                                                 </span>
                                             </div>
                                             <div class="fr">
                                                 <span class="button small">
-                                                    <b-button variant="secondary" onClick="openSelectGoods('applyGoods');">상품선택</b-button>
+                                                    <b-button variant="outline-secondary">상품선택</b-button>
                                                 </span>
                                             </div>
                                         </div>
@@ -556,8 +564,8 @@
                     </table>
 
                     <div class="btn_center">
-                        <b-button variant="secondary" onclick="validSubmit()" style="margin-right:5px">확인</b-button>
-                        <b-button variant="danger"  onclick="cancel()">취소</b-button>
+                        <b-button variant="outline-info" size="lg" style="margin-right:5px">확인</b-button>
+                        <b-button variant="outline-danger" size="lg">취소</b-button>
                     </div>
 
                 </form>
@@ -568,10 +576,14 @@
 import commonJs from "@/assets/js/common.js"
 import SwsDate from '@/components/common/SwsDate'
 import SwsCategory from '@/components/common/SwsCategory.vue'
+import ImagesUploader from "@/assets/js/ImagesUploader.js"
 
 export default {
     name: "CouponReg",
-    mixins: [commonJs],
+    mixins: [
+        commonJs,
+        ImagesUploader,
+    ],
     components: {
         SwsDate,
         SwsCategory
@@ -587,6 +599,7 @@ export default {
                 startDate: '',
                 endDate: '',
             },
+            useLimitDay:0,
             isUseLimitDay: 1,
             discountUnit: 100,
             useWeekend:0,
@@ -626,6 +639,18 @@ export default {
 				} else {
 					this.memberLevel = [];
 				}
+            }
+        }
+    },
+    methods: {
+        increment () {
+            this.useLimitDay += 1;
+        },
+        decrement () {
+            if(this.useLimitDay === 0 || this.useLimitDay < 0) {
+                this.useLimitDay = 0
+            } else {
+                this.useLimitDay -= 1;
             }
         }
     }
