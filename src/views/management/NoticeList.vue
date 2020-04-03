@@ -26,35 +26,32 @@
                     <table class="t_list">
                         <caption>공지사항 리스트</caption>
                         <colgroup>
-                            <col width="50">
-                            <col width="250">
+                            <col width="100">
                             <col width="*">
                             <col width="250">
-                            <col width="100">
+                            <col width="150">
                             <col width="100">
                         </colgroup>
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>분류</th>
+                                <th>No</th>                              
                                 <th>제목</th>
-                                <th>등록일</th>
-                                <th>조회수</th>
+                                <th>등록일</th>    
+                                <th>노출여부</th>                           
                                 <th>관리</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in noticeData" :key="item.siteNoticeSysId">
-                                <td>{{ item.siteNoticeSysId }}</td>
-                                <td>{{ chanegValue(item.NoticeTypeCode)}}</td>
+                            <tr v-for="item in noticeData" :key="item.noticeSysId">
+                                <td>{{ item.noticeSysId }}</td>                               
                                 <td class="left">
-                                    <router-link :to="'/management/notice_reg/'+ item.siteNoticeSysId">{{ item.title }}</router-link>
+                                    <router-link :to="'/management/notice_detail/'+ item.noticeSysId">{{ item.title }}</router-link>
                                 </td>
-                                <td>{{ changeDate(item.createdAt) }}</td>
-                                <td>{{ item.viewCount }}</td>
+                                <td>{{ changeDate(item.createdAt) }}</td>      
+                                <td>{{ changeIsDisplay(item.isDisplay)}}</td>                         
                                 <td>
                                     <span class="button small">
-                                        <b-button variant="outline-danger" size="sm" @click="deleteNotice(item.siteNoticeSysId)">삭제</b-button>
+                                        <b-button variant="outline-danger" size="sm" @click="deleteNotice(item.noticeSysId)">삭제</b-button>
                                     </span>
                                 </td>
                             </tr>
@@ -76,9 +73,7 @@
 import commonJs from '@/assets/js/common.js'
 
 export default {
-    mixins: [
-      commonJs
-    ],
+    mixins: [ commonJs ],
     data() {
         return {
             noticeData: [],
@@ -89,20 +84,15 @@ export default {
     mounted () {     
       this.axiosGetRequest('/api/v1/operations/notices/alllist','',this.loadNoticeList)  
     },
-    methods: {
-        //  검색
-        loadSearchNotice(e) {
-          this.mode  =  Number(e.target.value)
-        },
+    methods: {     
+        loadSearchNotice() {},
+        searchButton() {},
         loadNoticeList(res) {
            console.log(res)
-           this.faqData = res.data.jsonData.siteNotices
-        },
-        searchNoticeList(res) {
-            this.faqData = res.data.jsonData.siteNotices
-        },
-        searchButton() {
-            this.axiosGetRequest('/api/v1/operations/notices', {'keywordCode':this.mode, 'keyword': this.keyword},this.searchNoticeList) 
+           this.noticeData = res.data.jsonData.notices
+        },    
+        changeIsDisplay(num) {
+            return num === 0 ? '미표시' : '표시'
         },       
         changeDate(date) {
             var y = date.substr(0, 4)
@@ -110,10 +100,11 @@ export default {
             var d = date.substr(6, 2)
             return y + '-' + m + '-' + d
         },
-        deleteNotice(siteNoticeSysId) {
-            this.axiosDeleteRequest('/api/v1/operations/notices/' + siteNoticeSysId,'',this.deleteNoticeStatus)  
+        deleteNotice(noticeSysId) {
+            this.axiosDeleteRequest('/api/v1/operations/notices/' + noticeSysId,'',this.deleteNoticeStatus)  
         },
         deleteNoticeStatus(res) {
+            confirm('삭제하시겠습니까?')
             console.log(res)
             window.location.reload()
             alert('삭제하였습니다.')

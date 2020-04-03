@@ -41,6 +41,7 @@ import ManagementLeftMenu from '@/views/management/LeftMenu'
 import ManagementIndex from '@/views/management/ManagementIndex'
 import NoticeList from '@/views/management/NoticeList'
 import NoticeReg from '@/views/management/NoticeReg'
+import NoticeDetail from '@/views/management/NoticeDetail'
 import ReviewList from '@/views/management/ReviewList'
 import QnaList from '@/views/management/QnaList'
 import FaqList from '@/views/management/FaqList'
@@ -195,6 +196,11 @@ const routes = [
         path: '/management/notice_reg',
         name: '공지사항등록',
         components: { LeftMenu: ManagementLeftMenu, Contents: NoticeReg }
+      },
+      {
+        path: '/management/notice_detail/:noticeSysId',
+        name: '공지사항',
+        components: { LeftMenu: ManagementLeftMenu, Contents: NoticeDetail }
       },  
       {
         path: '/management/review_list',
@@ -217,7 +223,7 @@ const routes = [
         components: { LeftMenu: ManagementLeftMenu, Contents: FaqReg }
       },
       {
-        path: '/management/faq_reg/:siteFaqSysId',
+        path: '/management/faq_detail/:siteFaqSysId',
         name: 'FAQ관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: FaqDetail }
       },
@@ -227,7 +233,7 @@ const routes = [
         components: { LeftMenu: ManagementLeftMenu, Contents: InquiryList }
       },
       {
-        path: '/management/inquiry_detail',
+        path: '/management/inquiry_detail/:questionSysId',
         name: '1:1문의관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: InquiryDetail }
       }, 

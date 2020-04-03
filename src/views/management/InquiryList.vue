@@ -46,9 +46,9 @@
                         <col width="50">
                         <col width="150">
                         <col width="*">
+                        <col width="250">
+                        <col width="250">
                         <col width="100">
-                        <col width="80">
-                        <col width="80">
                     </colgroup>
                     <thead>
                         <tr>
@@ -61,30 +61,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>3</td>
-                            <td>배송관련</td>
-                            <td class="left"><a href="/management/inquiry_detail">배송문의</a></td>
-                            <td>mallstore</td>
-                            <td>2019-06-18</td>
-                            <td><span style="color:red">미답변</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>상품문의</td>
-                            <td class="left"><a href="/management/inquiry_detail">상품정보</a></td>
-                            <td>mallstore</td>
-                            <td>2019-06-18</td>
-                            <td><span style="color:red">미답변</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>1</td>
-                            <td>회원정보</td>
-                            <td class="left"><a href="/management/inquiry_detail">일대일 문의</a></td>
-                            <td>wonej999</td>
-                            <td>2019-05-03</td>
+                        <tr v-for="item in oneQnaData" :key="item.questionSysId" >
+                            <td>{{ item.questionSysId}}</td>
+                            <td>{{ item.treatFlag }}</td>
+                            <td class="left"><router-link :to="'/management/inquiry_detail/' + item.questionSysId"> {{ item.content }}</router-link></td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ changeDate(item.createdAt) }}</td>
                             <td><span style="color:red">미답변</span></td>
                         </tr>
 
@@ -98,8 +80,32 @@
 </template>
 
 <script>
-export default {
+import commonJs from '@/assets/js/common.js'
 
+export default {
+    mixins: [
+      commonJs
+    ],
+    data() {
+        return {
+            oneQnaData: []
+        }
+    },
+    mounted () {     
+      this.axiosGetRequest('/api/v1/operations/questions/list','',this.oneQnaList)  
+    },
+    methods: {
+        oneQnaList(res){
+            console.log(res)
+            this.oneQnaData = res.data.jsonData.siteQuestions
+        },
+        changeDate(date) {
+            var y = date.substr(0, 4)
+            var m = date.substr(4, 2)
+            var d = date.substr(6, 2)
+            return y + '-' + m + '-' + d
+        }
+    }
 }
 </script>
 

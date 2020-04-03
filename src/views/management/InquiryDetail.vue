@@ -88,20 +88,19 @@ export default {
     mixins: [commonJs],
     data() {
         return {
-            question : {
-                'categorize': '배송관련',
-                'title': '배송문의',
-                'userId': 'ajskdkf',
-                'created' : '2019-10-10',
-                'email' : 'joonh0911@ncgn.co.kr',
-                'mobile': '010-0000-0000',
-                'content' : '언제 배송됩니까?'
-            },
+            question : {},
             subject: null,
-            content: null
+            content: null,
+            questionSysId: this.$route.params.questionSysId
         }
     },
-    methods: {       
+    mounted() {
+        this.axiosPatchRequest('/api/v1/operations/questions/'+ this.questionSysId + '/answer','',this.loadInquiryDetail)  
+    },
+    methods: {   
+        loadInquiryDetail(res) {
+            console.log(res)
+        }, 
         submitAnswer: function () {
             var vm = this
             if(this.subject === null) {
@@ -112,7 +111,6 @@ export default {
                 alert('답변내용을 입력해 주세요')
                 return false
             }
-            let siteQuestionsSysId = '2' // 임시param this.$route.params.sysId
             let jsonData = {
                 'replyTitle': this.subject,
                 'replyContent': this.content,
@@ -123,7 +121,7 @@ export default {
               vm.$router.replace('/inquiry_list')
               alert('답변등록이 완료 되었습니다.')
             }
-            this.axiosPatchRequest('/api/v1/operations/questions/' + siteQuestionsSysId + '/replies' , {jsonData : jsonData}, CallbackFn)
+            this.axiosPatchRequest('/api/v1/operations/questions/' + this.questionSysId + '/replies' , {jsonData : jsonData}, CallbackFn)
         }
     }
 }

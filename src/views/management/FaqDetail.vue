@@ -13,7 +13,7 @@
 
                 <form name="Frm">
                     <table class="t_form">
-                        <caption>FAQ 등록 폼</caption>
+                        <caption>FAQ</caption>
                         <tbody>
                             <tr>
                                 <th>분류</th>
@@ -53,8 +53,8 @@
                     </table>
 
                     <div class="btn_center">
-                        <b-button variant="secondary" style="margin-right:5px" @click="submitFaq">확인</b-button>
-                        <b-button variant="danger">취소</b-button>
+                        <b-button variant="outline-secondary" size="lg" style="margin-right:5px" @click="editFaqDetail">수정</b-button>
+                        <b-button variant="outline-danger" size="lg" @click="$router.go(-1)">취소</b-button>
                     </div>
                 </form>
   </div>
@@ -83,11 +83,12 @@ export default {
       }
   },
   mounted() {
-      // 1. faq 정보 불러오기
+      // 1. faq 정보 불러오기      
       this.axiosGetRequest('/api/v1/operations/faqs/' + this.siteFaqSysId,'',this.loadFaqDetail)  
   },
   methods: {
-      loadFaqDetail(res) {       
+      loadFaqDetail(res) {     
+        console.log(res)  
         this.faqTypeCode = res.data.jsonData.faqTypeCode
         this.title = res.data.jsonData.title
         this.content = res.data.jsonData.content
@@ -97,7 +98,7 @@ export default {
           this.faqTypeCode = Number(e.target.value)
       },
       // 2. faq 정보수정 
-      submitFaq() {
+      editFaqDetail() {
           var vm = this
           if(this.faqTypeCode === null) {
             alert('FAQ 분류를 선택해 주세요')

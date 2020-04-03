@@ -269,7 +269,10 @@
 
 <script>
 import StarRating from 'vue-star-rating'
+import commonJs from '@/assets/js/common.js'
+
 export default {
+    mixins: [ commonJs ],
     components: {
         StarRating
     },
@@ -278,9 +281,15 @@ export default {
             rating: 0
         }
     },
+    mounted () { 
+        this.axiosGetRequest('/api/v1/products/Reviews', '',this.loadReviewList)
+    },
     methods: {
         setRating: function(rating) {
             this.rating = rating
+        },
+        loadReviewList(res) {
+            console.log(res)
         }
     }
 }

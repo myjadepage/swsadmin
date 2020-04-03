@@ -61,7 +61,7 @@
                                 <td>{{ item.siteFaqSysId }}</td>
                                 <td>{{ chanegValue(item.faqTypeCode)}}</td>
                                 <td class="left">
-                                    <router-link :to="'/management/faq_reg/'+ item.siteFaqSysId">{{ item.title }}</router-link>
+                                    <router-link :to="'/management/faq_detail/'+ item.siteFaqSysId">{{ item.title }}</router-link>
                                 </td>
                                 <td>{{ changeDate(item.createdAt) }}</td>
                                 <td>{{ item.viewCount }}</td>
@@ -109,6 +109,7 @@ export default {
           this.mode  =  Number(e.target.value)
         },
         loadFaqList(res) {
+           console.log(res)
            this.faqData = res.data.jsonData.siteFaqs
         },
         searchFaqList(res) {
