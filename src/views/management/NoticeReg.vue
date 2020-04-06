@@ -23,9 +23,9 @@
                                 <th>표시여부</th>
                                 <td>
                                     <label style="margin-right:30px">
-                                        <input type="radio" value="0" v-model.number="jsonData.isDisplayNotice">미표시</label>
+                                        <input type="radio" value="0" v-model.number="jsonData.isDisplay">미표시</label>
                                     <label>
-                                        <input type="radio" value="1" v-model.number="jsonData.isDisplayNotice">표시</label>
+                                        <input type="radio" value="1" v-model.number="jsonData.isDisplay">표시</label>
                                 </td>
                             </tr>
                             <tr>
@@ -58,7 +58,7 @@
 
                     <div class="btn_center">
                         <b-button variant="outline-info" size="lg" style="margin-right:5px" @click="submitNotice">확인</b-button>
-                        <b-button variant="outline-danger" size="lg">취소</b-button>
+                        <b-button variant="outline-danger" size="lg" @click="$router.go(-1)">취소</b-button>
                     </div>
                 </form>
   </div>
@@ -77,7 +77,7 @@ export default {
   data() {
       return {       
         jsonData: {
-            isDisplayNotice:0
+            isDisplay:0
         },
         editorOption: {
           modules: {
@@ -89,7 +89,6 @@ export default {
   methods: {
       submitNotice() {
           var vm = this
-          console.log(this.jsonData.title)
           if(this.jsonData.title === null || this.jsonData.title === undefined) {
             alert('공지사항 제목을 입력해 주세요')
             return false
@@ -97,8 +96,7 @@ export default {
           if(this.jsonData.content === null || this.jsonData.content === undefined) {
             alert('공지사항 내용을 입력해 주세요')
             return false
-          }
-          console.log(this.jsonData)
+          }          
           let CallbackFn = function (res) {
               console.log(res)
               vm.$router.replace('/management/notice_list')

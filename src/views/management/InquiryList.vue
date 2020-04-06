@@ -61,6 +61,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr v-if="oneQnaData === null || oneQnaData === undefined">
+                            <td colspan="6"> 등록된 데이타가 없습니다.</td>
+
+                        </tr>
                         <tr v-for="item in oneQnaData" :key="item.questionSysId" >
                             <td>{{ item.questionSysId}}</td>
                             <td>{{ item.treatFlag }}</td>
@@ -74,7 +78,7 @@
                 </table>
 
                 <div class="paging" style="margin-top:20px">
-                    <span><a href="/"><strong>1</strong></a></span>
+                    <b-button variant="secondary" style="margin:0 5px"> 1 </b-button>
                 </div>
   </div>
 </template>

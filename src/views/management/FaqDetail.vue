@@ -15,10 +15,12 @@
                     <table class="t_form">
                         <caption>FAQ</caption>
                         <tbody>
+
+                             <template v-if="mode === 0">
                             <tr>
                                 <th>분류</th>
                                 <td>
-                                    <select name="faqTypeCode" class="text_input" @change="onChange" :value="faqTypeCode">
+                                    <select name="faqTypeCode" class="text_input" @change="onChange" :value="jsonData.faqTypeCode" disabled>
                                         <option value="">선택</option>
                                         <option value="1">아이디/비밀번호찾기</option>
                                         <option value="2">회원정보</option>
@@ -34,26 +36,66 @@
                                 <th>제목</th>
                                 <td>
                                     <input name="title" class="text_input" maxlength="50" style="width:98%" 
-                                      v-model="title">
+                                      v-model="jsonData.title" disabled>
                                 </td>
                             </tr>
                             <tr>
                                 <th>내용</th>
                                 <td>
-                                    <quill-editor class="quill-editor" name="faqContent" v-model="content"></quill-editor>
+                                    <quill-editor class="quill-editor" name="faqContent" v-model="jsonData.content" disabled></quill-editor>
                                 </td>
                             </tr>
                             <tr>
                                 <th>TOP10</th>
                                 <td>
-                                    <input type="checkbox" name="isTop10" v-model="isTop10"> TOP10 FAQ로 설정
+                                    <input type="checkbox" name="isTop10" v-model="jsonData.isTop10" disabled> TOP10 FAQ로 설정
                                 </td>
                             </tr>
+                            </template>
+
+
+                            <template v-if="mode === 1">
+                                <tr>
+                                <th>분류</th>
+                                <td>
+                                    <select name="faqTypeCode" class="text_input" @change="onChange" :value="jsonData.faqTypeCode">
+                                        <option value="">선택</option>
+                                        <option value="1">아이디/비밀번호찾기</option>
+                                        <option value="2">회원정보</option>
+                                        <option value="3">배송관련</option>
+                                        <option value="4">상품문의</option>
+                                        <option value="5">반품/교환/취소/환불</option>
+                                        <option value="6">주문결제</option>
+                                        <option value="7">적립금/쿠폰</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>
+                                    <input name="title" ref="title" class="text_input" maxlength="50" style="width:98%" 
+                                      v-model="jsonData.title">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>내용</th>
+                                <td>
+                                    <quill-editor class="quill-editor" name="faqContent" v-model="jsonData.content" ></quill-editor>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>TOP10</th>
+                                <td>
+                                    <input type="checkbox" name="isTop10" v-model="jsonData.isTop10"> TOP10 FAQ로 설정
+                                </td>
+                            </tr>
+                            </template>
                         </tbody>
                     </table>
 
                     <div class="btn_center">
-                        <b-button variant="outline-secondary" size="lg" style="margin-right:5px" @click="editFaqDetail">수정</b-button>
+                        <b-button variant="outline-info" size="lg" style="margin-right:5px" @click="editFaqDetail" v-if="mode === 0">수정</b-button>
+                        <b-button variant="outline-info" size="lg" style="margin-right:5px" @click="submitFaqDetail" v-if="mode === 1">확인</b-button>
                         <b-button variant="outline-danger" size="lg" @click="$router.go(-1)">취소</b-button>
                     </div>
                 </form>
@@ -73,56 +115,61 @@ export default {
       quillEditor    
   },
   data() {
-      return {
-          jsonData: {},      
-          title: null,
-          content: null,
-          faqTypeCode: null,
-          isTop10:false,
+      return {          
+          jsonData :{
+              faqTypeCode:null,
+              title:null,
+              content:null,
+              isTop10:null
+          },
+          mode: 0,
           siteFaqSysId: this.$route.params.siteFaqSysId
       }
   },
   mounted() {
-      // 1. faq 정보 불러오기      
+      // 1. faq 정보 불러오기
       this.axiosGetRequest('/api/v1/operations/faqs/' + this.siteFaqSysId,'',this.loadFaqDetail)  
   },
   methods: {
       loadFaqDetail(res) {     
-        console.log(res)  
-        this.faqTypeCode = res.data.jsonData.faqTypeCode
-        this.title = res.data.jsonData.title
-        this.content = res.data.jsonData.content
-        this.isTop10 = res.data.jsonData.isTop10       
+        this.jsonData.faqTypeCode = res.data.jsonData.faqTypeCode
+        this.jsonData.title = res.data.jsonData.title
+        this.jsonData.content = res.data.jsonData.content
+        this.jsonData.isTop10 = res.data.jsonData.isTop10       
       },
       onChange(e) {
-          this.faqTypeCode = Number(e.target.value)
+          this.jsonData.faqTypeCode = Number(e.target.value)
       },
       // 2. faq 정보수정 
       editFaqDetail() {
+          this.mode =1
+          this.$nextTick(() => this.$refs.title.focus())
+      },
+      submitFaqDetail() {
           var vm = this
-          if(this.faqTypeCode === null) {
+          if(this.jsonData.faqTypeCode === null || this.jsonData.faqTypeCode === "") {
             alert('FAQ 분류를 선택해 주세요')
             return false
           }
-          if(this.title === null) {
+          if(this.jsonData.title === null || this.jsonData.title === "") {
             alert('FAQ 제목을 입력해 주세요')
             return false
           }
-          if(this.content === null) {
+          if(this.jsonData.content === null || this.jsonData.content === "") {
             alert('FAQ 내용을 입력해 주세요')
             return false
-          }          
-          this.isTop10 = this.isTop10 ? 1 : 0
+          }        
+          this.jsonData.isTop10 = this.jsonData.isTop10 ? 1 : 0
           let CallbackFn = function (res) {
               console.log(res)
               alert('FAQ수정이 완료 되었습니다.')
               vm.$router.replace('/management/faq_list')
           }
           let jsonData = {
-              "faqTypeCode" : this.faqTypeCode,
-              "title": this.title,
-              "content": this.content,
-              "isTop10":  this.isTop10
+              "faqTypeCode" : this.jsonData.faqTypeCode,
+              "title": this.jsonData.title,
+              "content": this.jsonData.content,
+              "isTop10":  this.jsonData.isTop10
           }
           console.log('jsonData', jsonData)
           this.axiosPatchRequest('/api/v1/operations/faqs/'+ this.siteFaqSysId, {jsonData : jsonData}, CallbackFn)

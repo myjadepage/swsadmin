@@ -14,7 +14,7 @@
                 <form name="Frm">
 
                     <div class="section_head">
-                        <h4>
+                        <!-- <h4>
                             <select name="searchFilter" class="text_input">
                                 <option value="0">전체</option>
                                 <option value="1">아이디/비밀번호찾기</option>
@@ -25,7 +25,7 @@
                                 <option value="6">주문결제</option>
                                 <option value="7">적립금/쿠폰</option>
                             </select>
-                        </h4>
+                        </h4> -->
                         <div class="mgb5">
                             <select id="skey" name="skey" class="text_input" @change="loadSearchFaq">
                                 <option value="1">제목</option>
@@ -57,7 +57,26 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr v-if="faqData === null || faqData === undefinded">
+                                <td colspan="6">등록된 데이타가 없습니다.</td>
+                            </tr>
+
                             <tr v-for="item in faqData" :key="item.siteFaqSysId">
+                                <td>{{ item.siteFaqSysId }}</td>
+                                <td>{{ chanegValue(item.faqTypeCode)}}</td>
+                                <td class="left">
+                                    <router-link :to="'/management/faq_detail/'+ item.siteFaqSysId">{{ item.title }}</router-link>
+                                </td>
+                                <td>{{ changeDate(item.createdAt) }}</td>
+                                <td>{{ item.viewCount }}</td>
+                                <td>
+                                    <span class="button small">
+                                        <b-button variant="outline-danger" size="sm"  @click="deleteFaq(item.siteFaqSysId)">삭제</b-button>
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr v-for="item in searchData" :key="item.siteFaqSysId">
                                 <td>{{ item.siteFaqSysId }}</td>
                                 <td>{{ chanegValue(item.faqTypeCode)}}</td>
                                 <td class="left">
@@ -75,7 +94,7 @@
                     </table>
 
                     <div class="paging" style="margin-top:20px">
-                        <span><router-link to="/"><strong>1</strong></router-link></span>
+                         <b-button variant="secondary" style="margin:0 5px"> 1 </b-button>
                     </div>
 
                     <div class="btn_center">
@@ -95,9 +114,9 @@ export default {
     data() {
         return {
             faqData: [],
-            mode: null,
+            searchData:[],
+            mode: 1,
             keyword: null
-
         }
     },
     mounted () {     
@@ -109,14 +128,20 @@ export default {
           this.mode  =  Number(e.target.value)
         },
         loadFaqList(res) {
-           console.log(res)
+            console.log(res)
            this.faqData = res.data.jsonData.siteFaqs
         },
-        searchFaqList(res) {
-            this.faqData = res.data.jsonData.siteFaqs
+        searchFaqList(res) {            
+            console.log(res)
+            this.searchData = res.data.jsonData.siteFaqs
         },
         searchButton() {
-            this.axiosGetRequest('/api/v1/operations/faqs', {'keywordCode':this.mode, 'keyword': this.keyword},this.searchFaqList) 
+            var param = {
+                'keywordCode':this.mode,
+                'keyword': this.keyword
+            }
+            console.log(param)
+            this.axiosGetRequest('/api/v1/operations/faqs', param,this.searchFaqList) 
         },
         chanegValue(type) {            
             switch (type) {

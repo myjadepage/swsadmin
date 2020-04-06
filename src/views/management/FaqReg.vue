@@ -53,7 +53,7 @@
 
                     <div class="btn_center">
                         <b-button variant="outline-info" size="lg" style="margin-right:5px" @click="submitFaq">확인</b-button>
-                        <b-button variant="outline-danger" size="lg">취소</b-button>
+                        <b-button variant="outline-danger" size="lg"  @click="$router.go(-1)">취소</b-button>
                     </div>
                 </form>
   </div>
@@ -79,24 +79,22 @@ export default {
   methods: {
       onChange(e) {
           this.jsonData.faqTypeCode = Number(e.target.value)
-          console.log('select', this.jsonData.faqTypeCode)
       },      
       submitFaq() {
-           var vm = this
-          if(this.jsonData.faqTypeCode === null) {
+          var vm = this
+          if(this.jsonData.faqTypeCode === null || this.jsonData.faqTypeCode === undefined) {
             alert('FAQ 분류를 선택해 주세요')
             return false
           }
-          if(this.jsonData.title === null) {
+          if(this.jsonData.title === null || this.jsonData.title === undefined) {
             alert('FAQ 제목을 입력해 주세요')
             return false
           }
-          if(this.jsonData.content === null) {
+          if(this.jsonData.content === null || this.jsonData.content === undefined) {
             alert('FAQ 내용을 입력해 주세요')
             return false
           }
-          this.jsonData.isTop10 = this.jsonData.isTop10 ? 1 : 0
-          console.log(this.jsonData)
+          this.jsonData.isTop10 = this.jsonData.isTop10 ? 1 : 0         
           let CallbackFn = function (res) {
               console.log(res)
               vm.$router.replace('/management/faq_list')

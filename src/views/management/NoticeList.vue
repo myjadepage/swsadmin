@@ -14,12 +14,12 @@
                 <form name="Frm">
                     <div class="section_head">                       
                         <div class="mgb5">
-                            <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
+                            <!-- <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
                                 <option value="1">제목</option>
                                 <option value="2">내용</option>
                             </select>
                             <input type="text" name="keyword" v-model="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
-                            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button>
+                            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
                         </div>
                     </div>
 
@@ -42,6 +42,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr v-if="noticeData === null || noticdData === undefined">
+                                <td colspan="5">등록된 데이타가 없습니다.</td>
+                            </tr>
                             <tr v-for="item in noticeData" :key="item.noticeSysId">
                                 <td>{{ item.noticeSysId }}</td>                               
                                 <td class="left">
@@ -58,10 +61,9 @@
                         </tbody>
                     </table>
 
-                    <div class="paging" style="margin-top:20px">
-                        <span><router-link to="/"><strong>1</strong></router-link></span>
+                    <div class="paging" style="margin-top:20px">                                         
+                        <b-button variant="secondary" style="margin:0 5px"> 1 </b-button>                       
                     </div>
-
                     <div class="btn_center">
                         <b-button variant="outline-info" size="lg" @click="$router.push('/management/notice_reg')">등록</b-button>
                     </div>
@@ -76,17 +78,13 @@ export default {
     mixins: [ commonJs ],
     data() {
         return {
-            noticeData: [],
-            mode: null,
-            keyword: null
+            noticeData: []
         }
     },
     mounted () {     
       this.axiosGetRequest('/api/v1/operations/notices/alllist','',this.loadNoticeList)  
     },
-    methods: {     
-        loadSearchNotice() {},
-        searchButton() {},
+    methods: {       
         loadNoticeList(res) {
            console.log(res)
            this.noticeData = res.data.jsonData.notices

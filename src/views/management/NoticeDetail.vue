@@ -133,9 +133,7 @@ export default {
       this.axiosGetRequest('/api/v1/operations/notices/' + this.noticeSysId,'', this.loadNoticeDetail)
   },
   methods: {
-      loadNoticeDetail(res) {
-           console.log(this.noticeSysId)
-           console.log(res)
+      loadNoticeDetail(res) {          
            this.noticeData = res.data.jsonData
       },
       editNoticeDetail() {

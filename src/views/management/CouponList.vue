@@ -53,7 +53,7 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th><input type="checkbox" name="cbListAll" onclick="checkCbAll(this.form.cbList, this.checked)"></th>
+                                <th><input type="checkbox" name="cbListAll"></th>
                                 <th>No</th>
                                 <th>종류</th>
                                 <th>쿠폰명</th>
@@ -90,7 +90,7 @@
                     </table>
 
                     <div class="paging" style="margin-top:20px">
-                        <span><a href=""><strong>1</strong></a></span>
+                        <b-button variant="secondary" style="margin:0 5px"> 1 </b-button>
                     </div>
 
                     <div class="btn_center">
