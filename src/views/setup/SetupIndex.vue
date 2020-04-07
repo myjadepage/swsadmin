@@ -20,7 +20,7 @@
                     </dl>
                 </div>
 
-                <div class="box">
+                <!-- <div class="box">
                     <div class="section_head">
                         <h4><i class="xi-check-circle"></i> 사이트정보관리</h4>
                     </div>
@@ -29,8 +29,8 @@
                         <dt><a href="/setup/config_site">사이트환경설정</a></dt>
                         <dd><a href="/setup/config_site">사이트의 기본정보 및 상품관련환경을 설정하실 수 있습니다.</a></dd>
                     </dl>
-                </div>
-
+                </div> -->
+<!-- 
                 <div class="box">
                     <div class="section_head">
                         <h4><i class="xi-check-circle"></i> 판매자 승인관리</h4>
@@ -39,23 +39,28 @@
                         <dt><a href="/setup/config_dealer">판매자 승인환경설정</a></dt>
                         <dd><a href="/setup/config_dealer">판매자의 승인 및 상품승인을 관리합니다.</a></dd>
                     </dl>
-                </div>
+                </div> -->
 
                 <div class="box">
                     <div class="section_head">
                         <h4><i class="xi-check-circle"></i> 전체운영설정</h4>
                     </div>
                     <dl class="menu_list">
-                        <dt><a href="/setup/config_vocab">어휘설정</a></dt>
-                        <dd><a href="/setup/config_vocab">사이트에서 사용되는 어휘를 설정합니다.</a></dd>
+                        <!-- <dt><a href="/setup/config_vocab">어휘설정</a></dt>
+                        <dd><a href="/setup/config_vocab">사이트에서 사용되는 어휘를 설정합니다.</a></dd> -->
+
                         <dt><a href="/setup/config_delivery">배송설정</a></dt>
                         <dd><a href="/setup/config_delivery">전체 배송환경을 설정합니다.</a></dd>
+
                         <dt><a href="/setup/config_discount">할인액부담설정</a></dt>
                         <dd><a href="/setup/config_discount">할인액을 누가 부담할지 설정합니다.</a></dd>
+
                         <dt><a href="/setup/member_level">회원등급관리</a></dt>
                         <dd><a href="/setup/member_level">회원등급을 관리합니다.</a></dd>
+
                         <dt><a href="/setup/config_cmoney">적립금설정</a></dt>
                         <dd><a href="/setup/config_cmoney">적립금설정을 관리합니다.</a></dd>
+                        
                         <dt><a href="/setup/notify_tpl">상품정보고시관리</a></dt>
                         <dd><a href="/setup/notify_tpl">상품등록시 사용되는 상품정보고시 템플릿을 설정합니다.</a></dd>
                     </dl>

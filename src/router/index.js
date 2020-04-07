@@ -57,16 +57,59 @@ import SetupLeftMenu from '@/views/setup/LeftMenu'
 import SetupIndex from '@/views/setup/SetupIndex'
 import ConfigManager from '@/views/setup/ConfigManager'
 import ConfigSite from '@/views/setup/ConfigSite'
+import ConfigDealer from '@/views/setup/ConfigDealer'
+import ConfigVocab from '@/views/setup/ConfigVocab'
+import ConfigDelivery from '@/views/setup/ConfigDelivery'
+import ConfigDiscount from '@/views/setup/ConfigDiscount'
+import MemberLevel from '@/views/setup/MemberLevel'
+import ConfigPoint from '@/views/setup/ConfigPoint'
+import NotifyTpl from '@/views/setup/NotifyTpl'
+import ManagerList from '@/views/setup/ManagerList'
+import ConfigPolicy from '@/views/setup/ConfigPolicy'
+import ConfigTermsHistory from '@/views/setup/ConfigTermsHistory'
+import ConfigPay from '@/views/setup/ConfigPay'
+import ConfigPayOnline from '@/views/setup/ConfigPayOnline'
+import Configkakaopay from '@/views/setup/Configkakaopay'
 
 /** 통계 */
 import StatisticsLeftMenu from '@/views/statistic/LeftMenu'
 import StatisticsIndex from '@/views/statistic/StatisticsIndex'
+import SaleGoods from '@/views/statistic/SaleGoods'
+import SaleTotal from '@/views/statistic/SaleTotal'
+import SaleMember from '@/views/statistic/SaleMember'
+import MemberGender from '@/views/statistic/MemberGender'
+import MemberAge from '@/views/statistic/MemberAge'
+import MemberArea from '@/views/statistic/MemberArea'
+import VisitCount from '@/views/statistic/VisitCount'
+import VisitFromSite from '@/views/statistic/VisitFromSite'
+import GoodsTotal from '@/views/statistic/GoodsTotal'
+import GoodsWish from '@/views/statistic/GoodsWish'
+import GoodsMarks from '@/views/statistic/GoodsMarks'
+import MarketingUsePoint from '@/views/statistic/MarketingUsePoint'
+
+/** 업체관리 */
+import MimIndex from '@/views/mim/MimIndex'
+import MimLeftMenu from '@/views/mim/MimLeftMenu'
+import DealerRegistList from '@/views/mim/DealerRegistList'
+import DealerList from '@/views/mim/DealerList'
+import DealerSecessionList from '@/views/mim/DealerSecessionList'
+import DealerQnaList from '@/views/mim/DealerQnaList'
+import DealerGoodsList from '@/views/mim/GoodsList'
+import EventList from '@/views/mim/EventList'
+
 
 /** 정산관리 */
-import AccountMenu from '@/views/account/LeftMenu'
+import AccountLeftMenu from '@/views/account/AccountLeftMenu'
 import AccountIndex from '@/views/account/index'
 import Account from '@/views/account/Account'
 import AccountForSeller from '@/views/account/AccountForSeller'
+
+/** 방송관리 */
+import BroadcastLeftMenu from '@/views/broadcast/BroadcastLeftMenu'
+import BroadcastIndex from '@/views/broadcast/Index'
+import BroadcastRequest from '@/views/broadcast/BroadcastRequest'
+import BroadcastStop from '@/views/broadcast/BroadcastStop'
+import BroastcastSend from '@/views/broadcast/BroastcastSend'
 
 Vue.use(VueRouter)
 
@@ -269,31 +312,156 @@ const routes = [
         path: '/setup/config_site',
         name: '사이트설정',
         components: { LeftMenu: SetupLeftMenu, Contents: ConfigSite }
+      },
+      {
+        path: '/setup/config_dealer',
+        name: '판매자승인환경설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigDealer }
+      }, 
+      {
+        path: '/setup/config_vocab',
+        name: '어휘설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigVocab }
+      }, 
+      {
+        path: '/setup/config_delivery',
+        name: '배송설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigDelivery }
+      }, 
+      {
+        path: '/setup/config_discount',
+        name: '할인액부담설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigDiscount }
+      },  
+      {
+        path: '/setup/member_level',
+        name: '회원등급관리',
+        components: { LeftMenu: SetupLeftMenu, Contents: MemberLevel }
+      }, 
+      {
+        path: '/setup/config_cmoney',
+        name: '적립금설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigPoint }
+      }, 
+      {
+        path: '/setup/notify_tpl',
+        name: '상품정보고시관리',
+        components: { LeftMenu: SetupLeftMenu, Contents: NotifyTpl }
+      }, 
+      {
+        path: '/setup/manager_list',
+        name: '부운영자관리',
+        components: { LeftMenu: SetupLeftMenu, Contents: ManagerList }
+      }, 
+      {
+        path: '/setup/config_policy',
+        name: '상점운영정책',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigPolicy }
+      }, 
+      {
+        path: '/setup/config_terms_history/:num',
+        name: '약관',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigTermsHistory }
+      }, 
+      {
+        path: '/setup/config_pay',
+        name: '결제정보설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigPay }
+      }, 
+      {
+        path: '/setup/config_pay_online',
+        name: '온라인입금계좌',
+        components: { LeftMenu: SetupLeftMenu, Contents: ConfigPayOnline }
+      }, 
+      {
+        path: '/setup/config_kakaopay',
+        name: '카카오페이결제정보설정',
+        components: { LeftMenu: SetupLeftMenu, Contents: Configkakaopay }
       }, 
       
     ]
   },
   {
-    path: '/statistics',
+    path: '/statistic/',
     name: '통계',    
     component: AdminBoardLayout,
-    redirect: '/statistics/',
+    redirect: '/statistic/',
     children: [
       {
-        path: '/setup/statistics/',
+        path: '/statistic/',
         name: '통계',
         components: { LeftMenu: StatisticsLeftMenu, Contents: StatisticsIndex }
       }, 
+      {
+        path: '/statistic/sale_total',
+        name: '전체매출통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: SaleTotal }
+      }, 
+      {
+        path: '/statistic/sale_goods',
+        name: '상품별매출통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: SaleGoods }
+      }, 
+      {
+        path: '/statistic/sale_member',
+        name: '회원별매출통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: SaleMember }
+      }, 
+      {
+        path: '/statistic/member_gender',
+        name: '남여비율통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: MemberGender }
+      }, 
+      {
+        path: '/statistic/member_age',
+        name: '연령대별통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: MemberAge }
+      }, 
+      {
+        path: '/statistic/member_area',
+        name: '거주지별통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: MemberArea }
+      },
+      {
+        path: '/statistic/visit_count',
+        name: '방문자접속통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: VisitCount }
+      },
+      {
+        path: '/statistic/visit_fromsite',
+        name: '접속방향통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: VisitFromSite }
+      },
+      {
+        path: '/statistic/goods_total',
+        name: '상품별통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: GoodsTotal }
+      },
+      {
+        path: '/statistic/goods_wish',
+        name: '상품보관함통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: GoodsWish }
+      },
+      {
+        path: '/statistic/goods_marks',
+        name: '고객평점통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: GoodsMarks }
+      },
+      {
+        path: '/statistic/marketing_useCmoney',
+        name: '적립금사용통계',
+        components: { LeftMenu: StatisticsLeftMenu, Contents: MarketingUsePoint }
+      },
     ]
   },
   {
     path: '/order/',
     name: '주문/매출관리',
     component: AdminBoardLayout,
-    redirect: '/order/index',
+    redirect: '/order/',
     children:[
       {
-        path: '/order/index',
+        path: '/order/',
         name: '주문 관리',
         components: { LeftMenu: OrderLeftMenu, Contents: OrderIndex }
       }, 
@@ -340,6 +508,54 @@ const routes = [
     ]
   },
   {
+    path: '/mim/',
+    name: '입점업체관리',
+    component: AdminBoardLayout,
+    redirect: '/mim/',
+    children:[
+      {
+        path: '/mim/',
+        name: '판매자관리',
+        components: { LeftMenu: MimLeftMenu, Contents: MimIndex }
+      },
+      {
+        path: '/mim/dealer_regist_list',
+        name: '판매자신창',
+        components: { LeftMenu: MimLeftMenu, Contents: DealerRegistList }
+      },
+      {
+        path: '/mim/dealer_list',
+        name: '판매자목록',
+        components: { LeftMenu: MimLeftMenu, Contents: DealerList }
+      },
+      {
+        path: '/mim/dealer_secession_list',
+        name: '판매자탈퇴',
+        components: { LeftMenu: MimLeftMenu, Contents: DealerSecessionList }
+      },
+      {
+        path: '/mim/dealer_qna_list',
+        name: '판매자문의',
+        components: { LeftMenu: MimLeftMenu, Contents: DealerQnaList }
+      },
+      {
+        path: '/mim/goods_list',
+        name: '판매자상품관리',
+        components: { LeftMenu: MimLeftMenu, Contents: DealerGoodsList }
+      },
+      {
+        path: '/mim/brand_list',
+        name: '판매자상품관리',
+        components: { LeftMenu: MimLeftMenu, Contents: BrandList }
+      },
+      {
+        path: '/mim/event_list',
+        name: '판매자이벤트관리',
+        components: { LeftMenu: MimLeftMenu, Contents: EventList }
+      }
+    ]
+  },
+  {
     path: '/account/',
     name: '정산관리',
     component: AdminBoardLayout,
@@ -348,17 +564,45 @@ const routes = [
       {
         path: '/account/index',
         name: '본사정산',
-        components: { LeftMenu: AccountMenu, Contents: AccountIndex }
+        components: { LeftMenu: AccountLeftMenu, Contents: AccountIndex }
       },
       {
         path: '/account/account',
         name: '정산관리',
-        components: { LeftMenu: AccountMenu, Contents: Account }
+        components: { LeftMenu: AccountLeftMenu, Contents: Account }
       },
       {
         path: '/account/dealer_account',
         name: '판매자정산',
-        components: { LeftMenu: AccountMenu, Contents: AccountForSeller }
+        components: { LeftMenu: AccountLeftMenu, Contents: AccountForSeller }
+      }
+    ]
+  },
+  {
+    path: '/broadcast/',
+    name: '방송관리',
+    component: AdminBoardLayout,
+    redirect: '/broadcast/',
+    children:[
+      {
+        path: '/broadcast/',
+        name: '방송관리',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastIndex }
+      },
+      {
+        path: '/broadcast/BroadcastRequest',
+        name: '방송신청',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastRequest }
+      },
+      {
+        path: '/broadcast/BroadcastStop',
+        name: '방송중지',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastStop }
+      },
+      {
+        path: '/broadcast/BroastcastSend',
+        name: '방송송출',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: BroastcastSend }
       }
     ]
   }

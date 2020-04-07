@@ -9,23 +9,24 @@
                         </a>
                     </dd>
 
-                    <dt><font-awesome-icon icon="minus" /> 사이트정보관리</dt>
+                    <!-- 2차추진 -->
+                    <!-- <dt><font-awesome-icon icon="minus" /> 사이트정보관리</dt>
                     <dd class="side_small_menu">
                         <a href="/setup/config_site">
                             <i class="xi-minus-min"></i>사이트환경설정
                         </a>
-                    </dd>
+                    </dd> -->
 
-                    <dt><font-awesome-icon icon="minus" /> 판매자 승인관리</dt>
+                    <!-- <dt><font-awesome-icon icon="minus" /> 판매자 승인관리</dt>
                     <dd class="side_small_menu">
                         <a href="/setup/config_dealer">
                             <i class="xi-minus-min"></i>판매자 승인환경설정
                         </a>
-                    </dd>
+                    </dd> -->
 
                     <dt><font-awesome-icon icon="minus" /> 전체운영설정</dt>
                     <dd class="side_small_menu">
-                        <a href="/setup/config_vocab"><i class="xi-minus-min"></i>어휘설정</a>
+                        <!-- <a href="/setup/config_vocab"><i class="xi-minus-min"></i>어휘설정</a> -->
                         <a href="/setup/config_delivery"><i class="xi-minus-min"></i>배송설정</a>
                         <a href="/setup/config_discount"><i class="xi-minus-min"></i>할인액부담설정</a>
                         <a href="/setup/member_level"><i class="xi-minus-min"></i>회원등급관리</a>
@@ -57,8 +58,7 @@
                     <dd class="side_small_menu">
                         <a href="/setup/config_pay"><i class="xi-minus-min"></i>결제정보설정</a>
                         <a href="/setup/config_pay_online"><i class="xi-minus-min"></i>온라인입금계좌</a>
-                        <a href="/setup/config_kakaopay"><i class="xi-minus-min"></i>카카오페이결제정보설정</a>
-                        <a href="/setup/config_payco"><i class="xi-minus-min"></i>PAYCO결제정보설정</a>
+                        <!-- <a href="/setup/config_kakaopay"><i class="xi-minus-min"></i>카카오페이결제정보설정</a>                      -->
                     </dd>
                 </dl>
             </div>

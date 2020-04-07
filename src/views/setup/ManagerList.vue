@@ -1,0 +1,85 @@
+<template>
+  
+            <div id="contents">
+                <h3>부운영자 관리</h3>
+                <ul class="navi">
+                    <li class="home"><a href="/" target="_top">홈</a></li>
+                    <li>환경설정</li>
+                    <li>관리자설정</li>
+                    <li class="on">부운영자 관리</li>
+                </ul>
+                <ul class="helpbox">
+                    <li>부운영자의 아이디를 생성하고, 각각 별도의 권한을 부여할수 있는 기능입니다.</li>
+                    <li>아이디를 클릭하시면 상세페이지를 보실 수 있으며 수정도 가능합니다.</li>
+                </ul>
+
+                <form name="Frm" method="post">
+                    <input type="hidden" name="mode">
+                    <input type="hidden" name="no">
+                    <input type="hidden" name="params">
+
+                    <table class="t_list">
+                        <caption>부운영자 리스트</caption>
+                        <colgroup>
+                            <col width="50">
+                            <col width="*">
+                            <col width="10%">
+                            <col width="12%">
+                            <col width="12%">
+                            <col width="11%">
+                            <col width="11%">
+                            <col width="11%">
+                            <col width="11%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="cbListAll"></th>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>전화번호</th>
+                                <th>휴대폰번호</th>
+                                <th>접속수</th>
+                                <th>최근접속일</th>
+                                <th>등록일자</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td><input type="checkbox" name="cbList"></td>
+                                <td>icure</td>
+                                <td>아이큐어_데모</td>
+                                <td></td>
+                                <td></td>
+                                <td>4</td>
+                                <td>2020-01-17 10:15:32</td>
+                                <td>2019-12-23 09:53:34</td>
+                                <td><button type="button" class="btn btn-sm btn-secondary">수정</button></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <!-- <div class="paging">
+                        <span><a href="/setup/manager_list?page=1"><strong>1</strong></a></span>
+                    </div> -->
+
+                    <div class="btn_center">
+                        <!-- <button type="button" class="btn btn-info">추가</button> -->
+                        <a href="/setup/manager_reg" class="btn btn-info">추가</a>
+                        <button type="button" class="btn btn-secondary" onclick="delList()">선택삭제</button>
+                    </div>
+                </form>
+            </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>
