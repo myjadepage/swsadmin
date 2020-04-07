@@ -6,7 +6,8 @@ export function setOrderItem(item) {
     item.orderPay = {
         payTypeCode: 1
     }
-
+    // ******************************
+    
     for(let _k in item){
         if(('amount # couponDiscount # usedPoint').indexOf(_k) > -1) {
             item[_k] = (new Intl.NumberFormat().format(item[_k]))+' 원'

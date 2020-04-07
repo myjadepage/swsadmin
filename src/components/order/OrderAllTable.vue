@@ -4,13 +4,13 @@
           <div class="float-left">
               <b>총 {{totalRow}} 건의 주문이 조회되었습니다.</b>
           </div>
-          <div class="float-right">
+          <!-- <div class="float-right">
               <select class="text_input mr-2" v-model="perPage">
-                  <!-- <option value="5">5줄씩 보기</option> -->
+                  <option value="5">5줄씩 보기</option>
                   <option value="10">10줄씩 보기</option>
-                  <!-- <option value="20">20줄씩 보기</option> -->
+                  <option value="20">20줄씩 보기</option>
               </select>
-          </div>
+          </div> -->
       </b-col>
       <b-col cols="12">
           <b-table small 
@@ -213,8 +213,8 @@
             v-model="currentPage"
             :total-rows="totalRow"
             :per-page="perPage"
-            :hide-ellipsis="true"
-            @change="$emit('changePage',currentPage)"
+            :limit="5"
+            @change="$emit('changePage', $event * perPage)"
             align="right"
           >
           </b-pagination>
@@ -228,11 +228,10 @@
 <script>
 import commonJs from '@/assets/js/common.js'
 export default {
-    props: ['items', 'totalRow', 'isbusy'],
+    props: ['items', 'totalRow', 'isbusy', 'perPage'],
     mixins: [commonJs],
     data: () => ({
         currentPage: 1,
-        perPage: 1,
         fields: [
             {key: 'no', label: 'NO', class: 'text-center align-middle', thStyle: 'width: 75px'},
             {key: 'orderCode', label: '주문번호', class: 'text-center align-middle', sortable: true, thStyle: 'width: 200px'},

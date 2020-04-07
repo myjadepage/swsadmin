@@ -13,7 +13,7 @@
                 <a href="/order/order_product_ready" class="">상품준비중</a>
                 <a href="/order/order_product_leave" class="">발송완료</a>
                 <a href="/order/order_cancel" class="">주문취소</a>
-                <a href="/order/order_list?menu=account" class="">구매확정</a>
+                <a href="/order/order_decide" class="">구매확정</a>
                 <a href="/order/order_consult" class="">주문상담</a>
                 <a href="#" class="">일괄배송관리</a>
             </dd>
@@ -26,11 +26,11 @@
                 <a href="/order/order_reject_join">주문반품신청</a>
                 <a href="/order/order_reject_complete">주문반품완료</a>
             </dd>
-            <dt>거래증빙서류관리</dt>
+            <!-- <dt>거래증빙서류관리</dt>
             <dd class="side_small_menu">
                 <a href="/order/tax_list" class="">세금계산서신청관리</a>
                 <a href="/order/cashreceipt_list" class="">현금영수증신청관리</a>
-            </dd>
+            </dd> -->
         </dl>
     </div>
 </template>
