@@ -8,7 +8,7 @@
             <li class="on">{{$route.name}}</li>
         </ul>   
         <ul class="helpbox">
-            <li>입금확인중인 주문 상품들의 목록을 보실 수 있습니다.</li>
+            <li>입금이 확인되지 않은 주문을 취소신청한 내역을 보여주는 곳입니다.</li>
         </ul>
         <!--검색 필터  -->
         <Order-filter-board :isProgress="false" :orderList="orderStatusList" @search="loadData"/>
@@ -19,8 +19,8 @@
 <script>
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
 export default {
-    data: () =>({
-        orderStatusList: [1]
+    data: () => ({
+        orderStatusList: [100]
     }),
     components: {
         OrderFilterBoard

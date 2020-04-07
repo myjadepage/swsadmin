@@ -16,7 +16,7 @@ import Marketing from '@/views/goods/Marketing.vue'
 
 /** 주문/매출관리 */
 import OrderLeftMenu from '@/views/order/LeftMenu'
-import OrderIndex from '@/views/order/index'
+// import OrderIndex from '@/views/order/index'
 import OrderAllList from '@/views/order/OrderAllList'
 import OrderPriceBefore from '@/views/order/OrderPriceBefore'
 import OrderPriceComplete from '@/views/order/OrderPriceComplete'
@@ -25,6 +25,12 @@ import OrderProductLeave from '@/views/order/OrderProductLeave'
 import OrderCancel from '@/views/order/OrderCancel'
 import OrderDecide from '@/views/order/OrderDecide'
 import OrderConsult from '@/views/order/OrderConsult'
+import OrderCancelBeforePrice from '@/views/order/OrderCancelBeforePrice'
+import OrderCancelCheckPrice from '@/views/order/OrderCancelCheckPrice'
+import OrderExchangeJoin from '@/views/order/OrderExchangeJoin'
+import OrderExchangeComplete from '@/views/order/OrderExchangeComplete'
+import OrderRejectJoin from '@/views/order/OrderRejectJoin'
+import OrderRejectComplete from '@/views/order/OrderRejectComplete'
 
 
 /** 회원관리 */
@@ -290,13 +296,13 @@ const routes = [
     path: '/order/',
     name: '주문/매출관리',
     component: AdminBoardLayout,
-    redirect: '/order/index',
+    redirect: '/order/order_list',
     children:[
-      {
-        path: '/order/index',
-        name: '주문 관리',
-        components: { LeftMenu: OrderLeftMenu, Contents: OrderIndex }
-      }, 
+      // {
+      //   path: '/order/index',
+      //   name: '주문 관리',
+      //   components: { LeftMenu: OrderLeftMenu, Contents: OrderIndex }
+      // }, 
       {
         path: '/order/order_list/',
         name: '전체 주문',
@@ -336,6 +342,37 @@ const routes = [
         path: '/order/order_consult/',
         name: '구매상담',
         components: { LeftMenu: OrderLeftMenu, Contents: OrderConsult }
+      }, 
+      /** 취소 /교환/반품신청 관리 */
+      {
+        path: '/order/order_cancel_before_price/',
+        name: '주문취소신청(입금전)',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderCancelBeforePrice }
+      },
+      {
+        path: '/order/order_cancel_check_price/',
+        name: '주문취소신청(입금확인)',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderCancelCheckPrice }
+      },
+      {
+        path: '/order/order_exchange_join/',
+        name: '주문교환신청',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderExchangeJoin }
+      },
+      {
+        path: '/order/order_exchange_complete/',
+        name: '주문교환완료',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderExchangeComplete }
+      },
+      {
+        path: '/order/order_reject_join/',
+        name: '주문반품신청',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderRejectJoin }
+      },
+      {
+        path: '/order/order_reject_complete/',
+        name: '주문반품완료',
+        components: { LeftMenu: OrderLeftMenu, Contents: OrderRejectComplete }
       }
     ]
   },

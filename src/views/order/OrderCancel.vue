@@ -11,11 +11,7 @@
             <li>주문을 취소한 내역을 보여주는 곳입니다.</li>
         </ul>
         <!--검색 필터  -->
-        <Order-filter-board
-            :isProgress="false"
-            @search="loadData"
-        >
-        </Order-filter-board>
+        <Order-filter-board :isProgress="true" :orderList="orderStatusList" @search="loadData"/>
         <!-- 조회 테이블 -->
     </div>
 </template>
@@ -23,12 +19,9 @@
 <script>
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
 export default {
-    data () {
-        return {
-            orderFilter: '',
-            items: []
-        }
-    },
+    data: () => ({
+        orderStatusList: [100, 101]
+    }),
     components: {
         OrderFilterBoard
     },

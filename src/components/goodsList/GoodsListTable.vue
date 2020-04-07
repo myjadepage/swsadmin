@@ -1,8 +1,11 @@
 <template>
     <div>
+        <div class="float-left mt-1 mb-1">
+            <b>총 {{totalPage}} 건의 주문이 조회되었습니다.</b>
+        </div>
         <div class="float-right mt-1 mb-1">
             <select v-model="perPage">
-                <option value="10" selected>10개 보기</option>
+                <option value="10">10개 보기</option>
                 <option value="30">30개 보기</option>
                 <option value="50">50개 보기</option>
             </select>
@@ -143,7 +146,7 @@ export default {
         resultFilter: function (filteredItems) {
             this.totalPage = filteredItems.length
             this.currentPage = 1
-        },
+        }, 
         changeDisplayFn: function (item, value) {
             if (confirm('상품진열 상태를 변경하시겠습니까?')){    
                 this.products.forEach(_item => {

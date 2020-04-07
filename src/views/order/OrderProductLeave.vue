@@ -11,11 +11,7 @@
             <li>발송이 완료되어 주문이 완료된 상품목록이 보여집니다.</li>
         </ul>
         <!--검색 필터  -->
-        <Order-filter-board
-            :isProgress="false"
-            @search="loadData"
-        >
-        </Order-filter-board>
+        <Order-filter-board :isProgress="true" :orderList="orderStatusList" @search="loadData"/>
         <!-- 조회 테이블 -->
     </div>
 </template>
@@ -23,6 +19,9 @@
 <script>
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
 export default {
+    data: () => ({
+        orderStatusList: [4]
+    }),
     components: {
         OrderFilterBoard
     },

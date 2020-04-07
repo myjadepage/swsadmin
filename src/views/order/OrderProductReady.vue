@@ -11,11 +11,7 @@
             <li>주문된 상품에 대한 배송 전 목록을 보실 수 있습니다.</li>
         </ul>
         <!--검색 필터  -->
-        <Order-filter-board
-            :isProgress="false"
-            @search="loadData"
-        >
-        </Order-filter-board>
+        <Order-filter-board :isProgress="true" :orderList="orderStatusList" @search="loadData"/>
         <!-- 조회 테이블 -->
     </div>
 </template>
@@ -23,6 +19,9 @@
 <script>
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
 export default {
+    data: () => ({
+        orderStatusList: [3]
+    }),
     components: {
         OrderFilterBoard
     },

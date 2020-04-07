@@ -12,11 +12,7 @@
             <li><font class="text-danger">발송완료로 이동</font>의 경우 사용자가 구매확정을 5일 동안 안눌렀을때 마스터가 강제로 설정하는 기능입니다.</li>
         </ul>
         <!--검색 필터  -->
-        <Order-filter-board
-            :isProgress="false"
-            @search="loadData"
-        >
-        </Order-filter-board>
+        <Order-filter-board :isProgress="true" :orderList="orderStatusList" @search="loadData"/>
         <!-- 조회 테이블 -->
     </div>
 </template>
@@ -24,6 +20,9 @@
 <script>
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
 export default {
+    data: () => ({
+        orderStatusList: [5]
+    }),
     components: {
         OrderFilterBoard
     },

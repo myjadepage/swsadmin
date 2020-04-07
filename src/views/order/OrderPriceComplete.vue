@@ -11,11 +11,7 @@
             <li>입금확인중에서 "진행상태"의 "결제완료"를 클릭하면 결제완료 목록으로 옵니다.</li>
         </ul>
         <!--검색 필터  -->
-        <Order-filter-board
-            :isProgress="false"
-            @search="loadData"
-        >
-        </Order-filter-board>
+        <Order-filter-board :isProgress="true" :orderList="orderStatusList" @search="loadData"/>
         <!-- 조회 테이블 -->
     </div>
 </template>
@@ -23,6 +19,9 @@
 <script>
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
 export default {
+    data: () => ({
+        orderStatusList: [2]
+    }),
     components: {
         OrderFilterBoard
     },
