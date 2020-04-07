@@ -23,8 +23,23 @@
                 <tbody>
                     <tr>
                         <th>브랜드명</th>
-                        <td colspan="3">
+                        <td>
                             <input type="text" class="text_input" v-model="brandReg.name" maxlength="100" style="width:98%">
+                        </td>
+                        <th>무료배송 최소범위</th>
+                        <td>
+                            <span class="w-10">
+                                착불무료배송: 
+                            </span>
+                            <span class="w-25">
+                                <input type="number" class="text_input" v-model="brandReg.debitfreeMinAmount"/>
+                            </span>
+                            <span class="w-10">
+                               &emsp;/&emsp;선불무료배송: 
+                            </span>
+                            <span class="w-25">
+                                <input type="number" class="text_input" v-model="brandReg.prepayfreetMinAmount"/>
+                            </span>
                         </td>
                     </tr>
                     <tr>
