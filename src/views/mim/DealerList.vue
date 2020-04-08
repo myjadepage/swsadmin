@@ -13,81 +13,76 @@
                     <li><span class="red">주의 : 판매자 목록을 삭제하시면 해당 상품이 모두 삭제됩니다.</span></li>
                 </ul>
 
-
-                <form name="loginFrm" method="post" target="_blank" action="/mim/dealer_login">
-                    <input type="hidden" name="no">
-                </form>
-
-
                 <div class="section_head">
                     <h4>총 1건의 승인된 판매자가 있으며, 오늘 승인된 판매자는 0건입니다.</h4>
                     <div>
-                        <form name="sFrm" method="get">
-                            <input type="hidden" name="psort" value="regdate_desc">
-                            <strong>SEARCH</strong>
-                            <select id="skey" name="skey"><option value="">전체</option><option value="id">아이디</option><option value="name">업체명</option><option value="charger">담당자</option><option value="bizno">사업자등록번호</option><option value="tel">전화번호</option><option value="mobile">핸드폰번호</option><option value="email">이메일</option></select>
-                            <input type="text" name="sword" value="" class="text_input" style="width:150px">
-                            <span class="button small black"><button type="submit">검색</button></span>
+                        <form name="sFrm">                            
+                           <select id="skey" name="skey" class="text_input">
+                            <option value="">전체</option>
+                            <option value="id">아이디</option>
+                            <option value="name">업체명</option>
+                            <option value="charger">담당자</option>
+                            <option value="bizno">사업자등록번호</option>
+                            <option value="tel">전화번호</option>
+                            <option value="mobile">핸드폰번호</option>
+                            <option value="email">이메일</option>
+                        </select>
+                        <input type="text" name="sword" class="text_input" style="width:150px; margin:0 5px">
+                        <b-button variant="secondary" size="sm">검색</b-button>
                         </form>
                     </div>
                 </div>
 
-                <form name="Frm" method="post">
-                    <input type="hidden" name="menu" value="normal">
-                    <input type="hidden" name="mode">
-                    <input type="hidden" name="no">
-                    <input type="hidden" name="params" value="skey=^sword=^psort=regdate_desc^page=">
-
+                 <form name="Frm" style="margin-top:10px">               
                     <table class="t_list">
                         <caption>승인된 판매자 목록</caption>
                         <colgroup>
                             <col width="55">
                             <col width="130">
                             <col width="*">
-                            <col width="80">
-                            <col width="100">
-                            <col width="100">
-                            <col width="80">
-                            <col width="68">
-                            <col width="30">
+                            <col width="13%">
+                            <col width="13%">
+                            <col width="13%">
+                            <col width="10%">
+                            <col width="150">
+                            <col width="50">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th>접속</th>
-                                <th><span onclick="setSort('id_asc')" style="font-size:11px; cursor:pointer;">▲</span>아이디<span onclick="setSort('id_desc')" style="font-size:11px; cursor:pointer;">▼</span></th>
-                                <th><span onclick="setSort('name_asc')" style="font-size:11px; cursor:pointer;">▲</span>업체명<span onclick="setSort('name_desc')" style="font-size:11px; cursor:pointer;">▼</span></th>
-                                <th><span onclick="setSort('charger_asc')" style="font-size:11px; cursor:pointer;">▲</span>담당자<span onclick="setSort('charger_desc')" style="font-size:11px; cursor:pointer;">▼</span></th>
+                                <th>아이디</th>
+                                <th>업체명</th>
+                                <th>담당자</th>
                                 <th>전화번호</th>
-                                <th>휴대폰</th>
-                                <th><span onclick="setSort('regdate_asc')" style="font-size:11px; cursor:pointer;">▲</span>신청일<span onclick="setSort('regdate_desc')" style="font-size:11px; cursor:pointer;">▼</span></th>
+                                <th>휴대폰번호</th>
+                                <th>신청일</th>
                                 <th>상세정보</th>
-                                <th><input type="checkbox" name="cbListAll" onclick="checkCbAll(this.form.cbList, this.checked)"></th>
+                                <th><input type="checkbox" name="cbListAll"></th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <tr onmouseover="this.style.backgroundColor='#FDFAE8'" onmouseout="this.style.backgroundColor='#FFFFFF'" style="background-color: rgb(255, 255, 255);">
+                            <tr>
                                 <td><span class="button small"><button type="button" onclick="loginDealer(8)">JOIN</button></span></td>
-                                <td>dealers</td>
-                                <td>내친구몰</td>
-                                <td><a href="mailto:webmaster@mallstore.co.kr">김담당</a></td>
-                                <td>02-123-1234</td>
-                                <td>02-123-1234</td>
-                                <td>2013-06-03</td>
-                                <td><span class="button small"><button type="button" onclick="detail(8)">상세정보</button></span></td>
-                                <td><input type="checkbox" name="cbList" value="8"></td>
+                                <td>awesomeshop</td>
+                                <td>어썸몰</td>
+                                <td><a href="mailto:shlee@awesomebly.com">김다다</a></td>
+                                <td>01-888-9999</td>
+                                <td>010-6666-8888</td>
+                                <td>2019-03-11</td>
+                                <td><b-button variant="secondary" size="sm" @click="$router.push('/mim/dealer_detail')">상세정보</b-button></td>
+                                <td><input type="checkbox" name="cbList"></td>
                             </tr>
-
                         </tbody>
                     </table>
 
                     <div class="paging">
-                        <span><a href="/mim/dealer_list.asp?page=1&skey=&sword=&psort=regdate_desc"><strong>1</strong></a></span>
+                        <span><a href="/"><strong>1</strong></a></span>
                     </div>
 
                     <div class="btn_right">
-                        <span class="button large black"><button type="button" onclick="downExcel()">엑셀로받기</button></span>
-                        <span class="button large black"><button type="button" onclick="delList()">선택삭제</button></span>
+                        <b-button variant="secondary" size="lg" style="margin-right:5px">엑셀로받기</b-button>
+                        <b-button variant="danger" size="lg">선택삭제</b-button>
                     </div>
 
                 </form>

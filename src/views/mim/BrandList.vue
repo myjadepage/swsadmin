@@ -1,6 +1,6 @@
 <template>
 <div id="contents">
-                <h3>브랜드관리</h3>
+                <h3><font-awesome-icon icon="play-circle" />  브랜드관리</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>입점업체관리</li>
@@ -11,20 +11,16 @@
                     <li>판매자에게서 신청된 브랜드에 관하여 관리합니다.</li>
                 </ul>
 
-
-                <form name="Frm" method="get" action="/mim/brand_list">
-                    <input type="hidden" name="mode">
-                    <input type="hidden" name="idx">
-                    <input type="hidden" name="params">
-
+                <form name="Frm">
                     <div class="section_head">
-                        <h4>총 1개의 정보가 등록되어있습니다.</h4>
-                        <div>
-                            <strong>SEARCH</strong>
-                            <select id="skey" name="skey"><option value="brand">브랜드명</option><option value="dealer">업체명</option></select>
-
-                            <input type="text" name="sword" value="" class="text_input" style="width:150px">
-                            <span class="button small black"><button type="submit">검색</button></span>
+                        <h4>총 <strong class="red">2</strong>건의 정보가 등록되어 있습니다.</h4>
+                        <div>                         
+                            <select id="skey" name="skey">
+                                <option value="brand">브랜드명</option>
+                                <option value="dealer">업체명</option>
+                            </select>
+                             <input type="text" name="sword" class="text_input" style="width:150px; margin:0 5px">
+                            <b-button variant="secondary" size="sm">검색</b-button>
                         </div>
                     </div>
 

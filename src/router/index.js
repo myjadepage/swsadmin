@@ -4,7 +4,7 @@ import AdminBoardLayout from '@/views/layout/AdminBoardLayout.vue'
 
 /** 상품관리 */
 import GoodsLeftMenu from '@/views/goods/LeftMenu'
-import GoodsIndex from '@/views/goods/index.vue'
+// import GoodsIndex from '@/views/goods/index.vue'
 import BrandList from '@/views/goods/BrandList.vue'
 import BrandReg from '@/views/goods/BrandReg.vue'
 import GoodsReg from '@/views/goods/GoodsReg.vue'
@@ -36,7 +36,7 @@ import OrderRejectComplete from '@/views/order/OrderRejectComplete'
 /** 회원관리 */
 import MemberLeftMenu from '@/views/member/LeftMenu'
 import ConfigMember from '@/views/member/ConfigMember'
-import MemberIndex from '@/views/member/MemberIndex'
+// import MemberIndex from '@/views/member/MemberIndex'
 import MemberList from '@/views/member/MemberList'
 import MemberDel from '@/views/member/MemberDel'
 import MemberBuyList from '@/views/member/MemberBuyList'
@@ -44,7 +44,7 @@ import MemberMail from '@/views/member/MemberMail'
 
 /** 운영관리 */
 import ManagementLeftMenu from '@/views/management/LeftMenu'
-import ManagementIndex from '@/views/management/ManagementIndex'
+// import ManagementIndex from '@/views/management/ManagementIndex'
 import NoticeList from '@/views/management/NoticeList'
 import NoticeReg from '@/views/management/NoticeReg'
 import NoticeDetail from '@/views/management/NoticeDetail'
@@ -60,7 +60,7 @@ import CouponReg from '@/views/management/CouponReg'
 
 /** 환경설정 */
 import SetupLeftMenu from '@/views/setup/LeftMenu'
-import SetupIndex from '@/views/setup/SetupIndex'
+// import SetupIndex from '@/views/setup/SetupIndex'
 import ConfigManager from '@/views/setup/ConfigManager'
 import ConfigSite from '@/views/setup/ConfigSite'
 import ConfigDealer from '@/views/setup/ConfigDealer'
@@ -79,7 +79,7 @@ import Configkakaopay from '@/views/setup/Configkakaopay'
 
 /** 통계 */
 import StatisticsLeftMenu from '@/views/statistic/LeftMenu'
-import StatisticsIndex from '@/views/statistic/StatisticsIndex'
+// import StatisticsIndex from '@/views/statistic/StatisticsIndex'
 import SaleGoods from '@/views/statistic/SaleGoods'
 import SaleTotal from '@/views/statistic/SaleTotal'
 import SaleMember from '@/views/statistic/SaleMember'
@@ -94,10 +94,11 @@ import GoodsMarks from '@/views/statistic/GoodsMarks'
 import MarketingUsePoint from '@/views/statistic/MarketingUsePoint'
 
 /** 업체관리 */
-import MimIndex from '@/views/mim/MimIndex'
+// import MimIndex from '@/views/mim/MimIndex'
 import MimLeftMenu from '@/views/mim/MimLeftMenu'
 import DealerRegistList from '@/views/mim/DealerRegistList'
 import DealerList from '@/views/mim/DealerList'
+import DealerDetail from '@/views/mim/DealerDetail'
 import DealerSecessionList from '@/views/mim/DealerSecessionList'
 import DealerQnaList from '@/views/mim/DealerQnaList'
 import DealerGoodsList from '@/views/mim/GoodsList'
@@ -106,13 +107,13 @@ import EventList from '@/views/mim/EventList'
 
 /** 정산관리 */
 import AccountLeftMenu from '@/views/account/AccountLeftMenu'
-import AccountIndex from '@/views/account/index'
+// import AccountIndex from '@/views/account/index'
 import Account from '@/views/account/Account'
 import AccountForSeller from '@/views/account/AccountForSeller'
 
 /** 방송관리 */
 import BroadcastLeftMenu from '@/views/broadcast/BroadcastLeftMenu'
-import BroadcastIndex from '@/views/broadcast/Index'
+// import BroadcastIndex from '@/views/broadcast/Index'
 import BroadcastRequest from '@/views/broadcast/BroadcastRequest'
 import BroadcastStop from '@/views/broadcast/BroadcastStop'
 import BroastcastSend from '@/views/broadcast/BroastcastSend'
@@ -128,13 +129,13 @@ const routes = [
     path: '/goods',
     name: '상품관리',
     component: AdminBoardLayout,
-    redirect: '/goods/index',
+    redirect: '/goods/goods_list',
     children: [
-      {
-        path: '/goods/index',
-        name: '상품 관리',
-        components: { LeftMenu: GoodsLeftMenu, Contents: GoodsIndex}
-      },
+      // {
+      //   path: '/goods/index',
+      //   name: '상품 관리',
+      //   components: { LeftMenu: GoodsLeftMenu, Contents: GoodsIndex}
+      // },
       {
         path: '/goods/goods_reg',
         name: '상품 등록',
@@ -191,13 +192,13 @@ const routes = [
     path: '/member',
     name: '회원관리',    
     component: AdminBoardLayout,
-    redirect: '/member/',
+    redirect: '/member/member_list',
     children: [
-      {
-        path: '/member/',
-        name: '회원관리',
-        components: { LeftMenu: MemberLeftMenu, Contents: MemberIndex }
-      },   
+      // {
+      //   path: '/member/',
+      //   name: '회원관리',
+      //   components: { LeftMenu: MemberLeftMenu, Contents: MemberIndex }
+      // },   
       {
         path: '/member/config_member',
         name: '회원가입설정',
@@ -229,13 +230,13 @@ const routes = [
     path: '/management',
     name: '운영관리',    
     component: AdminBoardLayout,
-    redirect: '/management/',
+    redirect: '/management/notice_list',
     children: [
-      {
-        path: '/management/',
-        name: '운영관리',
-        components: { LeftMenu: ManagementLeftMenu, Contents: ManagementIndex }
-      },
+      // {
+      //   path: '/management/',
+      //   name: '운영관리',
+      //   components: { LeftMenu: ManagementLeftMenu, Contents: ManagementIndex }
+      // },
       {
         path: '/management/notice_list',
         name: '공지사항',
@@ -302,13 +303,13 @@ const routes = [
     path: '/setup/',
     name: '환경설정',    
     component: AdminBoardLayout,
-    redirect: '/setup/',
+    redirect: '/setup/config_manager',
     children: [
-      {
-        path: '/setup/',
-        name: '환경설정',
-        components: { LeftMenu: SetupLeftMenu, Contents: SetupIndex }
-      }, 
+      // {
+      //   path: '/setup/',
+      //   name: '환경설정',
+      //   components: { LeftMenu: SetupLeftMenu, Contents: SetupIndex }
+      // }, 
       {
         path: '/setup/config_manager',
         name: '상점환경설정',
@@ -391,13 +392,13 @@ const routes = [
     path: '/statistic/',
     name: '통계',    
     component: AdminBoardLayout,
-    redirect: '/statistic/',
+    redirect: '/statistic/sale_total',
     children: [
-      {
-        path: '/statistic/',
-        name: '통계',
-        components: { LeftMenu: StatisticsLeftMenu, Contents: StatisticsIndex }
-      }, 
+      // {
+      //   path: '/statistic/',
+      //   name: '통계',
+      //   components: { LeftMenu: StatisticsLeftMenu, Contents: StatisticsIndex }
+      // }, 
       {
         path: '/statistic/sale_total',
         name: '전체매출통계',
@@ -548,22 +549,27 @@ const routes = [
     path: '/mim/',
     name: '입점업체관리',
     component: AdminBoardLayout,
-    redirect: '/mim/',
+    redirect: '/mim/dealer_list',
     children:[
-      {
-        path: '/mim/',
-        name: '판매자관리',
-        components: { LeftMenu: MimLeftMenu, Contents: MimIndex }
-      },
+      // {
+      //   path: '/mim/',
+      //   name: '판매자관리',
+      //   components: { LeftMenu: MimLeftMenu, Contents: MimIndex }
+      // },
       {
         path: '/mim/dealer_regist_list',
-        name: '판매자신창',
+        name: '판매자신청',
         components: { LeftMenu: MimLeftMenu, Contents: DealerRegistList }
       },
       {
         path: '/mim/dealer_list',
         name: '판매자목록',
         components: { LeftMenu: MimLeftMenu, Contents: DealerList }
+      },
+      {
+        path: '/mim/dealer_detail',
+        name: '판매자정보',
+        components: { LeftMenu: MimLeftMenu, Contents: DealerDetail }
       },
       {
         path: '/mim/dealer_secession_list',
@@ -596,13 +602,13 @@ const routes = [
     path: '/account/',
     name: '정산관리',
     component: AdminBoardLayout,
-    redirect: '/account/index',
+    redirect: '/account/account',
     children:[
-      {
-        path: '/account/index',
-        name: '본사정산',
-        components: { LeftMenu: AccountLeftMenu, Contents: AccountIndex }
-      },
+      // {
+      //   path: '/account/index',
+      //   name: '본사정산',
+      //   components: { LeftMenu: AccountLeftMenu, Contents: AccountIndex }
+      // },
       {
         path: '/account/account',
         name: '정산관리',
@@ -619,13 +625,13 @@ const routes = [
     path: '/broadcast/',
     name: '방송관리',
     component: AdminBoardLayout,
-    redirect: '/broadcast/',
+    redirect: '/broadcast/BroadcastRequest',
     children:[
-      {
-        path: '/broadcast/',
-        name: '방송관리',
-        components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastIndex }
-      },
+      // {
+      //   path: '/broadcast/',
+      //   name: '방송관리',
+      //   components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastIndex }
+      // },
       {
         path: '/broadcast/BroadcastRequest',
         name: '방송신청',
