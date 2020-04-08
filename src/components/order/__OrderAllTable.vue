@@ -72,6 +72,61 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        <!--  환불 tr -->
+                                        <!-- <tr>
+                                            <th class="font-weight-bold text-center">환불</th>
+                                            <td>
+                                                <p>
+                                                    <span>현재 1건의 클레임이 처리 완료 / 환불 승인취소 오류 0건 / 환불 총액 {{items.item.amount}} (현금: {{items.item.amount}}, 쿠폰할인금: {{ items.item.couponDiscount }})</span>
+                                                    <span class="float-right">
+                                                        <a class="btn btn-sm btn-outline-secondary">상세내역</a>
+                                                    </span>
+                                                </p>
+                                                <div class="mt-3" style="border: 1px solid #dc354538 ">
+                                                    <table class="table mb-0">
+                                                        <col width="8%" />
+                                                        <col width="8%" />
+                                                        <col width="8%" />
+                                                        <col width="8%" />
+                                                        <col width="8%" />
+                                                        <col width="*" />
+                                                        <tr>
+                                                            <td colspan="6" class="bg-light font-weight-bold text-danger" style="border-top: 0px solid">
+                                                                취소완료
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="text-danger bg-light font-weight-bold">주문자명</th>
+                                                            <td class="text-danger" style="background: #FFF">김도령</td>
+                                                            <th class="text-danger bg-light font-weight-bold">아이디</th>
+                                                            <td class="text-danger" style="background: #FFF">kimehfud</td>
+                                                            <th class="text-danger bg-light font-weight-bold">신청일자</th>
+                                                            <td class="text-danger" style="background: #FFF">2020-04-03 00:00:13</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="text-danger bg-light font-weight-bold">환불방식</th>
+                                                            <td class="text-danger " style="background: #FFF">계좌송금</td>
+                                                            <th class="text-danger bg-light font-weight-bold">환불금액</th>
+                                                            <td class="text-danger " colspan="3" style="background: #FFF">2,0000,000</td>
+                                                        </tr>
+                                                    </table>
+                                                    <table class="table mb-0">
+                                                        <col width="*" />
+                                                        <col width="15%" />
+                                                        <col width="15%" />
+                                                        <col width="15%" />
+                                                        <col width="15%" />
+                                                        <tr>
+                                                            <td class="bg-light font-weight-bold">상품명</td>
+                                                            <td class="bg-light font-weight-bold">가격</td>
+                                                            <td class="bg-light font-weight-bold">신청수량</td>
+                                                            <td class="bg-light font-weight-bold">승인자</td>
+                                                            <td class="bg-light font-weight-bold">승인일시</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr> -->
                                         <tr>
                                             <th class="font-weight-bold text-center">수령인</th>
                                             <td>{{ items.item.receiverAddres }}&emsp;{{ items.item.receiverName }}&emsp;<span class="font-italic">[{{ items.item.receiverMobile }}]</span></td>
@@ -107,9 +162,47 @@
                                         <order-status-info 
                                             :items="items"
                                             :order="product"
-                                        />
-                                        <p><b-link class="text-danger" @click="loadCancelOrderFn(items, items.item)">주문취소 신청</b-link></p>
+                                            @orderCancel="loadCancelOrderFn"
+                                        >
+                                        </order-status-info>
                                     </template>
+                                    <!-- 상품상세 내역 -->
+                                    <!-- <template v-slot:row-details>
+                                        <div style="margin-left:70px">
+                                            <table class="table table-sm">
+                                                <col width="70px" />
+                                                <col width="130px" />
+                                                <col width="90px" />
+                                                <col width="90px" />
+                                                <col width="*" />
+                                                <col width="130px" />
+                                                <col width="90px" />
+                                                <col width="130px" />
+                                                <thead>
+                                                    <th class="font-weight-bold">구분</th>
+                                                    <th class="font-weight-bold text-center">신청일자</th>
+                                                    <th class="font-weight-bold">환불방법</th>
+                                                    <th class="font-weight-bold text-right">신청수량</th>
+                                                    <th class="font-weight-bold">사유</th>
+                                                    <th class="font-weight-bold text-center">환불완료일자</th>
+                                                    <th class="font-weight-bold text-center">상태</th>
+                                                    <th class="font-weight-bold text-center">처리일자</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>취소</td>
+                                                        <td class="text-center">2020-04-03 00:00:00</td>
+                                                        <td>계좌송금</td>
+                                                        <td class="text-right">2개</td>
+                                                        <td>단순 변심</td>
+                                                        <td class="text-center">2020-04-03 00:00:00</td>
+                                                        <td class="text-center">주문취소완료</td>
+                                                        <td class="text-center">2020-04-03 00:00:00</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </template> -->
                                     <template v-slot:cell(update)>
                                         <b-button variant="outline-secondary" size="sm">변경이력</b-button>
                                     </template>
@@ -192,7 +285,10 @@ export default {
             
         },
         loadCancelOrderFn: function (info, item) {
-            this.selectedOrder = item
+            console.log(info)
+            console.log(item)
+            this.selectedOrder = info
+            this.selectedOrder.item = item
             this.$refs.orderCancelModal.$bvModal.show('cancelModal')
         },
         setTranslatCode: function (item) {

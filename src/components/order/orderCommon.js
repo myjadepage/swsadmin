@@ -26,7 +26,7 @@ export default {
             }.bind(this))
         },
         // 페이징 이벤트
-        changePage : function (currentPage) {
+        changePage: function (currentPage) {
             if(currentPage/this.totalRow > 0.5) {
                 this.req.startIndex = this.totalRow
                 this.axiosGetRequest('/api/v1/orders', this.req, function (res) {
@@ -40,6 +40,6 @@ export default {
                     }
                 }.bind(this))
             }
-        }
+        },
     }
 }

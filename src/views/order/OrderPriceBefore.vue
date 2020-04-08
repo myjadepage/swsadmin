@@ -30,7 +30,7 @@ import commonJs from '@/assets/js/common.js'
 import orderCommon from '@/components/order/orderCommon.js'
 export default {
     data: () =>({
-        orderStatusList: [1,2,3,4,5,100,101,102,103,104,105]
+        orderStatusList: [1]
     }),
     components: {
         OrderFilterBoard,

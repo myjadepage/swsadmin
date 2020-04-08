@@ -67,7 +67,7 @@
                                 <option v-for="(item, index) in searchFilter" :key="index" :value="item.value">{{ item.text }}</option>
                             </select>
                             <input type="text " name="sword " class="text_input" v-model="orderFilter.searchText" style="width:300px ">&emsp;
-                            <b-button type="submit" variant="outline-secondary" size="sm"> <font-awesome-icon icon="search" size="sm"/>&emsp;검색 </b-button>
+                            <b-button id="fileterBoard" type="submit" variant="outline-secondary" size="sm"> <font-awesome-icon icon="search" size="sm"/>&emsp;검색 </b-button>
                         </td>
                     </tr>
                 </tbody>
