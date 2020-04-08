@@ -65,6 +65,9 @@ import AccountIndex from '@/views/account/index'
 import Account from '@/views/account/Account'
 import AccountForSeller from '@/views/account/AccountForSeller'
 
+/* 로그인, 회원가입 */
+import MainPage from "@/views/main/MainPage"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -343,6 +346,11 @@ const routes = [
         components: { LeftMenu: AccountMenu, Contents: AccountForSeller }
       }
     ]
+  },
+  {
+    path: '/login',
+    name: '로그인',
+    component: MainPage
   }
 ]
 
