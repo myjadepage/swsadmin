@@ -1,6 +1,6 @@
 <template>
     <div id="aside">
-        <h2>정산관리</h2>
+    <h2>정산관리</h2>
         <dl>
             <!-- <dt>결제/정산내역</dt> -->
             <dd class="side_small_menu">

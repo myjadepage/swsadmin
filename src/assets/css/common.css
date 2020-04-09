@@ -3335,7 +3335,7 @@ html, body{
 }
 
 .signIn input[type="password"]{
-    width: 45%;
+    width: 90%;
 }
 
 .signIn select {
@@ -3362,4 +3362,147 @@ html, body{
     font-weight: bold;
     background-color: rgba(60, 100, 177, 0.06); 
     margin-bottom: 20px;
+}
+
+
+/*  대시보드 */
+
+.btns button{
+    border: 1px solid #1ABCFE;
+    margin: 0 2.5px;
+    padding: 2px 5px;
+}
+
+.btns button.selected{
+    color: #FFF;
+    background-color: #C8E8F5;
+}
+
+
+.dashCount{
+    border: 1px solid  #E5E5E5;
+    width: 400px;
+    height: 120px;
+}
+
+.dashCount td{
+    width: 200px;
+    padding: 5px 0;
+    text-align: right;
+}
+
+.dashCount img{
+    width: 70px;
+    height: 70px;
+}
+
+.dashCount .countImg{
+    margin-right: 10px;
+}
+
+.dashCount .ico_won{
+width: 70px;
+height: 70px;
+background: url('../img/ico_won.png');
+background-size: 100%;
+background-repeat: no-repeat;
+float: left;
+}
+.dashCount .ico_boxes{
+float: left;
+width: 70px;
+height: 80px;
+background: url('../img/ico_boxes.png');
+background-size: 100%;
+background-repeat: no-repeat;
+}
+.dashCount .ico_calc{
+float: left;
+width: 70px;
+height: 70px;
+background: url('../img/ico_calc.png');
+background-size: 100%;
+background-repeat: no-repeat;
+}
+.dashCount .ico_truck{
+float: left;
+width: 70px;
+height: 70px;
+background: url('../img/ico_truck.png');
+background-size: 100%;
+background-repeat: no-repeat;
+}
+
+.salesGraph h3{
+    display: inline-block;
+    width: 100%;
+}
+
+.complains{
+    display: inline-block;
+    border: 1px solid #E5E5E5;
+}
+
+.complainSection h3{
+    display: inline-block;
+    width: 100%;
+}
+
+.complains .complain{
+    float: left;
+    margin-right: 20px;
+    width: 170px;
+    height: 170px;
+    border: 5px solid black;
+    font-size: 20px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 100px;
+    padding: 30px;
+}
+
+.complains .count{
+    font-size: 20px;
+    display: block;
+    font-weight: bold;
+}
+
+.complain.cancel{
+    border: 5px solid #389E87;
+}
+
+.complain.cancel .count{
+    color:  #389E87;
+}
+
+.complain.refund{
+    border: 5px solid #4A90E2;
+}
+.complain.refund .count{
+    color:  #4A90E2;
+}
+.complain.exchange{
+    border:5px solid #F5A623;
+}
+.complain.exchange .count{
+    color:  #F5A623;
+}
+.complain.returns{
+    border:5px solid #B82436;
+}
+.complain.returns .count{
+    color:  #B82436;
+}
+
+.dashCount{
+    padding: 15px 12px;
+}
+
+.dash-Notices h3{
+    width: 100%;
+}
+
+
+.dash-qna h3{
+    width:100%
 }

@@ -8,8 +8,14 @@
           <input  type="text" name="name" placeholder="담당자 이름을 입력 해주세요." required>   <br>
           <input  type="email" name="email" id="email" placeholder="담당자 이메일을 입력 해주세요." required> <br>
           <br>
-          <input type="password" name="password" id="" placeholder="패스워드를 입력 해주세요." required>
-          <input type="password" placeholder="패스워드 확인을 입력 해주세요." required>
+          <div class="row">
+            <div class="col col-6">
+           <input type="password" name="password" id="" placeholder="패스워드를 입력 해주세요." required>
+            </div>
+            <div class="col col-6">
+           <input type="password" placeholder="패스워드 확인을 입력 해주세요." required>
+            </div>
+          </div>
           <select name="auth" id="auth" required>
             <option value="">권한 설정을 선택 해주세요</option>
           </select>
