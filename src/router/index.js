@@ -102,6 +102,7 @@ import DealerDetail from '@/views/mim/DealerDetail'
 import DealerSecessionList from '@/views/mim/DealerSecessionList'
 import DealerQnaList from '@/views/mim/DealerQnaList'
 import DealerGoodsList from '@/views/mim/GoodsList'
+import DealerBrandList from '@/views/mim/DealerBrandList'
 import EventList from '@/views/mim/EventList'
 
 
@@ -549,7 +550,7 @@ const routes = [
     path: '/mim/',
     name: '입점업체관리',
     component: AdminBoardLayout,
-    redirect: '/mim/dealer_list',
+    redirect: '/mim/dealer_regist_list',
     children:[
       // {
       //   path: '/mim/',
@@ -587,9 +588,9 @@ const routes = [
         components: { LeftMenu: MimLeftMenu, Contents: DealerGoodsList }
       },
       {
-        path: '/mim/brand_list',
+        path: '/mim/dealer_brand_list',
         name: '판매자상품관리',
-        components: { LeftMenu: MimLeftMenu, Contents: BrandList }
+        components: { LeftMenu: MimLeftMenu, Contents: DealerBrandList }
       },
       {
         path: '/mim/event_list',

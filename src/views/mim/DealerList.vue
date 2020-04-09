@@ -1,23 +1,22 @@
 <template>
-
-            <div id="contents">
-                <h3>판매자목록</h3>
+ <div id="contents">
+                <h3><font-awesome-icon icon="play-circle" /> 판매자 신청목록</h3>
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>입점업체관리</li>
                     <li>판매자관리</li>
-                    <li class="on">판매자목록</li>
+                    <li class="on">판매자 신청목록</li>
                 </ul>
                 <ul class="helpbox">
-                    <li>판매자 신청목록에서 관리자가 승인을 내린 목록입니다.</li>
-                    <li><span class="red">주의 : 판매자 목록을 삭제하시면 해당 상품이 모두 삭제됩니다.</span></li>
+                    <li>쇼핑몰에 판매자 신청하신 목록을 관리하는 곳 입니다.</li>
+                    <li>판매자의 상세내역을 잘 검토하시여 판매자 승인을 해 주시면 됩니다.</li>
+                    <li>판매자 신청 목록에서 승인을 하시면 판매자목록으로 자동 등록됩니다.</li>
                 </ul>
 
                 <div class="section_head">
-                    <h4>총 1건의 승인된 판매자가 있으며, 오늘 승인된 판매자는 0건입니다.</h4>
+                    <h4>총 <strong class="red">2</strong>건의 판매자 신청이 있으며, 오늘 신청된 판매자는 <strong class="red">0</strong>건입니다.</h4>
                     <div>
-                        <form name="sFrm">                            
-                           <select id="skey" name="skey" class="text_input">
+                        <select id="skey" name="skey" class="text_input">
                             <option value="">전체</option>
                             <option value="id">아이디</option>
                             <option value="name">업체명</option>
@@ -28,17 +27,21 @@
                             <option value="email">이메일</option>
                         </select>
                         <input type="text" name="sword" class="text_input" style="width:150px; margin:0 5px">
-                        <b-button variant="secondary" size="sm">검색</b-button>
-                        </form>
+                        <b-button variant="outline-secondary" size="sm">검색</b-button>
                     </div>
                 </div>
 
-                 <form name="Frm" style="margin-top:10px">               
-                    <table class="t_list">
-                        <caption>승인된 판매자 목록</caption>
-                        <colgroup>
-                            <col width="55">
-                            <col width="130">
+                <form name="Frm" style="margin-top:10px">
+                    <b-table
+                        hover
+                        head-variant="light"
+                        :per-page="perPage"
+                        :current-page="currentPage"
+                        :fields="fields"  
+                        :items="dealerData"
+                    >
+                        <template v-slot:table-colgroup>
+                            <col width="17%">
                             <col width="*">
                             <col width="13%">
                             <col width="13%">
@@ -46,54 +49,75 @@
                             <col width="10%">
                             <col width="150">
                             <col width="50">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>접속</th>
-                                <th>아이디</th>
-                                <th>업체명</th>
-                                <th>담당자</th>
-                                <th>전화번호</th>
-                                <th>휴대폰번호</th>
-                                <th>신청일</th>
-                                <th>상세정보</th>
-                                <th><input type="checkbox" name="cbListAll"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr>
-                                <td><span class="button small"><button type="button" onclick="loginDealer(8)">JOIN</button></span></td>
-                                <td>awesomeshop</td>
-                                <td>어썸몰</td>
-                                <td><a href="mailto:shlee@awesomebly.com">김다다</a></td>
-                                <td>01-888-9999</td>
-                                <td>010-6666-8888</td>
-                                <td>2019-03-11</td>
-                                <td><b-button variant="secondary" size="sm" @click="$router.push('/mim/dealer_detail')">상세정보</b-button></td>
-                                <td><input type="checkbox" name="cbList"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="paging">
-                        <span><a href="/"><strong>1</strong></a></span>
-                    </div>
-
+                        </template>
+                        <template v-slot:cell(detail)>
+                            <b-button variant="secondary" @click="$router.push('/mim/dealer_detail')">상세정보</b-button>                              
+                        </template>
+                        <template v-slot:cell(check)>
+                            <input type="checkbox"/>
+                        </template>
+                    </b-table>
+<!-- 
                     <div class="btn_right">
-                        <b-button variant="secondary" size="lg" style="margin-right:5px">엑셀로받기</b-button>
-                        <b-button variant="danger" size="lg">선택삭제</b-button>
-                    </div>
+                        <b-button variant="outline-danger" size="lg">선택삭제</b-button>
+                    </div> -->
 
+                     <b-pagination 
+                        v-model="currentPage" 
+                        :total-rows="totalPage"
+                        :per-page="perPage"
+                        align="center"
+                    >
+                    </b-pagination>
                 </form>
-
-            </div>
-  
+ </div>
 </template>
 
 <script>
-export default {
+import commonJs from '@/assets/js/common.js'
 
+export default {
+    mixins: [commonJs],
+    data() {
+        return {
+            totalPage: 0,
+            currentPage: 1,
+            perPage: 10,
+            dealerData: [],
+            fields:[
+                {key : 'sellerId', label : '아이디', sortable: true},
+                {key : 'name', label : '판매점명', sortable: true},
+                {key : 'managerName', label : '담당자', sortable: true},
+                {key : 'tel', label : '전화번호', sortable: true},
+                {key : 'mobile', label : '휴대폰번호', sortable: true},
+                {key : 'createdAt', label : '신청일', sortable : true},
+                {key : 'detail', label : '상세정보', sortable: false},
+                {key : 'check', label : '',sortable: false}
+             ]
+        }
+    },
+    mounted () {
+        this.axiosGetRequest('/api/v1/sellers',{'proposalStatusCode' : 2},this.loadDealerList)
+    },
+    methods: {
+        loadDealerList(res) {
+           let result = res.data.jsonData.sellers
+           for (let i = 0 ; i < result.length ; i++) {
+               this.dealerData.push({
+                   sellerId: result[i].sellerId,
+                   name: result[i].name,
+                   managerName: result[i].managerName,
+                   tel: result[i].tel,
+                   mobile: result[i].mobile,
+                   createdAt: result[i].createdAt,
+                   detail: result[i].sellerSysId,
+                   check: ''
+               })
+           }
+           this.totalPage = result.length
+           this.currentPage = 1
+        }
+    }
 }
 </script>
 
