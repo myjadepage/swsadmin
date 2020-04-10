@@ -50,6 +50,7 @@
                         <td class="text-center align-middle">
                             <p v-html="setTranslatCode({type:'statusCode', value: item.statusCode})"></p>
                             <order-status-info @closeModal="closeModal" :order="{item:item, modal: 'detailOrder'}"/>
+                            <p><b-link class="text-danger" @click="$emit('cancelMoal', selectedItem, item)">주문취소 신청</b-link></p>
                         </td>
                     </tr>
                 </tbody>
@@ -118,7 +119,7 @@
         </div>
         <!-- 주문자 정보 -->
         <div>
-            <h5 class="font-weight-bold badge-secondary"><font-awesome-icon icon="user" /> 주문 자</h5>
+            <h5 class="font-weight-bold mb-1"><font-awesome-icon icon="user" /> 주문 자</h5>
             <table class="table table-bordered table-sm">
                 <col width="20%" />
                 <col width="30%" />
@@ -126,30 +127,20 @@
                 <col width="30%" />
                 <tr>
                     <th class="align-middle pl-2 bg-light">이름</th>
-                    <td colspan="3"><input type="search" class="text_input" /></td>
-                </tr>
-                <tr>
-                    <th class="align-middle pl-2 bg-light">전화</th>
-                    <td><input type="search" class="text_input" /></td>
+                    <td><input type="search" class="text_input" :value="selectedItem.orderName" /></td>
                     <th class="align-middle pl-2 bg-light">이동전화</th>
-                    <td><input type="search" class="text_input" /></td>
+                    <td><input type="search" class="text_input" :value="selectedItem.orderMobile"/></td>
                 </tr>
                 <tr>
                     <th class="align-middle pl-2 bg-light">주소</th>
                     <td colspan="4">
                         <p class="w-100">
-                            <span><input type="search" class="text_input" /></span>&emsp;
+                            <span><input type="search" class="text_input"/></span>&emsp;
                             <span><b-button variant="outline-secondary" size="sm">우편번호찾기</b-button></span>
                         </p>
                         <p class="w-100 mt-1">
-                            <input type="search" class="w-100 text_input"/>
+                            <input type="search" class="w-100 text_input" :value="selectedItem.orderAddress"/>
                         </p>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="align-middle pl-2 bg-light">요청사항</th>
-                    <td colspan="3">
-                        <textarea class="form-control"></textarea>
                     </td>
                 </tr>
             </table>
@@ -157,7 +148,7 @@
 
         <!-- 받는 분 정보 -->
         <div>
-            <h5 class="font-weight-bold badge-secondary"><font-awesome-icon icon="user" /> 받는 분</h5>
+            <h5 class="font-weight-bold mb-1"><font-awesome-icon icon="user" /> 받는 분</h5>
             <table class="table table-bordered table-sm">
                 <col width="20%" />
                 <col width="30%" />
@@ -165,13 +156,9 @@
                 <col width="30%" />
                 <tr>
                     <th class="align-middle pl-2 bg-light">이름</th>
-                    <td colspan="3"><input type="search" class="text_input" /></td>
-                </tr>
-                <tr>
-                    <th class="align-middle pl-2 bg-light">전화</th>
-                    <td><input type="search" class="text_input" /></td>
+                    <td><input type="search" class="text_input" :value="selectedItem.receiverName"/></td>
                     <th class="align-middle pl-2 bg-light">이동전화</th>
-                    <td><input type="search" class="text_input" /></td>
+                    <td><input type="search" class="text_input" :value="selectedItem.receiverMobile"/></td>
                 </tr>
                 <tr>
                     <th class="align-middle pl-2 bg-light">주소</th>
@@ -181,7 +168,7 @@
                             <span><b-button variant="outline-secondary" size="sm">우편번호찾기</b-button></span>
                         </p>
                         <p class="w-100 mt-1">
-                            <input type="search" class="w-100 text_input"/>
+                            <input type="search" class="w-100 text_input" :value="selectedItem.receiverAddress"/>
                         </p>
                     </td>
                 </tr>

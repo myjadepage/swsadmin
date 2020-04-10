@@ -74,7 +74,7 @@
                                         </tr>
                                         <tr>
                                             <th class="font-weight-bold text-center">수령인</th>
-                                            <td>{{ items.item.receiverAddres }}&emsp;{{ items.item.receiverName }}&emsp;<span class="font-italic">[{{ items.item.receiverMobile }}]</span></td>
+                                            <td>{{ items.item.receiverAddress }}&emsp;{{ items.item.receiverName }}&emsp;<span class="font-italic">[{{ items.item.receiverMobile }}]</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -101,14 +101,22 @@
                                     </template>
                                     <template v-slot:cell(debitInfo)="product">
                                         <p v-html="setTranslatCode({type: 'deliveryPriceTypeCode', value: product.item.deliveryPriceTypeCode})"></p>
+                                    </template>delivery
+                                    <template v-slot:cell(delivery)>
+                                        <p>
+                                            <select class="text_input w-75">
+                                                <option value="">배송업체선택</option>
+                                            </select>&emsp;
+                                            <b-button variant="outline-secondary" size="sm" class="w-20">확인</b-button>
+                                        </p>
+                                        <p class="mt-1">
+                                            <input type="search" class="text_input" style="width: 100%" />
+                                        </p>
                                     </template>
                                     <template v-slot:cell(statusCode)="product">
                                         <p v-html="setTranslatCode({type: 'statusCode', value: product.item.statusCode})"></p>
-                                        <order-status-info 
-                                            :items="items"
-                                            :order="product"
-                                        />
-                                        <p><b-link class="text-danger" @click="loadCancelOrderFn(items, items.item)">주문취소 신청</b-link></p>
+                                        <order-status-info :order="product"/>
+                                        <p><b-link class="text-danger" @click="loadCancelOrderFn(items.item, product.item)">주문취소 신청</b-link></p>
                                     </template>
                                     <template v-slot:cell(update)>
                                         <b-button variant="outline-secondary" size="sm">변경이력</b-button>
@@ -140,8 +148,8 @@
             </b-pagination>
         </b-col>
         
-        <order-detail-modal ref="orderDetailModal" :selectedItem="selectedOrder" />
-        <order-cancel-modal ref="orderCancelModal" @orderCancel="loadCancelOrderFn" :selectedItem="selectedOrder"/>
+        <order-detail-modal ref="orderDetailModal" @cancelMoal="loadCancelOrderFn" :selectedItem="detailItem" />
+        <order-cancel-modal ref="orderCancelModal" @orderCancel="loadCancelOrderFn" :selectedItem="cancelItem" :selectedProduct="cancelItemProduct"/>
     </b-row>
 </template>
 
@@ -171,14 +179,14 @@ export default {
             {key: 'supplyPrice', label: '공급가', class: ' align-middle text-right', thStyle: 'width: 100px' },
             {key: 'price', label: '판매가', class: ' align-middle text-right', thStyle: 'width: 100px'},
             {key: 'debitAmount', label: '배송비', class: ' align-middle text-right', thStyle: 'width: 100px'},
-            {key: 'debitInfo', label: '배송정보', class: 'align-middle text-center', thStyle: 'width: 100px'},
+            {key: 'debitInfo', label: '배송구분', class: 'align-middle text-center', thStyle: 'width: 100px'},
+            {key: 'delivery', label: '배송정보', class: 'align-middle text-center', thStyle: 'width: 175px'},
             {key: 'statusCode', label: '진행상태', class: 'align-middle text-center', thStyle: 'width: 180px'},
             {key: 'update', label: '변경이력', class: ' align-middle  text-center', thStyle: 'width: 80px'}
         ],
-        selectedOrder: {
-            statusCode:{},
-            orderProducts:[]
-        }
+        detailItem: {},
+        cancelItem: {},
+        cancelItemProduct: {}
     }),
     components: {
         orderStatusInfo,
@@ -187,12 +195,13 @@ export default {
     },
     methods: {
         loadDetailOrderFn: function (event, item) {
-            this.selectedOrder = item
+            this.detailItem = item
             this.$refs.orderDetailModal.$bvModal.show('detailOrder')
             
         },
-        loadCancelOrderFn: function (info, item) {
-            this.selectedOrder = item
+        loadCancelOrderFn: function (item, product) {
+            this.cancelItem = item
+            this.cancelItemProduct = product
             this.$refs.orderCancelModal.$bvModal.show('cancelModal')
         },
         setTranslatCode: function (item) {
