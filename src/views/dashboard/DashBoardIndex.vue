@@ -1,6 +1,6 @@
 <template>
-<div id="contents">
-    
+<div id="contents" class="dash">
+    <div class="dash">
     
     <div class="counts">
         <div class="row">
@@ -15,15 +15,16 @@
         </div>
     </div>
 
-
+    <div class="row">
+        <div class="col"><h3>매출 그래프</h3></div>
+        <div class="col"><h3>컴플레인 현황</h3></div>
+    </div>
     <div class="row">
         <div class="salesGraph col col-6">
-            <h3>매출 그래프</h3>
-            <LineChart :style="{width:'700px',height:'300px',border:'1px solid #C4C4C4'}" />
+                <LineChart  :chartData="chartData" :options="options" :style="{height:'300px',backgroundColor:'#fff',border:'1px solid #E5E5E5'}" />
         </div>
 
         <div class="complainSection col col-6">
-            <h3>컴플레인 현황</h3>
             <Complains />
         </div>
     </div>
@@ -39,21 +40,18 @@
     </div>
 
 
-    <div class="broadcastSection row">
-        <h3>방송/영상</h3>
+    <div class="broadcastSection">
         <BroadCasts/>
     </div>
 
-    <div class="products row">
-        <h3>상품</h3>
+    <div class="products">
         <Products/>
     </div>
 
-    <div class="brandChannel row">
-        <h3>브랜드 채널</h3>
+    <div class="brandChannel">
         <BrandChannels/>
     </div>
-    
+</div>
 
     
 
@@ -127,7 +125,46 @@ data(){
                 status:1,
                 date:'2019.09.06'
             }
-        ]
+        ],
+        chartData:{
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          datasets: [
+            {
+              fill:false,
+              pointBackgroundColor: '#03bcd8',
+              borderColor:'#03bcd8',
+              borderWidth: 3,
+              lineBorderColor:'#03bcd8',
+              lineTension:0.2,
+              label:'매출',
+              data:[5000,0,0,0,0,0,0,0,0,0,0,0]
+            }
+          ]
+        },
+        options:{
+          scales: {
+            yAxes: [{
+              ticks: {
+                  display:false
+              },
+              gridLines: {
+                display: true
+              }
+            }],
+            xAxes: [ {
+              gridLines: {
+                display: false
+              },
+              ticks:{
+              }
+            }]
+          },
+          legend: {
+            display: false
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+        }
     }
 }
 }

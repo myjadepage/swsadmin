@@ -1,21 +1,21 @@
 <template>
-  <div class="complains">
-      <div class="complain cancel">
+  <div class="complains row">
+      <div class="complain cancel col">
           취소
         <span class="count">0건</span>
       </div>
       
-      <div class="complain refund">
+      <div class="complain refund col">
           환불요청
         <span class="count">0건</span>
       </div>
 
-      <div class="complain exchange">
+      <div class="complain exchange col">
           교환요청
        <span class="count">0건</span>
       </div>
 
-      <div class="complain returns">
+      <div class="complain returns col">
           반품요청
        <span class="count">0건</span>
       </div>

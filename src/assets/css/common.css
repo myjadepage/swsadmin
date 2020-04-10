@@ -3367,9 +3367,54 @@ html, body{
 
 /*  대시보드 */
 
+.dash{
+    background-color: #F8FAFA;
+}
+
+.dash header{
+    line-height: 70px;
+    height: 70px;
+    background-color: #fff;
+    border-bottom: 1px solid #E5E5E5;
+    padding: 0 20px;
+}
+
+.dash header a{
+    float: right;
+    color: #8193fe;
+}
+
+.dash header h3{
+    line-height: 70px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dash .counts h3{
+    margin:10px 20px;
+}
+
+.dash ul{
+    margin: 20px 0;
+}
+
+.dash li{
+    padding: 0 20px;
+    height: 50px;
+}
+
+.dash li:hover{
+    background-color: #f5f7ff;
+}
+
+.dash .date{
+    color: gray;
+}
+
+
 .btns button{
     border: 1px solid #1ABCFE;
-    margin: 0 2.5px;
+    margin: 10px 2.5px;
     padding: 2px 5px;
 }
 
@@ -3380,9 +3425,11 @@ html, body{
 
 
 .dashCount{
+    background-color: #fff;
     border: 1px solid  #E5E5E5;
     width: 400px;
     height: 120px;
+    margin: 20px 0;
 }
 
 .dashCount td{
@@ -3433,6 +3480,12 @@ background-size: 100%;
 background-repeat: no-repeat;
 }
 
+
+.salesGraph{
+    margin: 20px 0;
+}
+
+
 .salesGraph h3{
     display: inline-block;
     width: 100%;
@@ -3440,7 +3493,11 @@ background-repeat: no-repeat;
 
 .complains{
     display: inline-block;
+    background-color: #fff;
     border: 1px solid #E5E5E5;
+    min-height: 300px;
+    margin: 20px 0;
+    width: 100%;
 }
 
 .complainSection h3{
@@ -3449,9 +3506,10 @@ background-repeat: no-repeat;
 }
 
 .complains .complain{
+    color: gray;
     float: left;
     margin-right: 20px;
-    width: 170px;
+    width: 21%;
     height: 170px;
     border: 5px solid black;
     font-size: 20px;
@@ -3459,6 +3517,7 @@ background-repeat: no-repeat;
     line-height: 50px;
     border-radius: 100px;
     padding: 30px;
+    margin: 45px 15px;
 }
 
 .complains .count{
@@ -3470,11 +3529,9 @@ background-repeat: no-repeat;
 .complain.cancel{
     border: 5px solid #389E87;
 }
-
 .complain.cancel .count{
     color:  #389E87;
 }
-
 .complain.refund{
     border: 5px solid #4A90E2;
 }
@@ -3498,11 +3555,30 @@ background-repeat: no-repeat;
     padding: 15px 12px;
 }
 
-.dash-Notices h3{
-    width: 100%;
+.dash-Notices,.dash-qna,.dash-BroadCasts,.dash-BroadCasts,.dash-Products,.dash-BrandChannels{
+    background-color: #fff;
+    border:1px solid #E5E5E5;
+    margin: 40px 0;
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1)
 }
 
+.headerInfo{
+    margin-left: 30px;
+    color: gray;
+    font-size: 12px;
+}
 
-.dash-qna h3{
-    width:100%
+.graph-box{
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+    margin: 30px;
+}
+
+.dash-qna .status{
+    color: #ffd99f;
+    float: right;
+}
+
+.dash-qna .status.complete{
+    color: #8eecc7;
 }

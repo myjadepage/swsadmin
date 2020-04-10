@@ -18,6 +18,7 @@ import Logo from  "@/components/main/Logo"
 import LoginForm from  "@/components/main/LoginForm"
 import SignInForm from  "@/components/main/SignInForm"
 
+
 export default {
   components:{
     Logo,LoginForm,SignInForm
