@@ -112,21 +112,20 @@ import AccountLeftMenu from '@/views/account/AccountLeftMenu'
 import Account from '@/views/account/Account'
 import AccountForSeller from '@/views/account/AccountForSeller'
 
-<<<<<<< HEAD
 /** 방송관리 */
 import BroadcastLeftMenu from '@/views/broadcast/BroadcastLeftMenu'
 // import BroadcastIndex from '@/views/broadcast/Index'
 import BroadcastRequest from '@/views/broadcast/BroadcastRequest'
 import BroadcastStop from '@/views/broadcast/BroadcastStop'
 import BroastcastSend from '@/views/broadcast/BroastcastSend'
-=======
+
+
 /* 로그인, 회원가입 */
 import MainPage from "@/views/main/MainPage"
 
 import DashBoardIndex from "@/views/dashboard/DashBoardIndex"
 import DashBoardMenu from "@/views/dashboard/DashBoardMenu"
 
->>>>>>> master
 
 Vue.use(VueRouter)
 

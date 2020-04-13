@@ -22,15 +22,28 @@ import commonJs from "@/assets/js/common.js"
 
 export default {
     mixins: [commonJs],
+    data(){
+      return{
+
+      }
+    },
     methods:{
         signInClick(){
             this.$emit('signInClick')
         },
         
         loginClick(x){
-          console.log(x.target.elements[0].value);
-          console.log(this.makeRsa(x.target.elements[1].value));
-          
+          this.axiosPostRequest('api/v1/auth/admins/login',
+          {jsonData:{email:x.target.elements[0].value,password:this.makeRsa(x.target.elements[1].value)}},
+          (res)=>{
+            sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)
+            sessionStorage.setItem('refreshToken',res.data.jsonData.refreshToken)
+            this.$store.commit('changeLogStatus')
+            this.$router.push('/dashboard')
+          },
+          (err)=>{
+            console.log(err);
+          })
           
         }
 

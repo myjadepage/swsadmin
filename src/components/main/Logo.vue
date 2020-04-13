@@ -5,13 +5,17 @@
         Admin Platform
         </h3>
         <br><br>
-      Copyright ⓒ 2020 EPIENS. All rights reserved
+      Copyright ⓒ {{year}} EPIENS. All rights reserved
     </div>
 </template>
 
 <script>
 export default {
-
+  computed:{
+    year(){
+      return new Date().getFullYear()
+    }
+  }
 }
 </script>
 

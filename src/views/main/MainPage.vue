@@ -6,7 +6,7 @@
 
       <div class="col col-3 text-center">
         <LoginForm @signInClick="showSignIn=true" />
-        <SignInForm @cencelClick="showSignIn=false" v-if="showSignIn"/>
+        <SignUpForm @cencelClick="showSignIn=false" v-if="showSignIn"/>
       </div>
 
    </div>
@@ -16,12 +16,12 @@
 <script>
 import Logo from  "@/components/main/Logo"
 import LoginForm from  "@/components/main/LoginForm"
-import SignInForm from  "@/components/main/SignInForm"
+import SignUpForm from  "@/components/main/SignUpForm"
 
 
 export default {
   components:{
-    Logo,LoginForm,SignInForm
+    Logo,LoginForm,SignUpForm
   },
   data(){
     return{
