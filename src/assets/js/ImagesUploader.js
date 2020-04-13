@@ -70,6 +70,11 @@ export default {
 
     /**
      * 이미지업로드시에 item으로 리턴해줌 Async/ await
+     * params:{
+     *  imageDir 이미지 경로
+     *  item 이미지경로를 삽입할 부모object
+     *  field 부모object의 자식
+     * }
      */
     async onNewSingleImageUploadEvent(event, params) {
       let dir = params.imageDir

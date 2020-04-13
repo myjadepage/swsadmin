@@ -96,6 +96,7 @@ import MarketingUsePoint from '@/views/statistic/MarketingUsePoint'
 /** 업체관리 */
 // import MimIndex from '@/views/mim/MimIndex'
 import MimLeftMenu from '@/views/mim/MimLeftMenu'
+import DealerRegist from '@/views/mim/DealerRegist.vue'
 import DealerRegistList from '@/views/mim/DealerRegistList'
 import DealerList from '@/views/mim/DealerList'
 import DealerDetail from '@/views/mim/DealerDetail'
@@ -566,8 +567,13 @@ const routes = [
       //   components: { LeftMenu: MimLeftMenu, Contents: MimIndex }
       // },
       {
-        path: '/mim/dealer_regist_list',
+        path: '/mim/dealer_regist',
         name: '판매자신청',
+        components: { LeftMenu: MimLeftMenu, Contents: DealerRegist }
+      },
+      {
+        path: '/mim/dealer_regist_list',
+        name: '판매자신청목록',
         components: { LeftMenu: MimLeftMenu, Contents: DealerRegistList }
       },
       {

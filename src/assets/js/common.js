@@ -3,10 +3,10 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 
 export default {
   data () {    
-    Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
+    // Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
     // Axios.defaults.baseURL = 'http://api.shallwe.link:3000' // 개발
     // Axios.defaults.baseURL = 'http://api.shallwe.link:3800' // 배포
-    // Axios.defaults.baseURL = 'http://192.168.1.40:3000/' // -- admin.shallwe.link
+    Axios.defaults.baseURL = 'http://192.168.1.40:3000/' // -- admin.shallwe.link
     // Axios.defaults.baseURL = 'http://api.shallwe.shop:3000/' // -- admin.shallwe.shop
     // Axios.defaults.baseURL = 'http://shallwe.shop/' // --dev
     Axios.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded';
