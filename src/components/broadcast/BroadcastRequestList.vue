@@ -4,7 +4,7 @@
             <b>총 {{totalPage}} 건의 주문이 조회되었습니다.</b>
         </div>
         <div class="float-right mt-1 mb-1">
-            <select v-model="perPage">
+            <select v-model="perPage" class="text_input">
                 <option value="10">10개 보기</option>
                 <option value="30">30개 보기</option>
                 <option value="50">50개 보기</option>
@@ -108,7 +108,7 @@
         </div>
 
          <div class="btn_center">
-            <b-button variant="primary" size="lg">라이브 등록</b-button>
+            <b-button variant="outline-primary" size="lg" @click="$router.push('/broadcast/BroadcastReg')">라이브 등록</b-button>
         </div>
 
     </div>

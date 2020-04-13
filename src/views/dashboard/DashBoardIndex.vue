@@ -127,7 +127,32 @@ data(){
             }
         ],
         chartData:{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          labels: [
+              '2020-03-20',
+              '2020-03-21',
+              '2020-03-22',
+              '2020-03-23',
+              '2020-03-24',
+              '2020-03-25',
+              '2020-03-26',
+              '2020-03-27',
+              '2020-03-28',
+              '2020-03-29',
+              '2020-03-30',
+              '2020-03-31',
+              '2020-04-01',
+              '2020-04-01',
+              '2020-04-03',
+              '2020-04-04',
+              '2020-04-05',
+              '2020-04-06',
+              '2020-04-07',
+              '2020-04-08',
+              '2020-04-09',
+              '2020-04-10',
+              '2020-04-11',
+              '2020-04-12',
+          ],
           datasets: [
             {
               fill:false,
@@ -137,7 +162,7 @@ data(){
               lineBorderColor:'#03bcd8',
               lineTension:0.2,
               label:'매출',
-              data:[5000,0,0,0,0,0,0,0,0,0,0,0]
+              data:[5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
             }
           ]
         },
@@ -164,6 +189,22 @@ data(){
           },
           responsive: true,
           maintainAspectRatio: false,
+          tooltips:{
+              backgroundColor:'#fff',
+              titleFontColor:'#000000',
+              bodyFontColor:'#000000',
+              displayColors:false,
+              borderWidth:1,
+              borderColor:'rgba(0,0,0,0.5)'
+          },
+          layout: {
+          padding: {
+              left: 0,
+              right: 10,
+              top: 10,
+              bottom: 0
+          }
+         }
         }
     }
 }
