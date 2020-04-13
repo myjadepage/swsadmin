@@ -27,7 +27,7 @@
 import OrderFilterBoard from '@/components/order/OrderFilterBoard'
 import OrderAllTable from '@/components/order/OrderAllTable'
 import commonJs from '@/assets/js/common.js'
-import orderCommon from '@/components/order/OrderCommon.js'
+import orderCommon from '@/components/order/orderCommon.js'
 export default {
     data: () =>({
         orderStatusList: [5]

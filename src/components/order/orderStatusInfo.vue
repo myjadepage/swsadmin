@@ -11,10 +11,11 @@
         <!-- 상품준비중 -->
         <div v-else-if="order.item.statusCode === 3">
             <p><b-link class="text-primary" @click="changeStatusCodeFn(order, {statusObj:{statusCode: 4}, statusTxt: '발송완료'})">발송완료처리</b-link></p>
+            
         </div>
         <!-- 발송완료 -->
         <div v-else-if="order.item.statusCode ===4">
-            <p><b-link class="text-primary" @click="changeStatusCodeFn(order, {statusObj:{statusCode: 5}, statusTxt: '구매확정'})">구매확정 처리</b-link></p>
+            
         </div>
     </div>
 </template>
@@ -30,17 +31,6 @@ export default {
     methods: {
         // 진행상태변경 이벤트
         changeStatusCodeFn: function (order, obj) {
-            if (obj.statusObj.statusCode === 4) {
-                if (this.isEmpty(order.item.deliveryCompSysId)) {
-                    alert('배송업체를 선택하십시오.');
-                    return false
-                } else if (this.isEmpty(order.item.invoiceNumber)){
-                    alert('송장번호를 입력하여주시기 바랍니다.')
-                    return false
-                }
-                obj.statusObj.deliveryCompSysId = order.item.deliveryCompSysId
-                obj.statusObj.invoiceNumber = order.item.invoiceNumber
-            }
             if (confirm('해당 상품을 '+ obj.statusTxt +'로 설정 하시겠습니까?')){
                 this.axiosPatchRequest('/api/v1/orders/' + order.item.orderSysId + '/products/' + order.item.orderPrdtSysId + '/status', {jsonData: obj.statusObj}, function (res) {
                     if (res.data.jsonData.resultCode === '0001') {

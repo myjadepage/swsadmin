@@ -1,6 +1,6 @@
 <template>
     <!-- 주문취소 -->
-    <b-modal size="lg" hide-footer id="cancelModal" title="쉘위샵 - 주문취소신청" @show="openCancelModalFn">
+    <b-modal size="lg" hide-footer id="cancelModal" title="쉘위샵 - 주문취소신청">
         <!-- 주문정보 -->
         <div>
             <h4>주문정보</h4>
@@ -45,7 +45,7 @@
                         <td class="text-right" v-html="new Intl.NumberFormat().format(item.qty)+'개'"></td>
                         <td class="text-right">
                             <template v-if="item.qty > 1">
-                                <select style="width:40px" v-model="item.cancelQty">
+                                <select style="width:40px" v-model="item.cancelQty" @change="calculFn">
                                     <option v-for="n in item.qty" :key="n" :value="n">{{n}}</option>
                                 </select>
                             </template>
@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import { codeMapper } from '@/components/order/CodeMapping.js'
+import { codeMapper } from '@/components/order/codeMapping.js'
 import commonJs from '@/assets/js/common.js'
 export default {
     props: ['selectedItem', 'selectedProduct'],
@@ -158,6 +158,29 @@ export default {
         }
     }),
     mixins: [commonJs],
+    watch: {
+        selectedItem: function (item){
+            this.cancelProductList = item.orderProducts
+            this.selectedOrderPrdtList.splice(0)
+            this.selectedOrderPrdtList.push(this.selectedProduct.orderPrdtSysId)
+        },
+        selectedOrderPrdtList: function (item) {
+            let maxStatusCode = 1
+            for (const e of item) {
+                if (e.statusCode > maxStatusCode) {
+                    maxStatusCode = e.statusCode
+                }
+            }
+            if (maxStatusCode > 1){
+                this.returnPriceFlag = true
+            }else {
+                this.returnPriceFlag = false
+            }
+
+
+            this.calculFn()
+        }
+    },
     methods: {
         setTranslatCode: function (item) {
             let codeMap = codeMapper(item)
@@ -195,42 +218,22 @@ export default {
             // 4. 발송완료후부터는 반품이 되어야함
             this.$bvModal.hide('cancelModal')
         },
-        openCancelModalFn: function () {
-
-            this.cancelProductList = this.$parent.cancelItem.orderProducts
-            this.selectedOrderPrdtList.splice(0)
-            this.selectedOrderPrdtList.push(this.$parent.cancelItemProduct.orderPrdtSysId)
-
-            let maxStatusCode = 1
-            for (const e of this.$parent.cancelItem.orderProducts) {
-                if (e.statusCode > maxStatusCode) {
-                    maxStatusCode = e.statusCode
+        calculFn: function (item) {
+            let allPrice = 0
+            let allDeliveryPrice = 0
+            this.cancelProductList.forEach(_k => {
+                allPrice += parseInt(_k.price) * parseInt(_k.cancelQty)
+                if (_k.deliveryPriceTypeCode === 1) {
+                    allDeliveryPrice += _k.debitAmount
+                } else if (_k.deliveryPriceTypeCode === 2) {
+                    allDeliveryPrice += _k.prepaymentAmount
                 }
-            }
-            if (maxStatusCode > 1){
-                this.returnPriceFlag = true
-            }else {
-                this.returnPriceFlag = false
-            }
-            // console.log(this.$parent.cancelItem)
-            // console.log(this.$parent.cancelItemProduct)
-        }
-        // calculFn: function (item) {
-        //     let allPrice = 0
-        //     let allDeliveryPrice = 0
-        //     this.cancelProductList.forEach(_k => {
-        //         allPrice += parseInt(_k.price) * parseInt(_k.cancelQty)
-        //         if (_k.deliveryPriceTypeCode === 1) {
-        //             allDeliveryPrice += _k.debitAmount
-        //         } else if (_k.deliveryPriceTypeCode === 2) {
-        //             allDeliveryPrice += _k.prepaymentAmount
-        //         }
                 
-        //     })
-        //     this.cancelOrder.cancelProductPrice = new Intl.NumberFormat().format(allPrice)
-        //     this.cancelOrder.cancelDeliveryPrice = allDeliveryPrice
-        //     console.log(item)
-        // }
+            })
+            this.cancelOrder.cancelProductPrice = new Intl.NumberFormat().format(allPrice)
+            this.cancelOrder.cancelDeliveryPrice = allDeliveryPrice
+            console.log(item)
+        }
     },
 }
 </script>

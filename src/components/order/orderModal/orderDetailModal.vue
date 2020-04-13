@@ -38,20 +38,19 @@
                         </td>
                         <td>
                             <p>
-                                <Sws-delivery-corp :deliveryCorp="deliveryCorp" :order="item" />&emsp;
-                                <b-button variant="outline-secondary" size="sm" class="w-20" :disabled="item.statusCode !== 3" @click="$refs.orderStatusInfo.changeStatusCodeFn(item, {statusObj:{statusCode: 4}, statusTxt: '발송완료'})">확인</b-button>
+                                <select class="text_input w-75">
+                                    <option value="">배송업체선택</option>
+                                </select>&emsp;
+                                <b-button variant="outline-secondary" size="sm" class="w-20">확인</b-button>
                             </p>
                             <p class="mt-1">
-                                <input type="search" v-model="item.invoiceNumber" :disabled="item.statusCode !== 3" class="text_input" style="width: 100%" />
+                                <input type="search" class="text_input" style="width: 100%" />
                             </p>
                         </td>
                         <td class="text-center align-middle">
                             <p v-html="setTranslatCode({type:'statusCode', value: item.statusCode})"></p>
-                            <order-status-info ref="orderStatusInfo" @closeModal="closeModal" :order="{item:item, modal: 'detailOrder'}"/>
-                            <template v-if="item.statusCode < 3 ">
-                                <p><b-link class="text-danger" @click="$emit('cancelMoal', selectedItem, item)">주문취소 신청</b-link></p>
-                            </template>
-                            
+                            <order-status-info @closeModal="closeModal" :order="{item:item, modal: 'detailOrder'}"/>
+                            <p><b-link class="text-danger" @click="$emit('cancelMoal', selectedItem, item)">주문취소 신청</b-link></p>
                         </td>
                     </tr>
                 </tbody>
@@ -204,14 +203,12 @@
 </template>
 
 <script>
-import { codeMapper } from '@/components/order/CodeMapping.js'
-import SwsDeliveryCorp from '@/components/common/SwsDeliveryCorp.vue'
-import orderStatusInfo from '@/components/order/OrderStatusInfo.vue'
+import { codeMapper } from '@/components/order/codeMapping.js'
+import orderStatusInfo from '@/components/order/orderStatusInfo.vue'
 export default {
-    props: ['deliveryCorp', 'selectedItem'],
+    props: ['selectedItem'],
     components: {
         orderStatusInfo,
-        SwsDeliveryCorp
     },
     methods:{
         setTranslatCode: function (item) {

@@ -5,12 +5,12 @@
     </header>
     <div class="row">
       <div class="graph-box col col-7">
-        <div class="graph-info">8%<font-awesome-icon class="ml-2" icon="arrow-up" size="sm" /></div>
+        <div class="graph-info">8%<span class="graph-up"></span></div>
         <div class="graph-count"><span class="ico_graph"></span>라이브 방송 수 : 6</div>
         <LineChart :chartData="chartData1" :options="options" :style="{height:'200px'}" />
         </div>
       <div class="graph-box col col-4">
-        <div class="graph-info">8%<font-awesome-icon class="ml-2" icon="arrow-up" size="sm" /></div>
+        <div class="graph-info">8%<span class="graph-up"></span></div>
         <div class="graph-count"><span class="ico_graph"></span>라이브 방송 수 : 6</div>
         <LineChart :chartData="chartData2" :options="options" :style="{height:'200px'}"/>
       </div>
@@ -20,11 +20,6 @@
 
 <script>
 import LineChart from "@/components/dashboard/LineChart"
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons'
- 
-library.add(faArrowUp, faArrowDown)
-
 export default {
 components:{
     LineChart
@@ -96,20 +91,6 @@ components:{
           },
           responsive: true,
           maintainAspectRatio: false,
-          tooltips:{
-              backgroundColor:'rgba(0,0,0,0.8)',
-              displayColors:false,
-              borderWidth:1,
-              borderColor:'rgba(0,0,0)'
-          },
-          layout: {
-          padding: {
-              left: 0,
-              right: 10,
-              top: 10,
-              bottom: 0
-          }
-         }
         }
     }
   }

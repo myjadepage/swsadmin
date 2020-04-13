@@ -14,7 +14,7 @@
                 </ul>
 
                 <div class="section_head">
-                    <h4>총 <strong class="red">{{ totalPage }}</strong>건이 있습니다.</h4>
+                    <h4>총 <strong class="red">2</strong>건의 판매자 신청이 있으며, 오늘 신청된 판매자는 <strong class="red">0</strong>건입니다.</h4>
                     <div>
                         <select id="skey" name="skey" class="text_input">
                             <option value="">전체</option>
@@ -48,14 +48,14 @@
                             <col width="13%">
                             <col width="10%">
                             <col width="150">
-                            <!-- <col width="50"> -->
+                            <col width="50">
                         </template>
-                        <template v-slot:cell(detail) = "detail">
-                            <b-button variant="outline-secondary" @click="$router.push(`/mim/dealer_detail/${ detail.item.sellerSysId}`)">상세정보</b-button>                              
+                        <template v-slot:cell(detail)>
+                            <b-button variant="secondary" @click="$router.push('/mim/dealer_detail')">상세정보</b-button>                              
                         </template>
-                        <!-- <template v-slot:cell(check)>
+                        <template v-slot:cell(check)>
                             <input type="checkbox"/>
-                        </template> -->
+                        </template>
                     </b-table>
 <!-- 
                     <div class="btn_right">
@@ -82,7 +82,8 @@ export default {
         return {
             totalPage: 0,
             currentPage: 1,
-            perPage: 10,           
+            perPage: 10,
+            dealerData: [],
             fields:[
                 {key : 'sellerId', label : '아이디', sortable: true},
                 {key : 'name', label : '판매점명', sortable: true},
@@ -91,21 +92,18 @@ export default {
                 {key : 'mobile', label : '휴대폰번호', sortable: true},
                 {key : 'createdAt', label : '신청일', sortable : true},
                 {key : 'detail', label : '상세정보', sortable: false},
-                // {key : 'check', label : '',sortable: false}
-            ],
-            dealerData: [],
+                {key : 'check', label : '',sortable: false}
+             ]
         }
     },
     mounted () {
-        this.axiosGetRequest('/api/v1/sellers',{'proposalStatusCode' : 2}, this.loadDealerList)
+        this.axiosGetRequest('/api/v1/sellers',{'proposalStatusCode' : 2},this.loadDealerList)
     },
     methods: {
         loadDealerList(res) {
            let result = res.data.jsonData.sellers
-           console.log(result)
            for (let i = 0 ; i < result.length ; i++) {
                this.dealerData.push({
-                   sellerSysId: result[i].sellerSysId,
                    sellerId: result[i].sellerId,
                    name: result[i].name,
                    managerName: result[i].managerName,

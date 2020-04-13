@@ -11,21 +11,21 @@
         <li>공지사항을 관리하실 수 있습니다.</li>
     </ul>
                 
-    <div class="section_head"> 
-        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 공지사항이 있습니다.</h4>                      
-        <div class="mgb5">
-            <!-- <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
+    <div class="section_head">                       
+        <!-- <div class="mgb5">
+            <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
                 <option value="1">제목</option>
                 <option value="2">내용</option>
             </select>
             <input type="text" name="keyword" v-model="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
-            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
-        </div>
+            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button>
+        </div> -->
     </div>
     <form name="Frm">
         <b-table
-            ref="noticeTable"
             head-variant="light"           
+            :per-page="perPage"
+            :current-page="currentPage"
             :fields="fields"  
             :items="noticeData"
         >
@@ -41,18 +41,62 @@
             </template>
             <template v-slot:cell(setting) = "setting">
                 <b-button variant="outline-danger" size="sm" @click="deleteNotice(setting.item.noticeSysId)">삭제</b-button>                              
-            </template>            
-        </b-table>               
+            </template>
+            
+        </b-table>
+                    <!-- <table class="t_list">
+                        <caption>공지사항 리스트</caption>
+                        <colgroup>
+                            <col width="100">
+                            <col width="*">
+                            <col width="250">
+                            <col width="150">
+                            <col width="100">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>No</th>                              
+                                <th>제목</th>
+                                <th>등록일</th>    
+                                <th>노출여부</th>                           
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-if="noticeData === null">
+                                <td colspan="5">등록된 데이타가 없습니다.</td>
+                            </tr>
+                            <tr v-for="item in noticeData" :key="item.noticeSysId">
+                                <td>{{ item.noticeSysId }}</td>                               
+                                <td class="left">
+                                    <router-link :to="'/management/notice_detail/'+ item.noticeSysId">{{ noticeData.title }}</router-link>
+                                </td>
+                                <td>{{ changeDate(item.createdAt) }}</td>      
+                                <td>{{ changeIsDisplay(item.isDisplay)}}</td>                         
+                                <td>
+                                    <span class="button small">
+                                        <b-button variant="outline-danger" size="sm" @click="deleteNotice(item.noticeSysId)">삭제</b-button>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> -->
+<!-- 
+                    <div class="paging" style="margin-top:20px">                                         
+                        <b-button variant="secondary" style="margin:0 5px"> 1 </b-button>                       
+                    </div> -->
 
-        <div>
-            <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
-            <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
-        </div>
-        
-        <div class="btn_center">
-            <b-button variant="outline-info" size="lg" @click="$router.push('/management/notice_reg')">등록</b-button>
-        </div>
-    </form>
+                    <b-pagination 
+                        v-model="currentPage" 
+                        :total-rows="totalPage"
+                        :per-page="perPage"
+                    >
+                    </b-pagination>
+                    
+                    <div class="btn_center">
+                        <b-button variant="outline-info" size="lg" @click="$router.push('/management/notice_reg')">등록</b-button>
+                    </div>
+        </form>
   </div>
 </template>
 
@@ -63,8 +107,8 @@ export default {
     mixins: [ commonJs ],
     data() {
         return {
-            pageNumber:0,
             totalPage: 0,
+            currentPage: 1,
             perPage: 10,
             fields:[
                 {key : 'noticeSysId', label : 'No', sortable: true},
@@ -76,36 +120,13 @@ export default {
             noticeData: []
         }
     },
-    mounted () {
-        this.paginatedData
+    mounted () {     
+      this.axiosGetRequest('/api/v1/operations/notices/alllist','',this.loadNoticeList)  
     },
-    computed: {
-        pageCount() {
-            let l = this.noticeData.length,
-                s = this.perPage
-            return Math.ceil(l/s)
-        },
-        paginatedData() {
-            const start = this.pageNumber * this.perPage,
-                  end = start + this.perPage
-                  this.axiosGetRequest('/api/v1/operations/notices/alllist',{'startIndex':start, 'rowCount':end},this.loadNoticeList)
-            return this.noticeData.slice(start, end)
-        }
-    },
-    methods: {
-        nextPage() {          
-            this.pageNumber++
-            this.noticeData.splice(0)
-            this.paginatedData
-        },
-        prevPage() {           
-            this.pageNumber--  
-            this.noticeData.splice(0)         
-            this.paginatedData        
-        },    
+    methods: {       
         loadNoticeList(res) {
             let result = res.data.jsonData.notices
-            this.totalPage = res.data.jsonData.totalCnt          
+            this.totalPage = res.data.jsonData.totalCnt
             if(result) {
                 for(let i=0 ; i < result.length; i++ ) {
                 this.noticeData.push({
@@ -120,6 +141,10 @@ export default {
                      'title' : '등록된 데이타가 없습니다.'
                  })
             }
+            
+        },
+        nextPage() {
+            this.axiosGetRequest('/api/v1/operations/notices/alllist',{'startIndex':10},this.loadNoticeList)
         },
         changeIsDisplay(num) {
             return num === 0 ? '미표시' : '표시'

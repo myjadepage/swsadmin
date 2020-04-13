@@ -102,21 +102,21 @@
                                     <template v-slot:cell(debitInfo)="product">
                                         <p v-html="setTranslatCode({type: 'deliveryPriceTypeCode', value: product.item.deliveryPriceTypeCode})"></p>
                                     </template>delivery
-                                    <template v-slot:cell(delivery)="product">
+                                    <template v-slot:cell(delivery)>
                                         <p>
-                                            <Sws-delivery-corp :deliveryCorp="deliveryCorp" :order="product.item" />&emsp;
-                                            <b-button variant="outline-secondary" size="sm" class="w-20"  :disabled="product.item.statusCode !== 3" @click="$refs.orderStatusInfo.changeStatusCodeFn(product, {statusObj:{statusCode: 4}, statusTxt: '발송완료'})">확인</b-button>
+                                            <select class="text_input w-75">
+                                                <option value="">배송업체선택</option>
+                                            </select>&emsp;
+                                            <b-button variant="outline-secondary" size="sm" class="w-20">확인</b-button>
                                         </p>
                                         <p class="mt-1">
-                                            <input type="search" v-model="product.item.invoiceNumber" :disabled="product.item.statusCode !== 3" class="text_input" style="width: 100%" />
+                                            <input type="search" class="text_input" style="width: 100%" />
                                         </p>
                                     </template>
                                     <template v-slot:cell(statusCode)="product">
                                         <p v-html="setTranslatCode({type: 'statusCode', value: product.item.statusCode})"></p>
-                                        <order-status-info ref="orderStatusInfo" :order="product"/>
-                                        <template v-if="product.item.statusCode < 3">
-                                            <p><b-link class="text-danger" @click="loadCancelOrderFn(items.item, product.item)">주문취소 신청</b-link></p>
-                                        </template>
+                                        <order-status-info :order="product"/>
+                                        <p><b-link class="text-danger" @click="loadCancelOrderFn(items.item, product.item)">주문취소 신청</b-link></p>
                                     </template>
                                     <template v-slot:cell(update)>
                                         <b-button variant="outline-secondary" size="sm">변경이력</b-button>
@@ -148,18 +148,17 @@
             </b-pagination>
         </b-col>
         
-        <order-detail-modal ref="orderDetailModal" @cancelMoal="loadCancelOrderFn" :selectedItem="detailItem" :deliveryCorp="deliveryCorp"/>
-        <order-cancel-modal ref="orderCancelModal" @orderCancel="loadCancelOrderFn" :selectedItem.sync="cancelItem" :selectedProduct.sync="cancelItemProduct"/>
+        <order-detail-modal ref="orderDetailModal" @cancelMoal="loadCancelOrderFn" :selectedItem="detailItem" />
+        <order-cancel-modal ref="orderCancelModal" @orderCancel="loadCancelOrderFn" :selectedItem="cancelItem" :selectedProduct="cancelItemProduct"/>
     </b-row>
 </template>
 
 <script>
 import commonJs from '@/assets/js/common.js'
-import { codeMapper } from '@/components/order/CodeMapping.js'
-import SwsDeliveryCorp from '@/components/common/SwsDeliveryCorp.vue'
-import orderStatusInfo from '@/components/order/OrderStatusInfo.vue'
-import orderDetailModal from '@/components/order/orderModal/OrderDetailModal.vue'
-import orderCancelModal from '@/components/order/orderModal/OrderCancelModal.vue'
+import { codeMapper } from '@/components/order/codeMapping.js'
+import orderStatusInfo from '@/components/order/orderStatusInfo.vue'
+import orderDetailModal from '@/components/order/orderModal/orderDetailModal.vue'
+import orderCancelModal from '@/components/order/orderModal/orderCancelModal.vue'
 export default {
     props: ['items', 'totalRow', 'isbusy', 'perPage'],
     mixins: [commonJs],
@@ -187,24 +186,18 @@ export default {
         ],
         detailItem: {},
         cancelItem: {},
-        cancelItemProduct: {},
-        deliveryCorp: []
+        cancelItemProduct: {}
     }),
     components: {
-        SwsDeliveryCorp,
         orderStatusInfo,
         orderDetailModal,
         orderCancelModal
     },
-    mounted () {
-        this.axiosGetRequest('/api/v1/preferences/deliveryCompanys', '' ,function (res) {
-            this.deliveryCorp = res.data.jsonData.deliveryCompanys
-        }.bind(this))
-    },
     methods: {
         loadDetailOrderFn: function (event, item) {
             this.detailItem = item
-            this.$refs.orderDetailModal.$bvModal.show('detailOrder')  
+            this.$refs.orderDetailModal.$bvModal.show('detailOrder')
+            
         },
         loadCancelOrderFn: function (item, product) {
             this.cancelItem = item
@@ -215,6 +208,7 @@ export default {
             let codeMap = codeMapper(item)
             return codeMap.text
         }
+
     }
 }
 </script>

@@ -24,8 +24,7 @@
                     <tr>
                         <th>아이디<span class="red">*</span></th>
                         <td colspan="3">
-                            <input type="search" class="text_input" v-model="mimRegObject.sellerId" required/>&emsp;
-                            <b-button variant="outline-secondary" size="sm" @click="checkIdValidateFn"><font-awesome-icon icon='check' /> 중복체크</b-button>
+                            <input type="search" class="text_input" v-model="mimRegObject.sellerId" required/>
                         </td>
                     </tr>
                     <tr>
@@ -119,7 +118,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>회사인감이미지<span class="red">*</span></th>
+                        <th>회사인감이미지</th>
                         <td colspan="3">
                             <input type="file" ref="stampImgUrl" name="stampImgUrl" accept="image/*" required/>
                         </td>
@@ -168,8 +167,8 @@
                 </tbody>
             </table>
             <div class="btn_center">
-                <b-button variant="secondary" class="mr-1">목록</b-button>
-                <b-button type="submit" variant="primary"> 입점승인</b-button>
+                <b-button variant="secondary" class="mr-2">목록</b-button>
+                <b-button type="submit" variant="primary">입점승인</b-button>
             </div>
         </b-form>
         <b-modal id="addressModal" hide-footer>
@@ -218,7 +217,6 @@ export default {
             fee: 0.5,
             proposalStatusCode: 1
         },
-        checkIdValidate: false,
         calcCycleCodeList: [
             {value: 1, text: '일정산'},
             {value: 2, text: '주정산'},
@@ -244,20 +242,7 @@ export default {
             console.log(e)
             this.$bvModal.hide('addressModal')
         },
-        checkIdValidateFn: function () {
-            const id = this.mimRegObject.sellerId
-            this.axiosGetRequest('/api/v1/sellers/chkdupId', {sellerId: id}, function (res) {
-                if (res.data.jsonData.resultCode === '0001') {
-                    alert('사용할수 있는 계정입니다.')
-                    this.checkIdValidate = true
-                } else {
-                    alert('사용할수 없는 계정입니다.')
-                    this.checkIdValidate = false
-                }
-            }.bind(this))
-        },
         onSubmit: function () {
-            if (!this.checkIdValidate) {alert('아이디 중복체크를 수행해주시기 바랍니다.'); return false}
             this.axiosPostRequest('/api/v1/sellers/proposaling',{jsonData: this.mimRegObject}, function (res) {
                 console.log(res)
             })
