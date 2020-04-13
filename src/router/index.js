@@ -120,6 +120,14 @@ import BroadcastReg from '@/views/broadcast/BroadcastReg'
 import BroadcastStop from '@/views/broadcast/BroadcastStop'
 import BroastcastSend from '@/views/broadcast/BroastcastSend'
 
+
+/* 로그인, 회원가입 */
+import MainPage from "@/views/main/MainPage"
+
+import DashBoardIndex from "@/views/dashboard/DashBoardIndex"
+import DashBoardMenu from "@/views/dashboard/DashBoardMenu"
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -654,6 +662,24 @@ const routes = [
         name: '방송송출',
         components: { LeftMenu: BroadcastLeftMenu, Contents: BroastcastSend }
       }
+    ]
+  },
+  {
+    path: '/login',
+    name: '로그인',
+    component: MainPage
+  },
+  {
+    path:'/dashboard',
+    name:'대시보드',
+    component: AdminBoardLayout,
+    redirect:'/dashboard/index',
+    children:[
+      {
+        path: '/dashboard/index',
+        name: '대시보드 메인',
+        components: { LeftMenu: DashBoardMenu, Contents: DashBoardIndex }
+      },
     ]
   }
 ]
