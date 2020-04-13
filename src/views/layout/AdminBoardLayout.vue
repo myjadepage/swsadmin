@@ -20,6 +20,11 @@ import AdminMenu from './AdminMenu.vue'
 import TopMenu from './TopMenu.vue'
 import ContentsBoard from './ContentsBoard.vue'
 export default {
+  created(){
+    
+  },
+
+
   components:
     {
       AdminMenu: AdminMenu,

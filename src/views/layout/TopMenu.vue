@@ -10,6 +10,7 @@
         <li><router-link to="/mim/">입점업체관리</router-link></li>
         <li><router-link to="/account/">정산관리</router-link></li>
         <li><router-link to="/broadcast/">방송관리</router-link></li>
+        <li><router-link to="/dashboard/">대시보드</router-link></li>
     </ul>
 </template>
 <script>
