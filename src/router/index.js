@@ -126,6 +126,7 @@ import BroadcastRequest from '@/views/broadcast/BroadcastRequest'
 import BroadcastReg from '@/views/broadcast/BroadcastReg'
 import BroadcastStop from '@/views/broadcast/BroadcastStop'
 import BroadcastSend from '@/views/broadcast/BroadcastSend'
+import VodBox from '@/views/broadcast/VodBox'
 
 
 /* 로그인, 회원가입 */
@@ -693,6 +694,11 @@ const routes = [
         path: '/broadcast/BroadcastStop',
         name: '방송중지',
         components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastStop }
+      },
+      {
+        path: '/broadcast/VodBox',
+        name: '방송송출',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: VodBox }
       },
       {
         path: '/broadcast/BroadcastSend',

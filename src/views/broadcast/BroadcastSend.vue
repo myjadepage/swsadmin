@@ -7,7 +7,7 @@
             <li class="on">{{ $route.name }}</li>
        </ul>
 
-       <div class="section_head">
+       <div class="section_head box">
             <h4>
                 <select id="skey" name="skey" class="text_input">
                     <option value="">전체</option>
@@ -32,7 +32,7 @@
             <ul class="livebox">
                 <li>
                     <div class="img_area">
-                        <img src="@/assets/img/201324739120470.jpg" />
+                        <img src="@/assets/img/201324739120470.jpg"  @click="$router.push('/broadcast/VodBox')" />
                         <span class="icon_live">LIVE</span>
                         <div class="button_area">
                             <span>판매수량 : 500개/1000</span>
@@ -204,7 +204,7 @@ export default {
     margin-right: 20px;
     margin-bottom: 40px;
 }
-.livebox li:nth-child(10n) {
+.livebox li:nth-child(9n) {
     clear: both;
 }
 .livebox .img_area{
@@ -215,6 +215,7 @@ export default {
 .livebox .img_area img{ 
     width: 100%;
     height: 100%;
+    cursor: pointer;
 }
 .livebox .icon_live {
     position: absolute;
@@ -252,5 +253,7 @@ export default {
 .section_head button + button, .livebox button + button {
     margin-left: 5px;
 }
+
+
 
 </style>
