@@ -1,11 +1,11 @@
 <template>
     <div id="contents">
-        <h3><font-awesome-icon icon="play-circle" /> 판매자신청목록</h3>
+        <h3><font-awesome-icon icon="play-circle" /> {{$route.name}}</h3>
         <ul class="navi">
             <li class="home"><a href="/" target="_top">홈</a></li>
             <li>입점업체관리</li>
             <li>판매자관리</li>
-            <li class="on">판매자신청목록</li>
+            <li class="on">{{$route.name}}</li>
         </ul>
         <ul class="helpbox">
             <li>쇼핑몰에 판매자 신청하신 목록을 관리하는 곳 입니다.</li>
