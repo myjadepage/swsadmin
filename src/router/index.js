@@ -117,6 +117,7 @@ import AccountForSeller from '@/views/account/AccountForSeller'
 import BroadcastLeftMenu from '@/views/broadcast/BroadcastLeftMenu'
 // import BroadcastIndex from '@/views/broadcast/Index'
 import BroadcastRequest from '@/views/broadcast/BroadcastRequest'
+import BroadcastReg from '@/views/broadcast/BroadcastReg'
 import BroadcastStop from '@/views/broadcast/BroadcastStop'
 import BroastcastSend from '@/views/broadcast/BroastcastSend'
 
@@ -582,7 +583,7 @@ const routes = [
         components: { LeftMenu: MimLeftMenu, Contents: DealerList }
       },
       {
-        path: '/mim/dealer_detail',
+        path: '/mim/dealer_detail/:sellerSysId',
         name: '판매자정보',
         components: { LeftMenu: MimLeftMenu, Contents: DealerDetail }
       },
@@ -651,6 +652,11 @@ const routes = [
         path: '/broadcast/BroadcastRequest',
         name: '방송신청',
         components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastRequest }
+      },
+      {
+        path: '/broadcast/BroadcastReg',
+        name: '방송신청',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastReg }
       },
       {
         path: '/broadcast/BroadcastStop',

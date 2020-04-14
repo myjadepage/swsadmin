@@ -1,10 +1,10 @@
 <template>
     <div id="contents">
-        <h3>{{$route.name}}</h3>
+        <h3>{{ $route.name }}</h3>
         <ul class="navi">
             <li class="home"><a href="/" target="_top">홈</a></li>
             <li>방송관리</li>
-            <li class="on">{{$route.name}}</li>
+            <li class="on">{{ $route.name }}</li>
         </ul>
         <ul class="helpbox">
             <li>판매자들이 방송을 신청한 목록입니다.</li>
@@ -108,8 +108,7 @@ export default {
         BroadcastRequesTable,      
         SwsDate
     },
-    mounted () {  
-        this.axiosGetRequest('/api/v1/brands','',this.initialBrands)
+    mounted () { 
         this.axiosGetRequest('/api/v1/products/lists','',this.loadProductsList)
     },
     methods: {

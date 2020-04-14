@@ -12,7 +12,7 @@
     </ul>
 
     <div class="section_head">
-        <h4>총 <strong class="red">2</strong>건의 정보가 등록되어 있습니다.</h4>
+        <h4>총 <strong class="red">{{ brandData.length }}</strong>건의 정보가 등록되어 있습니다.</h4>
         <div>                         
             <select id="skey" name="skey" class="text_input">
                 <option value="brand">브랜드명</option>
@@ -22,7 +22,36 @@
             <b-button variant="outline-secondary" size="sm">검색</b-button>
         </div>
     </div>
-    <form name="Frm" style="margin-top:10px">
+
+    <form name="Frm" style="margin-top:10px" v-if="brandData.length === 0">
+        <table class="t_list">
+            <colgroup>
+                <col width="100">
+                <col width="250">
+                <col width="*">
+                <col width="200">
+                <col width="250">
+                <col width="100">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>No</th>                              
+                    <th>퍈매점명</th>
+                    <th>브랜드명</th>    
+                    <th>상태</th>
+                    <th>휴대폰번호</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6"> 표시할 데이터가 없습니다.</td>
+                </tr>
+            </tbody> 
+        </table> 
+    </form>    
+   
+    <form name="Frm" style="margin-top:10px" v-else>    
         <b-table
             hover
             head-variant="light"
@@ -51,7 +80,7 @@
              align="center"
         >
         </b-pagination>
-    </form>
+    </form>   
 </div>
 </template>
 
@@ -77,14 +106,26 @@ export default {
          }
      },
     mounted () {
-        this.axiosGetRequest(`/api/v1/sellers/1/brands`,'',this.loadBrandList)
+        this.axiosGetRequest(`/api/v1/sellers/1/brands`,'', this.loadBrandList)
     },
      methods: {
         loadBrandList(res) {
             console.log(res)
+            if (res.data.jsonData.resultCode === '0004') {
+                this.brandData = []
+            } else if (res.data.jsonData.resultCode === '0001') {
+                let result = res.data.jsonData.brands
+                for (let i = 0 ; i < result.length ; i++) {
+                    this.brandData.push({
+                        sellerId: result[i].sellerId,
+                        name: result[i].name,
+                        managerName: result[i].managerName,
+                        tel: result[i].tel                       
+                    })
+                }
+            }
         }
      }
-
 }
 </script>
 
