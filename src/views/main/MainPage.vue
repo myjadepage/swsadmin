@@ -20,6 +20,9 @@ import SignUpForm from  "@/components/main/SignUpForm"
 
 
 export default {
+  created(){
+    this.$store.dispatch('logout')
+  },
   components:{
     Logo,LoginForm,SignUpForm
   },

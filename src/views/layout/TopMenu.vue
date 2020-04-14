@@ -1,6 +1,6 @@
 <template>
     <ul>
-        <li class="logo_home"><router-link to="/"><img src="@/assets/img/sws-bi-black.png" style="margin-right: 5px; margin-bottom: 5px;"/>ADMIN</router-link></li>
+        <li class="logo_home"><router-link to="/dashboard"><img src="@/assets/img/sws-bi-black.png" style="margin-right: 5px; margin-bottom: 5px;"/>ADMIN</router-link></li>
         <li><router-link to="/setup/">환경설정</router-link></li>
         <li><router-link to="/goods/">상품관리</router-link></li>
         <li><router-link to="/order/">주문/매출관리</router-link></li>

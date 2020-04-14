@@ -36,10 +36,20 @@ export default {
           this.axiosPostRequest('api/v1/auth/admins/login',
           {jsonData:{email:x.target.elements[0].value,password:this.makeRsa(x.target.elements[1].value)}},
           (res)=>{
-            sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)
-            sessionStorage.setItem('refreshToken',res.data.jsonData.refreshToken)
-            this.$store.commit('changeLogStatus')
-            this.$router.push('/dashboard')
+            console.log(res);
+            
+            if(res.data.jsonData.resultCode==='0001'){
+              sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)
+              sessionStorage.setItem('refreshToken',res.data.jsonData.refreshToken)
+              sessionStorage.setItem('userName',res.data.jsonData.name)
+              
+              this.$store.dispatch('login')
+
+            }else if(res.data.jsonData.resultCode==='1003'){
+              alert('존재하지 않는 ID입니다.')
+            }else if(res.data.jsonData.resultCode==='1004'){
+              alert('비밀번호가 잘못 되었습니다.')
+            }
           },
           (err)=>{
             console.log(err);

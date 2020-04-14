@@ -73,6 +73,9 @@ export default {
 components:{
     Count,CountHeader,LineChart,Complains,Notices,QnA,BroadCasts,Products,BrandChannels
 },
+created(){
+window.scrollTo(0,0)
+},
 data(){
     return{
         payments:{

@@ -59,9 +59,6 @@ export default {
             this.$emit('cencelClick')
         },
 
-        
-
-
         signupBtnClick(){
           if(this.isPasswordValid){
             let item = {jsonData:{
@@ -71,7 +68,6 @@ export default {
               mobile:this.makeRsa(this.mobile)  
             }
           }
-
 
             this.axiosPostRequest('api/v1/auth/admins/join',item,(res)=>{
               console.log(res);
