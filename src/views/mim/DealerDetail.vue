@@ -243,13 +243,11 @@ export default {
     mixins: [commonJs],
     data: () => ({
         form: {
-            isBlock: '',
-            isDormancy: '',
             fee: '',
-            proposalStatusCode: '',
+            ownerName: '',
+            proposalStatusCode: 1,
             managerName: '',
             postNumber: '',
-            createdAt: '',
             password: '',
             businessItem: '',
             sellerId: '',
@@ -258,7 +256,6 @@ export default {
             address2: '',
             businessRegNumber: '',
             mobile: '',
-            detailAddress: '',
             resultMsg: '',
             billingBankCode: '',
             feeTypeCode: 1,
@@ -266,8 +263,22 @@ export default {
             name: '',
             comment: '',
             adminMemo: '',
+            calcCycleCode: '',
             fax: ''
         },
+        calcCycleCodeList: [
+            {value: 1, text: '일정산'},
+            {value: 2, text: '주정산'},
+            {value: 3, text: '15일정산'},
+            {value: 4, text: '월정산'}
+        ],
+        billingBankCodeList: [
+            {value: null, text: '::결재은행선택::'},
+            {value: 1, text: '신한은행'},
+            {value: 2, text: 'KB국민은행'},
+            {value: 3, text: 'NB농협'},
+            {value: 4, text: '기업은행'}
+        ],
         sellerSysId: null
     }),
     components: {
@@ -300,6 +311,9 @@ export default {
            this.form.adminMemo = result.adminMemo
            this.form.fax = result.fax
            this.form.feeTypeCode = result.feeTypeCode
+           this.form.ownerName = result.ownerName
+           this.form.billingBankCode = result.billingBankCode
+           this.form.calcCycleCode = result.calcCycleCode
            this.form.fee = (result.fee * 100)
         },
         searchAddress: function (event) {
