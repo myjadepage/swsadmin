@@ -4,7 +4,7 @@
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
-                    <li>고객운영관리</li>
+                    <li>게시판운영관리</li>
                     <li class="on">상품평관리</li>
                 </ul>
                 <ul class="helpbox">
@@ -12,24 +12,43 @@
                     <li>상품평을 삭제 하실려면 <span class="red">[삭제]</span> 버튼을 클릭해 주세요.</li>
                 </ul>
 
+                <table class="t_list">
+                    <caption>검색 영역</caption>
+                    <colgroup>
+                        <col width="130">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>등록일자</th>
+                            <td style="text-align:left; padding-left:10px">
+                                <sws-date :parentData="FilterFields"></sws-date>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>직접검색</th>
+                            <td style="text-align:left;padding-left:10px">
+                                <select id="skey" name="skey" class="text_input">
+                                    <option value="">전체</option>
+                                    <option value="goods">상품명</option>
+                                    <option value="subject">제목</option>
+                                    <option value="content">내용</option>
+                                    <option value="answer">답변</option>
+                                    <option value="user">평가자</option>
+                                    <option value="dealer">답변자</option>
+                                </select>
+                                <input type="text" name="sword" maxlength="50" class="text_input" style="width:300px; margin:0 5px">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="btn_center">
+                    <b-button variant="outline-secondary" size="lg">검색</b-button>
+                </div>
 
                 <form name="Frm">
                     <div class="section_head">
-                        <h4>오늘 등록된 상품평은 총 <span><strong>0</strong></span>개입니다.</h4>
-                        <div class="mgb5">
-                            <select id="skey" name="skey" class="text_input">
-                                <option value="">전체</option>
-                                <option value="goods">상품명</option>
-                                <option value="subject">제목</option>
-                                <option value="content">내용</option>
-                                <option value="answer">답변</option>
-                                <option value="user">평가자</option>
-                                <option value="dealer">답변자</option>
-                            </select>
-
-                            <input type="text" name="sword" maxlength="50" class="text_input" style="width:150px; margin:0 5px">
-                            <b-button variant="outline-secondary" size="sm">검색</b-button>
-                        </div>
+                        <!-- <h4>오늘 등록된 상품평은 총 <span><strong>0</strong></span>개입니다.</h4> -->
                     </div>
 
                     <table class="t_list">
@@ -52,18 +71,35 @@
                                 <td style="padding:0">
                                     <div class="over_h" style="padding:10px;">
                                         <div class="fl" style="width:70px;"><img src="/img/201324253665762.jpg" width="50" height="50"></div>
-                                        <div class="fl" style="width:80%;text-align:left;padding-top:10px;"><a href="/goods/detail?gno=75" target="_blank">버든배낭</a></div>
+                                        <div class="fl" style="width:40%;text-align:left;padding-top:10px;">
+                                            <a href="/goods/detail?gno=75" target="_blank">버든배낭</a>
+                                        </div>
+                                        <div class="fl" style="padding-top:10px;">
+                                            <router-link to="/management/review_list_all">
+                                                <strong style="text-decoration: underline">총 <span style="color:red;text-decoration: underline">100</span>개의 상품 리뷰(전체보기)</strong>
+                                            </router-link>
+                                        </div>
                                     </div>
-                                    <div class="over_h" style="padding:6px 10px 4px;background:#f6f6f6;border:solid 1px #ddd;">
+                                    <div class="over_h" style="padding:6px 10px 7px;background:#f6f6f6;border:solid 1px #ddd;line-height:2">
                                         <div class="fl">
                                             <!-- 별점 -->                                          
-                                            <img src="/img/star_04.png" alt="별점 4">
+                                            <star-rating active-color="#e61654"
+                                                :star-size="25"
+                                                :rounded-corners="true"
+                                                :show-rating="false"                                                             
+                                            ></star-rating>
                                         </div>
                                         <div class="fr">몰스토어 (2017-08-31 15:08:47)</div>
                                     </div>
                                     <div style="padding:15px 10px;text-align:left;">
-                                        <div><strong>물건 잘 받았습니다</strong></div>
-                                        <div class="mgt10">만족스럽습니다</div>
+                                        <ul>
+                                            <li class="fl" style="margin-right:5px"><img src="/img/201324253665762.jpg" width="100" height="70"></li>
+                                            <li><img src="/img/201324253665762.jpg" width="100" height="70"></li>
+                                        </ul>
+                                        <ul style="margin-top:10px">
+                                            <li><strong>물건 잘 받았습니다</strong></li>
+                                            <li>만족스럽습니다</li>
+                                        </ul>
                                     </div>
                                 </td>
                                 <td>
@@ -80,14 +116,19 @@
                                         <b-button variant="outline-secondary" size="sm" id="btnAnswer"
                                           @click="$refs.answerReviewModal.show()">답변</b-button>
                                     </div>
+                                    <div class="mgt5">
+                                        <label><input type="checkbox"/> 미노출</label>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="paging" style="margin-top:20px">
-                        <span><a href=""><strong>1</strong></a></span>
-                    </div>
                 </form>
+
+                <div style="margin-top:10px">
+                    <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
+                    <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
+                </div>
 
 
 <!-- 회원정보보기 모달 -->
@@ -270,21 +311,63 @@
 <script>
 import StarRating from 'vue-star-rating'
 import commonJs from '@/assets/js/common.js'
+import SwsDate from '@/components/common/SwsDate'
 
 export default {
     mixins: [ commonJs ],
     components: {
-        StarRating
+        StarRating,
+        SwsDate
     },
     data() {
         return {
-            rating: 0
+            rating: 0,
+            pageNumber:0,
+            totalPage: 0,
+            perPage: 10,
+            reviewData: [],
+            FilterFields: {
+                categoryList: [],
+                brandSysId: 0,
+                sellerSysId: 0,
+                minPrice: 0,
+                maxPrice: 0,
+                isDisplay: 2,
+                startDate: '',
+                endDate: '',
+                prdtCode: 'name',
+                FieldText: '',
+                valuable: 'all'
+            },
         }
     },
     mounted () { 
         this.axiosGetRequest('/api/v1/products/Reviews', '',this.loadReviewList)
     },
+    computed: {
+        pageCount() {
+            let l = this.reviewData.length,
+                s = this.perPage
+            return Math.ceil(l/s)
+        },
+        paginatedData() {
+            const start = this.pageNumber * this.perPage,
+                  end = start + this.perPage
+                  this.axiosGetRequest('/api/v1/operations/notices/alllist',{'startIndex':start, 'rowCount':end},this.loadReviewList)
+            return this.reviewData.slice(start, end)
+        }
+    },
     methods: {
+        nextPage() {          
+            this.pageNumber++
+            this.reviewData.splice(0)
+            this.paginatedData
+        },
+        prevPage() {           
+            this.pageNumber--  
+            this.reviewData.splice(0)         
+            this.paginatedData        
+        },   
         setRating: function(rating) {
             this.rating = rating
         },

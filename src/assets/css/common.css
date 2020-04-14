@@ -580,7 +580,7 @@
         margin-top: 20px;
         position: relative
     }
-    .section_head:after {
+    .section_head:after, .section_head:before {
         content: '.';
         display: block;
         clear: both;

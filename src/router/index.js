@@ -49,14 +49,20 @@ import NoticeList from '@/views/management/NoticeList'
 import NoticeReg from '@/views/management/NoticeReg'
 import NoticeDetail from '@/views/management/NoticeDetail'
 import ReviewList from '@/views/management/ReviewList'
+import ReviewListAll from '@/views/management/ReviewListAll'
 import QnaList from '@/views/management/QnaList'
 import FaqList from '@/views/management/FaqList'
 import FaqReg from '@/views/management/FaqReg'
 import FaqDetail from '@/views/management/FaqDetail'
 import InquiryList from '@/views/management/InquiryList'
 import InquiryDetail from '@/views/management/InquiryDetail'
+import ComplainList from '@/views/management/ComplainList'
+import ComplainDetail from '@/views/management/ComplainDetail'
+import BlockList from '@/views/management/BlockList'
+import PunishList from '@/views/management/PunishList'
 import CouponList from '@/views/management/CouponList'
 import CouponReg from '@/views/management/CouponReg'
+
 
 /** 환경설정 */
 import SetupLeftMenu from '@/views/setup/LeftMenu'
@@ -119,7 +125,7 @@ import BroadcastLeftMenu from '@/views/broadcast/BroadcastLeftMenu'
 import BroadcastRequest from '@/views/broadcast/BroadcastRequest'
 import BroadcastReg from '@/views/broadcast/BroadcastReg'
 import BroadcastStop from '@/views/broadcast/BroadcastStop'
-import BroastcastSend from '@/views/broadcast/BroastcastSend'
+import BroadcastSend from '@/views/broadcast/BroadcastSend'
 
 
 /* 로그인, 회원가입 */
@@ -267,6 +273,11 @@ const routes = [
         path: '/management/review_list',
         name: '상품평관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: ReviewList }
+      },
+      {
+        path: '/management/review_list_all',
+        name: '상품평관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: ReviewListAll }
       }, 
       {
         path: '/management/qna_list',
@@ -297,6 +308,26 @@ const routes = [
         path: '/management/inquiry_detail/:questionSysId',
         name: '1:1문의관리',
         components: { LeftMenu: ManagementLeftMenu, Contents: InquiryDetail }
+      },
+      {
+        path: '/management/complain_list',
+        name: '신고내역관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: ComplainList }
+      }, 
+      {
+        path: '/management/complain_detail',
+        name: '신고내역관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: ComplainDetail }
+      },
+      {
+        path: '/management/block_list',
+        name: '차단내역관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: BlockList }
+      }, 
+      {
+        path: '/management/punish_list',
+        name: '제재내역관리',
+        components: { LeftMenu: ManagementLeftMenu, Contents: PunishList }
       }, 
       {
         path: '/management/coupon_list',
@@ -664,9 +695,9 @@ const routes = [
         components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastStop }
       },
       {
-        path: '/broadcast/BroastcastSend',
+        path: '/broadcast/BroadcastSend',
         name: '방송송출',
-        components: { LeftMenu: BroadcastLeftMenu, Contents: BroastcastSend }
+        components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastSend }
       }
     ]
   },
