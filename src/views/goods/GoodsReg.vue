@@ -76,7 +76,7 @@
                 <select id="category5" name="category5" data-required="false" v-model="selectedCategoryRow[4]">
                   <option v-for="(option, inx) in category5" :key="inx" :value="option">{{ option.text }}</option>
                 </select>
-                <button type="button" class="btn btn-sm btn-secondary" v-on:click="addCate">추가</button>
+                <b-button variant="outline-secondary" size="sm" @click="addCate">추가</b-button>
               </td>
             </tr>
             <tr>
@@ -578,7 +578,7 @@
                 </dl>
                 <span class="fr">
                   <a
-                    class="btn btn-primary"
+                    class="btn btn-sm btn-outline-primary"
                     href="http://www.mallstore.co.kr/data/base/DownLoad/information/commodity_guide.zip"
                   >품목별 상품고시</a>
                 </span>
@@ -786,7 +786,6 @@
                   <Addition-container
                     :productData="productData"
                     :additionOptions="additionOptions"
-                    
                   ></Addition-container>
                 </template>
               </td>
@@ -796,10 +795,10 @@
       </div>
       <div class="btn_center">
         <template v-if="productData.productSysId === ''">
-          <b-button variant="secondary" @click="SubmitAddProduct()" style="margin-right: 5px">등록</b-button>
+          <b-button variant="secondary" @click="SubmitAddProduct()" style="margin-right: 5px">상품등록</b-button>
         </template>
         <template v-else>
-          <b-button variant="success" @click="SubmitUpdateProduct()" style="margin-right: 5px">수정</b-button>
+          <b-button variant="success" @click="SubmitUpdateProduct()" style="margin-right: 5px">상품수정</b-button>
         </template>
         <b-button variant="danger">취소</b-button>
       </div>
