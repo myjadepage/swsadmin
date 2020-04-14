@@ -51,7 +51,7 @@
                 <!-- <col width="50"> -->
             </template>
             <template v-slot:cell(detail) = "detail">
-                <b-button variant="outline-secondary" @click="$router.push(`/mim/dealer_detail/${ detail.item.sellerSysId}`)">상세정보</b-button>
+                <b-button variant="outline-secondary" size="sm" @click="$router.push(`/mim/dealer_detail/${ detail.item.sellerSysId}`)">상세정보</b-button>
             </template>
             <!-- <template v-slot:cell(check)>
                 <input type="checkbox"/>
