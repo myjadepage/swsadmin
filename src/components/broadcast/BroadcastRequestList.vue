@@ -1,15 +1,8 @@
 <template>
     <div>
         <div class="float-left mt-1 mb-1">
-            <b>총 {{totalPage}} 건의 주문이 조회되었습니다.</b>
+            <b>총 {{totalPage}} 개의 방송신청이 조회되었습니다.</b>
         </div>
-        <div class="float-right mt-1 mb-1">
-            <select v-model="perPage" class="text_input">
-                <option value="10">10개 보기</option>
-                <option value="30">30개 보기</option>
-                <option value="50">50개 보기</option>
-            </select>
-        </div>    
         <b-table 
             :items="products" 
             :busy="isBusy" 
@@ -52,6 +45,16 @@
                 <p>2020-10-20</p>               
             </template>
             <template v-slot:cell(title)="title">
+                <div class="align-middle">
+                    <div class="media">
+                        <img :src="title.value.image" class="mr-3" style="width: 80px">
+                        <div class="media-body">
+                            <h5 class="mt-3"><b>{{ title.value.productName }}</b></h5>
+                            <p class="mt-1" style="color: #FF9900">{{ title.value.category }}</p>
+                        </div>
+                        <p></p>
+                    </div>
+                </div>
                 <div class="align-middle">
                     <div class="media">
                         <img :src="title.value.image" class="mr-3" style="width: 80px">

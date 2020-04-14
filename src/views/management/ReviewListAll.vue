@@ -8,11 +8,11 @@
         <li class="on">{{ $route.name }}</li>
     </ul>
     <ul class="helpbox">
-        <li>공지사항을 관리하실 수 있습니다.</li>
+        <li>상품평을 관리하실 수 있습니다.</li>
     </ul>
                 
     <div class="section_head"> 
-        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 공지사항이 있습니다.</h4>                      
+        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 상품평이 있습니다.</h4>                      
         <div class="mgb5">
             <!-- <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
                 <option value="1">제목</option>
@@ -47,11 +47,7 @@
         <div>
             <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
             <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
-        </div>
-        
-        <div class="btn_center">
-            <b-button variant="outline-info" size="lg" @click="$router.push('/management/notice_reg')">등록</b-button>
-        </div>
+        </div>      
     </form>
   </div>
 </template>
@@ -73,7 +69,7 @@ export default {
                 {key : 'isDisplay', label : '노출여부', sortable: true},
                 {key : 'setting', label : '관리', sortable: false}
             ],
-            noticeData: []
+            reviewAllData: []
         }
     },
     mounted () {
@@ -81,7 +77,7 @@ export default {
     },
     computed: {
         pageCount() {
-            let l = this.noticeData.length,
+            let l = this.reviewAllData.length,
                 s = this.perPage
             return Math.ceil(l/s)
         },
@@ -89,18 +85,18 @@ export default {
             const start = this.pageNumber * this.perPage,
                   end = start + this.perPage
                   this.axiosGetRequest('/api/v1/operations/notices/alllist',{'startIndex':start, 'rowCount':end},this.loadNoticeList)
-            return this.noticeData.slice(start, end)
+            return this.reviewAllData.slice(start, end)
         }
     },
     methods: {
         nextPage() {          
             this.pageNumber++
-            this.noticeData.splice(0)
+            this.reviewAllData.splice(0)
             this.paginatedData
         },
         prevPage() {           
             this.pageNumber--  
-            this.noticeData.splice(0)         
+            this.reviewAllData.splice(0)         
             this.paginatedData        
         },    
         loadNoticeList(res) {
@@ -108,7 +104,7 @@ export default {
             this.totalPage = res.data.jsonData.totalCnt          
             if(result) {
                 for(let i=0 ; i < result.length; i++ ) {
-                this.noticeData.push({
+                this.reviewAllData.push({
                     'noticeSysId': result[i].noticeSysId,
                     'title': result[i].title,
                     'createdAt': this.changeDate(result[i].createdAt),
@@ -116,7 +112,7 @@ export default {
                 })
               }
             } else {
-                 this.noticeData.push({
+                 this.reviewAllData.push({
                      'title' : '등록된 데이타가 없습니다.'
                  })
             }

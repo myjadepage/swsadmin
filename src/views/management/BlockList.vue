@@ -8,18 +8,18 @@
         <li class="on">{{ $route.name }}</li>
     </ul>
     <ul class="helpbox">
-        <li>공지사항을 관리하실 수 있습니다.</li>
+        <li>차단내역을 관리하실 수 있습니다.</li>
     </ul>
                 
     <div class="section_head"> 
-        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 공지사항이 있습니다.</h4>                      
+        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 차단내역이 있습니다.</h4>                      
         <div class="mgb5">
-            <!-- <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
+            <select id="skey" name="skey" class="text_input">
                 <option value="1">제목</option>
                 <option value="2">내용</option>
             </select>
-            <input type="text" name="keyword" v-model="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
-            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
+            <input type="text" name="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
+            <b-button variant="outline-secondary" size="sm">검색</b-button>
         </div>
     </div>
     <form name="Frm">

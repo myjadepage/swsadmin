@@ -1,6 +1,6 @@
 <template>
     <div id="contents">
-        <h3>{{$route.name}}</h3>
+        <h3><font-awesome-icon icon="play-circle" /> {{$route.name}}</h3>
         <ul class="navi">
             <li class="home"><a href="/" target="_top">홈</a></li>
             <li>방송관리</li>

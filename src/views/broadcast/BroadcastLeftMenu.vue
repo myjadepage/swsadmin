@@ -6,7 +6,7 @@
             <dd class="side_small_menu">
                 <router-link to="/broadcast/BroadcastRequest" class=""> 방송신청목록</router-link>
                 <router-link to="/broadcast/BroadcastStop" class=""> 방송중지목록</router-link>
-                <router-link to="/broadcast/category" class=""> 방송송출관리</router-link>
+                <router-link to="/broadcast/BroadcastSend" class=""> 방송송출관리</router-link>
             </dd>
 
             <dt><font-awesome-icon icon="minus" /> 편성표관리</dt>

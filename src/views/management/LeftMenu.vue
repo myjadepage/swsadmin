@@ -6,9 +6,12 @@
         <dd class="side_small_menu">
             <router-link to="/management/notice_list">공지사항</router-link>
             <router-link to="/management/faq_list">자주묻는질문(FAQ)</router-link>
-            <router-link to="/management/review_list">상품평</router-link>
+            <router-link to="/management/review_list">상품평(리뷰)</router-link>
             <router-link to="/management/qna_list">상품Q＆A</router-link>
             <router-link to="/management/inquiry_list">1:1문의</router-link>
+            <router-link to="/management/complain_list">신고내역 관리</router-link>
+            <router-link to="/management/block_list">차단내역 관리</router-link>
+            <router-link to="/management/punish_list">제재내역 관리</router-link>
         </dd>
 
         <!-- <dt>게시판관리</dt>

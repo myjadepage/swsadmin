@@ -1,11 +1,11 @@
 <template>
  <div id="contents">
-    <h3><font-awesome-icon icon="play-circle" /> 판매자신청목록</h3>
+    <h3><font-awesome-icon icon="play-circle" /> {{$route.name}}</h3>
     <ul class="navi">
         <li class="home"><a href="/" target="_top">홈</a></li>
         <li>입점업체관리</li>
         <li>판매자관리</li>
-        <li class="on">판매자신청목록</li>
+        <li class="on">{{$route.name}}</li>
     </ul>
     <ul class="helpbox">
         <li>쇼핑몰에 판매자 신청하신 목록을 관리하는 곳 입니다.</li>
@@ -148,7 +148,7 @@
                     </td>
                     <th>팩스번호</th>
                     <td>
-                        <input type="text" name="fax" class="text_input" style="width:150px" value="" maxlength="20">
+                        <input type="text" name="fax" class="text_input" style="width:150px" value="" maxlength="20" v-model="form.fax">
                         <span class="light_gray">(예: 02-1234-1234)</span>
                     </td>
                 </tr>
@@ -186,13 +186,13 @@
                 <tr>
                     <th>기타사항</th>
                     <td colspan="3">
-                        <textarea name="memo" class="text_input" style="height:80px;width:98%"></textarea>
+                        <textarea name="memo" class="text_input" style="height:80px;width:98%" v-model="form.comment"></textarea>
                     </td>
                 </tr>
                 <tr>
                     <th>관리자메모</th>
                     <td colspan="3">
-                        <textarea name="note" class="text_input" style="height:80px;width:98%"></textarea>
+                        <textarea name="note" class="text_input" style="height:80px;width:98%" v-model="form.adminMemo"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -209,15 +209,15 @@
                 <tr>
                     <th>수수료<span class="red">*</span></th>
                     <td colspan="3">
-                        <input type="radio" name="cmsType" value="CTG" style="vertical-align:top"> 카테고리당 수수료
-                        <input type="radio" name="cmsType" value="MIM" style="vertical-align:top"> 판매자당 수수료
-                        <input type="text" name="cmsRate" class="text_input" style="width: 50px; background: silver;" maxlength="5"> %
+                        <input type="radio" name="feeTypeCode" id="feeTypeCode1" v-model.number="form.feeTypeCode" value="1"> <label for="feeTypeCode1" class="mr-2">카테고리당 수수료</label>
+                        <input type="radio" name="feeTypeCode" id="feeTypeCode2" v-model.number="form.feeTypeCode" value="2"> <label for="feeTypeCode2">판매자당 수수료</label>&emsp;
+                        <input type="text" class="text_input font-weight-bold text-right" v-model.number="form.fee" style="width: 50px" maxlength="5" :disabled="form.feeTypeCode === 1"> %
                     </td>
                 </tr>
             </tbody>
         </table>
         <div class="btn_center">
-            <b-button variant="secondary" size="lg" style="margin-right:5px">목록</b-button>
+            <b-button variant="secondary" size="lg" style="margin-right:5px" @click="$router.push('/mim/dealer_list')">목록</b-button>
             <b-button variant="primary" size="lg">입점승인</b-button>
         </div>
     </form>
@@ -243,13 +243,11 @@ export default {
     mixins: [commonJs],
     data: () => ({
         form: {
-            isBlock: '',
-            isDormancy: '',
             fee: '',
-            proposalStatusCode: '',
+            ownerName: '',
+            proposalStatusCode: 1,
             managerName: '',
             postNumber: '',
-            createdAt: '',
             password: '',
             businessItem: '',
             sellerId: '',
@@ -258,13 +256,29 @@ export default {
             address2: '',
             businessRegNumber: '',
             mobile: '',
-            detailAddress: '',
             resultMsg: '',
             billingBankCode: '',
-            feeTypeCode: '',
+            feeTypeCode: 1,
             billingAccountName: '',
-            name: ''
+            name: '',
+            comment: '',
+            adminMemo: '',
+            calcCycleCode: '',
+            fax: ''
         },
+        calcCycleCodeList: [
+            {value: 1, text: '일정산'},
+            {value: 2, text: '주정산'},
+            {value: 3, text: '15일정산'},
+            {value: 4, text: '월정산'}
+        ],
+        billingBankCodeList: [
+            {value: null, text: '::결재은행선택::'},
+            {value: 1, text: '신한은행'},
+            {value: 2, text: 'KB국민은행'},
+            {value: 3, text: 'NB농협'},
+            {value: 4, text: '기업은행'}
+        ],
         sellerSysId: null
     }),
     components: {
@@ -293,6 +307,14 @@ export default {
            this.form.billingAccountName = result.billingAccountName
            this.form.businessType = result.businessType
            this.form.homepage = result.homepage
+           this.form.comment = result.comment
+           this.form.adminMemo = result.adminMemo
+           this.form.fax = result.fax
+           this.form.feeTypeCode = result.feeTypeCode
+           this.form.ownerName = result.ownerName
+           this.form.billingBankCode = result.billingBankCode
+           this.form.calcCycleCode = result.calcCycleCode
+           this.form.fee = (result.fee * 100)
         },
         searchAddress: function (event) {
             console.log(event)

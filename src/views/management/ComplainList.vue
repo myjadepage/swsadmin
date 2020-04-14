@@ -8,18 +8,18 @@
         <li class="on">{{ $route.name }}</li>
     </ul>
     <ul class="helpbox">
-        <li>공지사항을 관리하실 수 있습니다.</li>
+        <li>신고내역을 관리하실 수 있습니다.</li>
     </ul>
                 
     <div class="section_head"> 
-        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 공지사항이 있습니다.</h4>                      
+        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 신고내역이 있습니다.</h4>                      
         <div class="mgb5">
-            <!-- <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
+            <select id="skey" name="skey" class="text_input">
                 <option value="1">제목</option>
                 <option value="2">내용</option>
             </select>
-            <input type="text" name="keyword" v-model="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
-            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
+            <input type="text" name="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
+            <b-button variant="outline-secondary" size="sm" >검색</b-button>
         </div>
     </div>
     <form name="Frm">
@@ -31,13 +31,17 @@
         >
             <template v-slot:table-colgroup>
                 <col width="100">
+                <col width="150">
                 <col width="*">
                 <col width="250">
+                <col width="150">
+                <col width="150">
+                <col width="150">
                 <col width="150">
                 <col width="100">
             </template>           
             <template  v-slot:cell(title) = "title">
-                <router-link :to="'/management/notice_detail/'+ title.item.noticeSysId">{{ title.item.title }}</router-link>
+                <router-link :to="'/management/complain_detail/'+ title.item.noticeSysId">{{ title.item.title }}</router-link>
             </template>
             <template v-slot:cell(setting) = "setting">
                 <b-button variant="outline-danger" size="sm" @click="deleteNotice(setting.item.noticeSysId)">삭제</b-button>                              
@@ -47,11 +51,7 @@
         <div>
             <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
             <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
-        </div>
-        
-        <div class="btn_center">
-            <b-button variant="outline-info" size="lg" @click="$router.push('/management/notice_reg')">등록</b-button>
-        </div>
+        </div>      
     </form>
   </div>
 </template>
@@ -68,9 +68,13 @@ export default {
             perPage: 10,
             fields:[
                 {key : 'noticeSysId', label : 'No', sortable: true},
-                {key : 'title', label : '제목', sortable: true},
-                {key : 'createdAt', label : '등록일', sortable: true},
-                {key : 'isDisplay', label : '노출여부', sortable: true},
+                {key : 'group', label : '분류', sortable: true},
+                {key : 'review', label : '상품리뷰', sortable: true},
+                {key : 'content', label : '신고내용', sortable: false},
+                {key : 'user1', label : '신고자', sortable: true},
+                {key : 'user2', label : '신고대상', sortable: true},
+                {key : 'date', label : '등록일', sortable: true},
+                {key : 'views', label : '조회수', sortable: true},
                 {key : 'setting', label : '관리', sortable: false}
             ],
             noticeData: []
@@ -120,10 +124,7 @@ export default {
                      'title' : '등록된 데이타가 없습니다.'
                  })
             }
-        },
-        changeIsDisplay(num) {
-            return num === 0 ? '미표시' : '표시'
-        },       
+        },    
         changeDate(date) {
             var y = date.substr(0, 4)
             var m = date.substr(4, 2)
