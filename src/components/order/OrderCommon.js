@@ -1,4 +1,4 @@
-import { setOrderItem } from '@/components/order/codeMapping.js'
+import { setOrderItem } from '@/components/order/CodeMapping.js'
 export default {
     data: () => ({
         items: [],
