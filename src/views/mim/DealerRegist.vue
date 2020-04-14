@@ -24,7 +24,8 @@
                     <tr>
                         <th>아이디<span class="red">*</span></th>
                         <td colspan="3">
-                            <input type="search" class="text_input" v-model="mimRegObject.sellerId" required/>
+                            <input type="search" class="text_input" v-model="mimRegObject.sellerId" @keyup="checkValidateId = false" required/>&emsp;
+                            <b-button variant="outline-secondary" size="sm" @click="checkDuplicateIdFn" :disabled="checkValidateId"><font-awesome-icon icon="check" />중복체크</b-button>
                         </td>
                     </tr>
                     <tr>
@@ -139,13 +140,13 @@
                     <tr>
                         <th>기타사항</th>
                         <td colspan="3">
-                            <textarea name="memo" class="text_input" style="height:80px;width:98%"></textarea>
+                            <textarea class="text_input w-100" style="height:80px" v-model="mimRegObject.comment"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <th>관리자메모</th>
                         <td colspan="3">
-                            <textarea name="note" class="text_input" style="height:80px;width:98%"></textarea>
+                            <textarea class="text_input w-100" style="height:80px" v-model="mimRegObject.adminMemo"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -161,7 +162,7 @@
                         <td colspan="3">
                             <input type="radio" name="feeTypeCode" id="feeTypeCode1" v-model.number="mimRegObject.feeTypeCode" value="1"> <label for="feeTypeCode1" class="mr-2">카테고리당 수수료</label>
                             <input type="radio" name="feeTypeCode" id="feeTypeCode2" v-model.number="mimRegObject.feeTypeCode" value="2"> <label for="feeTypeCode2">판매자당 수수료</label>&emsp;
-                            <input type="text" class="text_input font-weight-bold text-right" style="width: 50px" maxlength="5" :disabled="mimRegObject.feeTypeCode === 1"> %
+                            <input type="text" class="text_input font-weight-bold text-right" v-model.number="mimRegObject.fee" style="width: 50px" maxlength="5" :disabled="mimRegObject.feeTypeCode === 1"> %
                         </td>
                     </tr>
                 </tbody>
@@ -214,9 +215,10 @@ export default {
             adminMemo: '',
             calcCycleCode: 1,
             feeTypeCode: 1,
-            fee: 0.5,
+            fee: 0,
             proposalStatusCode: 1
         },
+        checkValidateId: false,
         calcCycleCodeList: [
             {value: 1, text: '일정산'},
             {value: 2, text: '주정산'},
@@ -239,12 +241,42 @@ export default {
         resultPostCode: function (e) {
             this.mimRegObject.postNumber = e.zonecode
             this.mimRegObject.address1 = e.address
-            console.log(e)
             this.$bvModal.hide('addressModal')
         },
+        checkDuplicateIdFn: function (){
+            const chkId = this.mimRegObject.sellerId
+            this.axiosGetRequest('/api/v1/sellers/chkdupId', {sellerId: chkId}, function (res) {
+                const result = res.data.jsonData
+                if (result.resultCode === '0001') {
+                    alert('사용할수 있는 ID입니다.')
+                    this.checkValidateId = true
+                    return false
+                } else {
+                    alert('사용할수 없는 ID입니다.\n 다시 확인해주시기 바랍니다.')
+                    this.checkValidateId = false
+                    return false
+                }
+            }.bind(this))
+        },
         onSubmit: function () {
-            this.axiosPostRequest('/api/v1/sellers/proposaling',{jsonData: this.mimRegObject}, function (res) {
-                console.log(res)
+            if (!this.checkValidateId) {
+                alert('아이디 중복체크를 해주시기 바랍니다.')
+                return false
+            }
+
+            if (this.mimRegObject.fee > 0 ) {
+                this.mimRegObject.fee = this.mimRegObject.fee/100 
+            }
+
+            this.axiosPostRequest('/api/v1/sellers/proposaling',{jsonData: this.mimRegObject}, (res) => {
+                if (res.data.jsonData.resultCode === '0001') {
+                    alert('입점 등록 신청이 완료되었습니다.')
+                    window.location.href='/mim/dealer_regist_list'
+                    return false
+                } else {
+                    alert('알수없는 이유로 에러가 발생했습니다. \n관리자에게 문의하세요\nCode`${res.data.jsonData.resultCode}`')
+                    return false
+                }
             })
         }
     }
