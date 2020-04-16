@@ -81,7 +81,7 @@
                                 </select>
                                 <input type="text" name="sword" class="text_input" v-model="FilterFields.FieldText" @keyup.enter="searchFilteringFn">
                                 &emsp;
-                                <b-button variant="secondary" size="sm" @click="searchFilteringFn">검색</b-button>
+                                <b-button variant="outline-secondary" size="sm" @click="searchFilteringFn">검색</b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -143,8 +143,9 @@ export default {
         SwsDate
     },
     mounted () {  
-        this.axiosGetRequest('/api/v1/brands','',this.initialBrands)
-        this.axiosGetRequest('/api/v1/products/lists','',this.loadProductsList)
+        // this.axiosGetRequest('/api/v1/brands','',this.initialBrands)
+        this.searchFilteringFn()
+        // this.axiosGetRequest('/api/v1/products/lists','',this.loadProductsList)
     },
     methods: {
         searchFilteringFn: function () {
@@ -180,7 +181,6 @@ export default {
                 }
             }
             this.isBusy=true
-            console.log(params)
             this.axiosGetRequest('/api/v1/products/lists', params, this.loadProductsList)
             this.products.splice(0)
         },
@@ -223,7 +223,7 @@ export default {
                     
                 })
             }
-            this.totalPage = result.length
+            this.totalPage = res.data.jsonData.totalCnt
             this.isBusy=false
             this.currentPage = 1
         },
@@ -242,8 +242,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-
-</style>

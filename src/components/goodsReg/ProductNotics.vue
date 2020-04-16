@@ -4,7 +4,7 @@
         <option v-for="(item, index) in selectNotics" :key="index" :value="item.value">{{ item.text }}</option>
     </select>
     <div class="fr">
-        <b-button variant="info" size="sm" class="m-1" @click="addNotifyRow();">상품 추가</b-button>
+        <b-button variant="secondary" size="sm" class="m-1" @click="addNotifyRow();">상품 추가</b-button>
         <!-- <b-button variant="danger" size="sm" class="m-1" onclick="delRowList('tb_notify');">상품 삭제</b-button> -->
     </div>
 

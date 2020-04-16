@@ -12,7 +12,7 @@
             <b-input-group size="sm">
               <b-form-input disabled squared placeholder="썸네일 업로드" style="width: 240px" v-model="item.imageurl" ></b-form-input>
               <b-input-group-append>
-                <b-button size="sm" variant="outline-secondary" squared text="Button" @click="onImageObjOpenFn('imageObject'+index)">이미지 업로드</b-button>
+                <b-button size="sm" squared text="Button" @click="onImageObjOpenFn('imageObject'+index)">이미지 업로드</b-button>
               </b-input-group-append>
             </b-input-group>
           </span>

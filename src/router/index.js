@@ -665,13 +665,13 @@ const routes = [
     name: '입점업체관리',
     component: AdminBoardLayout,
     redirect: '/mim/dealer_regist_list',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children:[
       // {
       //   path: '/mim/',

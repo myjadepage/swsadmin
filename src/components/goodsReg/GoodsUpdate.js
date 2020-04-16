@@ -9,11 +9,6 @@ export default {
         briefDescription: '',
         detailDescription: '',
         detailAttachFileUrl: '',
-        // productGroupBuy: {
-        //   startDate: '',
-        //   endDate: '',
-        //   productGroupBuyDiscount: []
-        // },
         iconList: [],
         bigImageUrl: '',
         middleImageUrl: '',
@@ -86,46 +81,30 @@ export default {
       // 카테고리 정보 세팅
       let categoryData = res.data.jsonData.listPrdtCate;
       categoryData.forEach(item => {
-        let categoryArray = new Array();
-        if (!this.isEmpty(item.categorySysId1)) {
-          categoryArray[0] = {
-            value: item.categorySysId1,
-            text: item.categoryName1,
-            feeRate: 0
-          };
+        let row = {}
+        if (!this.isEmpty(item.categorySysId1)){
+          row.categorySysId1 = item.categorySysId1
+          row.categoryText1 = item.categoryName1
         }
-        if (!this.isEmpty(item.categorySysId2)) {
-          categoryArray[1] = {
-            value: item.categorySysId2,
-            text: item.categoryName2,
-            feeRate: 0
-          };
+        if (!this.isEmpty(item.categorySysId2)){
+          row.categorySysId2 = item.categorySysId2
+          row.categoryText2 = item.categoryName2
         }
-        if (!this.isEmpty(item.categorySysId3)) {
-          categoryArray[2] = {
-            value: item.categorySysId3,
-            text: item.categoryName3,
-            feeRate: 0
-          };
+        if (!this.isEmpty(item.categorySysId3)){
+          row.categorySysId3 = item.categorySysId3
+          row.categoryText3 = item.categoryName3
         }
-        if (!this.isEmpty(item.categorySysId4)) {
-          categoryArray[3] = {
-            value: item.categorySysId4,
-            text: item.categoryName4,
-            feeRate: 0
-          };
+        if (!this.isEmpty(item.categorySysId4)){
+          row.categorySysId4 = item.categorySysId4
+          row.categoryText4 = item.categoryName4
         }
-        if (!this.isEmpty(item.categorySysId5)) {
-          categoryArray[4] = {
-            value: item.categorySysId5,
-            text: item.categoryName5,
-            feeRate: 0
-          };
+        if (!this.isEmpty(item.categorySysId5)){
+          row.categorySysId5 = item.categorySysId5
+          row.categoryText5 = item.categoryName5
         }
-        this.addCateExtends(categoryArray, 1000, {
-          prdtSysId: item.prdtSysId,
-          prdtCategorySysId: item.prdtCategorySysId
-        });
+        row.procTypeCode = 1
+        row.prdtCategorySysId = item.prdtCategorySysId
+        this.selectedCategories.categoryTable.push(row)
       });
 
       //상품 정보
@@ -225,11 +204,11 @@ export default {
     // Update Validate
     updateSubmitValidate(obj) {
       this.updateProductData.category.categories.splice(0);
-      if (this.categoryTable.length <= 0) {
+      if (this.selectedCategories.categoryTable.length <= 0) {
         alert("카테고리를 확인하여 주시기 바랍니다.");
         return false;
       } else {
-        this.categoryTable.forEach(item => {
+        this.selectedCategories.categoryTable.forEach(item => {
           let params = {
             categorySysId1: item.categorySysId1,
             categorySysId2: item.categorySysId2
@@ -243,10 +222,7 @@ export default {
           if (item.categorySysId5 > 0) {
             params.categorySysId5 = item.categorySysId5;
           }
-          if (
-            item.procTypeCode !== 4 ||
-            !this.isEmpty(item.prdtCategorySysId)
-          ) {
+          if (item.procTypeCode !== 4 || !this.isEmpty(item.prdtCategorySysId)) {
             params.procTypeCode = item.procTypeCode;
             params.prdtCategorySysId = item.prdtCategorySysId;
             this.updateProductData.category.categories.push(params);
@@ -399,18 +375,18 @@ export default {
       // 공구가격에 관련한 데이터 처리
       if (this.productData.prdtTypeCode === 2) {
         for (let _k in this.DateObject) {
-          if (this.DateObject[_k] === '') {
+          if (this.DateObject[_k] === "") {
             alert("공구가격의 할인일자 범위를 확인해주시기 바랍니다.");
             return false;
           }
         }
-
+        this.updateProductData['productGroupBuy'] = {}
         this.updateProductData.productGroupBuy.startDate =
-          this.DateObject.startDate.replace(/-/g, '') +
-          this.DateObject.startTime.replace(/:/g, '');
+          this.DateObject.startDate.replace(/-/g, "") +
+          this.DateObject.startTime.replace(/:/g, "");
         this.updateProductData.productGroupBuy.endDate =
-          this.DateObject.endDate.replace(/-/g, '') +
-          this.DateObject.endTime.replace(/:/g, '');
+          this.DateObject.endDate.replace(/-/g, "") +
+          this.DateObject.endTime.replace(/:/g, "");
 
         // 할인인원 범위 Validate
         if (this.commonSellers.length < 1) {
@@ -418,32 +394,27 @@ export default {
           return false;
         } else {
           let firstObject = this.commonSellers[0];
-          let peopleObject = document.getElementById(firstObject.peopleObjName);
-          let discountObject = document.getElementById(
-            firstObject.discountObjName
-          );
-          if (
-            this.isEmpty(peopleObject.value) ||
-            this.isEmpty(discountObject.value)
-          ) {
+          let peopleObject = firstObject.people;
+          let discountObject = firstObject.discount;
+          if (this.isEmpty(peopleObject) || this.isEmpty(discountObject)) {
             alert("할인인원 범위 정책을 확인하여 주시기바랍니다.");
             return false;
           } else {
-            for (let i = 0; i < this.commonSellers.length; i++) {
-              peopleObject = document.getElementById(
-                this.commonSellers[i].peopleObjName
-              );
-              discountObject = document.getElementById(
-                this.commonSellers[i].discountObjName
-              );
-              this.updateProductData.productGroupBuy.productGroupBuyDiscount[
-                i
-              ] = {
-                peopleQty: this.toNumber(peopleObject.value),
-                discount: this.toNumber(discountObject.value),
+            this.updateProductData.productGroupBuy['productGroupBuyDiscount'] = []
+            this.commonSellers.forEach(item => {
+              this.updateProductData.productGroupBuy.productGroupBuyDiscount.push({
+                peopleQty: this.toNumber(String(item.people)),
+                discount: this.toNumber(String(item.discount)),
                 isUse: 1
-              };
-            }
+              });
+            });
+            // for (let i = 0 ; i < this.commonSellers.length ; i++) {
+            //   this.productData.productGroupBuy.productGroupBuyDiscount[i] = {
+            //     peopleQty: this.toNumber(String(this.commonSellers[i].people)),
+            //     discount: this.toNumber(String(this.commonSellers[i].discount)),
+            //     isUse: 1
+            //   }
+            // }
           }
         }
       }
