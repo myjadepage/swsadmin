@@ -220,7 +220,6 @@ export default {
                         stockQty: result[i].stockQty
                     },
                     setting: ''
-                    
                 })
             }
             this.totalPage = result.length

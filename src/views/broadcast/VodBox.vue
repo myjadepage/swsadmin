@@ -23,14 +23,16 @@
             </div>
 	
             <ul class="vBtns">
-                <li><b-button variant="secondary">경고</b-button></li>
-                <li><b-button variant="danger">강제종료</b-button></li>
+                <li><b-button variant="secondary" @click="$refs.warningModal.show()">경고</b-button></li>
+                <li><b-button variant="danger" @click="$refs.stopModal.show()">강제종료</b-button></li>
             </ul>
 
             <div class="videoWrap">
                 <div id="videoLayerCover" tabindex="1" style="width:395px; height:700px;">
                     <div id="player" class="is-small is-tiny use-play-1 is-autoplay is-loaded is-paused is-waiting">
                     </div>
+
+                    <span class="icon_live">LIVE</span>
                 </div>
 
                 <section class="reply w380">
@@ -48,7 +50,7 @@
                         </div>
                     </section>
                     <div class="MEAGs">
-                        <b-button variant="primary" class="oF4XW dCJp8">댓글달기</b-button>
+                        <b-button variant="info" class="oF4XW dCJp8">댓글달기</b-button>
                     </div>
                 </section>
             </div>
@@ -80,12 +82,43 @@
                 </div>
             </div>
     </div>
+
+    <b-modal ref="warningModal">
+         <template v-slot:modal-title>
+            <font-awesome-icon icon="info-circle" /> 방송 경고
+        </template>
+        <div style="padding:10px">
+            <h4>해당 방송에 <strong class="text-danger" style="font-size:1.5rem">경고메시지</strong>를 보내시겠습니까?</h4>
+            <dl style="margin-top:20px; width:100%">
+                <dt>경고 사유 입력(필수)</dt>
+                <dd style="width:100%">
+                    <textarea style="width:100%; height:100px"></textarea>
+                </dd>
+            </dl>
+        </div>
+    </b-modal>
+    
+    <b-modal ref="stopModal">
+         <template v-slot:modal-title>
+            <font-awesome-icon icon="info-circle" /> 방송 강제종료
+        </template>
+        <div style="padding:10px">
+            <h4>해당 방송을<strong class="text-danger" style="font-size:1.5rem">강제종료</strong> 하시겠습니까?</h4>
+            <dl style="margin-top:20px; width:100%">
+                <dt>방송종료 사유 입력(필수)</dt>
+                <dd style="width:100%">
+                    <textarea style="width:100%; height:100px"></textarea>
+                </dd>
+            </dl>
+        </div>
+    </b-modal>
+
   </div>
 </template>
 
 <script>
 export default {
-
+   
 }
 </script>
 
@@ -122,6 +155,17 @@ export default {
 .vPrice { color: #9f56f2;}
 
 .videoWrap { clear: both;  position: relative; display: flex; margin-left: 12px; }
+.videoWrap .icon_live {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 5px 7px;
+    background-color:#dc3545;
+    color: #fff;
+    font-weight: bold;
+}
 #videoLayerCover{ background-color: #333;}
 .vTitle { border-bottom: 1px dotted #ccc; display: flex; justify-content: space-between; align-items: center;  padding: 5px 5px 20px 10px; margin-top: 7px; color: #202c37;}
 .vTitle2{ padding: 15px 0 15px; font-weight: 400; }
@@ -157,7 +201,7 @@ export default {
 .vl_2 button { background-color: #fff; border: 1px solid #ccc; border-radius: 5px; color: #777; font-size: 12px; padding: 3px 10px 5px;}
 .vl_2 span{margin-left: 8px; color: #8192a5;}
 
-.bn2 { font-size: 12px; display: inline-block;background-color: red; color: #fff; padding: 7px; border-radius: 5px; margin-right: 5px;}
+.bn2 { font-size: 12px; display: inline-block;background-color: #dc3545; color: #fff; padding: 7px; border-radius: 5px; margin-right: 5px;}
 
 .imgLink .popular-rate {width:370px;  padding:5px ;border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; letter-spacing:0; font-size:13px; opacity:1; border: 1px solid #e0e5eb; background-color: rgba(255,255,255,1);}
 .imgLink .popular-rate .proPrice { width: 360px; }

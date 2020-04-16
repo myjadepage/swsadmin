@@ -1,18 +1,18 @@
 <template>
     <div>
-        <select ref="module_select_1" v-model="selectedCategory[0]" @change="findCategory(selectedCategory[0], 2)">
+        <select class="text_input" ref="module_select_1" v-model="selectedCategory[0]" @change="findCategory(selectedCategory[0], 2)">
             <option v-for="(item, index) in category1" :key="index" :value="item">{{item.text}}</option>
         </select>
-        <select ref="module_select_2" v-model="selectedCategory[1]" @change="findCategory(selectedCategory[1], 3)">
+        <select class="text_input" ref="module_select_2" v-model="selectedCategory[1]" @change="findCategory(selectedCategory[1], 3)">
             <option v-for="(item, index) in category2" :key="index" :value="item">{{item.text}}</option>
         </select>
-        <select ref="module_select_3" v-model="selectedCategory[2]" @change="findCategory(selectedCategory[2], 4)">
+        <select class="text_input" ref="module_select_3" v-model="selectedCategory[2]" @change="findCategory(selectedCategory[2], 4)">
             <option v-for="(item, index) in category3" :key="index" :value="item">{{item.text}}</option>
         </select>
-        <select ref="module_select_4" v-model="selectedCategory[3]" @change="findCategory(selectedCategory[3], 5)">
+        <select class="text_input" ref="module_select_4" v-model="selectedCategory[3]" @change="findCategory(selectedCategory[3], 5)">
             <option v-for="(item, index) in category4" :key="index" :value="item">{{item.text}}</option>
         </select>
-        <select ref="module_select_5" v-model="selectedCategory[4]">
+        <select class="text_input" ref="module_select_5" v-model="selectedCategory[4]">
             <option v-for="(item, index) in category5" :key="index" :value="item">{{item.text}}</option>
         </select>
       </div>

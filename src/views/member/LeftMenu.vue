@@ -10,8 +10,8 @@
             <dt><font-awesome-icon icon="minus" /> 회원관리</dt>
             <dd class="side_small_menu">
                 <router-link to="/member/member_list">회원목록</router-link>
-                <router-link to="/member/member_delete">탈퇴회원목록</router-link>
-                <router-link to="/member/member_buy_list">상품구매회원목록</router-link>
+                <!-- <router-link to="/member/member_delete">탈퇴회원목록</router-link>
+                <router-link to="/member/member_buy_list">상품구매회원목록</router-link> -->
             </dd>
             
             <!-- <dt>메일발송관리</dt>

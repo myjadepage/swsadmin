@@ -4,7 +4,7 @@
             <b>총 {{totalPage}} 개의 방송신청이 조회되었습니다.</b>
         </div>
         <b-table 
-            :items="products" 
+            :items="broadcast" 
             :busy="isBusy" 
             :fields="fields" 
             head-variant="light"
@@ -22,7 +22,7 @@
             </template>
             <template v-slot:table-colgroup>
                 <col width="50px"/>
-                <col width="50px"/>
+                <col width="100px"/>
                 <col width="150px"/>
                 <col width="150px" />
                 <col width="*" />
@@ -40,31 +40,20 @@
             <template v-slot:cell(productCode)="code">
                 {{code.value.code}}                
             </template>
-            <template v-slot:cell(date)>
-                <p>나는 방송자다</p>
-                <p>2020-10-20</p>               
+            <template v-slot:cell(dateBj) = "dateBj">
+                <p>{{ dateBj.value.bj}}</p>
+                <p>{{ dateBj.value.date}}</p>               
             </template>
             <template v-slot:cell(title)="title">
                 <div class="align-middle">
-                    <div class="media">
-                        <img :src="title.value.image" class="mr-3" style="width: 80px">
+                    <div class="media">                       
                         <div class="media-body">
                             <h5 class="mt-3"><b>{{ title.value.productName }}</b></h5>
                             <p class="mt-1" style="color: #FF9900">{{ title.value.category }}</p>
                         </div>
                         <p></p>
                     </div>
-                </div>
-                <div class="align-middle">
-                    <div class="media">
-                        <img :src="title.value.image" class="mr-3" style="width: 80px">
-                        <div class="media-body">
-                            <h5 class="mt-3"><b>{{ title.value.productName }}</b></h5>
-                            <p class="mt-1" style="color: #FF9900">{{ title.value.category }}</p>
-                        </div>
-                        <p></p>
-                    </div>
-                </div>
+                </div>              
             </template>
             <template v-slot:cell(price)="price">
                 <p class="mt-1">
@@ -94,7 +83,7 @@
                 <b-button-group vertical size="sm">                   
                     <b-button variant="secondary">취소</b-button>
                     <b-button variant="success" @click="admitLiveData(setting.item.id)">승인</b-button>
-                    <b-button variant="danger" @click="deleteProductData(setting.item.id)">삭제</b-button>
+                    <b-button variant="danger" @click="deleteBroadcastData(setting.item.id)">삭제</b-button>
                 </b-button-group>
             </template>
             <template v-slot:empty>
@@ -128,9 +117,9 @@ export default {
       defaultImage: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Noimage.svg',
       perPage: 10,      // 페이지당 표현수
       fields: [
-          {key : 'selected', label: '', class: 'text-center align-middle'},
+          {key : 'selected', label: '', class: 'text-center align-middle'},          
           {key : 'productCode', label: '고유번호', class: 'text-center align-middle'},
-          {key : 'date', label: '방송자/방송날짜', class: 'text-center align-middle'},
+          {key : 'dateBj', label: '방송자/방송날짜', class: 'text-center align-middle'},
           {key : 'bjImage', label: '방송자커버사진', class: 'text-center align-middle'},
           {key : 'title', label: '상품명 / 카테고리 / 태그', class: 'align-middle'},
           {key : 'subTitle', label: '방송명', class: 'align-middle'},
@@ -140,7 +129,7 @@ export default {
           {key : 'setting', label: '기능', class: 'align-middle'}
       ],
   }),
-  props: ['FilterFields','products','isBusy','totalPage','currentPage'],
+  props: ['BroadcastFilterFields','broadcast','isBusy','totalPage','currentPage'],
   mixins: [commonJs],
   methods: {
         resultFilter: function (filteredItems) {
@@ -163,13 +152,13 @@ export default {
                 this.axiosPatchRequest('/api/v1/products/' + id + '/listsave', {jsonData: params}, resultLiveUpdateFn)
             }
         },
-        deleteProductData: function (id) {
+        deleteBroadcastData: function (id) {
             if (confirm('해당방송을 휴지통으로 이동하시겠습니까?')) {
                 let params = {isDelete : 1}
-                this.axiosPatchRequest('/api/v1/products/' + id + '/isdelete', {jsonData: params}, this.resultProductDeleteFn)
+                this.axiosPatchRequest('/api/v1/products/' + id + '/isdelete', {jsonData: params}, this.resultBroadcastDeleteFn)
             }
         }, 
-        resultProductDeleteFn: function (res) {
+        resultBroadcastDeleteFn: function (res) {
             if(res.data.jsonData.code === 200) {
                 alert('방송이 휴지통으로 이동하였습니다.')
                 this.$emit('refresh')

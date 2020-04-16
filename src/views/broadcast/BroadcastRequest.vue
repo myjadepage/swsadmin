@@ -23,41 +23,29 @@
                         <tr>
                             <th>방송자</th>
                             <td>
-                                <select name="" id="">
-                                    <option value="">선택하세요</option>
-                                </select>
+                                <Sws-seller :parentData="BroadcastFilterFields"  @changeFn="changeBrand"></Sws-seller>
                             </td>
                         </tr>                       
                         <tr>
                             <th>기간</th>
                             <td>
-                                <sws-date :parentData="FilterFields"></sws-date>
+                                <sws-date :parentData="BroadcastFilterFields"></sws-date>
                             </td>
                         </tr>  
                         <tr>
                             <th>카테고리별</th>
                             <td>
-                                <select name="" id="">
-                                    <option value="">선택하세요</option>
-                                </select>
-
-                                <select name="" id="">
-                                    <option value="">선택하세요</option>
-                                </select>
-
-                                <select name="" id="">
-                                    <option value="">선택하세요</option>
-                                </select>
+                                <sws-category :selectedCategory="BroadcastFilterFields.categoryList"></sws-category>
                             </td>
                         </tr>
                         <tr>
                             <th>키워드검색</th>
                             <td>
-                                <select id="skey" name="skey" class="text_input" style="width: 150px;" v-model="FilterFields.prdtCode">
+                                <select id="skey" name="skey" class="text_input" style="width: 150px;" v-model="BroadcastFilterFields.prdtCode">
                                     <option value="name">상품명</option>
                                     <option value="prdtCode">상품코드</option>
                                 </select>
-                                <input type="text" name="sword" class="text_input" v-model="FilterFields.FieldText" @keyup.enter="searchFilteringFn">                               
+                                <input type="text" name="sword" class="text_input" v-model="BroadcastFilterFields.FieldText" @keyup.enter="searchFilteringFn">                               
                                 <b-button variant="secondary" size="sm" @click="searchFilteringFn">검색</b-button>
                             </td>
                         </tr>
@@ -66,8 +54,8 @@
             </div>
         </form>
         <BroadcastRequesTable 
-            :FilterFields="FilterFields"
-            :products="products" 
+            :BroadcastFilterFields="BroadcastFilterFields"
+            :broadcast="broadcast" 
             :isBusy="isBusy"   
             :totalPage="totalPage"
             :currentPage="currentPage"
@@ -80,121 +68,111 @@
 <script>
 import commonJs from '@/assets/js/common.js'
 import BroadcastRequesTable from '@/components/broadcast/BroadcastRequestList'
+import SwsCategory from '@/components/common/SwsCategory.vue'
+import SwsSeller from '@/components/common/SwsSeller'
 import SwsDate from '@/components/common/SwsDate'
+
 export default {
+    mixins: [commonJs],
+    components: {     
+        BroadcastRequesTable,
+        SwsCategory,
+        SwsDate,
+        SwsSeller
+    },
     data () {
         return {           
-            FilterFields: {
+            BroadcastFilterFields: {
                 categoryList: [],
-                brandSysId: 0,
-                sellerSysId: 0,
-                minPrice: 0,
-                maxPrice: 0,
-                isDisplay: 2,
+                sellerSysId: 0,                       
                 startDate: '',
                 endDate: '',
                 prdtCode: 'name',
                 FieldText: '',
                 valuable: 'all'
             },
-            products: [],
+            broadcast: [],
             isBusy: true,
             totalPage: 0,
             currentPage: 1,
         }
     },
-    mixins: [commonJs],
-    components: {     
-        BroadcastRequesTable,      
-        SwsDate
-    },
     mounted () { 
-        this.axiosGetRequest('/api/v1/products/lists','',this.loadProductsList)
+        this.axiosGetRequest('/api/v1/broadcasts/schedules/list','',this.loadBroadcastRequestList)
     },
     methods: {
         searchFilteringFn: function () {
             let params = {}
-            for(let _k in this.FilterFields) {
-                if (_k === 'isDisplay') {
-                    if (this.FilterFields[_k] !== 2) {
-                        params[_k] = this.FilterFields[_k]
-                    }
-                } else if (_k === 'valuable'){
-                    if (this.FilterFields[_k] === 'unlimit') {
-                        params.stockTypeCode = 1
-                    } else if (this.FilterFields[_k] === 'limit') {
-                        params.stockTypeCode = 2
-                    } else if (this.FilterFields[_k] === 'not_soldout') {
-                        params.stockTypeCode = 2
-                        params.stockQty = 0
-                    } else if (this.FilterFields[_k] === 'soldout') {
-                        params.isSoldout = 1
-                    }
-                } else if (_k === 'prdtCode'){
-                    params[this.FilterFields.prdtCode] = this.FilterFields.FieldText
+            for(let _k in this.BroadcastFilterFields) {
+               if (_k === 'prdtCode'){
+                    params[this.BroadcastFilterFields.prdtCode] = this.BroadcastFilterFields.FieldText
                 } else if(_k === 'categoryList') {
-                    for (const cate of this.FilterFields[_k]){
+                    for (const cate of this.BroadcastFilterFields[_k]){
                         if (!cate.value <= 0) {
                             params['categorySysId' + cate.level] = cate.value
                         }
                     }
                 } else {
-                    if(!this.isEmpty(this.FilterFields[_k]) && this.FilterFields[_k] !== 0){
-                        params[_k] = this.FilterFields[_k]
+                    if(!this.isEmpty(this.BroadcastFilterFields[_k]) && this.BroadcastFilterFields[_k] !== 0){
+                        params[_k] = this.BroadcastFilterFields[_k]
                     }
                 }
             }
             this.isBusy=true
-            console.log(params)
-            this.axiosGetRequest('/api/v1/products/lists', params, this.loadProductsList)
-            this.products.splice(0)
+            this.axiosGetRequest('/api/v1/broadcasts/schedules/list', params, this.loadBroadcastRequestList)
+            this.broadcast.splice(0)
         },
-        loadProductsList(res) {
-            let result = res.data.jsonData.products
+        loadBroadcastRequestList(res) {
+            console.log(res)
+            let result = res.data.jsonData.broadcasts
+            let broadcastPrdts = result.broadcastPrdts
             let categoryTitle = ''
-            this.products.splice(0)
+            this.broadcast.splice(0)
             if(this.isEmpty(result)){
                 this.isBusy=false
                 return false
             }
             for (let i = 0 ; i < result.length ; i++) {
-                categoryTitle = ''
-                if (!this.isEmpty(result[i].categories)) { categoryTitle = this.convertCategoryTitle(result[i].categories[0]) }
-                this.products.push({
-                    selected: '',
-                    id: result[i].prdtSysId, 
-                    productCode: {
-                        code: result[i].prdtSysId,
-                        isDisplay: result[i].isDisplay,
-                        isSoldout: result[i].isSoldout,
-                        stockQty: result[i].stockQty
-                    },
-                    date: "나는방송자다/2020-10-20",
-                    bjImage: "",
-                    title: {
-                        image: result[i].smallImageUrl,
-                        productName: result[i].name,
-                        category: categoryTitle,
-                    },
-                    subTitle: "품절대란견미리팩트 솔직후기방송",
-                    type: "라이브방송 /(방송중)",
-                    price: {
-                        price: result[i].price,
-                        marketPrice: result[i].marketPrice,
-                        supplyPrice: result[i].supplyPrice
-                    },
-                    view: {
-                        viewCount: result[i].viewCount,
-                        salesQty: result[i].salesQty,
-                        stockQty: result[i].stockQty
-                    },
-                    setting: ''
-                    
-                })
+                for(let j = 0 ; j < broadcastPrdts.length; i++) {
+                    categoryTitle = ''
+                    if (!this.isEmpty(result[i].categories)) { categoryTitle = this.convertCategoryTitle(result[i].categories[0]) }
+                    this.broadcast.push({
+                        selected: '',
+                        id: result[i].broadcastSysId, 
+                        productCode: {
+                            code: result[i].prdtSysId               
+                        },
+                        dateBj: {
+                            bj: result[i].name,
+                            date : result[i].startDate
+                        },
+                        bjImage: {
+                            smallImageUrl : result[i].broadcastPrdts[j].smallImageUrl
+                        },
+                        title: {                           
+                            productName: result[i].name,
+                            category: categoryTitle,
+                            tag: result[i].broadcastPrdts[j].tag
+                        },
+                        subTitle: result[i].broadcastPrdts[j].name,
+                        type: "라이브방송 / (방송중)",
+                        price: {
+                            price: result[i].price,
+                            marketPrice: result[i].marketPrice,
+                            supplyPrice: result[i].supplyPrice
+                        },
+                        view: {
+                            viewCount: result[i].viewCount,
+                            salesQty: result[i].salesQty,
+                            stockQty: result[i].stockQty
+                        },
+                        setting: ''
+                    })
+                }
+                this.totalPage = result.length
+                this.isBusy=false
+                this.currentPage = 1
             }
-            this.totalPage = result.length
-            this.isBusy=false
-            this.currentPage = 1
         },
         convertCategoryTitle(category) {
             let categoryTitle = ''
