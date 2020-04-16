@@ -74,7 +74,7 @@ export default {
       stockTypeCode: 1,
       priceTypeCode: 1,
       pointTypeCode: 0,
-      deliveryPriceTypeCode: 5,
+      deliveryPriceTypeCode: 6,
       optionDescription: "",
       productNotice: { prdtNoticeBaseSysId: 0, notices: [] },
       addingProducts: [],
@@ -84,10 +84,12 @@ export default {
   methods: {
     insertSubmitValidate(obj) {
       // ------------------- Form Validate 체크 시작 -------------------
-      if (this.categoryRow <= 0) {
-        return this.onFocusMethod(obj.category1, "카테고리");
+      if (this.selectedCategories.categoryTable.length <= 0) {
+        alert('카테고리를 선택하여 추가하여 주시기 바랍니다.')
+        return false
       } else {
-        this.categoryTable.forEach(item => {
+        this.productData.category.categories.splice(0)
+        this.selectedCategories.categoryTable.forEach(item => {
           this.productData.category.categories.push({
             categorySysId1: item.categorySysId1,
             categorySysId2: item.categorySysId2 !== undefined ? item.categorySysId2 : 0,
@@ -188,8 +190,8 @@ export default {
       } else {
         let vaildatArray = this.videos[0];
         if (this.isEmpty(vaildatArray.mediaId)) {
-          alert("1개 이상의 영상을 업로드 해야 합니다.");
-          return false;
+          // alert("1개 이상의 영상을 업로드 해야 합니다.");
+          // return false;
         } else {
           this.videos.forEach(item => {
             if (!this.isEmpty(item.mediaId)) {
@@ -222,7 +224,6 @@ export default {
 
       this.productData.feeTypeCode;
 
-      //
 
       // 시중 가격
       let marketPrice = this.toNumber(String(this.productData.marketPrice));

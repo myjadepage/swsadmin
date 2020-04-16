@@ -152,139 +152,157 @@ const clickEvent = {
     },
     // ------------- 가격 Event 끝 -------------
     // ------------- 카테고리 Event -------------
-    onCategorySelector: function(event, myLevel) {
-      const mySelected = this.selectedCategoryRow[myLevel - 1];
-      var param = {
-        categoryLevel: myLevel + 1,
-        parentSysId: mySelected.value
-      };
-      this.axiosGetRequest(
-        "/api/v1/categories",
-        param,
-        this.onCategorySelectorResult,
-        this.inInitCategory
-      );
-    },
-    inInitCategory: function(err) {
-      const errParam = err.response.config.params;
-      switch (errParam.categoryLevel) {
-        case "1":
-          this.category2.splice(1);
-          this.category3.splice(1);
-          this.category4.splice(1);
-          this.category5.splice(1);
-          break;
-        case "2":
-          this.category3.splice(1);
-          this.category4.splice(1);
-          this.category5.splice(1);
-          break;
-        case "3":
-          this.category4.splice(1);
-          this.category5.splice(1);
-          break;
-        case "4":
-          this.category5.splice(1);
-          break;
-      }
-    },
-    onCategorySelectorResult: function(response) {
-      const categories = response.data.jsonData.categories;
-      if (categories === "") return false;
-      const categoryLevel = response.data.jsonData.categoryLevel;
-      this.CategorySelectorSetting(categories, categoryLevel);
-    },
-    CategorySelectorSetting: function(categories, level) {
-      var obj = "";
-      var selectTitle = "";
-      switch (level) {
-        case 2:
-          obj = this.category2;
-          selectTitle = "필수";
-          break;
-        case 3:
-          obj = this.category3;
-          selectTitle = "선택";
-          break;
-        case 4:
-          obj = this.category4;
-          selectTitle = "선택";
-          break;
-        case 5:
-          obj = this.category5;
-          selectTitle = "선택";
-          break;
-      }
-      obj.splice(0);
-      this.selectedCategoryRow[level - 1] = {
-        value: 0,
-        text: level + "차카테고리 " + selectTitle,
-        parentId: "",
-        feeRate: ""
-      };
-      obj.push({
-        value: 0,
-        text: level + "차카테고리 " + selectTitle,
-        parentId: "",
-        feeRate: ""
-      });
-      categories.forEach(item => {
-        obj.push({
-          value: item.categorySysId,
-          text: item.name + "[" + item.feeRate * 100 + "%]",
-          parentId: item.parentSysId,
-          feeRate: item.feeRate
-        });
-      });
-    },
+    // onCategorySelector: function(event, myLevel) {
+    //   const mySelected = this.selectedCategoryRow[myLevel - 1];
+    //   var param = {
+    //     categoryLevel: myLevel + 1,
+    //     parentSysId: mySelected.value
+    //   };
+    //   this.axiosGetRequest(
+    //     "/api/v1/categories",
+    //     param,
+    //     this.onCategorySelectorResult,
+    //     this.inInitCategory
+    //   );
+    // },
+    // inInitCategory: function(err) {
+    //   const errParam = err.response.config.params;
+    //   switch (errParam.categoryLevel) {
+    //     case "1":
+    //       this.category2.splice(1);
+    //       this.category3.splice(1);
+    //       this.category4.splice(1);
+    //       this.category5.splice(1);
+    //       break;
+    //     case "2":
+    //       this.category3.splice(1);
+    //       this.category4.splice(1);
+    //       this.category5.splice(1);
+    //       break;
+    //     case "3":
+    //       this.category4.splice(1);
+    //       this.category5.splice(1);
+    //       break;
+    //     case "4":
+    //       this.category5.splice(1);
+    //       break;
+    //   }
+    // },
+    // onCategorySelectorResult: function(response) {
+    //   const categories = response.data.jsonData.categories;
+    //   if (categories === "") return false;
+    //   const categoryLevel = response.data.jsonData.categoryLevel;
+    //   this.CategorySelectorSetting(categories, categoryLevel);
+    // },
+    // CategorySelectorSetting: function(categories, level) {
+    //   var obj = "";
+    //   var selectTitle = "";
+    //   switch (level) {
+    //     case 2:
+    //       obj = this.category2;
+    //       selectTitle = "필수";
+    //       break;
+    //     case 3:
+    //       obj = this.category3;
+    //       selectTitle = "선택";
+    //       break;
+    //     case 4:
+    //       obj = this.category4;
+    //       selectTitle = "선택";
+    //       break;
+    //     case 5:
+    //       obj = this.category5;
+    //       selectTitle = "선택";
+    //       break;
+    //   }
+    //   obj.splice(0);
+    //   this.selectedCategoryRow[level - 1] = {
+    //     value: 0,
+    //     text: level + "차카테고리 " + selectTitle,
+    //     parentId: "",
+    //     feeRate: ""
+    //   };
+    //   obj.push({
+    //     value: 0,
+    //     text: level + "차카테고리 " + selectTitle,
+    //     parentId: "",
+    //     feeRate: ""
+    //   });
+    //   categories.forEach(item => {
+    //     obj.push({
+    //       value: item.categorySysId,
+    //       text: item.name + "[" + item.feeRate * 100 + "%]",
+    //       parentId: item.parentSysId,
+    //       feeRate: item.feeRate
+    //     });
+    //   });
+    // },
     addCate: function() {
-      // 1, 2 카테고리 검증
-      for (let i = 0; i < 2; i++) {
-        if (this.selectedCategoryRow[i].value === 0) {
+      const category = this.selectedCategories.categories
+      for (let i = 0 ; i < 2 ; i++) {
+        if (category[i].value === 0) {
           alert("1, 2차 카테고리는 필수 입니다.");
           return false;
         }
       }
-      this.addCateExtends(this.selectedCategoryRow, 0);
-    },
-    addCateExtends: function(arry, delayTime, extendsParam) {
-      setTimeout(() => {
-        let param = { id: "", text: "", feeRate: "", procTypeCode: 2 };
-        let titleArray = new Array();
-        for (let i = 0; i < arry.length; i++) {
-          let item = arry[i];
-          if (item.value !== 0) {
-            param.id += item.value;
-            param.feeRate = item.feeRate;
-            param["categorySysId" + (i + 1)] = item.value;
-            titleArray.push(item.text);
-          }
+
+      let row = {}
+      let uniqueKey = ''
+      for (let i = 0 ; i < 5 ; i++) {
+        if (category[i].value > 0) {
+          uniqueKey = uniqueKey + '' + category[i].value
+          row['categorySysId' + (i+1)] = category[i].value
+          row['categoryText' + (i+1)] = category[i].text
         }
-        var addCateFlag = true;
-        this.categoryTable.filter(function(item) {
-          if (item.id === param.id) {
-            alert("중복된 카테고리를 추가할수 없습니다.");
-            addCateFlag = false;
-          }
-        });
-        if (addCateFlag) {
-          param.text = titleArray.join(" > ");
-          if (!this.isEmpty(extendsParam)) {
-            param.prdtSysId = extendsParam.prdtSysId;
-            param.prdtCategorySysId = extendsParam.prdtCategorySysId;
-            param.procTypeCode = 3;
-          }
-          this.categoryTable.push(param);
-          if (this.categoryTable.length === 1) {
-            this.selectedCategoryTable = param.id;
-          }
-        }
-      }, delayTime);
+      }
+      row.uniqueKey = uniqueKey
+      row.procTypeCode = 2
+      let obj = this.selectedCategories.categoryTable.filter(item => item.uniqueKey === uniqueKey)
+      if (obj.length > 0) {
+        alert('이미 존재하는 카테고리입니다.')
+        return false
+      } else {
+        this.selectedCategories.categoryTable.push(row)
+      }
     },
-    addCategoryFn: function(param) {
-      this.categoryRow.push(param);
-      return true;
-    },
+    // addCateExtends: function(arry, delayTime, extendsParam) {
+    //   setTimeout(() => {
+    //     let param = { id: "", text: "", feeRate: "", procTypeCode: 2 };
+    //     let titleArray = new Array();
+    //     for (let i = 0; i < arry.length; i++) {
+    //       let item = arry[i];
+    //       if (item.value !== 0) {
+    //         param.id += item.value;
+    //         param.feeRate = item.feeRate;
+    //         param["categorySysId" + (i + 1)] = item.value;
+    //         titleArray.push(item.text);
+    //       }
+    //     }
+    //     var addCateFlag = true;
+    //     this.categoryTable.filter(function(item) {
+    //       if (item.id === param.id) {
+    //         alert("중복된 카테고리를 추가할수 없습니다.");
+    //         addCateFlag = false;
+    //       }
+    //     });
+    //     if (addCateFlag) {
+    //       param.text = titleArray.join(" > ");
+    //       if (!this.isEmpty(extendsParam)) {
+    //         param.prdtSysId = extendsParam.prdtSysId;
+    //         param.prdtCategorySysId = extendsParam.prdtCategorySysId;
+    //         param.procTypeCode = 3;
+    //       }
+    //       this.categoryTable.push(param);
+    //       if (this.categoryTable.length === 1) {
+    //         this.selectedCategoryTable = param.id;
+    //       }
+    //     }
+    //   }, delayTime);
+    // },
+    // addCategoryFn: function(param) {
+    //   this.categoryRow.push(param);
+    //   return true;
+    // },
     onSelectCate: function(event) {
       document.Frm.feeRate.value = event.target.dataset.feerate;
       this.priceToSupplyPrice(document.Frm.price, document.Frm.feeRate);

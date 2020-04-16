@@ -128,20 +128,34 @@ export default {
      * GET 형태로 Axios 전송
      *
      */
-    axiosGetRequest: function(url, param, callback, errback) {
+    axiosGetRequest: function(url, param, callback, errback, token=null) {
       var errorFn =
         typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
           : errback;
-      Axios.request({
-        url: url,
-        params: param
-      })
-        .then(callback)
-        .catch(errorFn);
-    }, // param
+
+      if(token){
+        Axios.request({
+          url: url,
+          params: param,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+          .then(callback)
+          .catch(errorFn);
+      }else{
+        Axios.request({
+          url: url,
+          params: param
+        })
+          .then(callback)
+          .catch(errorFn);
+      }
+    },
 
     /**
      *
@@ -150,19 +164,31 @@ export default {
      * POST 형태로 Axios 전송
      *
      */
-    axiosPostRequest: function(url, param, callback, errback) {
+    axiosPostRequest: function(url, param, callback, errback,token=null) {
       var errorFn =
         typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
           : errback;
+      if(token){
+      Axios.post(url, this.postParam(param), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${token}`
+        },
+        withCredentials: false
+      })
+        .then(callback)
+        .catch(errorFn);
+    }else{
       Axios.post(url, this.postParam(param), {
         header: { 'Content-Type': 'multipart/form-data' },
         withCredentials: false
       })
         .then(callback)
         .catch(errorFn);
+    }
     },
 
     /**

@@ -61,27 +61,15 @@
                 <strong class="red">*</strong>
               </th>
               <td colspan="3">
-                <select id="category1" name="category1" @change="onCategorySelector($event, 1)" v-model="selectedCategoryRow[0]" class="text-danger" >
-                  <option v-for="(option, inx) in category1" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category2" name="category2" @change="onCategorySelector($event, 2)" v-model="selectedCategoryRow[1]" class="text-danger">
-                  <option v-for="(option, inx) in category2" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category3" name="category3" @change="onCategorySelector($event, 3)" v-model="selectedCategoryRow[2]">
-                  <option v-for="(option, inx) in category3" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category4" name="category4" @change="onCategorySelector($event, 4)" v-model="selectedCategoryRow[3]">
-                  <option v-for="(option, inx) in category4" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category5" name="category5" data-required="false" v-model="selectedCategoryRow[4]">
-                  <option v-for="(option, inx) in category5" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <b-button variant="outline-secondary" size="sm" @click="addCate">추가</b-button>
+                <p class="float-left">
+                  <Sws-category :isPercent="true" :selectedCategory="selectedCategories.categories"/>
+                </p>
+                <b-button variant="outline-secondary" size="sm" @click="addCate"><font-awesome-icon icon="plus" /> 추가</b-button>
               </td>
             </tr>
             <tr>
               <td colspan="3" class="category">
-                <category-component :productData="productData" :selectedCategoryTable="selectedCategoryTable" :categoryTable="categoryTable" @addSelect="onSelectCate" ></category-component>
+                <category-component :cateogries="selectedCategories.categoryTable" />
                 <dl class="explain blue">
                   <dt>
                     <strong>※ 다중 분류로 선택할 경우</strong>
@@ -98,7 +86,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="briefComment" class="text_input" style="width:100%" value maxlength="20" v-model="productData.briefComment" />
+                <input type="text" name="briefComment" class="text_input" style="width:100%" value maxlength="20" v-model="productData.briefComment" required/>
               </td>
             </tr>
             <tr>
@@ -107,7 +95,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="briefDescription" class="text_input" style="width:100%" value maxlength="50" v-model="productData.briefDescription"/>
+                <input type="text" name="briefDescription" class="text_input" style="width:100%" value maxlength="50" v-model="productData.briefDescription" required/>
               </td>
             </tr>
             <!-- 상품명 -->
@@ -117,7 +105,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="name" class="text_input" style="width:99%" maxlength="100" v-model="productData.name" />
+                <input type="text" name="name" class="text_input" style="width:99%" maxlength="100" v-model="productData.name" required/>
               </td>
             </tr>
             <tr>
@@ -262,8 +250,8 @@
             <tr>
               <th>
                 영상 업로드
-                <strong class="red">&nbsp;*</strong>
-                <span class="light_gray">1개 이상 업로드</span>
+                <!-- <strong class="red">&nbsp;*</strong> -->
+                <!-- <span class="light_gray">1개 이상 업로드</span> -->
               </th>
               <td colspan="3" class="img_etc">
                 <Video-uploader
@@ -578,7 +566,7 @@
                 </dl>
                 <span class="fr">
                   <a
-                    class="btn btn-sm btn-outline-primary"
+                    class="btn btn-primary"
                     href="http://www.mallstore.co.kr/data/base/DownLoad/information/commodity_guide.zip"
                   >품목별 상품고시</a>
                 </span>
@@ -654,7 +642,12 @@
 
                   <dt>
                     <input type="radio" id="deliveryPriceTypeCode5" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="5" />
-                    <label for="deliveryPriceTypeCode5">기본정책</label>
+                    <label for="deliveryPriceTypeCode5">브랜드정책</label>
+                  </dt>
+                  <dd>브랜드 정책을 따릅니다.</dd>
+                  <dt>
+                    <input type="radio" id="deliveryPriceTypeCode6" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="6" />
+                    <label for="deliveryPriceTypeCode6">기본정책</label>
                   </dt>
                   <dd>쇼핑몰의 기본정책을 따릅니다.</dd>
                 </dl>
@@ -786,6 +779,7 @@
                   <Addition-container
                     :productData="productData"
                     :additionOptions="additionOptions"
+                    
                   ></Addition-container>
                 </template>
               </td>
@@ -795,10 +789,10 @@
       </div>
       <div class="btn_center">
         <template v-if="productData.productSysId === ''">
-          <b-button variant="secondary" @click="SubmitAddProduct()" style="margin-right: 5px">상품등록</b-button>
+          <b-button variant="secondary" @click="SubmitAddProduct()" style="margin-right: 5px">등록</b-button>
         </template>
         <template v-else>
-          <b-button variant="success" @click="SubmitUpdateProduct()" style="margin-right: 5px">상품수정</b-button>
+          <b-button variant="success" @click="SubmitUpdateProduct()" style="margin-right: 5px">수정</b-button>
         </template>
         <b-button variant="danger">취소</b-button>
       </div>
@@ -823,6 +817,7 @@ import AdditionContainer from "@/components/goodsReg/AdditionContainer"
 import CommonSellers from "@/components/goodsReg/CommonSellers"
 import NomalOptions from "@/components/goodsReg/NomalOptions"
 import ProductNotics from "@/components/goodsReg/ProductNotics"
+import SwsCategory from '@/components/common/SwsCategory'
 import SwsSeller from '@/components/common/SwsSeller'
 import SwsBrand from '@/components/common/SwsBrand'
 
@@ -848,34 +843,15 @@ export default {
     NomalOptions,
     ProductNotics,
     SwsSeller,
+    SwsCategory,
     SwsBrand
   },
   data() {
     return {
-      selectedCategoryRow: [
-        { value: 0, text: "1차카테고리 필수", parentSysId: '', feeRate: '' },
-        { value: 0, text: "2차카테고리 필수", parentSysId: '', feeRate: '' },
-        { value: 0, text: "3차카테고리 선택", parentSysId: '', feeRate: '' },
-        { value: 0, text: "4차카테고리 선택", parentSysId: '', feeRate: '' },
-        { value: 0, text: "5차카테고리 선택", parentSysId: '', feeRate: '' }
-      ],
-      categoryTable: [],
-      selectedCategoryTable: '',
-      category1: [
-        { value: 0, text: "1차카테고리 필수", parentSysId: '', feeRate: '' }
-      ],
-      category2: [
-        { value: 0, text: "2차카테고리 필수", parentSysId: '', feeRate: '' }
-      ],
-      category3: [
-        { value: 0, text: "3차카테고리 선택", parentSysId: '', feeRate: '' }
-      ],
-      category4: [
-        { value: 0, text: "4차카테고리 선택", parentSysId: '', feeRate: '' }
-      ],
-      category5: [
-        { value: 0, text: "5차카테고리 선택", parentSysId: '', feeRate: '' }
-      ],
+      selectedCategories:{
+        categories: [],
+        categoryTable: []
+      },
       // 큰 이미지 업로드시에 로딩바
       images: [{ imageurl: '' }],
       videos: [
@@ -886,7 +862,7 @@ export default {
         {itemGroup: '', subAdditionOptions: [ { item: '', price: '', stockQty: '', isSoldout: false, isHide: false, procTypeCode: 2 }], procTypeCode: 2}
       ],
       commonSellers: [
-        {id:1, peopleObjName: "peopleObjectName1", discountObjName: "discountObjName1" }
+        {people: "", discount: "" }
       ],
       nomarlOptions: [{ name: '', content: '', procTypeCode: 2 }],
       notify: [{ item: '', content: '', procTypeCode: 2 }],
@@ -906,17 +882,17 @@ export default {
       this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,'',this.getProductData);
     }
     // 카테고리 초기화
-    this.axiosGetRequest('/api/v1/categories',{ categoryLevel: 1 },function (res) {
-      let data = res.data.jsonData.categories;
-      data.forEach(_item => {
-        this.category1.push({
-          value: _item.categorySysId,
-          parentId: _item.parentSysId,
-          feeRate: _item.feeRate,
-          text: _item.name + "[" + _item.feeRate * 100 + "%]"
-        });
-      });
-    }.bind(this));
+    // this.axiosGetRequest('/api/v1/categories',{ categoryLevel: 1 },function (res) {
+    //   let data = res.data.jsonData.categories;
+    //   data.forEach(_item => {
+    //     this.category1.push({
+    //       value: _item.categorySysId,
+    //       parentId: _item.parentSysId,
+    //       feeRate: _item.feeRate,
+    //       text: _item.name + "[" + _item.feeRate * 100 + "%]"
+    //     });
+    //   });
+    // }.bind(this));
     this.calculFeeRateFn({ type: "1" });
     this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
   },
@@ -924,7 +900,7 @@ export default {
     SubmitAddProduct: function () {
       let object = this.insertSubmitValidate(document.Frm);
       this.axiosPostRequest('/api/v1/products', {jsonData: object}, (res) => {
-        if (!res.data.jsonData.resultCode==='0001') {
+        if (res.data.jsonData.resultCode==='0001') {
             alert('상품등록이 완료 되었습니다.')
             window.location.href='/goods/goods_list'
         }else {
@@ -940,6 +916,8 @@ export default {
         if (result.resultCode === '0001') {
           alert('상품이 수정되었습니다.')
           window.location.href='/goods/goods_list'
+        } else {
+          alert('상품수정에 실패하였습니다.\nresultCode: ['+result.resultCode+']')
         }
       })
     },

@@ -217,8 +217,8 @@
             </tbody>
         </table>
         <div class="btn_center">
-            <b-button variant="secondary" size="lg" style="margin-right:5px" @click="$router.push('/mim/dealer_list')">목록</b-button>
-            <b-button variant="primary" size="lg">입점승인</b-button>
+            <b-button variant="secondary" style="margin-right:5px" @click="$router.push('/mim/dealer_list')">목록</b-button>
+            <b-button variant="primary">입점승인</b-button>
         </div>
     </form>
 
