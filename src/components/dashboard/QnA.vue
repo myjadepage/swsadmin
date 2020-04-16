@@ -4,16 +4,19 @@
       <h3>문의/답변</h3><router-link to="">문의/답변 보기</router-link>
     </header>
     <ul>
-      <li>{{qnaList[0].title}}<span class="status" :class="qnaList[0].status?'complete':''">{{qnaList[0].status?'답변 완료':'답변 대기'}}</span><div class="date">{{qnaList[0].date}}</div></li>
-      <li>{{qnaList[1].title}}<span class="status" :class="qnaList[1].status?'complete':''">{{qnaList[1].status?'답변 완료':'답변 대기'}}</span><div class="date">{{qnaList[1].date}}</div></li>
-      <li>{{qnaList[2].title}}<span class="status" :class="qnaList[2].status?'complete':''">{{qnaList[2].status?'답변 완료':'답변 대기'}}</span><div class="date">{{qnaList[2].date}}</div></li>
+       <li v-for="(q,idx) in qnaList" :key="idx">{{q.content}}<span class="status" :class="q.treatFlag?'complete':''">{{q.treatFlag?'답변 완료':'답변 대기'}}</span><div class="date">{{date(q.createdAt)}}</div></li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
-props:['qnaList']
+props:['qnaList'],
+methods:{
+    date(d){
+      return `${d.substr(0,4)}.${d.substr(4,2)}.${d.substr(6,2)}`
+    }
+  }
 }
 </script>
 
