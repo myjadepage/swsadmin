@@ -126,9 +126,12 @@ import BroadcastLeftMenu from '@/views/broadcast/BroadcastLeftMenu'
 // import BroadcastIndex from '@/views/broadcast/Index'
 import BroadcastRequest from '@/views/broadcast/BroadcastRequest'
 import BroadcastReg from '@/views/broadcast/BroadcastReg'
+import BroadcastDetail from '@/views/broadcast/BroadcastDetail'
 import BroadcastStop from '@/views/broadcast/BroadcastStop'
 import BroadcastSend from '@/views/broadcast/BroadcastSend'
 import VodBox from '@/views/broadcast/VodBox'
+import TimeTable from '@/views/broadcast/TimeTable'
+import TimeTableReg from '@/views/broadcast/TimeTableReg'
 
 
 /* 로그인, 회원가입 */
@@ -784,6 +787,11 @@ const routes = [
         components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastReg }
       },
       {
+        path: '/broadcast/BroadcastDetail',
+        name: '방송신청',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastDetail }
+      },
+      {
         path: '/broadcast/BroadcastStop',
         name: '방송중지',
         components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastStop }
@@ -797,6 +805,16 @@ const routes = [
         path: '/broadcast/BroadcastSend',
         name: '방송송출',
         components: { LeftMenu: BroadcastLeftMenu, Contents: BroadcastSend }
+      },
+      {
+        path: '/broadcast/TimeTable',
+        name: '편성표관리',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: TimeTable }
+      },
+      {
+        path: '/broadcast/TimeTableReg',
+        name: '편성표관리',
+        components: { LeftMenu: BroadcastLeftMenu, Contents: TimeTableReg }
       }
     ]
   },

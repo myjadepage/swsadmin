@@ -68,13 +68,45 @@ import QnA from '@/components/dashboard/QnA'
 import BroadCasts from '@/components/dashboard/BroadCasts'
 import Products from '@/components/dashboard/Products'
 import BrandChannels from '@/components/dashboard/BrandChannels'
+import commonJs from '@/assets/js/common.js'
 
 export default {
+mixins: [ commonJs ],
 components:{
     Count,CountHeader,LineChart,Complains,Notices,QnA,BroadCasts,Products,BrandChannels
 },
 created(){
 window.scrollTo(0,0)
+
+for (let i = 23; i >= 0; i--) {
+    let now = new Date(new Date()-(86400000 * i))
+    this.chartData.labels.push(`${now.getFullYear()}-${now.getMonth()+1<10?'0'+(now.getMonth()+1):now.getMonth()+1}-${now.getDate()}`)
+    
+}
+
+
+this.axiosGetRequest('api/v1/operations/notices/list?startIndex=0&rowCount=3',{},
+(res)=>{
+    this.notices = res.data.jsonData.notices
+})
+
+
+this.axiosGetRequest('api/v1/operations/questions/list?startIndex=0&rowCount=3&questionTypeCode={questionTypeCode}',    // URL
+{}, // param
+(res)=>{
+    this.qnaList = res.data.jsonData.siteQuestions      // callback
+},
+()=>{
+this.axiosPostRequest('api/v1/auth/admins/accesstoken',{},(res)=>{
+    sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)     // errback
+},(err)=>{
+    console.log(err);
+    
+    // this.$router.push('/')
+})
+
+},sessionStorage.getItem('accessToken'))        //token
+
 },
 data(){
     return{
@@ -98,64 +130,10 @@ data(){
             '금주판매량':0,
             '금월판매량':0
         },
-        notices:[
-            {
-                title:'[고정] 추석 연휴 배송 지연 안내',
-                date:'2019.09.06'
-            },
-            {
-                title:'[가이드 변경] 신규 브랜드 등록 가이드 변경',
-                date:'2019.09.06'
-            },
-            {
-                title:'[배송 지연] 09.01 이벤트 진행 일부 상품 당첨자 오류 지연 배송',
-                date:'2019.09.06'
-            }
-        ],
-        qnaList:[
-            {
-                title:'홀리데이 한정판 상품 수량 수정 안됨',
-                status:1,
-                date:'2019.09.06'
-            },
-            {
-                title:'홀리데이 한정판 상품 수량 수정 안됨',
-                status:0,
-                date:'2019.09.06'
-            },
-            {
-                title:'홀리데이 한정판 상품 수량 수정 안됨',
-                status:1,
-                date:'2019.09.06'
-            }
-        ],
+        notices:[],
+        qnaList:[],
         chartData:{
-          labels: [
-              '2020-03-20',
-              '2020-03-21',
-              '2020-03-22',
-              '2020-03-23',
-              '2020-03-24',
-              '2020-03-25',
-              '2020-03-26',
-              '2020-03-27',
-              '2020-03-28',
-              '2020-03-29',
-              '2020-03-30',
-              '2020-03-31',
-              '2020-04-01',
-              '2020-04-01',
-              '2020-04-03',
-              '2020-04-04',
-              '2020-04-05',
-              '2020-04-06',
-              '2020-04-07',
-              '2020-04-08',
-              '2020-04-09',
-              '2020-04-10',
-              '2020-04-11',
-              '2020-04-12',
-          ],
+          labels: [],
           datasets: [
             {
               fill:false,

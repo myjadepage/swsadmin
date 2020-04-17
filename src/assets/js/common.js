@@ -128,20 +128,34 @@ export default {
      * GET 형태로 Axios 전송
      *
      */
-    axiosGetRequest: function(url, param, callback, errback) {
+    axiosGetRequest: function(url, param, callback, errback, token=null) {
       var errorFn =
         typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
           : errback;
-      Axios.request({
-        url: url,
-        params: param
-      })
-        .then(callback)
-        .catch(errorFn);
-    }, // param
+
+      if(token){
+        Axios.request({
+          url: url,
+          params: param,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+          .then(callback)
+          .catch(errorFn);
+      }else{
+        Axios.request({
+          url: url,
+          params: param
+        })
+          .then(callback)
+          .catch(errorFn);
+      }
+    },
 
     /**
      *
@@ -150,19 +164,31 @@ export default {
      * POST 형태로 Axios 전송
      *
      */
-    axiosPostRequest: function(url, param, callback, errback) {
+    axiosPostRequest: function(url, param, callback, errback,token=null) {
       var errorFn =
         typeof errback === 'undefined'
           ? function(err) {
               console.log(err);
             }
           : errback;
+      if(token){
+      Axios.post(url, this.postParam(param), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${token}`
+        },
+        withCredentials: false
+      })
+        .then(callback)
+        .catch(errorFn);
+    }else{
       Axios.post(url, this.postParam(param), {
         header: { 'Content-Type': 'multipart/form-data' },
         withCredentials: false
       })
         .then(callback)
         .catch(errorFn);
+    }
     },
 
     /**
@@ -224,11 +250,10 @@ export default {
     },
     makeRsa:  function (value) {
         const publicKey =  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA27Bf/sFXPg8cXgLp/n3tqTfKIZ/lcxO3I4K0NfXTXNm49KDmUofzntTS8bPvgcX688ZJRYDwig6a5ZmFE8FFSCdqJuUQ1c9UjnlU4KA7ztHDdPgd+zxCn9+lfaYgDXvwjXQb0t53u001VX5s/eTxsFri9qvMmdDQT4McYN1nIAUsDBDxPAkBQy4+CEddqWCjPLptqdroEUIgQ6fxrVVVzhuIpiG9zcSr/1RLbw6YERBxbVk/Q/CrgC5fKXWYRI5T4+V9MX4BxVvpqR2B+KEfxYQsXvJ2nyV0tKtb+m2hu+HtE4onsoM/lbm0Hw6yMKp/P2MofIyFNTdWeBcyEI3aRwIDAQAB"
-         let encryptor = new JSEncrypt()
-         encryptor.setPublicKey(publicKey)
-         let rsaEncStr = encryptor.encrypt(value)
-         
-         return rsaEncStr
+        let encryptor = new JSEncrypt()
+        encryptor.setPublicKey(publicKey)
+        let rsaEncStr = encryptor.encrypt(value)
+        return rsaEncStr
     }
   }
 };
