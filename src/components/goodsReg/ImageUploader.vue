@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div class="tr mgt5">
+    <div class="tr">
       <b-button variant="info" size="sm" v-on:click="addImagesRow">이미지 추가</b-button>
       <!-- <b-button variant="danger" size="sm" @click="removeImagesRow">이미지 삭제</b-button> -->
     </div>
-    <div id="todo-list-example">
+    <div>
       <b-row cols="12" class="mb-1" v-for="(item, index) in images" :key="index">
         <b-col cols="4" style="padding-right:0px">
           <span style="width:20px">{{index + 1}}.</span>&emsp;
           <span>
             <b-input-group size="sm">
-              <b-form-input disabled squared placeholder="썸네일 업로드" style="width: 240px" v-model="item.imageurl" ></b-form-input>
+              <b-form-input disabled squared placeholder="썸네일 업로드" style="width: 350px" v-model="item.imageurl" ></b-form-input>
               <b-input-group-append>
                 <b-button size="sm" squared text="Button" @click="onImageObjOpenFn('imageObject'+index)">이미지 업로드</b-button>
               </b-input-group-append>

@@ -121,7 +121,7 @@
                     <tr>
                         <th>회사인감이미지</th>
                         <td colspan="3">
-                            <input type="file" ref="stampImgUrl" name="stampImgUrl" accept="image/*" required/>
+                            <input type="file" ref="stampImgUrl" name="stampImgUrl" accept="image/*"/>
                         </td>
                     </tr>
                     <tr>
@@ -269,12 +269,13 @@ export default {
             }
 
             this.axiosPostRequest('/api/v1/sellers/proposaling',{jsonData: this.mimRegObject}, (res) => {
+                console.log(res.data.jsonData.resultCode)
                 if (res.data.jsonData.resultCode === '0001') {
                     alert('입점 등록 신청이 완료되었습니다.')
                     window.location.href='/mim/dealer_regist_list'
                     return false
                 } else {
-                    alert('알수없는 이유로 에러가 발생했습니다. \n관리자에게 문의하세요\nCode`${res.data.jsonData.resultCode}`')
+                    alert('알수없는 이유로 에러가 발생했습니다. \n관리자에게 문의하세요.')
                     return false
                 }
             })

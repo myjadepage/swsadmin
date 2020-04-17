@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tr mgt5">
+    <div class="tr">
       <b-button variant="info" size="sm" @click="addVideoRow">영상 추가</b-button>
     </div>
     <b-row cols="12" v-for="(item, index) in videos" :key="item.id">

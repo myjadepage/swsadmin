@@ -48,7 +48,7 @@ export default {
   props:['notify','productData'],
   mixins: [commonJs],
   mounted () {
-      this.axiosGetRequest('/api/v1/preferences/productNotices', '', this.initialNotics)
+      this.axiosGetRequest('/api/v1/preferences/productNoticeBases', '', this.initialNotics)
   },
   methods: {
     initialNotics: function (res) {

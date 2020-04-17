@@ -33,6 +33,9 @@ export default {
         isUsedOptionalImage8: 0,
         isUsedOptionalImage9: 0,
         isUsedOptionalImage10: 0,
+        feeRateBase: 0.09,
+        feeRateMedia: 0.09,
+        feeRateInfluencer: 0.09,
         media: [],
         price: 0,
         marketPrice: 0,
@@ -122,10 +125,16 @@ export default {
         } else if (_k.indexOf("iconList") > -1) {
           this.productData.iconList = product[_k].split(";");
         } else if (_k === "isAutoImageUpload") {
-          this.productData[_k] = true;
+          this.productData[_k] = 1;
         } else if (_k === 'feeRate'){
           this.productData[_k] = product[_k] * 100
-        } else {
+        } else if (_k === 'feeRateBase'){
+          this.productData[_k] = (product[_k] > 0 ? true : false)
+        } else if (_k === 'feeRateMedia'){
+          this.productData[_k] = (product[_k] > 0 ? true : false)
+        } else if (_k === 'feeRateInfluencer'){
+          this.productData[_k] = (product[_k] > 0 ? true : false)
+        }else {
           this.productData[_k] = product[_k];
         }
       }
@@ -150,17 +159,19 @@ export default {
       ]);
 
       // 상품 고시 로딩 시에 세팅
-      let noticeObject = res.data.jsonData.productNotice;
-      this.productData.prdtNoticeBaseSysId = noticeObject.prdtNoticeBaseSysId;
-      this.notify.splice(0);
-      noticeObject.notices.forEach(_item => {
-        this.notify.push({
-          item: _item.item,
-          content: _item.content,
-          procTypeCode: 3,
-          prdtNoticeSysId: _item.prdtNoticeSysId
+      if (!this.isEmpty(res.data.jsonData['productNotice'])){
+        let noticeObject = res.data.jsonData.productNotice;
+        this.productData.prdtNoticeBaseSysId = noticeObject.prdtNoticeBaseSysId;
+        this.notify.splice(0);
+        noticeObject.notices.forEach(_item => {
+          this.notify.push({
+            item: _item.item,
+            content: _item.content,
+            procTypeCode: 3,
+            prdtNoticeSysId: _item.prdtNoticeSysId
+          });
         });
-      });
+      }
       
       // 일반 옵션시에 세팅
       let normalOptions = res.data.jsonData.normalOptions;
@@ -202,109 +213,50 @@ export default {
       });
     },
     // Update Validate
-    updateSubmitValidate(obj) {
-      this.updateProductData.category.categories.splice(0);
+    updateSubmitValidate() {
+      // ------------------- Form Validate 체크 시작 -------------------
       if (this.selectedCategories.categoryTable.length <= 0) {
-        alert("카테고리를 확인하여 주시기 바랍니다.");
-        return false;
+        alert('카테고리를 선택하여 추가하여 주시기 바랍니다.')
+        return false
       } else {
+        this.updateProductData.category.categories.splice(0)
         this.selectedCategories.categoryTable.forEach(item => {
           let params = {
             categorySysId1: item.categorySysId1,
-            categorySysId2: item.categorySysId2
-          };
-          if (item.categorySysId3 > 0) {
-            params.categorySysId3 = item.categorySysId3;
-          }
-          if (item.categorySysId4 > 0) {
-            params.categorySysId4 = item.categorySysId4;
-          }
-          if (item.categorySysId5 > 0) {
-            params.categorySysId5 = item.categorySysId5;
+            categorySysId2: item.categorySysId2 !== undefined ? item.categorySysId2 : 0,
+            categorySysId3: item.categorySysId3 !== undefined ? item.categorySysId3 : 0,
+            categorySysId4: item.categorySysId4 !== undefined ? item.categorySysId4 : 0,
+            categorySysId5: item.categorySysId5 !== undefined ? item.categorySysId5 : 0
           }
           if (item.procTypeCode !== 4 || !this.isEmpty(item.prdtCategorySysId)) {
             params.procTypeCode = item.procTypeCode;
             params.prdtCategorySysId = item.prdtCategorySysId;
             this.updateProductData.category.categories.push(params);
           }
+          
         });
       }
-
-      // 간략한 설명 Validate
-      let BriefCommentObj = obj.briefComment;
-      if (BriefCommentObj.value.length < 1) {
-        return this.onFocusMethod(BriefCommentObj, "간략한 설명");
-      } else {
-        this.updateProductData.briefComment = this.productData.briefComment;
-      }
-
-      // 상세 설명 Validate
-      let BriefDescriptionObj = obj.briefDescription;
-      if (BriefDescriptionObj.value.length < 1) {
-        return this.onFocusMethod(BriefDescriptionObj, "상세 설명");
-      } else {
-        this.updateProductData.briefDescription = this.productData.briefDescription;
-      }
-
-      // 상품명  Validate
-      let ProductNameObj = obj.name;
-      if (ProductNameObj.value.length < 1) {
-        return this.onFocusMethod(ProductNameObj, "상품명");
-      } else {
-        this.updateProductData.name = this.productData.name;
-      }
-
-      // 판매자
-      let SellerSysIdObj = obj.sellers;
-      if (SellerSysIdObj.selectedIndex === 0) {
-        return this.onFocusMethod(SellerSysIdObj, "판매자");
-      } else {
-        this.updateProductData.sellerSysId = this.toNumber(
-          SellerSysIdObj[SellerSysIdObj.selectedIndex].value
-        );
-      }
-
-      // 브랜드
-      let BrandSysIdObj = obj.brandSysId;
-      if (BrandSysIdObj.selectedIndex === 0) {
-        return this.onFocusMethod(BrandSysIdObj, "브랜드");
-      } else {
-        this.updateProductData.brandSysId = this.toNumber(
-          BrandSysIdObj[BrandSysIdObj.selectedIndex].value
-        );
-      }
-
-      // 상품 아이콘 Validate
-      let IconListObj = obj.iconList;
-      if (IconListObj.length < 1) {
-        return this.onFocusMethod(IconListObj, "상품 아이콘");
-      } else {
-        this.updateProductData.iconList = this.productData.iconList.join(";");
-      }
-      this.updateProductData.isSoldout = this.productData.isSoldout ? 1 : 0;
-
-      // 큰 이미지 Validate
-      let BigimagesObj = obj.bigImageUrl;
-      if (
-        BigimagesObj.dataset.imageurl === null ||
-        BigimagesObj.dataset.imageurl === ''
-      ) {
-        return this.onFocusMethod(BigimagesObj, "큰 이미지");
-      } else {
-        var imagesCdnUrl = document.Frm.bigImageUrl.dataset.imageurl;
-        this.updateProductData.bigImageUrl = imagesCdnUrl;
-      }
-
-      this.updateProductData.isAutoImageUpload = 1;
-      this.updateProductData.middleImageUrl = document.getElementById("middleImageUrl").dataset.imageurl;
-      this.updateProductData.smallImageUrl = document.getElementById("smallImageUrl").dataset.imageurl;
+      this.updateProductData.prdtTypeCode = String(this.productData.prdtTypeCode)
+      this.updateProductData.isAutoImageUpload = (this.productData.isAutoImageUpload ? 1 : 0)
+      this.updateProductData.name = this.productData.name
+      this.updateProductData.briefComment = this.productData.briefComment
+      this.updateProductData.briefDescription = this.productData.briefDescription
+      this.updateProductData.detailDescription = this.productData.detailDescription
+      this.updateProductData.detailAttachFileUrl = this.productData.detailAttachFileUrl
+      this.updateProductData.sellSysId = this.productData.sellSysId
+      this.updateProductData.brandSysId = this.productData.brandSysId
+      this.updateProductData.iconList = this.productData.iconList.join(';')
+      
+      this.updateProductData.bigImageUrl = this.productData.bigImageUrl
+      this.updateProductData.middleImageUrl = this.productData.middleImageUrl
+      this.updateProductData.smallImageUrl = this.productData.smallImageUrl
 
       // 다른이미지 Validate
       if (this.images.length > 0) {
         let targetObjName;
         for (let othercnt = 0; othercnt < this.images.length; othercnt++) {
           targetObjName = this.images[othercnt];
-          if (targetObjName.url !== '') {
+          if (!this.isEmpty(targetObjName.imageurl)) {
             this.updateProductData["isUsedOptionalImage" + (othercnt + 1)] = 1;
             this.updateProductData["optionalImage" + (othercnt + 1) + "Url"] =
               targetObjName.imageurl;
@@ -315,65 +267,46 @@ export default {
       // 영상 업로드
       let videos = this.videos;
       if (videos.length <= 0) {
-        alert("1개 이상의 영상을 업로드 해야 합니다.");
-        return false;
+        // alert("1개 이상의 영상을 업로드 해야 합니다.");
+        // return false;
       } else {
         let vaildatArray = this.videos[0];
         if (this.isEmpty(vaildatArray.mediaId)) {
-          alert("1개 이상의 영상을 업로드 해야 합니다.");
-          return false;
+          // alert("1개 이상의 영상을 업로드 해야 합니다.");
+          // return false;
         } else {
           this.videos.forEach(item => {
-            if (!this.isEmpty(item.prdtMediaSysId)) {
-              this.updateProductData.media.push(item);
-            } else if (item.procTypeCode !== 4) {
-              this.updateProductData.media.push(item);
+            if (!this.isEmpty(item.mediaId)) {
+              this.updateProductData.media.push({
+                mediaTypeCode: item.mediaTypeCode,
+                mediaId: item.mediaId,
+                title: item.title,
+                thumnailUrl: item.thumnailUrl
+              });
             }
           });
         }
       }
 
+      this.updateProductData.stockTypeCode = this.productData.stockTypeCode
+      this.updateProductData.stockQty = this.productData.stockQty
+      this.updateProductData.isSoldout = this.productData.isSoldout
+      
       this.updateProductData.isDisplay = this.productData.isDisplay
-      this.updateProductData.isVat = this.productData.isVat
       this.updateProductData.marketPrice = this.productData.marketPrice
-      this.updateProductData.feeRateBase = (this.productData.feeRateBase ? 9 : 0)
-      this.updateProductData.feeRateMedia = (this.productData.feeRateMedia ? 9 : 0)
-      this.updateProductData.feeRateInfluencer = (this.productData.feeRateInfluencer ? 9 : 0)
-      this.updateProductData.detailDescription = this.productData.detailDescription
-      this.updateProductData.deliveryCommentHtml = this.productData.deliveryCommentHtml
+      this.updateProductData.feeTypeCode = this.productData.feeTypeCode
 
-      // 재고설정
-      let StockTypeCodeObj = obj.stockTypeCode;
-      if (StockTypeCodeObj[0].checked) {
-        // 무제한
-        this.updateProductData.stockTypeCode = 1;
-        this.updateProductData.stockQty = 0;
-      } else if (StockTypeCodeObj[1].checked) {
-        this.updateProductData.stockTypeCode = 2;
-        let stockQtyObj = obj.stockQty;
-        if (stockQtyObj.value.length < 1) {
-          return this.onFocusMethod(stockQtyObj, "재고수량");
-        } else {
-          this.updateProductData.stockQty = this.toNumber(stockQtyObj.value);
-        }
-      }
+      // this.updateProductData.feeRateBase = (this.productData.feeRateBase === true  ? parseFloat(0.09) : parseFloat(0.00));
+      // this.updateProductData.feeRateMedia = (this.productData.feeRateMedia === true ? parseFloat(0.09) : parseFloat(0.00));
+      // this.updateProductData.feeRateInfluencer = (this.productData.feeRateInfluencer === true ? parseFloat(0.09): parseFloat(0.00));
 
-      this.updateProductData.feeTypeCode = this.toNumber(String(this.productData.feeTypeCode));
-      this.updateProductData.pointTypeCode = this.toNumber(String(this.productData.pointTypeCode));
-
-      // 시중 가격
-      let marketPrice = this.toNumber(String(this.productData.marketPrice));
-      if (marketPrice === 0) {
-        alert("시중가격을 확인해주세요");
-        return false;
-      } else {
-        this.updateProductData.marketPrice = this.toNumber(
-          String(this.productData.marketPrice)
-        );
-      }
+      this.updateProductData.isVat = this.productData.isVat
+      this.updateProductData.price = this.productData.price
+      this.updateProductData.feeRate = this.productData.feeRate
+      this.updateProductData.supplyPrice = this.productData.supplyPrice
 
       // 공구가격에 관련한 데이터 처리
-      if (this.productData.prdtTypeCode === 2) {
+      if (this.updateProductData.prdtTypeCode === 2) {
         for (let _k in this.DateObject) {
           if (this.DateObject[_k] === "") {
             alert("공구가격의 할인일자 범위를 확인해주시기 바랍니다.");
@@ -408,134 +341,31 @@ export default {
                 isUse: 1
               });
             });
-            // for (let i = 0 ; i < this.commonSellers.length ; i++) {
-            //   this.productData.productGroupBuy.productGroupBuyDiscount[i] = {
-            //     peopleQty: this.toNumber(String(this.commonSellers[i].people)),
-            //     discount: this.toNumber(String(this.commonSellers[i].discount)),
-            //     isUse: 1
-            //   }
-            // }
           }
         }
       }
 
-      // 판매가
-      let PriceObj = obj.price;
-      if (PriceObj.value.length < 1) {
-        return this.onFocusMethod(PriceObj, "판매가");
-      } else {
-        this.updateProductData.price = this.toNumber(String(PriceObj.value));
-      }
-
-      // 공급가
-      let SupplyPriceObj = obj.supplyPrice;
-      if (SupplyPriceObj.value.length < 1) {
-        return this.onFocusMethod(SupplyPriceObj, "공급가");
-      } else {
-        this.updateProductData.supplyPrice = this.toNumber(
-          String(SupplyPriceObj.value)
-        );
-      }
-
-      // 수수료율
-      let feeRate = this.toNumber(String(this.productData.feeRate));
-      if (this.isEmpty(feeRate)) {
-        alert("수수료율을 확인해주시기 바랍니다.");
-        return false;
-      } else {
-        this.updateProductData.feeRate = parseFloat(feeRate / 100);
-      }
-
-      // 적립금
-      let pointObj = obj.pointTypeCode;
-      if (pointObj.value === "4") {
-        this.updateProductData.pointTypeCode = this.toNumber(
-          document.Frm.pointTypeCodeSelect.value
-        );
-        this.updateProductData.pointRate = parseFloat(
-          document.Frm.pointRate.value
-        );
-      } else if (pointObj.value === "6") {
-        this.updateProductData.point = this.toNumber(document.Frm.point.value);
-      }
-      this.updateProductData.pointTypeCode = this.toNumber(
-        obj.pointTypeCode.value
-      );
-
-      // 제조사
-      let ManufacturerObj = obj.manufacturer;
-      if (ManufacturerObj.value.length < 1) {
-        return this.onFocusMethod(ManufacturerObj, "제조사");
-      } else {
-        this.updateProductData.manufacturer = ManufacturerObj.value;
-      }
-
-      // 원산지
-      let OrigionObj = obj.origin;
-      if (OrigionObj.value.length < 1) {
-        return this.onFocusMethod(OrigionObj, "원산지");
-      } else {
-        this.updateProductData.origin = OrigionObj.value;
-      }
+      this.updateProductData.feeRateBase = this.productData.feeRateBase ? 9.0 : 0;
+      this.updateProductData.feeRateMedia = this.productData.feeRateMedia ? 9.0 : 0;
+      this.updateProductData.feeRateInfluencer = this.productData.feeRateInfluencer? 9.0: 0;
 
       // Notify 공지부분
       let NotifyObj = this.notify;
-      this.updateProductData.productNotice.prdtNoticeBaseSysId = '';
-      this.updateProductData.productNotice.notices.splice(0);
       if (NotifyObj.length > 0) {
-        this.updateProductData.productNotice.prdtNoticeBaseSysId = this.productData.productNotice.prdtNoticeBaseSysId;
         NotifyObj.forEach(_item => {
-          let param;
-          if (
-            !this.isEmpty(_item.prdtNoticeSysId) ||
-            _item.procTypeCode !== 4
-          ) {
-            param = {
-              item: _item.item,
-              content: _item.content,
-              procTypeCode: _item.procTypeCode
-            };
-            if (!this.isEmpty(_item.prdtNoticeSysId)) {
-              param.prdtNoticeSysId = _item.prdtNoticeSysId;
-            }
-            this.updateProductData.productNotice.notices.push(param);
+          let params = {
+            item: _item.item,
+            content: _item.content,
+            procTypeCode: _item.procTypeCode
           }
+          if (!this.isEmpty(_item.prdtNoticeSysId)) {
+            params.prdtNoticeSysId = _item.prdtNoticeSysId;
+          }
+          this.productData.productNotice.notices.push(params)
         });
       }
 
-      this.updateProductData.deliveryPriceTypeCode = this.productData.deliveryPriceTypeCode
-      let DeliveryPriceTypeCodeObj = this.productData.deliveryPriceTypeCode;
-      if (DeliveryPriceTypeCodeObj === 2) {
-        // 착불비용
-        if (this.productData.debitAmount < 1) {
-          return this.onFocusMethod(obj.debitAmount, "착불비용");
-        } else {
-          this.updateProductData.debitAmount = this.toNumber(String(this.productData.debitAmount));
-        }
-        // 착불시 무료비용
-        if (this.productData.debitfreeMinAmount < 1) {
-          return this.onFocusMethod(obj.debitfreeMinAmount,"착불비용시 무료배송비");
-        } else {
-          this.updateProductData.debitfreeMinAmount = this.toNumber(String(this.productData.debitfreeMinAmount));
-        }
-      } else if (DeliveryPriceTypeCodeObj === 3) {
-        // 선불비용
-        if (this.productData.prepaymentAmount < 1) {
-          return this.onFocusMethod(obj.prepaymentAmount, "선불비용");
-        } else {
-          this.updateProductData.prepaymentAmount = this.toNumber(String(this.productData.prepaymentAmount));
-        }
-        // 착불시 무료비용
-        if (this.productData.prepayfreeMinAmount < 1) {
-          return this.onFocusMethod(obj.prepayfreeMinAmount, "선불비용시 무료배송비");
-        } else {
-          this.updateProductData.prepayfreeMinAmount = this.toNumber(this.productData.prepayfreeMinAmount);
-        }
-      }
-      //  상품 옵션유형 코드
-      this.updateProductData.optionTypeCode = this.toNumber(String(this.productData.optionTypeCode));
-
-      if (this.updateProductData.optionTypeCode === 2) {
+      if (this.productData.optionTypeCode === 2) {
         // 상품옵션
         if (this.nomarlOptions.length > 0) {
           this.nomarlOptions.forEach(item => {
@@ -544,15 +374,12 @@ export default {
             }
           })
         }
-      } else if (this.updateProductData.optionTypeCode === 5) {
-        this.updateProductData.optionDescription =
-          document.Frm.optionDescription.value;
       }
 
       // 추가 구성
       this.updateProductData.isAddingProduct = (this.productData.isAddingProduct? 1 : 0)
-      let isAddition = document.Frm.isAddingProduct.value === "0" ? false : true;
-      if (isAddition) {
+      let isAddition = this.updateProductData.isAddingProduct
+      if (isAddition === 1) {
         this.additionOptions.forEach(addOption => {
           let row = {
             base: {},
@@ -577,7 +404,6 @@ export default {
           this.updateProductData.addingProducts.push(row)
         })
       }
-
       return this.updateProductData;
     }
   }

@@ -2,7 +2,7 @@
     <b-row>
         <b-col cols="2">
             <b-input-group>
-                <b-form-input size="sm" id="example-input" v-model="parentData.startDate" type="text" placeholder="시작일자 (YYYY-MM-DD)"></b-form-input>
+                <b-form-input size="sm" v-model="parentData.startDate" type="text" placeholder="시작일자 (YYYY-MM-DD)"></b-form-input>
                 <b-input-group-append>
                     <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="parentData.startDate" button-only right></b-form-datepicker>
                 </b-input-group-append>
@@ -10,13 +10,13 @@
         </b-col>
         <b-col cols="2">
             <b-input-group>
-                <b-form-input size="sm" id="example-input" v-model="parentData.endDate" type="text" placeholder="종료일자 (YYYY-MM-DD)"></b-form-input>
+                <b-form-input size="sm" v-model="parentData.endDate" type="text" placeholder="종료일자 (YYYY-MM-DD)"></b-form-input>
                 <b-input-group-append>
                     <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="parentData.endDate" button-only right></b-form-datepicker>
                 </b-input-group-append>
             </b-input-group>
         </b-col> 
-        <b-col cols="12" class="mt-2 dateLimitDisplay">
+        <b-col cols="12" class="mt-2">
             <b-button variant="outline-secondary" @click="selectedDate('today')" size="sm">오늘</b-button>&emsp;
             <b-button variant="outline-secondary" @click="selectedDate('yester')" size="sm">어제</b-button>&emsp;
             <b-button variant="outline-secondary" @click="selectedDate('3date')" size="sm">3일간</b-button>&emsp;
@@ -24,6 +24,7 @@
             <b-button variant="outline-secondary" @click="selectedDate('10date')" size="sm">10일간</b-button>&emsp;
             <b-button variant="outline-secondary" @click="selectedDate('20date')" size="sm">20일간</b-button>&emsp;
             <b-button variant="outline-secondary" @click="selectedDate('1month')" size="sm">1달</b-button>&emsp;
+            <b-button variant="outline-secondary" @click="selectedDate('3month')" size="sm">3달</b-button>&emsp;
         </b-col>
     </b-row>
 </template>
@@ -33,7 +34,7 @@ import moment from 'moment'
 export default {
     props: ['parentData'],
     mounted () {
-        this.parentData.startDate = moment(new Date()).add(-1, 'M').format('YYYY-MM-DD')
+        this.parentData.startDate = moment(new Date()).add(-3, 'M').format('YYYY-MM-DD')
         this.parentData.endDate = moment(new Date()).format('YYYY-MM-DD')
     },
     methods:{
@@ -67,6 +68,10 @@ export default {
                     this.parentData.startDate = moment(new Date()).add(-1, 'M').format('YYYY-MM-DD')
                     this.parentData.endDate = moment(new Date()).format('YYYY-MM-DD')
                     break
+                case '3month':
+                    this.parentData.startDate = moment(new Date()).add(-3, 'M').format('YYYY-MM-DD')
+                    this.parentData.endDate = moment(new Date()).format('YYYY-MM-DD')
+                    break
 
             }
         }
@@ -75,9 +80,5 @@ export default {
 </script>
 
 <style>
-.dropdown-menu.show { 
-    transform: none !important;
-    top: 25px !important;
-    left: -255px !important;
-}
+
 </style>

@@ -178,13 +178,13 @@ const routes = [
     name: '상품관리',
     component: AdminBoardLayout,
     redirect: '/goods/goods_list',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children: [
       // {
       //   path: '/goods/index',
@@ -248,13 +248,13 @@ const routes = [
     name: '회원관리',    
     component: AdminBoardLayout,
     redirect: '/member/member_list',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children: [
       // {
       //   path: '/member/',
@@ -293,13 +293,13 @@ const routes = [
     name: '운영관리',    
     component: AdminBoardLayout,
     redirect: '/management/notice_list',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children: [
       // {
       //   path: '/management/',
@@ -398,13 +398,13 @@ const routes = [
     name: '환경설정',    
     component: AdminBoardLayout,
     redirect: '/setup/config_manager',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children: [
       // {
       //   path: '/setup/',
@@ -494,13 +494,13 @@ const routes = [
     name: '통계',    
     component: AdminBoardLayout,
     redirect: '/statistic/sale_total',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children: [
       // {
       //   path: '/statistic/',
@@ -574,13 +574,13 @@ const routes = [
     name: '주문/매출관리',
     component: AdminBoardLayout,
     redirect: '/order/order_list/',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children:[
       // {
       //   path: '/order/',
@@ -730,13 +730,13 @@ const routes = [
     name: '정산관리',
     component: AdminBoardLayout,
     redirect: '/account/account',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children:[
       // {
       //   path: '/account/index',
@@ -760,13 +760,13 @@ const routes = [
     name: '방송관리',
     component: AdminBoardLayout,
     redirect: '/broadcast/BroadcastRequest',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children:[
       // {
       //   path: '/broadcast/',
@@ -805,13 +805,13 @@ const routes = [
     name:'대시보드',
     component: AdminBoardLayout,
     redirect:'/dashboard/index',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children:[
       {
         path: '/dashboard/index',

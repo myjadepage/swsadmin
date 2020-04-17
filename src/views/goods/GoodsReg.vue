@@ -15,7 +15,7 @@
       </li>
       <li>시중가를 적으면 세일이 적용됩니다. (필요할 경우에만 입력하세요.)</li>
     </ul>
-    <form name="Frm" enctype="multipart/form-data" onsubmit="return false">
+    <b-form enctype="multipart/form-data" @submit.prevent="onSubmit">
       <div class="box">
         <table name="categories" class="t_form">
           <!-- <caption>상품기본정보 등록 폼</caption> -->
@@ -61,6 +61,9 @@
                 <strong class="red">*</strong>
               </th>
               <td colspan="3">
+                <dl class="explain">
+                  <dd class="text-danger mb-1 mt-1">카테고리는 2차까지 필수선택입니다. </dd>
+                </dl>
                 <p class="float-left">
                   <Sws-category :isPercent="true" :selectedCategory="selectedCategories.categories"/>
                 </p>
@@ -86,7 +89,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="briefComment" class="text_input" style="width:100%" value maxlength="20" v-model="productData.briefComment" required/>
+                <input type="text" name="briefComment" class="text_input w-100" value maxlength="50" v-model="productData.briefComment" required/>
               </td>
             </tr>
             <tr>
@@ -95,7 +98,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="briefDescription" class="text_input" style="width:100%" value maxlength="50" v-model="productData.briefDescription" required/>
+                <input type="text" name="briefDescription" class="text_input w-100" value maxlength="100" v-model="productData.briefDescription" required/>
               </td>
             </tr>
             <!-- 상품명 -->
@@ -105,7 +108,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="name" class="text_input" style="width:99%" maxlength="100" v-model="productData.name" required/>
+                <input type="text" name="name" class="text_input w-100" maxlength="100" v-model="productData.name" required/>
               </td>
             </tr>
             <tr>
@@ -143,7 +146,7 @@
                 상품 아이콘
                 <strong class="red">&nbsp;*</strong>
                 <br />
-                <b-button variant="outline-danger" size="sm" style="height: 20px;">아이콘관리</b-button>
+                <b-button variant="outline-danger" size="sm" style="height: 20px; line-height: 1">진열관리</b-button>
               </th>
               <td colspan="3" class="icons">
                 <ul>
@@ -174,13 +177,14 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="file" name="bigImageUrl" id="bigImageUrl" @change.prevent="validateImageRatioFn($event, {width: 1080, height: 1080})" data-valid="false" accept="image/*" :data-imageurl="productData.bigImageUrl"/>
-                <template v-if="productData.bigImageUrl !== ''">
-                  <p>
-                    <b>이미지 존재함 :</b>
-                    {{productData.bigImageUrl}}
-                  </p>
+                <template v-if="imageEvent.isDisplay">
+                  <b-progress :animated="true" height="2px" :value="imageEvent.progress"  style="margin-top: -5px; margin-left: -10px; margin-right: -10px; margin-bottom: 10px"></b-progress>
                 </template>
+                <div class="float-right">
+                  <p class="text-center font-weight-bold">[미리보기]</p>
+                  <img :src=productData.bigImageUrl style="width: 90px; height: 90px; border:1px solid #EFEFEF"/>
+                </div>
+                <input type="file" name="bigImageUrl" id="bigImageUrl" @change="changeImage($event, {imageDir: '/product/image/0/'+productData.brandSysId})" :required="$route.params.productSysId !== '' ? false : true"/>
                 <br />
                 <span class="light_gray">(1080px * 1080px)</span>
                 <label for="img_auto">
@@ -203,7 +207,7 @@
                   <strong class="red">&nbsp;*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="file" name="middleImageUrl" id="middleImageUrl" @change.prevent="validateImageRatioFn($event, {width: 360, height: 340})" data-valid="false" accept="image/*" :data-imageurl="productData.middleImageUrl"/>
+                  <input type="file" name="middleImageUrl" id="middleImageUrl"/>
                   <br />
                   <span class="light_gray">(540px * 540px)</span>
                   <template v-if="productData.middleImageUrl !== ''">
@@ -222,7 +226,7 @@
                   <strong class="red">&nbsp;*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="file" name="smallImageUrl" id="smallImageUrl" @change.prevent="validateImageRatioFn($event, {width: 100, height: 100})" data-valid="false" accept="image/*" :data-imageurl="productData.smallImageUrl"/>
+                  <input type="file" name="smallImageUrl" id="smallImageUrl"/>
                   <br />
                   <span class="light_gray">(280px * 280px)</span>
                   <template v-if="productData.smallImageUrl !== ''">
@@ -234,10 +238,6 @@
                   <br />
                 </td>
               </tr>
-            </template>
-            <template v-else>
-              <input type="file" name="middleImageUrl" id="middleImageUrl" :data-imageurl="productData.middleImageUrl" style="display:none"/>
-              <input type="file" name="smallImageUrl" id="smallImageUrl" :data-imageurl="productData.smallImageUrl" style="display:none"/>
             </template>
             <tr>
               <th>다른이미지</th>
@@ -254,12 +254,7 @@
                 <!-- <span class="light_gray">1개 이상 업로드</span> -->
               </th>
               <td colspan="3" class="img_etc">
-                <Video-uploader
-                  ref="videoRef"
-                  :productData="productData"
-                  :videos="videos"
-                  @imageUploader="onNewSingleImageUploadEvent"
-                ></Video-uploader>
+                <Video-uploader ref="videoRef" :productData="productData" :videos="videos" @imageUploader="onNewSingleImageUploadEvent" />
               </td>
             </tr>
             <!-- 영상 업로더 : 끝 -->
@@ -283,7 +278,7 @@
                   <label for="stockTypeCode2">수량</label>
                 </span>
                 <span>
-                  <input type="text" name="stockQty" maxlength="7" class="text_input number_input" style="width: 60px;" v-model="productData.stockQty" :disabled="productData.stockTypeCode === 1"/>
+                  <input type="text" name="stockQty" maxlength="7" class="text_input number_input" style="width: 60px;" v-model.number="productData.stockQty" :disabled="productData.stockTypeCode === 1"/>
                 </span>
 
                 <!-- 품절여부 -->
@@ -300,7 +295,12 @@
                 <label for="isDisplay_T">진열</label>
               </td>
             </tr>
-
+            <tr>
+              <th>시중가 (원판매가)</th>
+              <td colspan="3">
+                <input type="text" class="text_input number_input" value="10000" required/>&emsp;원
+              </td>
+            </tr>
             <template v-if="productData.prdtTypeCode === 1">
               <tr>
                 <th>
@@ -308,7 +308,7 @@
                   <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input"/> 원
+                  <input type="text" name="marketPrice" v-model.number="productData.marketPrice" class="text_input number_input" required/> 원
                 </td>
               </tr>
             </template>
@@ -321,7 +321,7 @@
                 <td colspan="3">
                   <b-row>
                     <b-col cols="3">
-                      <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" style="width:90%" maxlength="9" /> 원
+                      <input type="text" name="marketPrice" v-model.number="productData.marketPrice" class="text_input number_input" style="width:90%" maxlength="9" required/> 원
                     </b-col>
                     <b-col cols="4">
                       <b-row class="d-flex flex-row">
@@ -401,7 +401,7 @@
                   <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="text" name="marketPrice" v-model="productData.marketPrice" class="text_input number_input" /> 원
+                  <input type="text" name="marketPrice" v-model.number="productData.marketPrice" class="text_input number_input" required/> 원
                 </td>
               </tr>
             </template>
@@ -420,9 +420,9 @@
               </td>
               <th>부가가치세 설정</th>
               <td>
-                <input type="radio" id="isVat_T" name="isVat" value="0" v-model.number="productData.isVat"/>
+                <input type="radio" id="isVat_T" name="isVat" value="1" v-model.number="productData.isVat"/>
                 <label for="isVat_T">과세상품</label>
-                <input type="radio" id="isVat_F" name="isVat" value="1" v-model.number="productData.isVat" class="mgl20"/>
+                <input type="radio" id="isVat_F" name="isVat" value="0" v-model.number="productData.isVat" class="mgl20"/>
                 <label for="isVat_F">면세상품</label>
               </td>
             </tr>
@@ -436,13 +436,13 @@
                 <div class="d-flex" style="width:100%">
                   <template v-if="productData.feeTypeCode === 1">
                     <div style="width: 200px">
-                      <input type="checkbox" id="feeRateBase" v-model="productData.feeRateBase" @click="calculFeeRateFn({type: '1'})" />&emsp;
+                      <input type="checkbox" id="feeRateBase" v-model.number="productData.feeRateBase" @click="calculFeeRateFn({type: '1'})" />&emsp;
                       <label for="feeRateBase"> 기본 <b>[9%]</b></label>
                       <br />
-                      <input type="checkbox" id="feeRateMedia" v-model="productData.feeRateMedia" @click="calculFeeRateFn({type: '1'})"/>&emsp;
+                      <input type="checkbox" id="feeRateMedia" v-model.number="productData.feeRateMedia" @click="calculFeeRateFn({type: '1'})"/>&emsp;
                       <label for="feeRateMedia"> 영상제작 <b>[9%]</b></label>
                       <br />
-                      <input type="checkbox" id="feeRateInfluencer" v-model="productData.feeRateInfluencer" @click="calculFeeRateFn({type: '1'})"/>&emsp;
+                      <input type="checkbox" id="feeRateInfluencer" v-model.number="productData.feeRateInfluencer" @click="calculFeeRateFn({type: '1'})"/>&emsp;
                       <label for="feeRateInfluencer">인플루언서 <b>[9%]</b></label>
                     </div>
                   </template>
@@ -459,18 +459,17 @@
                     <li>
                       판매가
                       <br />
-                      <input type="text" ref="price" name="price" id="price"  @keyup.stop="priceToSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.price" /> 원
+                      <input type="text" ref="price" name="price" id="price" @keyup.stop="priceToSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.price" required/> 원
                     </li>
                     <li>
                       수수료율
                       <br />
-                      <input type="text" ref="feeRate" name="feeRate" id="feeRate"  @keyup.stop="onFeeRate()" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" disabled /> %
+                      <input type="text" ref="feeRate" name="feeRate" id="feeRate"  @keyup.stop="onFeeRate()" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" disabled required/> %
                     </li>
                     <li>
                       공급가
                       <br />
-                      <input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice"  @keyup.stop="onSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.supplyPrice"
-                      /> 원
+                      <input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice" @keyup.stop="onSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.supplyPrice" required/> 원
                     </li>
                   </ul>
                 </div>
@@ -533,17 +532,22 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td>
-                <input type="text" name="manufacturer" class="text_input" style="width:97%" v-model="productData.manufacturer" maxlength="50"/>
+                <input type="text" name="manufacturer" class="text_input" style="width:97%" v-model="productData.manufacturer" maxlength="50" required/>
               </td>
               <th>
                 원산지
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td>
-                <input type="text" name="origin" class="text_input" style="width:97%" v-model="productData.origin" maxlength="50" />
+                <input type="text" name="origin" class="text_input" style="width:97%" v-model="productData.origin" maxlength="50" required/>
               </td>
             </tr>
-
+            <tr>
+              <th>인증서류</th>
+              <td colspan="3">
+                <file-uploader :userFiles="files"/>
+              </td>
+            </tr> 
             <tr>
               <th colspan="4">
                 상품정보고시
@@ -779,8 +783,7 @@
                   <Addition-container
                     :productData="productData"
                     :additionOptions="additionOptions"
-                    
-                  ></Addition-container>
+                  />
                 </template>
               </td>
             </tr>
@@ -788,15 +791,17 @@
         </table>
       </div>
       <div class="btn_center">
-        <template v-if="productData.productSysId === ''">
-          <b-button variant="secondary" @click="SubmitAddProduct()" style="margin-right: 5px">등록</b-button>
-        </template>
-        <template v-else>
-          <b-button variant="success" @click="SubmitUpdateProduct()" style="margin-right: 5px">수정</b-button>
-        </template>
+        <b-button type="submit" variant="secondary" style="margin-right: 5px">
+          <template v-if="productData.productSysId === ''">
+            등록
+          </template>
+          <template v-else>
+            수정
+          </template>
+        </b-button>
         <b-button variant="danger">취소</b-button>
       </div>
-    </form>
+    </b-form>
   </div>
 </template>
 <script>
@@ -813,6 +818,7 @@ import GoodsUpdate from "@/components/goodsReg/GoodsUpdate.js"
 import CategoryComponent from "@/components/goodsReg/CategoryComponent"
 import ImageUploader from "@/components/goodsReg/ImageUploader"
 import VideoUploader from "@/components/goodsReg/VideoUploader"
+import FileUploader from '@/components/goodsReg/FileUploader'
 import AdditionContainer from "@/components/goodsReg/AdditionContainer"
 import CommonSellers from "@/components/goodsReg/CommonSellers"
 import NomalOptions from "@/components/goodsReg/NomalOptions"
@@ -838,6 +844,7 @@ export default {
     CategoryComponent,
     ImageUploader,
     VideoUploader,
+    FileUploader,
     AdditionContainer,
     CommonSellers,
     NomalOptions,
@@ -854,6 +861,7 @@ export default {
       },
       // 큰 이미지 업로드시에 로딩바
       images: [{ imageurl: '' }],
+      files: [{fileDir: ''}],
       videos: [
         {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2},
         {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2}
@@ -867,10 +875,14 @@ export default {
       nomarlOptions: [{ name: '', content: '', procTypeCode: 2 }],
       notify: [{ item: '', content: '', procTypeCode: 2 }],
       brands: [{ value: 0, text: "::브랜드를 선택해주세요::" }],
+      imageEvent: {
+        isDisplay: false,
+        progress: 0
+      },
       DateObject: {
         startDate: '',
         startTime: '',
-        endDate: '',
+        endDate: '00:00:00',
         endTime: ''
       }
     };
@@ -878,7 +890,7 @@ export default {
   mounted() {
     if (!this.isEmpty(this.$route.params.productSysId)) {
       this.productData.productSysId = this.$route.params.productSysId;
-      this.updateProductData.prdtSysId = this.$route.params.productSysId
+      this.updateProductData.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
       this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,'',this.getProductData);
     }
     // 카테고리 초기화
@@ -897,6 +909,13 @@ export default {
     this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
   },
   methods: {
+    onSubmit: function (obj) {
+      if (this.isEmpty(this.$route.params.productSysId)) {
+        this.SubmitAddProduct(obj)
+      } else {
+        this.SubmitUpdateProduct(obj)
+      }
+    },
     SubmitAddProduct: function () {
       let object = this.insertSubmitValidate(document.Frm);
       this.axiosPostRequest('/api/v1/products', {jsonData: object}, (res) => {
