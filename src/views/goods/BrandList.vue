@@ -3,24 +3,19 @@
         <Text-align></Text-align>
         <b-row cols="1">
             <b-col>
-                <h4><i class="xi-check-circle"></i> 총 <strong>{{ items.length }}</strong>개의 정보가 등록되어있습니다.</h4>
+                <h5><i class="xi-check-circle"></i> 총 <strong>{{ items.length }}</strong>개의 정보가 등록되어있습니다.</h5>
                 <div>
-                    <select id="skey" name="skey" class="text_input">
+                    <select class="text_input">
                         <option value="name">브랜드명</option>
                     </select>
-                    <input type="text" name="sword" value="" class="text_input" style="width:150px">
+                    <input type="text" class="text_input" style="width:150px">
                     <button type="submit" class="btn btn-sm btn-default">검색</button>
                 </div>
             </b-col>
-            <Brands-list
-                :items="items"
-                @search="searchBrandsList"
-                @refreshList="refreshBrandsList"
-                @delete="deleteBrandsFn"
-            ></Brands-list>
+            <Brands-list :items="items" @search="searchBrandsList" @refreshList="refreshBrandsList" @delete="deleteBrandsFn" />
         </b-row>
         <div class="float-right">
-            <b-button href="/goods/brand_reg"><font-awesome-icon icon="plus-circle" /> 추가하기</b-button>
+            <b-button variant="outline-secondary" size="sm" href="/goods/brand_reg"><font-awesome-icon icon="plus-circle" /> 추가하기</b-button>
         </div>
     </div>
 </template>
@@ -58,7 +53,7 @@ export default {
             let loadData = res.data.jsonData.brands
             this.items.splice(0)
             for (const item of loadData) {
-                this.items.push({no: item.brandSysId, brandName: item.name, image: item.imageUrl})
+                this.items.push({no: item.brandSysId, brandName: item.name, image: item.imageUrl, managerName: item.managerName})
             }
     }
   }

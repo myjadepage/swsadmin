@@ -36,13 +36,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in nomarlOptions" :key="index">
+                <tr v-for="(item, index) in productData.normalOptions" :key="index">
                     <template v-if="item.procTypeCode !== 4">
                       <td>-</td>
                       <td class="txt"><input type="text" class="text_input" style="width: 90%;" maxlength="50" v-model="item.name"></td>
-                      <td><textarea rows="3" class="text_input" maxlength="2000" style="width: 100%" v-model="item.content"></textarea></td>
+                      <td><textarea rows="3" class="text_input" maxlength="2000" style="width: 100%" v-model="item.content" @keydown="setKeyUpCounter('nomarlTextLength'+index, $event)"></textarea></td>
                       <td class="size"><span :id="'nomarlTextLength'+index">0</span><span style="color:black">/200</span></td>
-                      <td><b-button variant="light" size="sm" @click="productsOptionRemove(item)">항목 삭제</b-button></td>
+                      <td><b-button variant="light" size="sm" @click="productsOptionRemove(item, index)">항목 삭제</b-button></td>
                     </template>
                 </tr>
             </tbody>
@@ -51,19 +51,28 @@
 </template>
 
 <script>
+import commonJs from '@/assets/js/common.js'
 export default {
-  props: ['nomarlOptions','productData'],
+  data () {
+    return {}
+  },
+  props: ['productData'],
+  mixins: [commonJs],
   methods: {
-    productsOptionRemove: function (item) {
-      item.procTypeCode = 4
+    productsOptionRemove: function (item, index) {
+      if (this.isEmpty(item['prdtNormalOptionSysId'])){
+        this.productData.normalOptions.splice(index, 1)
+      } else {
+        item.procTypeCode = 4
+      }
+      this.$forceUpdate()
     },
-    // setKeyUpCounter: function (obj) {
-    //   var wordSizer = document.getElementsByName(obj.normalWordsize)
-    //   var content = document.getElementsByName(obj.normalOptionContent)
-    //   $(wordSizer).html(content[0].textLength)
-    // },
+    setKeyUpCounter: function (id, event) {
+      let content = document.getElementById(id)
+      content.innerHTML = event.target.textLength
+    },
     addProductOptionRow: function () {
-      this.nomarlOptions.push({
+      this.productData.normalOptions.push({
         name: '',
         content: '',
         procTypeCode: 2

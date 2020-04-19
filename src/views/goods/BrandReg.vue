@@ -26,19 +26,19 @@
                         <td>
                             <input type="text" class="text_input" v-model="brandReg.name" maxlength="100" style="width:98%">
                         </td>
-                        <th>무료배송 최소범위</th>
+                        <th>로그인 정보</th>
                         <td>
                             <span class="w-10">
-                                착불무료배송: 
+                                아이디
                             </span>
                             <span class="w-25">
-                                <input type="number" class="text_input" v-model="brandReg.debitfreeMinAmount"/>
+                                <input type="number" class="text_input" v-model="brandReg.userId"/>
                             </span>
                             <span class="w-10">
-                               &emsp;/&emsp;선불무료배송: 
+                               &emsp;/&emsp;패스워드:
                             </span>
                             <span class="w-25">
-                                <input type="number" class="text_input" v-model="brandReg.prepayfreetMinAmount"/>
+                                <input type="number" class="text_input" v-model="brandReg.userPassword"/>
                             </span>
                         </td>
                     </tr>

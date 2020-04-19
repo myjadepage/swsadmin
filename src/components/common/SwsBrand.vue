@@ -1,5 +1,5 @@
 <template>
-    <select id="brandSysId" name="brandSysId" v-model="parentData.brandSysId">
+    <select id="brandSysId" class="text_input" name="brandSysId" v-model="parentData.brandSysId">
         <option v-for="(item, index) in brands" :key="index" :value="item.value">{{ item.text }}</option>
     </select>
 </template>

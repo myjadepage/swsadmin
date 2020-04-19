@@ -4,6 +4,7 @@
         <dl>
             <dt><font-awesome-icon icon="minus" /> 판매자관리</dt>
             <dd class="side_small_menu">
+                <router-link to="/mim/dealer_regist">판매자 신청</router-link>
                 <router-link to="/mim/dealer_regist_list">판매자 신청목록</router-link>
                 <router-link to="/mim/dealer_list">판매자 목록</router-link>
                 <router-link to="/mim/dealer_brand_list">브랜드관리</router-link>

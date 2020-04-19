@@ -65,7 +65,7 @@
                   <dd class="text-danger mb-1 mt-1">카테고리는 2차까지 필수선택입니다. </dd>
                 </dl>
                 <p class="float-left">
-                  <Sws-category :isPercent="true" :selectedCategory="selectedCategories.categories"/>
+                  <Sws-category :selectedCategory="selectedCategories.categories"/>
                 </p>
                 <b-button variant="outline-secondary" size="sm" @click="addCate"><font-awesome-icon icon="plus" /> 추가</b-button>
               </td>
@@ -297,9 +297,11 @@
             </tr>
             <tr>
               <th>시중가 (원판매가)</th>
-              <td colspan="3">
+              <td>
                 <input type="text" class="text_input number_input" value="10000" required/>&emsp;원
               </td>
+              <th>주간 베스트</th>
+              <td><input type="checkbox" v-model="productData.isWeekley" /></td>
             </tr>
             <template v-if="productData.prdtTypeCode === 1">
               <tr>
@@ -569,16 +571,13 @@
                   <dd>등록된 정보는 쇼핑몰 상품상세페이지에 상품기본정보 아래에 표형태로 출력되어 보여집니다.</dd>
                 </dl>
                 <span class="fr">
-                  <a
-                    class="btn btn-primary"
-                    href="http://www.mallstore.co.kr/data/base/DownLoad/information/commodity_guide.zip"
-                  >품목별 상품고시</a>
+                  <b-button variant="primary" size="sm" href="http://www.mallstore.co.kr/data/base/DownLoad/information/commodity_guide.zip">품목별 상품고시</b-button>
                 </span>
               </td>
             </tr>
             <tr>
               <td colspan="4" class="notify">
-                <Product-notics :productData="productData" :notify="notify"></Product-notics>
+                <Product-notics :productData="productData" />
               </td>
             </tr>
 
@@ -727,7 +726,7 @@
             <tr>
               <td colspan="2">
                 <template v-if="productData.optionTypeCode === 2">
-                  <Nomal-options :productData="productData" :nomarlOptions="nomarlOptions"></Nomal-options>
+                  <Nomal-options :productData="productData"></Nomal-options>
                 </template>
                 <template v-else-if="productData.optionTypeCode === 5">
                   <div class="option_tab option_kind_3_tab">
@@ -780,10 +779,7 @@
             <tr>
               <td colspan="2">
                 <template v-if="productData.isAddingProduct === 1">
-                  <Addition-container
-                    :productData="productData"
-                    :additionOptions="additionOptions"
-                  />
+                  <Addition-container :productData="productData" />
                 </template>
               </td>
             </tr>
@@ -859,21 +855,14 @@ export default {
         categories: [],
         categoryTable: []
       },
-      // 큰 이미지 업로드시에 로딩바
       images: [{ imageurl: '' }],
       files: [{fileDir: ''}],
       videos: [
-        {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2},
         {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2}
-      ],
-      additionOptions: [
-        {itemGroup: '', subAdditionOptions: [ { item: '', price: '', stockQty: '', isSoldout: false, isHide: false, procTypeCode: 2 }], procTypeCode: 2}
       ],
       commonSellers: [
         {people: "", discount: "" }
       ],
-      nomarlOptions: [{ name: '', content: '', procTypeCode: 2 }],
-      notify: [{ item: '', content: '', procTypeCode: 2 }],
       brands: [{ value: 0, text: "::브랜드를 선택해주세요::" }],
       imageEvent: {
         isDisplay: false,
@@ -890,21 +879,9 @@ export default {
   mounted() {
     if (!this.isEmpty(this.$route.params.productSysId)) {
       this.productData.productSysId = this.$route.params.productSysId;
-      this.updateProductData.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
+      this.productData.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
       this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,'',this.getProductData);
     }
-    // 카테고리 초기화
-    // this.axiosGetRequest('/api/v1/categories',{ categoryLevel: 1 },function (res) {
-    //   let data = res.data.jsonData.categories;
-    //   data.forEach(_item => {
-    //     this.category1.push({
-    //       value: _item.categorySysId,
-    //       parentId: _item.parentSysId,
-    //       feeRate: _item.feeRate,
-    //       text: _item.name + "[" + _item.feeRate * 100 + "%]"
-    //     });
-    //   });
-    // }.bind(this));
     this.calculFeeRateFn({ type: "1" });
     this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
   },

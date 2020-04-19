@@ -63,15 +63,43 @@ export default {
       isSoldout: 0,
       isAddingProduct: 0,
       isAutoImageUpload: 1,
+      isWeekley: 0,
       optionTypeCode: 1,
       stockTypeCode: 1,
       priceTypeCode: 1,
       pointTypeCode: 1,
       deliveryPriceTypeCode: 6,
       optionDescription: "",
-      productNotice: { prdtNoticeBaseSysId: 0, notices: [] },
-      addingProducts: [],
-      normalOptions: []
+      productNotice: { 
+        prdtNoticeBaseSysId: 0, 
+        notices: [
+          {
+            item: '',
+            content: '',
+            procTypeCode: 2
+          }
+        ] 
+      },
+      addingProducts: [
+        {
+          base: {
+            itemGroup: '',
+            procTypeCode: 2
+          },
+          details: [
+            {
+              item: "",
+              price: 0,
+              stockQty: 0,
+              isSoldout: false,
+              isHide: false,
+              procTypeCode: 2
+            }
+          ],
+          procTypeCode: 2
+        }
+      ],
+      normalOptions: [{ name: '', content: '', procTypeCode: 2 }]
     }
   }),
   methods: {
@@ -119,6 +147,7 @@ export default {
           // return false;
         } else {
           this.videos.forEach(item => {
+            this.productData.media.splice(0)
             if (!this.isEmpty(item.mediaId)) {
               this.productData.media.push({
                 mediaTypeCode: item.mediaTypeCode,
@@ -174,6 +203,7 @@ export default {
       this.productData.feeRateBase = this.productData.feeRateBase ? 0.09 : 0.00;
       this.productData.feeRateMedia = this.productData.feeRateMedia ? 0.09 : 0.00;
       this.productData.feeRateInfluencer = this.productData.feeRateInfluencer? 0.09: 0.00;
+      this.productData.isWeekley = this.productData.isWeekley ? 1 : 0
 
       // 수수료율
       let feeRate = this.toNumber(String(this.productData.feeRate));
@@ -184,55 +214,14 @@ export default {
         this.productData.feeRate = parseFloat(feeRate / 100);
       }
 
-      // Notify 공지부분
-      let NotifyObj = this.notify;
-      if (NotifyObj.length > 0) {
-        NotifyObj.forEach(_item => {
-          this.productData.productNotice.notices.push({
-            item: _item.item,
-            content: _item.content
-          });
-        });
-      }
+      let addArray = this.productData.addingProducts
+      addArray.forEach(item => {
+        item.details.forEach(item => {
+          item.isSoldout = (item.isSoldout ? 1: 0)
+          item.isHide = (item.isHide ? 1: 0)
+        })
+      })
 
-      if (this.productData.optionTypeCode === 2) {
-        if (this.nomarlOptions.length > 0) {
-          this.nomarlOptions.forEach(item => {
-            if (item.procTypeCode !== 4) {
-              this.productData.normalOptions.push({
-                name: item.name,
-                content: item.content
-              });
-            }
-          });
-        }
-      }
-
-      // 추가 구성
-      let isAddition = this.productData.isAddingProduct === 0 ? false : true;
-      if (isAddition) {
-        for (let k = 0; k < this.additionOptions.length; k++) {
-          if (this.additionOptions.procTypeCode !== 4) {
-            let subAdditionArray = this.additionOptions[k].subAdditionOptions;
-            let details = new Array();
-            for (let sub = 0; sub < subAdditionArray.length; sub++) {
-              if (subAdditionArray[sub].procTypeCode !== 4) {
-                details[sub] = {
-                  item: subAdditionArray[sub].item,
-                  price: this.toNumber(String(this.isEmpty(subAdditionArray[sub].price) ? 0: subAdditionArray[sub].price)),
-                  stockQty: this.toNumber(String(this.isEmpty(subAdditionArray[sub].stockQty) ? 0: subAdditionArray[sub].stockQty)),
-                  isSoldout: subAdditionArray[sub].isSoldout ? 1 : 0,
-                  isHide: subAdditionArray[sub].isHide ? 1 : 0
-                };
-              }
-            }
-            this.productData.addingProducts[k] = {
-              base: { itemGroup: this.additionOptions[k].itemGroupName },
-              details: details
-            };
-          }
-        }
-      }
       return this.productData;
     }
   }
