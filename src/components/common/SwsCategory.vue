@@ -1,19 +1,19 @@
 <template>
     <div>
-        <select class="text_input" ref="module_select_1" v-model="selectedCategory[0]" @change="findCategory(selectedCategory[0], 2)">
-            <option v-for="(item, index) in category1" :key="index" :value="item">{{item.text}}</option>
+        <select ref="module_select_1" v-model="selectedCategory[0]" @change="findCategory(selectedCategory[0], 2)">
+            <option v-for="(item, index) in category1" :key="index" :value="item" v-html="isPercentFn(item)"></option>
         </select>
-        <select class="text_input" ref="module_select_2" v-model="selectedCategory[1]" @change="findCategory(selectedCategory[1], 3)">
-            <option v-for="(item, index) in category2" :key="index" :value="item">{{item.text}}</option>
+        <select ref="module_select_2" v-model="selectedCategory[1]" @change="findCategory(selectedCategory[1], 3)">
+            <option v-for="(item, index) in category2" :key="index" :value="item" v-html="isPercentFn(item)"></option>
         </select>
-        <select class="text_input" ref="module_select_3" v-model="selectedCategory[2]" @change="findCategory(selectedCategory[2], 4)">
-            <option v-for="(item, index) in category3" :key="index" :value="item">{{item.text}}</option>
+        <select ref="module_select_3" v-model="selectedCategory[2]" @change="findCategory(selectedCategory[2], 4)">
+            <option v-for="(item, index) in category3" :key="index" :value="item" v-html="isPercentFn(item)"></option>
         </select>
-        <select class="text_input" ref="module_select_4" v-model="selectedCategory[3]" @change="findCategory(selectedCategory[3], 5)">
-            <option v-for="(item, index) in category4" :key="index" :value="item">{{item.text}}</option>
+        <select ref="module_select_4" v-model="selectedCategory[3]" @change="findCategory(selectedCategory[3], 5)">
+            <option v-for="(item, index) in category4" :key="index" :value="item" v-html="isPercentFn(item)"></option>
         </select>
-        <select class="text_input" ref="module_select_5" v-model="selectedCategory[4]">
-            <option v-for="(item, index) in category5" :key="index" :value="item">{{item.text}}</option>
+        <select ref="module_select_5" v-model="selectedCategory[4]">
+            <option v-for="(item, index) in category5" :key="index" :value="item" v-html="isPercentFn(item)"></option>
         </select>
       </div>
 </template>
@@ -37,7 +37,7 @@ export default {
             category5: [{value: 0, text: '::5차 카테고리::', level: 5, feeRate: 0, parentSysId: 0}]
         }
     }, 
-    props: ['selectedCategory'],
+    props: ['selectedCategory','isPercent'],
     mixins: [commmonJs],
     mounted() {
         this.axiosGetRequest('/api/v1/categories', {categoryLevel: 1}, this.loadCategoryList)
@@ -88,6 +88,21 @@ export default {
                 // row[0] = this.initialCategory[i-1]
                 row.push(this.initialCategory[i-1])
             }
+        },
+        isPercentFn: function (item){
+            const isPercent = this.isPercent || false
+            let isPercentViewText = ''
+            if (isPercent){
+                if (item.value > 0) {
+                    isPercentViewText = item.text + '['+(item.feeRate / 100)+'%]'
+                } else {
+                    isPercentViewText = item.text
+                }
+            } else {
+                isPercentViewText = item.text
+            }
+            return isPercentViewText
+            // return (isPercent ? txt+'['+fee+'%]' : txt)
         }
     }
 

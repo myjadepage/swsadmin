@@ -7,6 +7,8 @@ export default {
                 proposerSysId: 0,
                 sellerSysId: 0,
                 managerName: '',
+                userId: '',
+                userPassword: '',
                 managerRank: '',
                 tel: '',
                 mobile: '',
