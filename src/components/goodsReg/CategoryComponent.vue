@@ -4,11 +4,6 @@
     :fields="fields" 
     small
   >
-    <template v-slot:cell(selected) = "category">
-      <template v-if="category.item.procTypeCode !== 4">
-        <input type="radio" name="selectCategoeyRadio" />
-      </template>
-    </template>
     <template v-slot:cell(text) = "category">
       <template v-if="category.item.procTypeCode !== 4">
         <p v-html="generateCategoryList(category.item)"></p>
@@ -16,7 +11,7 @@
     </template>
     <template v-slot:cell(delete) = "category">
       <template v-if="category.item.procTypeCode !== 4">
-        <b-button variant="outline-danger" size="sm" @click="category.item.procTypeCode = 4">삭제</b-button>
+        <b-button variant="outline-danger" size="sm" @click="deleteRow(category)">삭제</b-button>
       </template>
     </template>
   </b-table>
@@ -62,8 +57,7 @@
 export default {
   data: () => ({
     fields: [
-      {key: 'selected', label: '기본', thStyle: 'width: 50px'},
-      {key: 'text', label: '분류'},
+      {key: 'text', label: '분류', class: 'mr-4 text-left'},
       {key: 'delete', label: '삭제', thStyle: 'width: 50px'}
     ],
 
@@ -79,8 +73,15 @@ export default {
       }
       return textArray.join('>')
     },
-    deleteRow: function (event, item) {
-      this.cateogries.splice(item.index, 1)
+    deleteRow: function (item) {
+      const fields = item.item;
+      let index = item.index
+      if (!this.isEmpty(fields['prdtCategorySysId'])){
+        fields.procTypeCode = 4
+      } else {
+        this.cateogries.splice(index, 1)
+      }
+      // this.cateogries.splice(item.index, 1)
     }
   }
 };

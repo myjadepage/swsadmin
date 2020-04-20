@@ -15,9 +15,9 @@
         <b-form @submit.prevent="onSubmit">
             <table class="t_form">
                 <colgroup>
-                    <col width="15%">
+                    <col width="130">
                     <col width="*">
-                    <col width="15%">
+                    <col width="130">
                     <col width="*">
                 </colgroup>
                 <tbody>
@@ -231,10 +231,22 @@ export default {
             {value: 2, text: 'KB국민은행'},
             {value: 3, text: 'NB농협'},
             {value: 4, text: '기업은행'}
-        ]
+        ],
     }),
     components: {
         VueDaumPostcode
+    },
+    mounted () {
+        this.axiosGetRequest('/api/v1/preferences/banks','',function (res) {
+            this.billingBankCodeList.splice(0)
+            this.billingBankCodeList.push({value: null, text: '::결재은행선택::'})
+            for(let item of res.data.jsonData.banks){
+                this.billingBankCodeList.push({
+                    value: item.bankSysId,
+                    text: item.name
+                })
+            }
+        }.bind(this))
     },
     mixins: [commonJs, imageUploader],
     methods: {
