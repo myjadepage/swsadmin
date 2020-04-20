@@ -5,7 +5,7 @@
     <div class="counts">
         <div class="row">
                 <h3>대시보드</h3>
-                <CountHeader />
+                <CountHeader @countBtnClick="countBtnClick" />
         </div>
         <div class="row">
             <div class="col col-3"><Count :imgType="'ico_won'" :data="payments" /></div>
@@ -110,6 +110,7 @@ this.axiosPostRequest('api/v1/auth/admins/accesstoken',{},(res)=>{
 },
 data(){
     return{
+        dashCntSortBy:0,
         payments:{
             '결제 대기':0,
             '결제 완료':0,
@@ -187,6 +188,53 @@ data(){
           }
          }
         }
+    }
+},
+methods:{
+    countBtnClick(idx){
+        this.dashCntSortBy = idx
+        let now = new Date()
+        switch (idx) {
+            case 0:
+                // console.log(`${now.getFullYear()}-${now.getMonth()+1<10?'0'+ (now.getMonth()+1):now.getMonth()+1}-${now.getDate()}`);
+                console.log(now);
+                break;
+        
+            case 1:
+                console.log(new Date(now-86400000));
+                break;
+        
+            case 2:
+                console.log(new Date(now-(86400000*7)));
+                break;
+        
+            case 3:
+                console.log(new Date(now.getFullYear(), now.getMonth(), 1));
+                console.log(now);
+                break;
+        
+            case 4:
+                console.log(new Date(now.getFullYear(), now.getMonth()-1, 1));
+                console.log(new Date(now.getFullYear(), now.getMonth(), 0));
+                break;
+        
+            case 5:
+                console.log(new Date(now.getFullYear(), now.getMonth()-2, now.getDate()));
+                console.log(now);
+                break;
+            case 6:
+                console.log(new Date(now.getFullYear(), now.getMonth()-5, now.getDate()));
+                console.log(now);
+                break;
+            case 7:
+                console.log(new Date(now.getFullYear()-1, now.getMonth(), now.getDate()));
+                console.log(now);
+                break;
+            default:
+                break;
+        }
+
+
     }
 }
 }
