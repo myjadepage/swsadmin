@@ -131,7 +131,6 @@ import BroadcastStop from '@/views/broadcast/BroadcastStop'
 import BroadcastSend from '@/views/broadcast/BroadcastSend'
 import VodBox from '@/views/broadcast/VodBox'
 import TimeTable from '@/views/broadcast/TimeTable'
-import TimeTableReg from '@/views/broadcast/TimeTableReg'
 
 
 /* 로그인, 회원가입 */
@@ -296,13 +295,13 @@ const routes = [
     name: '운영관리',    
     component: AdminBoardLayout,
     redirect: '/management/notice_list',
-    beforeEnter: (to, from, next) => {
-      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-        next()
-      }else{
-        next('/')
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
     children: [
       // {
       //   path: '/management/',
@@ -810,11 +809,6 @@ const routes = [
         path: '/broadcast/TimeTable',
         name: '편성표관리',
         components: { LeftMenu: BroadcastLeftMenu, Contents: TimeTable }
-      },
-      {
-        path: '/broadcast/TimeTableReg',
-        name: '편성표관리',
-        components: { LeftMenu: BroadcastLeftMenu, Contents: TimeTableReg }
       }
     ]
   },

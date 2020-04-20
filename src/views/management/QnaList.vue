@@ -32,10 +32,10 @@
         <table class="t_list">
             <caption>등록된 Q＆A 리스트</caption>
             <colgroup>
-                <col width="50">
+                <col width="100">
                 <col width="*">
-                <col width="100">
-                <col width="100">
+                <col width="150">
+                <col width="200">
             </colgroup>
             <thead>
                 <tr>
@@ -48,22 +48,25 @@
             <tbody>
             <tr style="background-color:#ffffe3">
                     <td>1</td>
-                    <td class="left">
-                        상품 문의
-                        <font color="blue">(비밀글)</font>
+                    <td class="left">상품 문의
+                        <span class="text-info">(비밀글)</span>
                     </td>
-                    <td><a href="javascript:;" onclick="ezpop.member.open(event)">wonej999</a></td>
+                    <td><router-link to="/">wonej999</router-link></td>
                     <td>2019-05-03</td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="padding:10px">
-                        <div style="width:70px;text-align:left" class="fl"><img src="/img/201324253665762.jpg" width="50" height="50"></div>
-                        <div class="fl" style="margin:5px 0 0 0;width:80%;text-align:left"><a href="/goods/detail?gno=75" target="_blank">버든배낭</a></div>
+                    <td colspan="4" style="padding:30px">
+                        <div style="width:70px;text-align:left" class="fl">
+                            <img src="@/assets/img/201324739120470.jpg" width="50" height="50">
+                        </div>
+                        <div class="fl" style="margin:5px 0 0 0;width:80%;text-align:left">
+                            <router-link to="/goods/detail?gno=75" target="_blank">버든배낭</router-link>
+                        </div>
                     </td>
                 </tr>
                 <tr style="background-color:#F8F8F8">
-                    <td colspan="2" class="left">상품 문의 합니다.</td>
-                    <td colspan="2">
+                    <td colspan="3" class="left">상품 문의 합니다.</td>
+                    <td>
                         <!-- 수정/삭제/답글버튼 -->
                         <b-button variant="outline-secondary" size="sm" id="btnQna" @click="$refs.editQnaModal.show()">수정</b-button>
                         <b-button variant="outline-danger" size="sm" style="margin:0 5px">삭제</b-button>
@@ -79,7 +82,7 @@
         <template v-slot:modal-title>
             <font-awesome-icon icon="info-circle" /> Q＆A 수정
         </template>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mform">
+        <table class="mform">
             <caption>답변 수정/등록 폼</caption>
             <colgroup><col width="100"><col width="*"></colgroup>
             <tbody>
@@ -110,7 +113,7 @@
         <template v-slot:modal-title>
             <font-awesome-icon icon="info-circle" /> Q＆A 답변
         </template>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mform">
+        <table class="mform">
             <caption>답변 수정&amp;등록 폼</caption>
             <colgroup><col width="100"><col width="*"></colgroup>
             <tbody>
@@ -123,7 +126,7 @@
                 <tr>
                     <th>작성자</th>
                     <td>
-                        <input type="text" name="writer" value="몰인몰" class="text_input" style="width:130px" maxlength="20" readonly="">
+                        <input type="text" name="writer" value="몰인몰" class="text_input" style="width:130px" maxlength="20" readonly>
                     </td>
                 </tr>
             </tbody>
@@ -149,7 +152,6 @@ export default {
             console.log(res)
         }
      }
-
 }
 </script>
 

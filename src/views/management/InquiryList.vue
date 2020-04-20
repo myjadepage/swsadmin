@@ -14,7 +14,7 @@
                 <form name="sFrm">
                     <div class="section_head">
                         <h4>
-                            <select id="sconsult" name="sconsult" class="text_input" onchange="change()">
+                            <select id="sconsult" name="sconsult" class="text_input">
                                 <option value="">전체</option>
                                 <option value="01">아이디/비밀번호찾기</option>
                                 <option value="02">회원정보</option>
@@ -63,17 +63,17 @@
                     <tbody>
                         <tr v-if="oneQnaData === null || oneQnaData === undefined">
                             <td colspan="6"> 등록된 데이타가 없습니다.</td>
-
                         </tr>
                         <tr v-for="item in oneQnaData" :key="item.questionSysId" >
                             <td>{{ item.questionSysId}}</td>
                             <td>{{ item.treatFlag }}</td>
-                            <td class="left"><router-link :to="'/management/inquiry_detail/' + item.questionSysId"> {{ item.content }}</router-link></td>
+                            <td class="left">
+                                <router-link :to="'/management/inquiry_detail/' + item.questionSysId"> {{ item.content }}</router-link>
+                            </td>
                             <td>{{ item.email }}</td>
                             <td>{{ changeDate(item.createdAt) }}</td>
                             <td><span style="color:red">미답변</span></td>
                         </tr>
-
                     </tbody>
                 </table>
 
@@ -95,7 +95,7 @@ export default {
             oneQnaData: []
         }
     },
-    mounted () {     
+    mounted () {            
       this.axiosGetRequest('/api/v1/operations/questions/list','',this.oneQnaList)  
     },
     methods: {

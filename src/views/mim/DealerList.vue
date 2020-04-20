@@ -41,12 +41,12 @@
                         :items="dealerData"
                     >
                         <template v-slot:table-colgroup>
-                            <col width="17%">
+                            <col width="15%">
                             <col width="*">
-                            <col width="13%">
-                            <col width="13%">
-                            <col width="13%">
                             <col width="10%">
+                            <col width="13%">
+                            <col width="13%">
+                            <col width="13%">
                             <col width="150">
                             <!-- <col width="50"> -->
                         </template>
@@ -93,7 +93,7 @@ export default {
                 {key : 'detail', label : '상세정보', sortable: false},
                 // {key : 'check', label : '',sortable: false}
             ],
-            dealerData: [],
+            dealerData: []
         }
     },
     mounted () {
@@ -102,7 +102,6 @@ export default {
     methods: {
         loadDealerList(res) {
            let result = res.data.jsonData.sellers
-           console.log(result)
            for (let i = 0 ; i < result.length ; i++) {
                this.dealerData.push({
                    sellerSysId: result[i].sellerSysId,

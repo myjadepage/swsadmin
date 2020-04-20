@@ -12,7 +12,7 @@
             <dt><font-awesome-icon icon="minus" /> 편성표관리</dt>
             <dd class="side_small_menu">
                 <a href="/broadcast/TimeTable" class=""><i class="xi-minus-min"></i>방송편성표 관리</a>
-                <a href="/broadcast/TimeTableReg" class=""><i class="xi-minus-min"></i>방송편성표 등록</a>
+                <a href="/broadcast/BroadcastReg" class=""><i class="xi-minus-min"></i>방송편성표 등록</a>
             </dd>
 
             <!-- <dt><font-awesome-icon icon="minus" /> 비디오관리</dt>

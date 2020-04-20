@@ -51,7 +51,6 @@
                     <td colspan="3">
                         <input type="text" name="businessRegNumber" class="text_input" style="width:150px" maxlength="12"
                           v-model="form.businessRegNumber">
-                        <span class="light_gray"> (예: 119-02-29983)</span>
                     </td>
                 </tr>
                 <tr>
@@ -116,7 +115,6 @@
                     <td colspan="3">
                         <input type="text" name="bankAccount" class="text_input" style="width:150px" maxlength="30"
                           v-model="form.bankAccount">
-                        <span class="light_gray"> "-" 없이 입력해주세요 (예: 11232112333)</span>
                     </td>
                 </tr>
                 <tr>
@@ -136,7 +134,6 @@
                     <td colspan="3">
                         <input type="text" name="tel" class="text_input" style="width:150px" maxlength="20"
                          v-model="form.tel">
-                        <span class="light_gray"> (예: 02-1234-1234)</span>
                     </td>
                 </tr>
                 <tr>
@@ -144,12 +141,11 @@
                     <td>
                         <input type="text" name="mobile" class="text_input" style="width:150px" maxlength="20"
                           v-model="form.mobile">
-                        <span class="light_gray">(예: 010-1234-1234)</span>
                     </td>
                     <th>팩스번호</th>
                     <td>
                         <input type="text" name="fax" class="text_input" style="width:150px" value="" maxlength="20" v-model="form.fax">
-                        <span class="light_gray">(예: 02-1234-1234)</span>
+                       
                     </td>
                 </tr>
                 <tr>
@@ -163,8 +159,7 @@
                     <th>홈페이지</th>
                     <td colspan="3">
                         <input type="text" name="homepage" class="text_input" style="width:300px;" maxlength="150"
-                          v-model="form.homepage">
-                        <span class="light_gray"> (예: www.sitename.co.kr)</span>
+                          v-model="form.homepage">                      
                     </td>
                 </tr>
                 <tr>
@@ -217,8 +212,8 @@
             </tbody>
         </table>
         <div class="btn_center">
-            <b-button variant="secondary" style="margin-right:5px" @click="$router.push('/mim/dealer_list')">목록</b-button>
-            <b-button variant="primary">입점승인</b-button>
+            <b-button variant="outline-secondary" size="lg" style="margin-right:5px" @click="$router.push('/mim/dealer_list')">목록</b-button>
+            <b-button variant="outline-primary" size="lg">입점승인</b-button>
         </div>
     </form>
 

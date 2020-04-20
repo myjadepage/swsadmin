@@ -89,38 +89,9 @@
           <tbody>
             <!-- 상품분류(카테고리) -->
             <tr>
-              <th rowspan="2">상품분류(카테고리) <strong class="red">*</strong></th>
+              <th>상품분류(카테고리) <strong class="red">*</strong></th>
               <td colspan="3">
-                <select id="category1" name="category1" @change="onCategorySelector($event, 1)" v-model="selectedCategoryRow[0]" class="text-danger" >
-                  <option v-for="(option, inx) in category1" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category2" name="category2" @change="onCategorySelector($event, 2)" v-model="selectedCategoryRow[1]" class="text-danger">
-                  <option v-for="(option, inx) in category2" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category3" name="category3" @change="onCategorySelector($event, 3)" v-model="selectedCategoryRow[2]">
-                  <option v-for="(option, inx) in category3" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category4" name="category4" @change="onCategorySelector($event, 4)" v-model="selectedCategoryRow[3]">
-                  <option v-for="(option, inx) in category4" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <select id="category5" name="category5" data-required="false" v-model="selectedCategoryRow[4]">
-                  <option v-for="(option, inx) in category5" :key="inx" :value="option">{{ option.text }}</option>
-                </select>
-                <button type="button" class="btn btn-sm btn-secondary" v-on:click="addCate">추가</button>
-              </td>
-            </tr>
-
-            <tr>
-              <td colspan="3" class="category">
-                <category-component :productData="broadcastData" :selectedCategoryTable="selectedCategoryTable" :categoryTable="categoryTable" @addSelect="onSelectCate" ></category-component>
-                <dl class="explain blue">
-                  <dt>
-                    <strong>※ 다중 분류로 선택할 경우</strong>
-                  </dt>
-                  <dd>기본으로 선택된 분류가 해당 상품의 대표 분류입니다. 검색 결과에서는 기본 분류를 기준으로 출력됩니다.</dd>
-                  <dd>각각 다른상품으로 인식되기 때문에 상품 목록에 해당 상품이 중복 노출될 수 있습니다.</dd>
-                  <dd class="red">다중 카테고리 선택 후 수수료율을 다르게 추가 할 경우 기본 카테고리 수수료율로 설정됩니다.</dd>
-                </dl>
+                <sws-category :selectedCategory="categoryList"></sws-category>               
               </td>
             </tr>
 
@@ -198,7 +169,7 @@
 <script>
 import commonJs from "@/assets/js/common.js"
 import SwsBrand from '@/components/common/SwsBrand'
-import CategoryComponent from "@/components/goodsReg/CategoryComponent"
+import SwsCategory from '@/components/common/SwsCategory.vue'
 import ClickEventMixin from "@/components/goodsReg/ClickEventMixin.js"
 import ImagesUploader from "@/assets/js/ImagesUploader.js"
 import SwsSeller from '@/components/common/SwsSeller'
@@ -212,7 +183,7 @@ export default {
   ],
   components: {
     SwsBrand,
-    CategoryComponent,
+    SwsCategory,
     SwsSeller,
     AddProduct
   },
@@ -229,30 +200,7 @@ export default {
       videos: [
         {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2}
       ],
-      selectedCategoryRow: [
-        { value: 0, text: "1차카테고리 필수", parentSysId: '', feeRate: '' },
-        { value: 0, text: "2차카테고리 필수", parentSysId: '', feeRate: '' },
-        { value: 0, text: "3차카테고리 선택", parentSysId: '', feeRate: '' },
-        { value: 0, text: "4차카테고리 선택", parentSysId: '', feeRate: '' },
-        { value: 0, text: "5차카테고리 선택", parentSysId: '', feeRate: '' }
-      ],
-      categoryTable: [],
-      selectedCategoryTable: '',
-      category1: [
-        { value: 0, text: "1차카테고리 필수", parentSysId: '', feeRate: '' }
-      ],
-      category2: [
-        { value: 0, text: "2차카테고리 필수", parentSysId: '', feeRate: '' }
-      ],
-      category3: [
-        { value: 0, text: "3차카테고리 선택", parentSysId: '', feeRate: '' }
-      ],
-      category4: [
-        { value: 0, text: "4차카테고리 선택", parentSysId: '', feeRate: '' }
-      ],
-      category5: [
-        { value: 0, text: "5차카테고리 선택", parentSysId: '', feeRate: '' }
-      ]
+      categoryList: []
     }
   },
   methods: {

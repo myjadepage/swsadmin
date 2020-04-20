@@ -335,6 +335,9 @@
     .table_fixed {
         table-layout: fixed
     }
+    .table th, .table td {    
+      vertical-align: middle;
+    }
     /* wrap */
     
     #wrap {
