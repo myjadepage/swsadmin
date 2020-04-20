@@ -8,7 +8,7 @@ export default {
       briefDescription: "",
       detailDescription: "",
       detailAttachFileUrl: "",
-      iconList: [],
+      iconList: '',
       bigImageUrl: require('@/assets/img/default_image.jpg'),
       middleImageUrl: "",
       smallImageUrl: "",
@@ -58,7 +58,7 @@ export default {
       feeRateInfluencer: false,
       brandSysId: 0,
       sellerSysId: 0,
-      isDisplay: 0,
+      isDisplay: 1,
       isVat: 0,
       isSoldout: 0,
       isAddingProduct: 0,
@@ -103,7 +103,7 @@ export default {
     }
   }),
   methods: {
-    insertSubmitValidate() {
+    onSubmitValidate() {
       // ------------------- Form Validate 체크 시작 -------------------
       if (this.selectedCategories.categoryTable.length <= 0) {
         alert('카테고리를 선택하여 추가하여 주시기 바랍니다.')
@@ -111,16 +111,20 @@ export default {
       } else {
         this.productData.category.categories.splice(0)
         this.selectedCategories.categoryTable.forEach(item => {
-          this.productData.category.categories.push({
-            categorySysId1: item.categorySysId1,
-            categorySysId2: item.categorySysId2 !== undefined ? item.categorySysId2 : 0,
-            categorySysId3: item.categorySysId3 !== undefined ? item.categorySysId3 : 0,
-            categorySysId4: item.categorySysId4 !== undefined ? item.categorySysId4 : 0,
-            categorySysId5: item.categorySysId5 !== undefined ? item.categorySysId5 : 0
-          });
+          let row = {}
+          row.categorySysId1 = item.categorySysId1
+          row.categorySysId2 = item.categorySysId2
+          row.categorySysId3 = item.categorySysId3 !== undefined ? item.categorySysId3 : 0
+          row.categorySysId4 = item.categorySysId4 !== undefined ? item.categorySysId4 : 0
+          row.categorySysId5 = item.categorySysId5 !== undefined ? item.categorySysId5 : 0
+          if (!this.isEmpty(item['prdtCategorySysId'])) {
+            row.prdtCategorySysId = item.prdtCategorySysId
+            row.procTypeCode = item.procTypeCode
+          }
+          this.productData.category.categories.push(row);
         });
       }
-      this.productData.iconList = this.productData.iconList.join(';')
+      this.productData.iconList = this.iconList.join(';')
 
       // 다른이미지 Validate
       if (this.images.length > 0) {
@@ -138,8 +142,8 @@ export default {
       // 영상 업로드
       let videos = this.videos;
       if (videos.length <= 0) {
-        alert("1개 이상의 영상을 업로드 해야 합니다.");
-        return false;
+        // alert("1개 이상의 영상을 업로드 해야 합니다.");
+        // return false;
       } else {
         let vaildatArray = this.videos[0];
         if (this.isEmpty(vaildatArray.mediaId)) {
@@ -148,13 +152,18 @@ export default {
         } else {
           this.videos.forEach(item => {
             this.productData.media.splice(0)
+            let row = {
+              mediaTypeCode: item.mediaTypeCode,
+              mediaId: item.mediaId,
+              title: item.title,
+              thumnailUrl: item.thumnailUrl,
+              procTypeCode: item.procTypeCode
+            }
+            if (!this.isEmpty(item['prdtMediaSysId'])) {
+              row.prdtMediaSysId = item['prdtMediaSysId']
+            }
             if (!this.isEmpty(item.mediaId)) {
-              this.productData.media.push({
-                mediaTypeCode: item.mediaTypeCode,
-                mediaId: item.mediaId,
-                title: item.title,
-                thumnailUrl: item.thumnailUrl
-              });
+              this.productData.media.push(row);
             }
           });
         }
@@ -223,6 +232,116 @@ export default {
       })
 
       return this.productData;
-    }
+    },
+    async getProductData(res) {
+      // 카테고리 정보 세팅
+      let categoryData = res.data.jsonData.listPrdtCate;
+      categoryData.forEach(item => {
+        let row = {}
+        row.procTypeCode = 1
+        row.prdtCategorySysId = item.prdtCategorySysId
+        if (!this.isEmpty(item.categorySysId1)){
+          row.categorySysId1 = item.categorySysId1
+          row.categoryText1 = item.categoryName1
+        }
+        if (!this.isEmpty(item.categorySysId2)){
+          row.categorySysId2 = item.categorySysId2
+          row.categoryText2 = item.categoryName2
+        }
+        if (!this.isEmpty(item.categorySysId3)){
+          row.categorySysId3 = item.categorySysId3
+          row.categoryText3 = item.categoryName3
+        }
+        if (!this.isEmpty(item.categorySysId4)){
+          row.categorySysId4 = item.categorySysId4
+          row.categoryText4 = item.categoryName4
+        }
+        if (!this.isEmpty(item.categorySysId5)){
+          row.categorySysId5 = item.categorySysId5
+          row.categoryText5 = item.categoryName5
+        }
+        row.procTypeCode = 1
+        row.prdtCategorySysId = item.prdtCategorySysId
+        this.selectedCategories.categoryTable.push(row)
+      });
+
+
+      //상품 정보
+      let product = res.data.jsonData.product;
+      this.images.splice(0);
+      for (let _k in product) {
+        // 다른 이미지 처리
+        if (_k.indexOf("isUsedOptionalImage") > -1) {
+          if (product[_k] !== 0) {
+            let num = _k.replace("isUsedOptionalImage", '');
+            this.images.push({
+              imageurl: product["optionalImage" + num + "Url"]
+            });
+          }
+        } else if (_k.indexOf("iconList") > -1) {
+          this.iconList = product[_k].split(";");
+        } else if (_k === "isAutoImageUpload") {
+          this.productData[_k] = 1;
+        } else if (_k === 'feeRate'){
+          this.productData[_k] = product[_k] * 100
+        } else if (_k === 'feeRateBase'){
+          this.productData[_k] = (product[_k] > 0 ? true : false)
+        } else if (_k === 'feeRateMedia'){
+          this.productData[_k] = (product[_k] > 0 ? true : false)
+        } else if (_k === 'feeRateInfluencer'){
+          this.productData[_k] = (product[_k] > 0 ? true : false)
+        }else {
+          this.productData[_k] = product[_k];
+        }
+      }
+      // 판매자 브랜드 세팅
+      this.resultSeller(this.productData.sellerSysId);
+
+      // 영상정보 세팅
+      if (!this.isEmpty(res.data.jsonData['listProductMedia'])){
+        let media = res.data.jsonData.listProductMedia;
+        this.videos.splice(0);
+        for (let item of media) {
+            this.videos.push({
+              prdtMediaSysId: item.prdtMediaSysId,
+              mediaId: item.mediaId,
+              title: item.title,
+              videoTitle: this.isEmpty(item.mediaId) ? '' : "영상있음",
+              mediaTypeCode: item.mediaTypeCode,
+              thumnailUrl: item.thumnailUrl,
+              progressValue: 0,
+              progressMax: 0,
+              procTypeCode: 3
+            })
+        }
+      }
+
+      // 상품 고시 로딩 시에 세팅
+      if (!this.isEmpty(res.data.jsonData['productNotice'])){
+        this.productData.productNotice = res.data.jsonData['productNotice']
+        this.productData.productNotice.notices.forEach(item => {
+          item.procTypeCode = 3
+        })
+      }
+
+      // 일반 옵션시에 세팅
+      if(!this.isEmpty(res.data.jsonData.normalOptions)){
+        this.productData.normalOptions = res.data.jsonData.normalOptions
+        this.productData.normalOptions.forEach(item => {
+          item['procTypeCode'] = 3
+        })
+      }
+      
+      // 추가 구성 사항
+      if (!this.isEmpty(res.data.jsonData['addingProducts'])){
+        this.productData.addingProducts = res.data.jsonData.addingProducts;
+        this.productData.addingProducts.forEach(item => {
+          item.base['procTypeCode'] = 3
+          item.details.forEach(sub => {
+            sub['procTypeCode'] = 3
+          })
+        })
+      }
+    },
   }
 };

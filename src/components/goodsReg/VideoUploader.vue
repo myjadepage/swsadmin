@@ -31,7 +31,7 @@
                 size="sm"
                 squared
                 text="Button"
-                @click="onObjOpenFn(`videoObject`+index)"
+                @click="onObjOpenFn(`videoObject${index}`)"
               >영상 찾기</b-button>
             </b-input-group-append>
           </b-input-group>
@@ -50,7 +50,7 @@
             <b-input-group-append>
               <b-button size="sm" squared text="Button" v-on:click="onObjOpenFn('thumbmailObject'+index)" >썸네일 업로드</b-button>
             </b-input-group-append>
-            <input type="file" style="display: none" :id="'thumbmailObject'+index" accept="image/*" @change="$emit('imageUploader',$event, {item: item, field: 'thumnailUrl', imageDir: '/product/image/0/'+productData.sellerSysId})" />
+            <input type="file" style="display: none" :id="`thumbmailObject${index}`" accept="image/*" @change="$emit('imageUploader',$event, {item: item, field: 'thumnailUrl', imageDir: '/product/image/0/'+productData.sellerSysId})" />
           </b-input-group>
         </b-col>
         <b-col cols="1" class="px-1">

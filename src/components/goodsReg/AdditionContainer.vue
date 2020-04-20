@@ -2,7 +2,7 @@
   <div class="addition_container" style="width:100%">
     <ul class="over_h mgb10">
       <li class="fr">
-        <b-button @click="addAdditionOptionRow()">추가구성 추가</b-button>
+        <b-button variant="secondary" size="sm" @click="addAdditionOptionRow()">추가구성 추가</b-button>
       </li>
     </ul>
     <div class="addition_unit" v-for="(item, mainIndex) in productData.addingProducts" :key="mainIndex">
@@ -28,8 +28,8 @@
               <th>품절여부</th>
               <th>숨김여부</th>
               <th>
-                <b-button size="sm" style="height: 19px;font-size: 10px;" @click="addSubAdditionOptionRow(item, mainIndex)">추가</b-button>&emsp;
-                <b-button size="sm" style="height: 19px;font-size: 10px;" variant="danger" @click="removeAdditionOptionRow(item, mainIndex)" >삭제</b-button>
+                <b-button variant="outline-secondary" size="sm" style="height: 19px;font-size: 10px; line-height: 1.2" @click="addSubAdditionOptionRow(item, mainIndex)"><font-awesome-icon icon="plus" />&emsp;추가</b-button>&emsp;
+                <b-button variant="outline-danger" size="sm" style="height: 19px;font-size: 10px; line-height: 1.2" @click="removeAdditionOptionRow(item, mainIndex)" ><font-awesome-icon icon="trash" />&emsp;삭제</b-button>
               </th>
             </tr>
           </thead>
@@ -41,7 +41,7 @@
                 <td><input type="text" class="text_input number_input" v-model.number="subItem.stockQty" /></td>
                 <td style="vertical-align:middle"><input type="checkbox" v-model="subItem.isSoldout" /></td>
                 <td><input type="checkbox" v-model="subItem.isHide" /></td>
-                <td><b-button variant="danger" size="sm" style="height: 19px;font-size: 10px; margin-left: 37px" @click="removeSubAdditionOptionRow(subItem, mainIndex, index)">삭제</b-button></td>
+                <td><b-button block variant="light" size="sm" style="height: 19px;font-size: 10px; line-height: 1.2" @click="removeSubAdditionOptionRow(subItem, mainIndex, index)"><font-awesome-icon icon="trash" />&emsp;삭제</b-button></td>
               </template>
             </tr>
           </tbody>
