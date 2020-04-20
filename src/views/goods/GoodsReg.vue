@@ -151,7 +151,7 @@
               <td colspan="3" class="icons">
                 <ul>
                   <li>
-                    <input type="checkbox" id="cb_icon_1" name="iconList" value="1" v-model.number="productData.iconList"/>
+                    <input type="checkbox" id="cb_icon_1" name="iconList" value="1" v-model.number="iconList"/>
                     <div>
                       <label for="cb_icon_1">
                         <img src="@/assets/img/ico_pro_sale.gif" />
@@ -159,7 +159,7 @@
                     </div>
                   </li>
                   <li>
-                    <input type="checkbox" id="cb_icon_2" name="iconList" value="2" v-model.number="productData.iconList"/>
+                    <input type="checkbox" id="cb_icon_2" name="iconList" value="2" v-model.number="iconList"/>
                     <div>
                       <label for="cb_icon_2">
                         <img src="@/assets/img/ico_pro_sale.gif" />
@@ -743,7 +743,7 @@
                       <dd>넥타이타입은 A~J, 셔츠타입은 A~J, 사이즈는 95,100,105입니다. 원하는 색상 및 사이즈를 적어주세요.</dd>
                     </dl>
                     <div class="option_text">
-                      <textarea name="optionDescription" rows="3" class="text_input" maxlength="200"></textarea>
+                      <textarea rows="3" class="text_input" maxlength="200" v-model="productData.optionDescription"></textarea>
                     </div>
                   </div>
                 </template>
@@ -810,7 +810,6 @@ import commonJs from "@/assets/js/common.js"
 import ImagesUploader from "@/assets/js/ImagesUploader.js"
 import GoodsRegComponent from "@/components/goodsReg/GoodsRegComponent.js"
 import ClickEventMixin from "@/components/goodsReg/ClickEventMixin.js"
-import GoodsUpdate from "@/components/goodsReg/GoodsUpdate.js"
 import CategoryComponent from "@/components/goodsReg/CategoryComponent"
 import ImageUploader from "@/components/goodsReg/ImageUploader"
 import VideoUploader from "@/components/goodsReg/VideoUploader"
@@ -832,8 +831,7 @@ export default {
     commonJs,
     ImagesUploader,
     ClickEventMixin,
-    GoodsRegComponent,
-    GoodsUpdate
+    GoodsRegComponent
   ],
   components: {
     quillEditor,
@@ -855,6 +853,7 @@ export default {
         categories: [],
         categoryTable: []
       },
+      iconList: [],
       images: [{ imageurl: '' }],
       files: [{fileDir: ''}],
       videos: [
@@ -894,7 +893,7 @@ export default {
       }
     },
     SubmitAddProduct: function () {
-      let object = this.insertSubmitValidate(document.Frm);
+      let object = this.onSubmitValidate();
       this.axiosPostRequest('/api/v1/products', {jsonData: object}, (res) => {
         if (res.data.jsonData.resultCode==='0001') {
             alert('상품등록이 완료 되었습니다.')
@@ -905,8 +904,7 @@ export default {
       })
     },
     SubmitUpdateProduct: function () {
-      this.updateProductData.productSysId = this.productData.productSysId;
-      let object = this.updateSubmitValidate(document.Frm);
+      let object = this.onSubmitValidate();
       this.axiosPutRequest('/api/v1/products/' + this.productData.productSysId, {jsonData: object}, (res) => {
         let result = res.data.jsonData
         if (result.resultCode === '0001') {

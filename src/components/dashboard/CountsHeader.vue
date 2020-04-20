@@ -23,6 +23,7 @@ methods:{
     this.$el.getElementsByTagName('button')[this.selectedBtn].classList.remove('selected')
     this.$el.getElementsByTagName('button')[x].classList.add('selected')
     this.selectedBtn = x
+    this.$emit('countBtnClick',x)
   }
 }
 }

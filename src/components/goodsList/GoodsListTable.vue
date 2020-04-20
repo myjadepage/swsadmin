@@ -129,7 +129,6 @@
 import commonJs from '@/assets/js/common.js'
 export default {
   data: () => ({
-      defaultImage: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Noimage.svg',
       perPage: 10,      // 페이지당 표현수
       fields: [
           {key : 'selected', label: '', class: 'text-center align-middle'},

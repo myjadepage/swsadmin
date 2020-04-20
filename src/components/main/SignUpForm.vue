@@ -69,8 +69,10 @@ export default {
             }
           }
             this.axiosPostRequest('api/v1/auth/admins/join',item,(res)=>{
-              console.log(res.data.jsonData);             
-              this.$emit('cencelClick')
+              console.log(res);
+              if (res.data.jsonData.resultCode==='0001') {
+                this.$emit('cencelClick')
+              }
               },
               (err)=>{
                 console.log(err);
