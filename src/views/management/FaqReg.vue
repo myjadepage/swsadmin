@@ -100,7 +100,7 @@ export default {
               vm.$router.replace('/management/faq_list')
               alert('FAQ등록이 완료 되었습니다.')
           }         
-          this.axiosPostRequest('/api/v1/operations/faqs', {jsonData : this.jsonData}, CallbackFn)
+          this.axiosPostRequest('/api/v1/operations/faqs', {jsonData : this.jsonData}, CallbackFn,'', sessionStorage.getItem('accessToken'))
       }
   }
 }

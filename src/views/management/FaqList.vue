@@ -27,16 +27,54 @@
                             </select>
                         </h4> -->
                         <div class="mgb5">
-                            <select id="skey" name="skey" class="text_input" @change="loadSearchFaq">
+                            <!-- <select id="skey" name="skey" class="text_input" @change="loadSearchFaq">
                                 <option value="1">제목</option>
                                 <option value="2">내용</option>
-                            </select>
-                            <input type="text" name="keyword" v-model="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
-                            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button>
+                            </select> -->
+                            <input type="text" v-model="searchQuery" placeholder="검색어" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
+                            <!-- <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
                         </div>
                     </div>
 
-                    <table class="t_list">
+                     <form name="Frm">
+                        <b-table
+                            ref="inquiryTable"
+                            head-variant="light"           
+                            :fields="fields"  
+                            :items="filteredData"
+                            :keyword="searchQuery"
+                        >
+                            <template v-slot:table-colgroup>
+                                <col width="100">
+                                <col width="250">
+                                <col width="*">
+                                <col width="250">
+                                <col width="100">
+                                <col width="100">
+                            </template>
+                            <template v-slot:cell(faqTypeCode) = "faqTypeCode">
+                              {{ chanegValue(faqTypeCode.item.faqTypeCode) }}
+                            </template>
+                            <template  v-slot:cell(title) = "title">
+                                <router-link :to="'/management/faq_detail/'+ title.item.siteFaqSysId">{{ title.item.title }}</router-link>
+                            </template>
+                            <template v-slot:cell(createdAt) = "createdAt">
+                               {{ changeDate(createdAt.item.createdAt) }}
+                            </template>
+                            <template v-slot:cell(setting) = "setting">
+                                <span class="button small">
+                                    <b-button variant="outline-danger" size="sm"  @click="deleteFaq(setting.item.siteFaqSysId)">삭제</b-button>
+                                </span>
+                            </template>
+                        </b-table>
+
+                         <div>
+                            <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
+                            <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
+                        </div>
+                     </form>    
+
+                    <!-- <table class="t_list">
                         <caption>FAQ 리스트</caption>
                         <colgroup>
                             <col width="50">
@@ -95,7 +133,7 @@
 
                     <div class="paging" style="margin-top:20px">
                          <b-button variant="secondary" style="margin:0 5px"> 1 </b-button>
-                    </div>
+                    </div> -->
 
                     <div class="btn_center">
                         <b-button variant="outline-info" size="lg" @click="$router.push('/management/faq_reg')">등록</b-button>
@@ -106,42 +144,73 @@
 
 <script>
 import commonJs from '@/assets/js/common.js'
-
 export default {
     mixins: [
       commonJs
     ],
     data() {
         return {
+            pageNumber:0,
+            perPage: 15,
+            fields:[
+                {key : 'siteFaqSysId', label : 'No', sortable: true},
+                {key : 'faqTypeCode', label : '분류', sortable: true},
+                {key : 'title', label : '제목', sortable: true},               
+                {key : 'createdAt', label : '등록일', sortable: true},
+                {key : 'viewCount', label : '조회수', sortable: false},
+                {key : 'setting', label : '관리', sortable: false}
+            ],
             faqData: [],
-            searchData:[],
-            mode: 1,
-            keyword: null
+            searchQuery: ''
         }
     },
     mounted () {     
-      this.axiosGetRequest('/api/v1/operations/faqs','',this.loadFaqList)  
+        this.paginatedData  
+    },
+    computed: {
+        pageCount() {
+            let l = this.faqData.length,
+                s = this.perPage
+            return Math.ceil(l/s)
+        },
+        paginatedData() {
+            const start = this.pageNumber * this.perPage,
+                  end = start + this.perPage
+                  this.axiosGetRequest('/api/v1/operations/faqs',{'startIndex':start, 'rowCount':end}, this.loadFaqList)
+            return this.faqData.slice(start, end)
+        },
+        filteredData() {
+            return this.searchQuery ? this.faqData.filter(item =>
+                item.title.includes(this.searchQuery) || this.chanegValue(item.faqTypeCode).includes(this.searchQuery)) : this.faqData
+        }
     },
     methods: {
-        //  검색
-        loadSearchFaq(e) {
-          this.mode  =  Number(e.target.value)
+       nextPage() {          
+            this.pageNumber++            
+            this.faqData.splice(0)
+            this.paginatedData
         },
-        loadFaqList(res) {
-            console.log(res)
-           this.faqData = res.data.jsonData.siteFaqs
-        },
-        searchFaqList(res) {            
-            console.log(res)
-            this.searchData = res.data.jsonData.siteFaqs
-        },
-        searchButton() {
-            var param = {
-                'keywordCode':this.mode,
-                'keyword': this.keyword
+        prevPage() {           
+            this.pageNumber--  
+            this.faqData.splice(0)         
+            this.paginatedData        
+        },   
+        loadFaqList(res) {           
+           let result = res.data.jsonData.siteFaqs
+           console.log(result)
+            if(result) {
+                for(let i=0 ; i < result.length; i++ ) {
+                this.faqData.push({
+                    'siteFaqSysId': result[i].siteFaqSysId,
+                    'faqTypeCode': result[i].faqTypeCode,
+                    'title': result[i].title,                   
+                    'createdAt': result[i].createdAt,
+                    'viewCount': result[i].viewCount
+                })
+              }
+            }else {
+                this.faqData=[]
             }
-            console.log(param)
-            this.axiosGetRequest('/api/v1/operations/faqs', param,this.searchFaqList) 
         },
         chanegValue(type) {            
             switch (type) {
@@ -162,10 +231,10 @@ export default {
             return y + '-' + m + '-' + d
         },
         deleteFaq(siteFaqSysId) {
-            this.axiosDeleteRequest('/api/v1/operations/faqs/' + siteFaqSysId,'',this.deleteFaqStatus)  
+           this.axiosDeleteRequest('/api/v1/operations/faqs/' + siteFaqSysId,'',this.deleteFaqStatus, '', sessionStorage.getItem('accessToken')) 
         },
         deleteFaqStatus(res) {
-            console.log(res)
+            console.log('삭제성공',res)
             window.location.reload()
             alert('삭제하였습니다.')
         }

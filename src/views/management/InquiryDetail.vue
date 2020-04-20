@@ -4,7 +4,7 @@
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
-                    <li>고객운영관리</li>
+                    <li>게시판운영관리</li>
                     <li class="on">{{ $route.name }}</li>
                 </ul>
                 <ul class="helpbox">
@@ -21,36 +21,27 @@
                             <col width="200">
                             <col width="*">
                         </colgroup>
-                        <tbody>
+                        <tbody>                           
+                            <tr>                              
+                                <th>등록일</th>
+                                <td>{{ changeDate(question.createdAt) }}</td>
+                                <th>이메일</th>
+                                <td colspan="3">{{ question.email }}</td>
+                            </tr>                         
                             <tr>
-                                <th>분류</th><td colspan="3">{{ question.categorize }}</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th><td colspan="3">{{ question.title}}</td>
-                            </tr>
-                            <tr>
-                                <th>작성자</th><td>{{ question.userId }}</td>
-                                <th>등록일</th><td>{{ question.created }}</td>
-                            </tr>
-                            <tr>
-                                <th>이메일</th><td colspan="3">{{ question.email }}</td>
-                            </tr>
-                            <tr>
-                                <th>휴대폰</th><td colspan="3">{{ question.mobile }}</td>
-                            </tr>
-                            <tr>
-                                <th>내용</th><td colspan="3">{{ question.content }}</td>
+                                <th>내용</th>
+                                <td colspan="5">{{ question.content }}</td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div class="over_h mgt5">
-                        <div class="fl">
-                            <b-button variant="outline-secondary">목록으로</b-button>
-                        </div>
-                        <div class="fr">
+                        <!-- <div class="fl">
+                            <b-button variant="outline-secondary" @click="$router.push('/management/inquiry_list')">목록으로</b-button>
+                        </div> -->
+                        <!-- <div class="fr">
                             <b-button variant="outline-danger">삭제하기</b-button>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="section_head"><h4><font-awesome-icon icon="info-circle" /> 답변</h4></div>
@@ -58,24 +49,30 @@
                 <form name="Frm">
                     <table class="t_form">
                         <caption>답변 내용</caption>
-                        <tbody>
+                        <tbody>   
                             <tr>
-                                <th>답변제목</th>
-                                <td>
-                                    <input name="subject" v-model="subject" class="text_input" style="width:98%" maxlength="50">
-                                </td>
-                            </tr>
+                                <th>답변날짜</th>
+                                <td> {{ changeDate(question.answerDate) }}</td>
+                                </tr>                       
                             <tr>
                                 <th>답변내용</th>
                                 <td>
-                                    <textarea name="content" v-model="content" class="text_input" style="height:200px;width:98%"></textarea>
+                                    
+                                    <textarea name="content" v-model="content" v-if="question.treatFlag === 0" class="text_input" style="height:200px;width:98%">
+                                    </textarea>
+
+                                    <p v-else class="text_input" style="height:200px;width:98%">
+                                        {{ question.answer }}
+                                    </p>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div class="btn_center">
-                        <b-button variant="outline-info" size="lg" @click="submitAnswer">확인</b-button>
+                        <b-button variant="outline-secondary" size="lg" @click="$router.push('/management/inquiry_list')" style="margin-right:5px">목록</b-button>
+                        <b-button variant="outline-info" size="lg" v-if="question.treatFlag === 0"  @click="submitAnswer">확인</b-button>
+                        <b-button variant="outline-info" size="lg" v-else  @click="$router.push('/management/inquiry_list')">확인</b-button>
                     </div>
                 </form>
    </div>
@@ -88,40 +85,40 @@ export default {
     mixins: [commonJs],
     data() {
         return {
-            question : {},
-            subject: null,
+            question : {},                  
             content: null,
-            questionSysId: this.$route.params.questionSysId
+            siteQuestionSysId: this.$route.params.siteQuestionSysId
         }
     },
-    mounted() {
-        this.axiosPatchRequest('/api/v1/operations/questions/'+ this.questionSysId + '/answer','',this.loadInquiryDetail)  
+    mounted() {           
+        this.axiosGetRequest('/api/v1/operations/questions/'+ this.siteQuestionSysId,'',this.loadInquiryDetail,'', sessionStorage.getItem('accessToken'))        
     },
     methods: {   
         loadInquiryDetail(res) {
             console.log(res)
-        }, 
+            this.question = res.data.jsonData
+        },
+        changeDate(date) {
+            var y = date.substr(0, 4)
+            var m = date.substr(4, 2)
+            var d = date.substr(6, 2)
+            return y + '-' + m + '-' + d
+        },
         submitAnswer: function () {
-            var vm = this
-            if(this.subject === null) {
-                alert('답변제목을 입력해 주세요')
-                return false
-            }
+            var vm = this           
             if(this.content === null) {
                 alert('답변내용을 입력해 주세요')
                 return false
-            }
+            }    
             let jsonData = {
-                'replyTitle': this.subject,
-                'replyContent': this.content,
-                'replyStatusCode': 2
-            }            
+                "answer": this.content
+            }               
             let CallbackFn = function (res) {
               console.log(res)
-              vm.$router.replace('/inquiry_list')
+              vm.$router.replace('/management/inquiry_list')
               alert('답변등록이 완료 되었습니다.')
             }
-            this.axiosPatchRequest('/api/v1/operations/questions/' + this.questionSysId + '/replies' , {jsonData : jsonData}, CallbackFn)
+            this.axiosPatchRequest('/api/v1/operations/questions/' + this.siteQuestionSysId + '/answer' ,{jsonData : jsonData}, CallbackFn,'', sessionStorage.getItem('accessToken'))
         }
     }
 }

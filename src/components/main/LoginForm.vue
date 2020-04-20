@@ -29,14 +29,20 @@ export default {
     },
     methods:{
         signInClick(){
-            this.$emit('signInClick')
+          this.email = ''
+          this.password = ''
+          this.$emit('signInClick')
         },
         
         loginClick(x){
-          this.axiosPostRequest('api/v1/auth/admins/login',
-          {jsonData:{email:x.target.elements[0].value,password:this.makeRsa(x.target.elements[1].value)}},
+          this.axiosPostRequest('api/v1/auth/admins/login',{
+              jsonData:{
+                email:x.target.elements[0].value,
+                password:this.makeRsa(x.target.elements[1].value)
+              }
+          },
           (res)=>{
-            console.log(res);
+            console.log(res.data.jsonData);
             
             if(res.data.jsonData.resultCode==='0001'){
               sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)

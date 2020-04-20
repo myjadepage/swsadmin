@@ -68,14 +68,12 @@ export default {
               mobile:this.makeRsa(this.mobile)  
             }
           }
-
             this.axiosPostRequest('api/v1/auth/admins/join',item,(res)=>{
-              console.log(res);
+              console.log(res.data.jsonData);             
               this.$emit('cencelClick')
               },
               (err)=>{
                 console.log(err);
-                
               })
           }else{
            alert('비밀번호를 확인 해주십시오')

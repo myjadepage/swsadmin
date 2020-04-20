@@ -12,14 +12,14 @@
     </ul>
                 
     <div class="section_head"> 
-        <h4>총 <strong class="red">{{ this.totalPage}}</strong> 건의 공지사항이 있습니다.</h4>                      
+        <h4>총 <strong class="red">{{ this.totalPage }}</strong> 건의 공지사항이 있습니다.</h4>                      
         <div class="mgb5">
-            <!-- <select id="skey" name="skey" class="text_input" @change="loadSearchNotice">
+            <!-- <select id="skey" name="skey" class="text_input">
                 <option value="1">제목</option>
                 <option value="2">내용</option>
-            </select>
-            <input type="text" name="keyword" v-model="keyword" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
-            <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
+            </select> -->            
+            <input type="text" v-model="searchQuery" placeholder="검색어" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
+            <!-- <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
         </div>
     </div>
     <form name="Frm">
@@ -27,7 +27,8 @@
             ref="noticeTable"
             head-variant="light"           
             :fields="fields"  
-            :items="noticeData"
+            :keyword="searchQuery"
+            :items="filteredData"
         >
             <template v-slot:table-colgroup>
                 <col width="100">
@@ -42,8 +43,7 @@
             <template v-slot:cell(setting) = "setting">
                 <b-button variant="outline-danger" size="sm" @click="deleteNotice(setting.item.noticeSysId)">삭제</b-button>                              
             </template>            
-        </b-table>               
-
+        </b-table>
         <div>
             <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
             <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
@@ -65,7 +65,8 @@ export default {
         return {
             pageNumber:0,
             totalPage: 0,
-            perPage: 10,
+            perPage: 15,
+            searchQuery:'',
             fields:[
                 {key : 'noticeSysId', label : 'No', sortable: true},
                 {key : 'title', label : '제목', sortable: true},
@@ -90,6 +91,9 @@ export default {
                   end = start + this.perPage
                   this.axiosGetRequest('/api/v1/operations/notices/alllist',{'startIndex':start, 'rowCount':end},this.loadNoticeList)
             return this.noticeData.slice(start, end)
+        },
+        filteredData() {
+            return this.searchQuery ? this.noticeData.filter(item => item.title.includes(this.searchQuery)) : this.noticeData
         }
     },
     methods: {
@@ -131,7 +135,7 @@ export default {
             return y + '-' + m + '-' + d
         },
         deleteNotice(noticeSysId) {
-            this.axiosDeleteRequest('/api/v1/operations/notices/' + noticeSysId,'',this.deleteNoticeStatus)  
+            this.axiosDeleteRequest('/api/v1/operations/notices/' + noticeSysId,'',this.deleteNoticeStatus,'', sessionStorage.getItem('accessToken'))
         },
         deleteNoticeStatus(res) {
             confirm('삭제하시겠습니까?')
@@ -144,5 +148,4 @@ export default {
 </script>
 
 <style>
-
 </style>

@@ -4,8 +4,8 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 
 export default {
   data () {    
-    // Axios.defaults.baseURL = 'http://192.168.1.20:3800/'
-    Axios.defaults.baseURL = 'http://api.shallwe.link:3000' // 개발
+    Axios.defaults.baseURL = 'http://192.168.1.20:3800/'
+    // Axios.defaults.baseURL = 'http://api.shallwe.link:3000' // 개발
     // Axios.defaults.baseURL = 'http://api.shallwe.link:3800' // 배포
     // Axios.defaults.baseURL = 'http://192.168.1.40:3800/' // -- admin.shallwe.link
     // Axios.defaults.baseURL = 'http://api.shallwe.shop:3000/' // -- admin.shallwe.shop
@@ -128,7 +128,7 @@ export default {
      * GET 형태로 Axios 전송
      *
      */
-    axiosGetRequest: function(url, param, callback, errback, token=null) {
+    axiosGetRequest: function(url, param, callback, errback, token) {
       var errorFn =
         typeof errback === 'undefined'
           ? function(err) {
@@ -164,7 +164,7 @@ export default {
      * POST 형태로 Axios 전송
      *
      */
-    axiosPostRequest: function(url, param, callback, errback,token=null) {
+    axiosPostRequest: function(url, param, callback, errback,token) {
       var errorFn =
         typeof errback === 'undefined'
           ? function(err) {
@@ -191,6 +191,49 @@ export default {
     }
     },
 
+    axiosPatchRequest: function(url, param, callback, errback,token) {
+      var errorFn =
+        typeof errback === 'undefined'
+          ? function(err) {
+              console.log(err);
+            }
+          : errback;
+      if(token){    
+        console.log(this.patchParam(param))  
+        Axios.patch(url, this.patchParam(param), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(callback)
+        .catch(errorFn);
+    }else{
+      Axios.request({
+        url: url,
+        params: param
+      })
+        .then(callback)
+        .catch(errorFn);
+    }
+    },
+    axiosDeleteRequest: function(url, param, callback, errback, token) {          
+      var errorFn =
+        typeof errback === 'undefined'
+          ? function(err) {
+              console.log(err);
+            }
+          : errback;
+      if(token){        
+        Axios.delete(url,  { headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(callback)
+        .catch(errorFn);
+    }
+    },
     /**
      *
      * 일자 : 2020. 03. 06.
@@ -198,23 +241,23 @@ export default {
      * Delete 형태로 Axios 전송
      *
      */
-    axiosDeleteRequest: function(url, param, callback, errback) {
-      var errorFn =
-        typeof errback === 'undefined'
-          ? function(err) {
-              console.log(err);
-            }
-          : errback;
-      Axios.delete(url, this.deleteParam(param))
-        .then(callback)
-        .catch(errorFn);
-    },
-    axiosPatchRequest: function (url, param, callback, errback) {
-      var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
-      Axios.patch(url, this.patchParam(param), Axios.defaults.headers.patch)
-        .then(callback)
-        .catch(errorFn);
-    },
+    // axiosDeleteRequest: function(url, param, callback, errback) {
+    //   var errorFn =
+    //     typeof errback === 'undefined'
+    //       ? function(err) {
+    //           console.log(err);
+    //         }
+    //       : errback;
+    //   Axios.delete(url, this.deleteParam(param))
+    //     .then(callback)
+    //     .catch(errorFn);
+    // },
+    // axiosPatchRequest: function (url, param, callback, errback) {
+    //   var errorFn = (typeof errback === 'undefined' ? function (err) { console.log(err)} : errback )
+    //   Axios.patch(url, this.patchParam(param), Axios.defaults.headers.patch)
+    //     .then(callback)
+    //     .catch(errorFn);
+    // },
     axiosPutRequest: function(url, param, callback, errback) {
       var errorFn =
         typeof errback === 'undefined'
