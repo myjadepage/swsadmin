@@ -149,7 +149,9 @@ export default {
     },
     methods: {
         searchFilteringFn: function () {
-            let params = {}
+            let params = {
+                rowCount: 200
+            }
             for(let _k in this.FilterFields) {
                 if (_k === 'isDisplay') {
                     if (this.FilterFields[_k] !== 2) {
@@ -186,45 +188,16 @@ export default {
         },
         loadProductsList(res) {
             let result = res.data.jsonData.products
-            let categoryTitle = ''
             this.products.splice(0)
             if(this.isEmpty(result)){
                 this.isBusy=false
                 return false
             }
             for (let i = 0 ; i < result.length ; i++) {
-                categoryTitle = ''
-                if (!this.isEmpty(result[i].categories)) { categoryTitle = this.convertCategoryTitle(result[i].categories[0]) }
-                this.products.push({
-                    selected: '',
-                    id: result[i].prdtSysId, 
-                    productCode: {
-                        code: result[i].prdtSysId,
-                        isDisplay: result[i].isDisplay,
-                        isSoldout: result[i].isSoldout,
-                        stockQty: result[i].stockQty
-                    },
-                    title: {
-                        image: result[i].smallImageUrl,
-                        productName: result[i].name,
-                        category: categoryTitle,
-                    },
-                    price: {
-                        price: result[i].price,
-                        marketPrice: result[i].marketPrice,
-                        supplyPrice: result[i].supplyPrice
-                    },
-                    view: {
-                        viewCount: result[i].viewCount,
-                        salesQty: result[i].salesQty,
-                        stockQty: result[i].stockQty
-                    },
-                    setting: ''
-                })
+                if (!this.isEmpty(result[i].categories)) { result[i].categoryTitle = this.convertCategoryTitle(result[i].categories[0]) }
+                this.products.push(result[i])
             }
-            this.totalPage = res.data.jsonData.totalCnt
             this.isBusy=false
-            this.currentPage = 1
         },
         convertCategoryTitle(category) {
             let categoryTitle = ''

@@ -280,7 +280,7 @@ export default {
                 this.mimRegObject.fee = this.mimRegObject.fee/100 
             }
 
-            this.axiosPostRequest('/api/v1/sellers/proposaling',{jsonData: this.mimRegObject}, (res) => {
+            this.axiosPostRequest('/api/v1/sellers',{jsonData: this.mimRegObject}, (res) => {
                 console.log(res.data.jsonData.resultCode)
                 if (res.data.jsonData.resultCode === '0001') {
                     alert('입점 등록 신청이 완료되었습니다.')

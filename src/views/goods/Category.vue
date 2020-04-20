@@ -22,7 +22,7 @@
                                 <col width="*" />
                             </colgroup>
                             <tr>
-                                <th>
+                                <th class="align-middle pl-4">
                                     1차 카테고리
                                 </th>
                                 <td class='category-dashboard category1'>
@@ -41,7 +41,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>
+                                <th class="align-middle pl-4">
                                     2차 카테고리
                                 </th>
                                 <td class='category-dashboard category2'>
@@ -58,7 +58,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>
+                                <th class="align-middle pl-4">
                                     3차 카테고리
                                 </th>
                                 <td class='category-dashboard category3'>
@@ -75,7 +75,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>
+                                <th class="align-middle pl-4">
                                     4차 카테고리
                                 </th>
                                 <td class='category-dashboard category4'>
@@ -92,7 +92,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>
+                                <th class="align-middle pl-4">
                                     5차 카테고리
                                 </th>
                                 <td class='category-dashboard category5'>

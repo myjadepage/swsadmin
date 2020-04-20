@@ -8,7 +8,7 @@ export default {
       briefDescription: "",
       detailDescription: "",
       detailAttachFileUrl: "",
-      iconList: '',
+      iconList: '1',
       bigImageUrl: require('@/assets/img/default_image.jpg'),
       middleImageUrl: "",
       smallImageUrl: "",
@@ -34,6 +34,7 @@ export default {
       isUsedOptionalImage10:0,
       media: [],
       price: 0,
+      naverPrice: 0,
       marketPrice: 0,
       supplyPrice: 0,
       discount: 0,
@@ -59,11 +60,14 @@ export default {
       brandSysId: 0,
       sellerSysId: 0,
       isDisplay: 1,
-      isVat: 0,
+      isVat: 1,
       isSoldout: 0,
       isAddingProduct: 0,
       isAutoImageUpload: 1,
-      isWeekley: 0,
+      isWeekly: 0,
+      isSale: 0,
+      isPlanBrand: 0,
+      isPlanThema: 0,
       optionTypeCode: 1,
       stockTypeCode: 1,
       priceTypeCode: 1,
@@ -124,7 +128,8 @@ export default {
           this.productData.category.categories.push(row);
         });
       }
-      this.productData.iconList = this.iconList.join(';')
+
+      // this.productData.iconList = this.iconList.join(';')
 
       // 다른이미지 Validate
       if (this.images.length > 0) {
@@ -212,7 +217,12 @@ export default {
       this.productData.feeRateBase = this.productData.feeRateBase ? 0.09 : 0.00;
       this.productData.feeRateMedia = this.productData.feeRateMedia ? 0.09 : 0.00;
       this.productData.feeRateInfluencer = this.productData.feeRateInfluencer? 0.09: 0.00;
-      this.productData.isWeekley = this.productData.isWeekley ? 1 : 0
+      this.productData.isWeekly = this.productData.isWeekly ? 1 : 0
+      this.productData.isSale = this.productData.isSale ? 1 : 0  
+      this.productData.isPlanBrand = this.productData.isPlanBrand ? 1 : 0 
+      this.productData.isPlanThema = this.productData.isPlanThema ? 1 : 0 
+
+
 
       // 수수료율
       let feeRate = this.toNumber(String(this.productData.feeRate));

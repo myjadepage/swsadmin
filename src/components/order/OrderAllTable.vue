@@ -21,6 +21,7 @@
                 :per-page="perPage"
                 head-variant="light"
                 small
+                show-empty
             >   
                 <!-- <template v-slot:cell(chk)="items">
                     <input type="checkbox" :value="items.item.orderSysId"/>

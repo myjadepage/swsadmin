@@ -16,7 +16,7 @@
               </b-input-group-append>
             </b-input-group>
           </span>
-          <input type="file" :id="'imageObject'+index" accept="image/jpeg, image/png, image/jpg, image/gif" style="display:none" @change="$emit('imageUploader',$event, {item: item, field: 'imageurl', imageDir: '/product/image/0/'+productData.sellerSysId})"/>
+          <input type="file" :id="'imageObject'+index" accept="image/*" style="display:none" @change="$emit('imageUploader',$event, {item: item, field: 'imageurl', imageDir: '/product/image/0/'+productData.sellerSysId})"/>
         </b-col>
         <b-col class="px-0">
           <b-button variant="light" @click="images.splice(index, 1)" size="sm" style="height:23px">이미지 삭제</b-button>

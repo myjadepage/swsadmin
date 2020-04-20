@@ -97,9 +97,6 @@ export default {
       this.productData.bigImageUrl = await this.uploadImageProcess(event.target.files[0], requestObject)
       
       let img = document.createElement("img");
-      img.onload = function() {
-        event.target.dataset.valid = true;
-      };
       let fileReader = new FileReader();
       fileReader.onload = function(e) {
         img.src = e.target.result;

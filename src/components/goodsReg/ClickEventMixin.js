@@ -131,7 +131,7 @@ const clickEvent = {
       var priceValue = this.productData.price.toString().replace(/,/g, "");
       var feeRateValue = this.productData.feeRate;
       if (feeRateValue === "" || feeRateValue === 0) {
-        this.productData.supplyPrice = priceValue; //this.numberWithCommas()
+        this.productData.supplyPrice = parseInt(priceValue) //this.numberWithCommas()
       } else {
         this.productData.supplyPrice = Math.floor(
           priceValue - priceValue * (feeRateValue / 100)

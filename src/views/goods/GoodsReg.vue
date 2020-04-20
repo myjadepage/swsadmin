@@ -141,7 +141,7 @@
             </tr>
 
             <!-- 상품아이콘 -->
-            <tr>
+            <!-- <tr>
               <th>
                 상품 아이콘
                 <strong class="red">&nbsp;*</strong>
@@ -168,7 +168,7 @@
                   </li>
                 </ul>
               </td>
-            </tr>
+            </tr> -->
 
             <!-- 상품 이미지 : 시작 -->
             <tr>
@@ -184,7 +184,7 @@
                   <p class="text-center font-weight-bold">[미리보기]</p>
                   <img :src=productData.bigImageUrl style="width: 90px; height: 90px; border:1px solid #EFEFEF"/>
                 </div>
-                <input type="file" name="bigImageUrl" id="bigImageUrl" @change="changeImage($event, {imageDir: '/product/image/0/'+productData.brandSysId})" :required="$route.params.productSysId !== '' ? false : true"/>
+                <input type="file" accept="image/*" name="bigImageUrl" id="bigImageUrl" @change="changeImage($event, {imageDir: '/product/image/0/'+productData.brandSysId})" :required="$route.params.productSysId !== '' ? false : true"/>
                 <br />
                 <span class="light_gray">(1080px * 1080px)</span>
                 <label for="img_auto">
@@ -289,28 +289,42 @@
               </td>
               <th>진열설정</th>
               <td>
-                <input type="radio" id="isDisplay_F" name="isDisplay" value="0" v-model.number="productData.isDisplay" />
-                <label for="isDisplay_F">미진열</label>&nbsp;
-                <input type="radio" id="isDisplay_T" name="isDisplay" value="1" v-model.number="productData.isDisplay" class="mgl20"/>
-                <label for="isDisplay_T">진열</label>
+                <input type="radio" id="isDisplay1" :value="0" v-model.number="productData.isDisplay" @change="changeIsCheck"/>&emsp;<label for="isDisplay1" class="mr-4">미진열</label>
+                <input type="radio" id="isDisplay2" :value="1" v-model.number="productData.isDisplay" />&emsp;<label for="isDisplay2">진열</label>
               </td>
             </tr>
             <tr>
-              <th>시중가 (원판매가)</th>
-              <td>
-                <input type="text" class="text_input number_input" value="10000" required/>&emsp;원
+              <th>기획전 설정</th>
+              <td colspan="3">
+                <div class="float-left mr-4">
+                  <b-form-checkbox value="1" v-model.number="productData.isWeekly" :disabled="productData.isDisplay === 0">위클리베스트</b-form-checkbox>
+                </div>
+                <div class="float-left mr-4">
+                  <b-form-checkbox value="1" v-model.number="productData.isPlanBrand" :disabled="productData.isDisplay === 0">브랜드기획전</b-form-checkbox>
+                </div>
+                <div class="float-left mr-4">
+                  <b-form-checkbox value="1" v-model.number="productData.isPlanThema" :disabled="productData.isDisplay === 0">테마기획전</b-form-checkbox>
+                </div>
+                <div class="float-left mr-4">
+                  <b-form-checkbox value="1" v-model.number="productData.isSale" :disabled="productData.isDisplay === 0">세일</b-form-checkbox>
+                </div>
               </td>
-              <th>주간 베스트</th>
-              <td><input type="checkbox" v-model="productData.isWeekley" /></td>
+            </tr>
+            <tr>
+              <th>시중가 (원판매가) <strong class="red">*</strong></th>
+              <td colspan="3">
+                <input type="text" class="text_input number_input" v-model.number="productData.marketPrice" required/>&emsp;원
+              </td>
+              <!-- <th>주간 베스트</th>
+              <td><input type="checkbox" v-model="productData.isWeekley" /></td> -->
             </tr>
             <template v-if="productData.prdtTypeCode === 1">
               <tr>
                 <th>
                   네이버가격
-                  <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="text" name="marketPrice" v-model.number="productData.marketPrice" class="text_input number_input" required/> 원
+                  <input type="text" v-model.number="productData.naverPrice" class="text_input number_input"/> 원
                 </td>
               </tr>
             </template>
@@ -318,12 +332,11 @@
               <tr>
                 <th>
                   공구가격설정
-                  <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
                   <b-row>
                     <b-col cols="3">
-                      <input type="text" name="marketPrice" v-model.number="productData.marketPrice" class="text_input number_input" style="width:90%" maxlength="9" required/> 원
+                      <input type="text" v-model.number="productData.naverPrice" class="text_input number_input" style="width:90%" maxlength="9"/> 원
                     </b-col>
                     <b-col cols="4">
                       <b-row class="d-flex flex-row">
@@ -389,10 +402,7 @@
               <tr>
                 <th>공구가격 할인인원</th>
                 <td colspan="3">
-                  <Common-sellers
-                    :productData="productData"
-                    :commonSellers="commonSellers"
-                  ></Common-sellers>
+                  <Common-sellers :productData="productData" :commonSellers="commonSellers" />
                 </td>
               </tr>
             </template>
@@ -400,10 +410,9 @@
               <tr>
                 <th>
                   라이브가격
-                  <strong class="red">*</strong>
                 </th>
                 <td colspan="3">
-                  <input type="text" name="marketPrice" v-model.number="productData.marketPrice" class="text_input number_input" required/> 원
+                  <input type="text" v-model.number="productData.naverPrice" class="text_input number_input"/> 원
                 </td>
               </tr>
             </template>
@@ -413,20 +422,19 @@
                 수수료 설정
                 <strong class="red">*</strong>
               </th>
-              <td>
+              <td colspan="3">
                 <input type="radio" id="feeTypeCode1" ref="feeTypeCode" value="1" v-model.number="productData.feeTypeCode" @click="onFeeTypeCodeEvent"/>
                 <label for="feeTypeCode1" class="pad_right10">기본 수수료설정 (입점업체 또는 카테고리)</label>
-
                 <input type="radio" id="feeTypeCode2" ref="feeTypeCode" value="2" class="mgl20" v-model.number="productData.feeTypeCode" @click="onFeeTypeCodeEvent" />
                 <label for="feeTypeCode2">개별 수수료 설정(상품별)</label>
               </td>
-              <th>부가가치세 설정</th>
+              <!-- <th>부가가치세 설정</th>
               <td>
                 <input type="radio" id="isVat_T" name="isVat" value="1" v-model.number="productData.isVat"/>
                 <label for="isVat_T">과세상품</label>
                 <input type="radio" id="isVat_F" name="isVat" value="0" v-model.number="productData.isVat" class="mgl20"/>
                 <label for="isVat_F">면세상품</label>
-              </td>
+              </td> -->
             </tr>
 
             <tr>
@@ -466,7 +474,7 @@
                     <li>
                       수수료율
                       <br />
-                      <input type="text" ref="feeRate" name="feeRate" id="feeRate"  @keyup.stop="onFeeRate()" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" disabled required/> %
+                      <input type="text" ref="feeRate" name="feeRate" id="feeRate" @keyup.stop="onFeeRate()" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" disabled required/> %
                     </li>
                     <li>
                       공급가
@@ -637,17 +645,17 @@
                     <input type="text" name="prepaymentAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model.number="productData.prepaymentAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 (무료배송 :
                     <input type="text" name="prepayfreeMinAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model.number="productData.prepayfreeMinAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 이상 주문시 무료)
                   </dd>
-                  <dt>
+                  <!-- <dt>
                     <input type="radio" id="deliveryPriceTypeCode4" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="4" />
                     <label for="deliveryPriceTypeCode4">판매자정책</label>
                   </dt>
-                  <dd>판매자의 기본정책을 따릅니다.</dd>
+                  <dd>판매자의 기본정책을 따릅니다.</dd> -->
 
-                  <dt>
+                  <!-- <dt>
                     <input type="radio" id="deliveryPriceTypeCode5" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="5" />
                     <label for="deliveryPriceTypeCode5">브랜드정책</label>
                   </dt>
-                  <dd>브랜드 정책을 따릅니다.</dd>
+                  <dd>브랜드 정책을 따릅니다.</dd> -->
                   <dt>
                     <input type="radio" id="deliveryPriceTypeCode6" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="6" />
                     <label for="deliveryPriceTypeCode6">기본정책</label>
@@ -853,7 +861,6 @@ export default {
         categories: [],
         categoryTable: []
       },
-      iconList: [],
       images: [{ imageurl: '' }],
       files: [{fileDir: ''}],
       videos: [
@@ -885,6 +892,15 @@ export default {
     this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
   },
   methods: {
+    changeIsCheck: function (){
+      const isDisplay = this.productData.isDisplay
+      if (isDisplay === 0) {
+        this.productData.isWeekly = 0
+        this.productData.isSale = 0
+        this.productData.isPlanBrand = 0
+        this.productData.isPlanThema = 0
+      }
+    },
     onSubmit: function (obj) {
       if (this.isEmpty(this.$route.params.productSysId)) {
         this.SubmitAddProduct(obj)
