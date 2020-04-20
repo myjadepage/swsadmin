@@ -156,11 +156,11 @@ export default {
               mediaTypeCode: item.mediaTypeCode,
               mediaId: item.mediaId,
               title: item.title,
-              thumnailUrl: item.thumnailUrl
+              thumnailUrl: item.thumnailUrl,
+              procTypeCode: item.procTypeCode
             }
             if (!this.isEmpty(item['prdtMediaSysId'])) {
               row.prdtMediaSysId = item['prdtMediaSysId']
-              row.procTypeCode = item['procTypeCode']
             }
             if (!this.isEmpty(item.mediaId)) {
               this.productData.media.push(row);

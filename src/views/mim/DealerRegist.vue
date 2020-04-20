@@ -169,7 +169,7 @@
             </table>
             <div class="btn_center">
                 <b-button variant="secondary" class="mr-2">목록</b-button>
-                <b-button type="submit" variant="primary">입점승인</b-button>
+                <b-button type="submit" variant="primary">입점신청</b-button>
             </div>
         </b-form>
         <b-modal id="addressModal" hide-footer>
@@ -216,7 +216,7 @@ export default {
             calcCycleCode: 1,
             feeTypeCode: 1,
             fee: 0,
-            proposalStatusCode: 1
+            proposalStatusCode: 2
         },
         checkValidateId: false,
         calcCycleCodeList: [
@@ -236,7 +236,7 @@ export default {
     components: {
         VueDaumPostcode
     },
-    mounted () {
+    mounted () {    
         this.axiosGetRequest('/api/v1/preferences/banks','',function (res) {
             this.billingBankCodeList.splice(0)
             this.billingBankCodeList.push({value: null, text: '::결재은행선택::'})

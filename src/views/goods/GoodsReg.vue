@@ -743,7 +743,7 @@
                       <dd>넥타이타입은 A~J, 셔츠타입은 A~J, 사이즈는 95,100,105입니다. 원하는 색상 및 사이즈를 적어주세요.</dd>
                     </dl>
                     <div class="option_text">
-                      <textarea name="optionDescription" rows="3" class="text_input" maxlength="200"></textarea>
+                      <textarea rows="3" class="text_input" maxlength="200" v-model="productData.optionDescription"></textarea>
                     </div>
                   </div>
                 </template>

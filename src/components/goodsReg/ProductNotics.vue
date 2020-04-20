@@ -28,7 +28,7 @@
                   <td>-</td>
                   <td><input type="text" class="text_input" v-model="item.item" style="width: 90%;" maxlength="100" /></td>
                   <td><textarea rows="2" class="text_input" maxlength="200" v-model="item.content"></textarea></td>
-                  <td class="last"><b-button variant="light" size="sm" style="height: 23px" @click="notifyRemove(item)">항목삭제</b-button></td>
+                  <td class="last"><b-button variant="light" size="sm" style="height: 23px" @click="notifyRemove(item, index)">항목삭제</b-button></td>
               </template>
             </tr>
         </tbody>
@@ -58,9 +58,9 @@ export default {
       }.bind(this))
   },
   methods: {
-    notifyRemove: function (item) {
+    notifyRemove: function (item, index) {
       if (this.isEmpty(item['prdtNoticeSysId'])) {
-        this.productData.productNotice.notices.splice(item.index, 1)
+        this.productData.productNotice.notices.splice(index, 1)
       } else {
         item.procTypeCode = 4
       }
@@ -77,6 +77,10 @@ export default {
           let row = this.productData.productNotice.notices[0]
           if (this.isEmpty(row['prdtNoticeSysId'])) {
             this.productData.productNotice.notices.splice(0)
+          } else {
+            this.productData.productNotice.notices.forEach(item => {
+              item.procTypeCode = 4
+            })
           }
           const data = res.data.jsonData.productDetailNotices
           data.forEach(_item => {
@@ -86,6 +90,7 @@ export default {
               procTypeCode: 2
             })
           })
+          this.$forceUpdate()
         }.bind(this))
       }
     },
