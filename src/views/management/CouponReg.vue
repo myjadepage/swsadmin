@@ -38,12 +38,12 @@
                                               <label class="form-check-label" for="method_2">구매보상 발급</label>
                                             </div>
                                         </li>
-                                        <!-- <li>
+                                        <li>
                                             <div class="form-check">
-                                              <input class="form-check-input" type="radio" name="method" id="method_3" value="103" v-model="couponData.couponType"/>
+                                              <input class="form-check-input" type="radio" name="method" id="method_3" value="103" v-model.number="couponType"/>
                                               <label class="form-check-label" for="method_3">회원선택 발급</label>
                                             </div>
-                                        </li> -->
+                                        </li>
                                         <li>
                                             <div class="form-check">
                                               <input class="form-check-input" type="radio" name="method" id="method_4" value="104" v-model.number="couponType"/>
@@ -56,9 +56,9 @@
                             <!-- 공통필드 -->
                             <tr>
                                 <th><span class="red">*</span> 쿠폰명</th>
-                                <td><input type="text" name="title" class="text_input" style="width:97%" maxlength="50"></td>
+                                <td><input type="text" name="title" class="text_input" style="width:97%" maxlength="50" v-model="name"></td>
                                 <th>간략 설명</th>
-                                <td><input type="text" name="summary" class="text_input" style="width:97%" maxlength="100"></td>
+                                <td><input type="text" name="summary" class="text_input" style="width:97%" maxlength="100" v-model="comment"></td>
                             </tr>
 
                             <!-- 쿠폰방식101 :  상품발급 -->
@@ -67,7 +67,25 @@
                                 <th><span class="red">*</span> 진행기간</th>
                                 <td colspan="3">
                                     <!-- 달력 -->
-                                    <sws-date :parentData="couponData"></sws-date>                            
+                                    <b-row>
+                                        <b-col cols="2">
+                                            <b-input-group>
+                                                <b-form-input size="sm" v-model="couponData.startDate" type="text" placeholder="시작일자 (YYYY-MM-DD)"></b-form-input>
+                                                <b-input-group-append>
+                                                    <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="couponData.startDate" button-only right></b-form-datepicker>
+                                                </b-input-group-append>
+                                            </b-input-group>
+                                        </b-col>
+                                        <b-col cols="2">
+                                            <b-input-group>
+                                                <b-form-input size="sm" v-model="couponData.endDate" type="text" placeholder="종료일자 (YYYY-MM-DD)"></b-form-input>
+                                                <b-input-group-append>
+                                                    <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="couponData.endDate" button-only right></b-form-datepicker>
+                                                </b-input-group-append>
+                                            </b-input-group>
+                                        </b-col>                                         
+                                    </b-row>
+                                    <!-- <sws-date :parentData="couponData"></sws-date>                             -->
                                     <!-- 달력 -->
                                 </td>
                             </tr>
@@ -101,7 +119,26 @@
                                         </div>
                                         <div class="fl" style="width:100%">                                            
                                              <!-- 달력 -->
-                                            <sws-date :parentData="couponData2"></sws-date>                       
+                                            <b-row>
+                                                <b-col cols="2">
+                                            <b-input-group>
+                                                <b-form-input size="sm" v-model="couponData2.startDate" type="text" placeholder="시작일자 (YYYY-MM-DD)"></b-form-input>
+                                                <b-input-group-append>
+                                                    <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="couponData2.startDate" button-only right></b-form-datepicker>
+                                                </b-input-group-append>
+                                            </b-input-group>
+                                        </b-col>
+                                        <b-col cols="2">
+                                            <b-input-group>
+                                                <b-form-input size="sm" v-model="couponData2.endDate" type="text" placeholder="종료일자 (YYYY-MM-DD)"></b-form-input>
+                                                <b-input-group-append>
+                                                    <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="couponData2.endDate" button-only right></b-form-datepicker>
+                                                </b-input-group-append>
+                                            </b-input-group>
+                                        </b-col>     
+                                            </b-row>
+
+                                            <!-- <sws-date :parentData="couponData2"></sws-date>                        -->
                                             <!-- 달력 -->
                                             <div style="position:relative; top:-20px; left:35%">
                                                 <label for="use_weekend_0" style="margin-right:5px"><input type="radio" id="use_weekend_0" name="useWeekend" value="0" v-model.number="useWeekend"
@@ -116,13 +153,13 @@
                             <tr>
                                 <th><span class="red">*</span> 할인폭</th>
                                 <td colspan="3">
-                                    <input type="text" name="discountValue" class="text_input" style="width:80px;" maxlength="10">
+                                    <input type="text" name="discountValue" class="text_input" style="width:80px;" maxlength="10" v-model="discountWidth">
                                     
                                     <label style="margin-right:20px"><input type="radio" name="discountUnit" value="100" v-model.number="discountUnit"> 원</label>
                                     <label><input type="radio" name="discountUnit" value="200" v-model.number="discountUnit"> %</label>
 
                                     <strong class="mgl20">최대할인금액 </strong>
-                                    <input type="text" name="maxDiscountPrice" class="text_input" style="width:80px;" 
+                                    <input type="text" name="maxDiscountPrice" class="text_input" style="width:80px;" v-model="maxDiscountPrice"
                                      :disabled="discountUnit !== 200"> 원
                                     <span class="square_blue"> "0 또는 미입력시 할인금액 제한안함."</span>
                                 </td>
@@ -136,8 +173,8 @@
                                     </div>
                                     <div class="mgt5">
                                         <label for="use_limit_price_t"><input type="radio" id="use_limit_price_t" name="isUseLimitPrice" value="2" v-model="isUseLimitPrice">개별 상품의 주문금액 [ (판매가＋옵션가) × 수량 ] 이
-                                            <input type="text" name="useLowPrice" class="text_input" style="width:70px;"> 원 이상
-                                            <input type="text" name="useHighPrice" class="text_input" style="width:70px;"> 원 이하
+                                            <input type="text" name="useLowPrice" class="text_input" style="width:70px;" v-model="minMax2ndTypeMinPrice"> 원 이상
+                                            <input type="text" name="useHighPrice" class="text_input" style="width:70px;" v-model="minMax2ndTypeMaxPrice"> 원 이하
                                         </label>
                                     </div>
                                     <div class="square_blue">"최소, 최대금액중 하나는 0원 이상으로 반드시 입력해야 합니다."</div>
@@ -172,9 +209,9 @@
                             <tr>
                                 <th><span style="color:red;">*</span> 쿠폰이미지</th>
                                 <td colspan="3">
-                                    <input type="file" name="couponImageUrl" id="couponImageUrl" @change.prevent="validateImageRatioFn($event, {width: 1080, height: 1080})" data-valid="false" accept="image/*" :data-imageurl="couponImageUrl"/>
+                                    <input type="file" name="couponImageUrl" id="couponImageUrl" ref="couponImg"  data-valid="false" accept="image/*" :data-imageurl="couponImageUrl"/>
                                     <template v-if="couponImageUrl !== ''">
-                                    <p>
+                                    <p v-if="couponImageUrl">
                                         <b>이미지 존재함 :</b>
                                         {{couponImageUrl}}
                                     </p>
@@ -224,11 +261,11 @@
                                 </td>
                             </tr>
 
-                            <tr class="method_goods">
+                            <tr>
                                 <th>쿠폰갯수</th>
                                 <td colspan="3">
                                     <label>
-                                        <input type="text" name="issueLimit" class="text_input" style="width:70px;" maxlength="10"> 개
+                                        <input type="text" name="issueLimit" class="text_input" style="width:70px;" maxlength="10" v-model="couponCnt"> 개
                                     </label>
                                     <span class="square_blue">"쿠폰 갯수를 제한하여 선착순으로 발급할 수 있습니다."</span>
                                 </td>
@@ -527,15 +564,15 @@
                         <td colspan="3">
                             <ul class="arrange">
                                 <li>
-                                    <input type="radio" id="reissue_none" name="reissue" value="0" />
+                                    <input type="radio" id="reissue_none" name="reissue" value="0" v-model="repubType" />
                                     <label for="reissue_none">재발급 안함</label>
                                 </li>
                                 <li class="mgl10">
-                                    <input type="radio" id="reissue_cancel" name="reissue" value="1" />
+                                    <input type="radio" id="reissue_cancel" name="reissue" value="1" v-model="repubType" />
                                     <label for="reissue_cancel">취소시 재발급</label>
                                 </li>
                                 <li class="mgl10">
-                                    <input type="radio" id="reissue_return" name="reissue" value="2" />
+                                    <input type="radio" id="reissue_return" name="reissue" value="2" v-model="repubType" />
                                     <label for="reissue_return">반품시 재발급</label>
                                 </li>
                             </ul>
@@ -550,11 +587,11 @@
                         <td colspan="3">
                             <ul class="arrange">
                                 <li>
-                                    <input type="radio" id="use_t" name="isUse" value="T"  checked />
+                                    <input type="radio" id="use_t" name="isUse" value="1"  checked v-model="isUsed" />
                                     <label for="use_t">사용함</label>
                                 </li>
                                 <li class="mgl10">
-                                    <input type="radio" id="use_f" name="isUse" value="F"  />
+                                    <input type="radio" id="use_f" name="isUse" value="0" v-model="isUsed"  />
                                     <label for="use_f">사용하지 않음</label>
                                 </li>
                             </ul>
@@ -564,8 +601,8 @@
                     </table>
 
                     <div class="btn_center">
-                        <b-button variant="outline-info" size="lg" style="margin-right:5px">확인</b-button>
-                        <b-button variant="outline-danger" size="lg">취소</b-button>
+                        <b-button @click="submit" variant="outline-info" size="lg" style="margin-right:5px">확인</b-button>
+                        <b-button @click="$router.push('/management/coupon_list')" variant="outline-danger" size="lg">취소</b-button>
                     </div>
 
                 </form>
@@ -577,6 +614,7 @@ import commonJs from "@/assets/js/common.js"
 import SwsDate from '@/components/common/SwsDate'
 import SwsCategory from '@/components/common/SwsCategory.vue'
 import ImagesUploader from "@/assets/js/ImagesUploader.js"
+import moment from 'moment'
 
 export default {
     name: "CouponReg",
@@ -602,12 +640,23 @@ export default {
             useLimitDay:0,
             isUseLimitDay: 1,
             discountUnit: 100,
+            discountWidth:0,
+            couponImageUrl:'',
+            maxDiscountPrice:0,
+            minMax2ndTypeMinPrice:0,
+            minMax2ndTypeMaxPrice:0,
+            appliedPrdtList:[],
             useWeekend:0,
             isUseLimitPrice:1,
             memberLevel: [],
             memberLevelList:['1', '4'],
             applyMode:1,
-            categoryList: []     
+            categoryList: [],
+            couponCnt:0 ,
+            repubType:0,
+            isUsed:1,
+            name:'',
+            comment:''
         }
     },
     computed: {
@@ -652,7 +701,56 @@ export default {
             } else {
                 this.useLimitDay -= 1;
             }
+        },
+        
+        submit(){
+            let item = {
+                name:this.name,
+                comment:this.comment,
+                couponType:this.couponType,
+                startProcDate:this.couponData2.startDate,
+                endProcDate:this.couponData2.endDate,
+                procType:this.useWeekend,
+                discountWidth:Number(this.discountWidth),
+                discountWidthUnit:this.discountUnit,
+                maxDiscount:this.maxDiscountPrice,
+                minMaxType:this.isUseLimitPrice,
+                minMax2ndTypeMinPrice:this.minMax2ndTypeMinPrice,
+                minMax2ndTypeMaxPrice:this.minMax2ndTypeMaxPrice,
+                userGradeList:this.memberLevel.join(),
+                couponImageUrl:'',
+                appliedProdcutType:this.applyMode,
+                appliedPrdtSysIdList:this.appliedPrdtList.join(),
+                appliedCategorySysId1:this.categoryList[0].value,
+                appliedCategorySysId2:null,
+                appliedCategorySysId3:null,
+                couponCount:this.couponCnt,
+                repubType:this.repubType,
+                isUsed:Number(this.isUsed)
+            }
+
+            if(this.categoryList[1].value!==0){
+                item.appliedCategorySysId2 = this.categoryList[1].value
+            }
+            if(this.categoryList[2].value!==0){
+                item.appliedCategorySysId3 = this.categoryList[2].value
+            }
+
+            if(this.isUseLimitDay===1){
+                item.startProcDate = moment(new Date()).format('YYYY-MM-DD')
+                item.endProcDate = moment(new Date()).add(this.useLimitDay,'d').format('YYYY-MM-DD')
+            }
+            
+            // this.axiosPostRequest('api/v1/operations/products/coupons',{jsonData:item},
+            // (res)=>{
+            //     console.log(res);
+            // })
+
+            console.log(item);
+            
+            
         }
+
     }
 }
 </script>

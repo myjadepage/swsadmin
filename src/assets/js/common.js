@@ -4,8 +4,8 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 
 export default {
   data () {    
-    // Axios.defaults.baseURL = 'http://192.168.1.20:3800/'
-    Axios.defaults.baseURL = 'http://api.shallwe.link:3000' // 개발
+    Axios.defaults.baseURL = 'http://192.168.1.20:3800/'
+    // Axios.defaults.baseURL = 'http://api.shallwe.link:3000' // 개발
     // Axios.defaults.baseURL = 'http://api.shallwe.link:3800' // 배포
     // Axios.defaults.baseURL = 'http://192.168.1.40:3800/' // -- admin.shallwe.link
     // Axios.defaults.baseURL = 'http://api.shallwe.shop:3000/' // -- admin.shallwe.shop
