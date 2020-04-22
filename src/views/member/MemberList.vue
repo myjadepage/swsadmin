@@ -134,7 +134,7 @@
                         </colgroup>                       
                     </table>
 
-                    <div class="section_head">
+                    <!-- <div class="section_head">
                         <h4><font-awesome-icon icon="check-circle" /> 회원상태변경</h4>
                     </div>
                     <table class="t_form">
@@ -148,11 +148,11 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
 
                     <div class="btn_right">
                         <b-button variant="outline-danger" style="margin-right:5px" >선택삭제</b-button>
-                        <b-button variant="outline-secondary">엑셀로 받기</b-button>
+                        <!-- <b-button variant="outline-secondary">엑셀로 받기</b-button> -->
                     </div>
 
                 </form>
