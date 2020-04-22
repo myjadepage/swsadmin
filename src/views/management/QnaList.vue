@@ -78,6 +78,7 @@
             </template>  
         </b-table>
     </form>
+    
     <!-- qna답변 모달-->
     <b-modal ref="answerQnaModal" size="lg" @ok="answerQnaSubmit">
         <template v-slot:modal-title>
@@ -89,10 +90,10 @@
                 <colgroup><col width="50"><col width="*"></colgroup>
                 <tbody>
                     <tr>
-                    <th>내용</th>
-                    <td>
-                        <textarea style="width:100%; min-height:200px" class="text_input" v-model="answerQna"></textarea>
-                    </td>
+                        <th>내용</th>
+                        <td>
+                            <textarea style="width:100%; min-height:200px" class="text_input" v-model="answerQna"></textarea>
+                        </td>
                     </tr>                
                 </tbody>
             </table>
@@ -148,14 +149,10 @@ export default {
                         'treatFlag': this.changeTreat(result[i].treatFlag),
                         'answer' : result[i].answer,
                         'prdtSysId': result[i].prdtSysId
-                        // '_showDetails': true
+                        // '_showDetails': false
                     })
               }
-            } else {
-                 this.noticeData.push({
-                     'title' : '등록된 데이타가 없습니다.'
-                 })
-            }
+            } 
         },
         changeDate(date) {
             var y = date.substr(0, 4)
@@ -181,15 +178,18 @@ export default {
         },
         answerQnaCallback(res) {            
             if(res.data.jsonData.resultCode === '0001'){
-               alert('답변이 등록되었습니다.')
                window.location.reload()
+               alert('답변이 등록되었습니다.')              
             }
         },
         deleteQnaClicked(row) {
             this.axiosDeleteRequest('/api/v1/products/' + row.item.prdtSysId + '/questions/' + row.item.prdtQuestionSysId,'', this.deleteQnaCallback,'', sessionStorage.getItem('accessToken'))
         },
         deleteQnaCallback(res) {
-            console.log(res)
+            if(res.data.jsonData.resultCode === '0001'){
+                alert('상품평이 삭제되었습니다.')
+                window.location.reload()
+            }
         }
      }
 }

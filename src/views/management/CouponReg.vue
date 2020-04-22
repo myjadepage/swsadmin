@@ -239,7 +239,7 @@
                                             <div class="mgt5">
                                                 <div class="btn_right">
                                                     <b-button variant="outline-danger" style="margin-right:5px">삭제</b-button>
-                                                    <b-button variant="outline-secondary">상품선택</b-button>
+                                                    <b-button @click="prdtSelectBtnClick" variant="outline-secondary">상품선택</b-button>
                                                 </div>
                                             </div>
                                         </div>
@@ -747,8 +747,15 @@ export default {
             // })
 
             console.log(item);
-            
-            
+        },
+
+        prdtSelectBtnClick(){
+            if(this.applyMode===2){
+               let x = window.open('/management/coupon_reg/applyPrdts', '_blank', 'toolbar=no, menubar=no, scrollbars=yes, resizable=yes')
+               x.addEventListener('addItem',(e)=>{
+                   console.log(e);
+               })
+            }
         }
 
     }
