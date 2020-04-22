@@ -14,162 +14,175 @@
         </ul>
         <b-form @submit.prevent="onSubmit">
             <table class="t_form">
+                <col width="150" />
+                <col width="*" />
+                <col width="150" />
+                <col width="*" />
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">아이디&emsp;<span class="red">*</span></th>
+                    <td colspan="3" class="align-middle">
+                        <input type="search" class="text_input" v-model="mimRegObject.sellerId" @keyup="checkValidateId = false" required/>&emsp;
+                        <b-button variant="outline-secondary" size="sm" @click="checkDuplicateIdFn" :disabled="checkValidateId"><font-awesome-icon icon="check" />중복체크</b-button>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">패스워드&emsp;<span class="red">*</span></th>
+                    <td colspan="3">
+                        <input type="password" class="text_input" id="password" v-model="mimRegObject.password" @focusout="changePassword" required/>&emsp;
+                        <span class="text-muted ml-2">* 패스워드는 6자이상 영문, 숫자, 특수문자 포함입니다.</span>
+                        <label :style="passwordsValidate.style" :class="passwordsValidate.class">{{passwordsValidate.message}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">업체명&emsp;<span class="red">*</span></th>
+                    <td>
+                        <input type="search" name="dealerName" class="text_input w-100" v-model="mimRegObject.name" maxlength="50" required />
+                    </td>
+                    <th class="bg-light align-middle font-weight-bold">대표자명&emsp;<span class="red">*</span></th>
+                    <td>
+                        <input type="search" class="text_input w-100" v-model="mimRegObject.ownerName" required />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">사업자등록번호&emsp;<span class="red">*</span></th>
+                    <td colspan="3">
+                        <input type="search" class="text_input w-100" maxlength="12" v-model="mimRegObject.businessRegNumber" placeholder="예: 119-02-29983" required />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">업태&emsp;<span class="red">*</span></th>
+                    <td>
+                        <input type="search" class="text_input w-100" maxlength="50" v-model="mimRegObject.businessType" required />
+                    </td>
+                    <th class="bg-light align-middle font-weight-bold">종목&emsp;<span class="red">*</span></th>
+                    <td>
+                        <input type="search" class="text_input w-100" maxlength="50" v-model="mimRegObject.businessItem"  required />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">결제계좌명의&emsp;<span class="red">*</span></th>
+                    <td colspan="3">
+                        <input type="search" class="text_input w-100" maxlength="50" v-model="mimRegObject.billingAccountName" required />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">결제은행&emsp;<span class="red">*</span></th>
+                    <td colspan="3" class="text-left">
+                        <select class="text_input" v-model.number="mimRegObject.billingBankCode" required>
+                            <option v-for="(item, index) in billingBankCodeList" :key="index" :value="item.value">{{item.text}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">은행계좌번호&emsp;<span class="red">*</span></th>
+                    <td colspan="3">
+                        <input type="search" class="text_input w-100" maxlength="30" v-model="mimRegObject.bankAccount" required/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">담당자명&emsp;<span class="red">*</span></th>
+                    <td colspan="3">
+                        <input type="search" class="text_input w-100" maxlength="15" v-model="mimRegObject.managerName" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">회사 전화번호&emsp;<span class="red">*</span></th>
+                    <td colspan="3">
+                        <input type="search" class="text_input w-100" maxlength="20" v-model="mimRegObject.tel" placeholder="- 없이 입력해주세요 (예: 01012345678)" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">휴대폰번호&emsp;</th>
+                    <td colspan="3">
+                        <input type="search" class="text_input w-100"  maxlength="20" v-model="mimRegObject.mobile" placeholder="- 없이 입력해주세요 (예: 01012345678)" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">이메일&emsp;<span class="red">*</span></th>
+                    <td colspan="3">
+                        <input type="search" class="text_input w-100" maxlength="100" v-model="mimRegObject.email" required />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">회사인감이미지</th>
+                    <td colspan="3">
+                        <input type="file" ref="stampImgUrl" name="stampImgUrl" accept="image/*"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">주소&emsp;<span class="red">*</span></th>
+                    <td colspan="3" class="text-left">
+                        <input type="search" placeholder="우편번호" maxlength="7" class="text_input" v-model.number="mimRegObject.postNumber" disabled required />&emsp;
+                        <b-button size="sm" variant="outline-secondary" v-b-modal.addressModal>우편번호 찾기</b-button>
+                        <div class="mgt3">
+                            <input type="search" placeholder="도로명주소" maxlength="50" class="text_input w-100" v-model="mimRegObject.address1" disabled required />
+                        </div>
+                        <div class="mgt3">
+                            <input type="search" placeholder="상세주소" maxlength="50" class="text_input w-100" v-model="mimRegObject.address2" required />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light align-middle font-weight-bold">기타사항</th>
+                    <td colspan="3" class="px-0 pt-0 pb-0">
+                        <quill-editor
+                        class="quill-editor"
+                        :options="commentOption"
+                        v-model="mimRegObject.comment"
+                        ></quill-editor>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table class="t_form">
                 <colgroup>
-                    <col width="130">
-                    <col width="*">
-                    <col width="130">
+                    <col width="150">
                     <col width="*">
                 </colgroup>
-                <tbody>
-                    <tr>
-                        <th>아이디<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="search" class="text_input" v-model="mimRegObject.sellerId" @keyup="checkValidateId = false" required/>&emsp;
-                            <b-button variant="outline-secondary" size="sm" @click="checkDuplicateIdFn" :disabled="checkValidateId"><font-awesome-icon icon="check" />중복체크</b-button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>업체명<span class="red">*</span></th>
-                        <td>
-                            <input type="search" name="dealerName" class="text_input" v-model="mimRegObject.name" maxlength="50" required />
-                        </td>
-                        <th>대표자명<span class="red">*</span></th>
-                        <td>
-                            <input type="search" class="text_input" v-model="mimRegObject.ownerName" required />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>사업자등록번호<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="search" class="text_input" maxlength="12" v-model="mimRegObject.businessRegNumber" required />
-                            <span class="light_gray ml-2">(예: 119-02-29983)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>업태<span class="red">*</span></th>
-                        <td>
-                            <input type="search" class="text_input" maxlength="50" v-model="mimRegObject.businessType" required />
-                        </td>
-                        <th>종목<span class="red">*</span></th>
-                        <td>
-                            <input type="search" class="text_input" maxlength="50" v-model="mimRegObject.businessItem"  required />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>결제계좌명의<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="search" class="text_input" maxlength="50" v-model="mimRegObject.billingAccountName" required />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>결제은행<span class="red">*</span></th>
-                        <td colspan="3">
-                            <select class="text_input" v-model.number="mimRegObject.billingBankCode" required>
-                                <option v-for="(item, index) in billingBankCodeList" :key="index" :value="item.value">{{item.text}}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>은행계좌번호<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="search" class="text_input" maxlength="30" v-model="mimRegObject.bankAccount" required/>
-                            <span class="light_gray ml-2">"-" 없이 입력해주세요 (예: 11232112333)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>담당자명<span class="red">*</span></th>
-                        <td>
-                            <input type="search" class="text_input" maxlength="15" v-model="mimRegObject.managerName" required>
-                        </td>
-                        <th>담당자 직위</th>
-                        <td>
-                            <input type="search" class="text_input" maxlength="15" v-model="mimRegObject.managerRank">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>전화번호<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="search" class="text_input" maxlength="20" v-model="mimRegObject.tel" required>
-                            <span class="light_gray ml-2">(예: 02-1234-1234)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>휴대폰번호</th>
-                        <td>
-                            <input type="search" class="text_input"  maxlength="20" v-model="mimRegObject.mobile" />
-                            <span class="light_gray ml-2">(예: 010-1234-1234)</span>
-                        </td>
-                        <th>팩스번호</th>
-                        <td>
-                            <input type="search" class="text_input" maxlength="20" v-model="mimRegObject.fax" />
-                            <span class="light_gray ml-2">(예: 02-1234-1234)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>이메일<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="search" class="text_input w-25" maxlength="100" v-model="mimRegObject.email" required />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>홈페이지</th>
-                        <td colspan="3">
-                            <input type="search" class="text_input w-25" maxlength="150" v-model="mimRegObject.homepage" />
-                            <span class="light_gray ml-2">(예: www.sitename.co.kr)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>회사인감이미지</th>
-                        <td colspan="3">
-                            <input type="file" ref="stampImgUrl" name="stampImgUrl" accept="image/*"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>주소<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="search" placeholder="우편번호" maxlength="7" class="text_input" v-model.number="mimRegObject.postNumber" disabled required />&emsp;
-                            <b-button size="sm" variant="outline-secondary" v-b-modal.addressModal>우편번호 찾기</b-button>
-                            <div class="mgt3">
-                                <input type="search" placeholder="도로명주소" maxlength="50" class="text_input w-100" v-model="mimRegObject.address1" disabled required />
-                            </div>
-                            <div class="mgt3">
-                                <input type="search" placeholder="상세주소" maxlength="50" class="text_input w-100" v-model="mimRegObject.address2" required />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>기타사항</th>
-                        <td colspan="3">
-                            <textarea class="text_input w-100" style="height:80px" v-model="mimRegObject.comment"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>관리자메모</th>
-                        <td colspan="3">
-                            <textarea class="text_input w-100" style="height:80px" v-model="mimRegObject.adminMemo"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>정산주기<span class="red">*</span></th>
-                        <td colspan="3">
-                            <select class="text_input" v-model="mimRegObject.calcCycleCode" required>
-                                <option v-for="(item, index) in calcCycleCodeList" :key="index" :value="item.value">{{item.text}}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>수수료<span class="red">*</span></th>
-                        <td colspan="3">
-                            <input type="radio" name="feeTypeCode" id="feeTypeCode1" v-model.number="mimRegObject.feeTypeCode" value="1"> <label for="feeTypeCode1" class="mr-2">카테고리당 수수료</label>
-                            <input type="radio" name="feeTypeCode" id="feeTypeCode2" v-model.number="mimRegObject.feeTypeCode" value="2"> <label for="feeTypeCode2">판매자당 수수료</label>&emsp;
-                            <input type="text" class="text_input font-weight-bold text-right" v-model.number="mimRegObject.fee" style="width: 50px" maxlength="5" :disabled="mimRegObject.feeTypeCode === 1"> %
-                        </td>
-                    </tr>
-                </tbody>
+                <tr>
+                    <th class="p-3">
+                        사업자<br />등록증 사본
+                    </th>
+                    <td>
+                        <input type="file" @change="onFileUploader($event, mimRegObject, 'file1Url')"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="p-3">
+                        통신판매업<br />신고증 사본
+                    </th>
+                    <td>
+                        <input type="file" @change="onFileUploader($event, mimRegObject, 'file2Url')"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="p-3">
+                        법인 등기부<br />등본 사본
+                    </th>
+                    <td>
+                        <input type="file" @change="onFileUploader($event, mimRegObject, 'file3Url')"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="p-3">
+                        법인 명의<br /> 
+                        통장 사본
+                    </th>
+                    <td>
+                        <input type="file" @change="onFileUploader($event, mimRegObject, 'file4Url')"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="p-3">
+                        건강기능식품<br />판매업 신고증
+                    </th>
+                    <td>
+                        <input type="file" @change="onFileUploader($event, mimRegObject, 'file5Url')"/>
+                    </td>
+                </tr>
             </table>
-            <div class="btn_center">
-                <b-button variant="secondary" class="mr-2">목록</b-button>
-                <b-button type="submit" variant="primary">입점신청</b-button>
+            <div class="m-2">
+                <b-button type="submit" variant="info">입점신청</b-button>
             </div>
         </b-form>
         <b-modal id="addressModal" hide-footer>
@@ -184,6 +197,8 @@
 </template>
 
 <script>
+import { quillEditor } from "vue-quill-editor"
+import "quill/dist/quill.snow.css"
 import { VueDaumPostcode } from 'vue-daum-postcode'
 import commonJs from '@/assets/js/common.js'
 import imageUploader from '@/assets/js/ImagesUploader.js'
@@ -204,21 +219,27 @@ export default {
             managerRank: '',
             tel: '',
             mobile: '',
-            fax: '',
+            // fax: '',
             email: '',
-            homepage: 'http://',
+            // homepage: 'http://',
             postNumber: '',
             address1: '',
             address2: '',
             stampImgUrl: '',
-            comment: '',
-            adminMemo: '',
-            calcCycleCode: 1,
-            feeTypeCode: 1,
-            fee: 0,
-            proposalStatusCode: 2
+            comment: `<p><b>영업 담당자</b></p><p>이름 : </p><p>이메일 : </p><p>휴대폰번호 : </p><br /><p><b>CS 담당자</b></p><p>이름 : </p><p>이메일 : </p><p>휴대폰번호 : </p><br /><p><b>배송 담당자</b></p><p>이름 : </p><p>이메일 : </p><p>휴대폰번호 : </p>`,
+            // adminMemo: '',
+            calcCycleCode: 3,
+            // feeTypeCode: 1,
+            // fee: 0.5,
+            proposalStatusCode: 1,
+            file1Url: '',
+            file2Url: '',
+            file3Url: '',
+            file4Url: '',
+            file5Url: ''
         },
         checkValidateId: false,
+        checkValidatePassword: false,
         calcCycleCodeList: [
             {value: 1, text: '일정산'},
             {value: 2, text: '주정산'},
@@ -232,9 +253,18 @@ export default {
             {value: 3, text: 'NB농협'},
             {value: 4, text: '기업은행'}
         ],
+        passwordsValidate: {
+            style: {display: 'none'},
+            class: 'text-danger',
+            message : '1231232'
+        },
+        commentOption: {
+            placeholder: "내용을 입력해주세요..."
+        }
     }),
     components: {
-        VueDaumPostcode
+        VueDaumPostcode,
+        quillEditor,
     },
     mounted () {    
         this.axiosGetRequest('/api/v1/preferences/banks','',function (res) {
@@ -250,6 +280,24 @@ export default {
     },
     mixins: [commonJs, imageUploader],
     methods: {
+        changePassword: function (evt) {
+            if (evt.target.value.length < 5) {
+                return false
+            }
+            const passRule = /^.*(?=^.{6,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+            if (passRule.test(evt.target.value)) {
+                this.passwordsValidate.class = 'text-primary'
+                this.passwordsValidate.message = '사용 가능한 비밀번호입니다.'
+                this.passwordsValidate.style = {display: 'block'}
+                this.checkValidatePassword = true
+            } else {
+                this.passwordsValidate.class = 'text-danger'
+                this.passwordsValidate.message = '사용할수 없는 비밀번호입니다.'
+                this.passwordsValidate.style = {display: 'block'}
+                this.checkValidatePassword = false
+            }
+            return false
+        },
         resultPostCode: function (e) {
             this.mimRegObject.postNumber = e.zonecode
             this.mimRegObject.address1 = e.address
@@ -275,22 +323,31 @@ export default {
                 alert('아이디 중복체크를 해주시기 바랍니다.')
                 return false
             }
+            if (!this.checkValidatePassword) {
+                alert('패스워드를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                this.mimRegObject.password = this.makeRsa(this.mimRegObject.password)
+            }
 
-            if (this.mimRegObject.fee > 0 ) {
-                this.mimRegObject.fee = this.mimRegObject.fee/100 
+            this.mimRegObject.mobile = this.makeRsa(this.mimRegObject.mobile)
+
+            if (this.mimRegObject.comment.length > 500) {
+                alert('기타사항 메세지가 너무 깁니다. [최대 500자 이내]')
+                return false
             }
 
             this.axiosPostRequest('/api/v1/sellers',{jsonData: this.mimRegObject}, (res) => {
                 console.log(res.data.jsonData.resultCode)
                 if (res.data.jsonData.resultCode === '0001') {
-                    alert('입점 등록 신청이 완료되었습니다.')
-                    window.location.href='/mim/dealer_regist_list'
+                    alert('입점 등록 신청이 완료되었습니다.');
+                    window.location.href='/mim/dealer_regist_list';
                     return false
                 } else {
                     alert('알수없는 이유로 에러가 발생했습니다. \n관리자에게 문의하세요.')
                     return false
                 }
-            })
+            },'',sessionStorage.getItem('accessToken'))
         }
     }
 }

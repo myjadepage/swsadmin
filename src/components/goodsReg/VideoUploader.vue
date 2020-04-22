@@ -7,20 +7,12 @@
       <template v-if="item.procTypeCode !== 4">
         <b-col cols="3" class="mb-1"  style="padding-right:0px">
           <span style="width:20px">{{index + 1}}.</span>
-          <select style="width: 120px" v-model.number="item.mediaTypeCode">
-            <option value="1">메인</option>
-            <option value="2">언박싱</option>
-            <option value="3">사용법</option>
-            <option value="4">후기</option>
-            <option value="5">이미지</option>
-          </select>
           <input
             type="text"
             v-model="item.title"
-            class="text_input"
+            class="text_input w-75"
             placeholder="영상 타이틀"
             maxlength="50"
-            style="width:100%; max-width:200px"
           />
         </b-col>
         <b-col cols="2" class="px-1">

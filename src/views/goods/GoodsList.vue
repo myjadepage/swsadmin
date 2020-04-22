@@ -88,15 +88,7 @@
                 </table>
             </div>
         </form>
-        <Goods-list-table 
-            :FilterFields="FilterFields"
-            :products="products" 
-            :isBusy="isBusy"   
-            :totalPage="totalPage"
-            :currentPage="currentPage"
-            @refresh="searchFilteringFn"
-        >
-        </Goods-list-table>
+        <Goods-list-table  :FilterFields="FilterFields" :products="products"  :isBusy="isBusy"    :totalPage="totalPage" :currentPage="currentPage" @refresh="searchFilteringFn"></Goods-list-table>
     </div>
 </template>
 <script>

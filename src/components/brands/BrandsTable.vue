@@ -14,7 +14,7 @@
                 {{row.item.managerName}}
             </template>
             <template v-slot:cell(setting)="row">
-                <b-button size="sm" variant="outline-secondary" :href="'/goods/brand_reg/'+row.item.no"><font-awesome-icon icon="pencil-alt"/> 수정</b-button>
+                <b-button size="sm" variant="outline-secondary" :href="`/goods/brand_detail/${row.item.no}`"><font-awesome-icon icon="pencil-alt"/> 수정</b-button>
                 &emsp;&emsp;
                 <b-button size="sm" variant="outline-secondary" @click="$emit('delete', row.item.no)"><font-awesome-icon icon="trash" /> 삭제</b-button>
             </template>

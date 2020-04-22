@@ -57,8 +57,8 @@ export default {
       feeRateBase: true,
       feeRateMedia: false,
       feeRateInfluencer: false,
-      brandSysId: 0,
       sellerSysId: 0,
+      brandSysId: 0,
       isDisplay: 1,
       isVat: 1,
       isSoldout: 0,
@@ -72,7 +72,7 @@ export default {
       stockTypeCode: 1,
       priceTypeCode: 1,
       pointTypeCode: 1,
-      deliveryPriceTypeCode: 6,
+      deliveryPriceTypeCode: 1,
       optionDescription: "",
       productNotice: { 
         prdtNoticeBaseSysId: 0, 
@@ -129,7 +129,10 @@ export default {
         });
       }
 
-      // this.productData.iconList = this.iconList.join(';')
+      if (this.productData.bigImageUrl.length > 100) {
+        alert('큰 이미지를 확인하여 주시기 바랍니다.')
+        return false
+      }
 
       // 다른이미지 Validate
       if (this.images.length > 0) {
@@ -158,7 +161,6 @@ export default {
           this.videos.forEach(item => {
             this.productData.media.splice(0)
             let row = {
-              mediaTypeCode: item.mediaTypeCode,
               mediaId: item.mediaId,
               title: item.title,
               thumnailUrl: item.thumnailUrl,
@@ -317,7 +319,6 @@ export default {
               mediaId: item.mediaId,
               title: item.title,
               videoTitle: this.isEmpty(item.mediaId) ? '' : "영상있음",
-              mediaTypeCode: item.mediaTypeCode,
               thumnailUrl: item.thumnailUrl,
               progressValue: 0,
               progressMax: 0,

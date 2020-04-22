@@ -34,10 +34,11 @@ export default {
         },
         
         loginClick(x){
+          console.log(x.target.elements[1].value)
           this.axiosPostRequest('api/v1/auth/admins/login',{
               jsonData:{
-                adminId:x.target.elements[0].value,
-                password:this.makeRsa(x.target.elements[1].value)
+                adminId: x.target.elements[0].value,
+                password: this.makeRsa(x.target.elements[1].value)
               }
           },
           (res)=>{
@@ -47,6 +48,8 @@ export default {
               sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)
               sessionStorage.setItem('refreshToken',res.data.jsonData.refreshToken)
               sessionStorage.setItem('userName',res.data.jsonData.name)
+              sessionStorage.setItem('domainSysId',res.data.jsonData.domainSysId)
+              sessionStorage.setItem('companyTypeCode',res.data.jsonData.companyTypeCode)
               
               this.$store.dispatch('login')
 

@@ -28,28 +28,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="bg-light align-middle font-weight-bold">아이디</th>
-                        <td colspan="3" class="align-middle">
-                            <input type="search" class="text_input" v-model="brandReg.adminId" @keyup="checkValidateId = false" required/>&emsp;
-                            <b-button variant="outline-secondary" size="sm" @click="checkDuplicateIdFn" :disabled="checkValidateId"><font-awesome-icon icon="check" />중복체크</b-button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="bg-light align-middle font-weight-bold">패스워드</th>
-                        <td colspan="3">
-                            <input type="password" class="text_input" id="password" v-model="brandReg.password" @focusout="changePassword" required/>&emsp;
-                            <span class="text-muted ml-2">* 패스워드는 6자이상 영문, 숫자, 특수문자 포함입니다.</span>
-                            <label :style="passwordsValidate.style" :class="passwordsValidate.class">{{passwordsValidate.message}}</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="bg-light align-middle font-weight-bold">계정사용유무</th>
-                        <td colspan="3">
-                            <input type="checkbox" v-model="checkUserAuth"/> <label class="text-muted">아이디/ 패스워드를 사용하겠습니다.</label>
-                            <p>브랜드의 관리</p>
-                        </td>
-                    </tr>
-                    <tr>
                         <th>이미지</th>
                         <td colspan="3">
                             <div>
@@ -62,7 +40,7 @@
                     <tr>
                         <th>판매자정보&emsp;<span class="red">*</span></th>
                         <td colspan="3">
-                            <sws-seller :parentData="brandReg"></sws-seller>
+                            
                         </td>
                     </tr>
                     <tr>
@@ -114,7 +92,6 @@ import commonJs from '@/assets/js/common.js'
 // 이미지 업로드 등록시 함수 
 import ImagesUploader from '@/assets/js/ImagesUploader.js'
 import submitReg from '@/components/brands/BrandReg.js'
-import SwsSeller from '@/components/common/SwsSeller'
 
 Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
 Quill.register('modules/imageUpload', ImageUpload)
@@ -150,24 +127,17 @@ export default {
         }
     },
     mounted() {
-        if((!this.isEmpty(this.$route.params.brandSysId))) {
-            this.loadBrandData(this.$route.params.brandSysId)
-        }
-        // this.getImageUrl('/brand/image')
+        this.axiosGetRequest('/api/v1/brands/'+this.$route.params.brandSysId, '', function (res) {
+            let loadData = res.data.jsonData
+            for(let _k in loadData) {
+                this.brandReg[_k] = loadData[_k]
+            }
+        }.bind(this))
     },
     components: {
-        quillEditor,
-        SwsSeller
+        quillEditor
     },
     methods: {
-        loadBrandData (SysId){
-            this.axiosGetRequest('/api/v1/brands/'+SysId, '', function (res) {
-                let loadData = res.data.jsonData
-                for(let _k in loadData) {
-                    this.brandReg[_k] = loadData[_k]
-                }
-            }.bind(this))
-        },
         // 이미지 에디터에서 올림
         categorCommentHtmlimageHandler: function (imageDataUrl, type){
             var ext = type.split('/')

@@ -184,7 +184,7 @@
                   <p class="text-center font-weight-bold">[미리보기]</p>
                   <img :src=productData.bigImageUrl style="width: 90px; height: 90px; border:1px solid #EFEFEF"/>
                 </div>
-                <input type="file" accept="image/*" name="bigImageUrl" id="bigImageUrl" @change="changeImage($event, {imageDir: '/product/image/0/'+productData.brandSysId})" :required="$route.params.productSysId !== '' ? false : true"/>
+                <input type="file" accept="image/*" name="bigImageUrl" id="bigImageUrl" @change="changeImage($event, {imageDir: `/product/image/${productData.sellerSysId}/${productData.brandSysId}`})" :required="isEmpty($route.params.productSysId) ? true : false"/>
                 <br />
                 <span class="light_gray">(1080px * 1080px)</span>
                 <label for="img_auto">
@@ -645,22 +645,22 @@
                     <input type="text" name="prepaymentAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model.number="productData.prepaymentAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 (무료배송 :
                     <input type="text" name="prepayfreeMinAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model.number="productData.prepayfreeMinAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 이상 주문시 무료)
                   </dd>
-                  <!-- <dt>
+                  <dt>
                     <input type="radio" id="deliveryPriceTypeCode4" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="4" />
                     <label for="deliveryPriceTypeCode4">판매자정책</label>
                   </dt>
-                  <dd>판매자의 기본정책을 따릅니다.</dd> -->
+                  <dd>판매자의 기본정책을 따릅니다.</dd>
 
                   <!-- <dt>
                     <input type="radio" id="deliveryPriceTypeCode5" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="5" />
                     <label for="deliveryPriceTypeCode5">브랜드정책</label>
                   </dt>
-                  <dd>브랜드 정책을 따릅니다.</dd> -->
+                  <dd>브랜드 정책을 따릅니다.</dd>
                   <dt>
                     <input type="radio" id="deliveryPriceTypeCode6" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="6" />
                     <label for="deliveryPriceTypeCode6">기본정책</label>
                   </dt>
-                  <dd>쇼핑몰의 기본정책을 따릅니다.</dd>
+                  <dd>쇼핑몰의 기본정책을 따릅니다.</dd> -->
                 </dl>
 
                 <dl class="explain blue mgt5">
@@ -864,7 +864,7 @@ export default {
       images: [{ imageurl: '' }],
       files: [{fileDir: ''}],
       videos: [
-        {mediaTypeCode: 1, title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2}
+        {title: '', videoTitle: '', progressValue: 0, progressMax: 0, mediaId: '', thumnailUrl: '', procTypeCode: 2}
       ],
       commonSellers: [
         {people: "", discount: "" }

@@ -9,6 +9,7 @@ import GoodsLeftMenu from '@/views/goods/LeftMenu'
 // import GoodsIndex from '@/views/goods/index.vue'
 import BrandList from '@/views/goods/BrandList.vue'
 import BrandReg from '@/views/goods/BrandReg.vue'
+import BrandDetail from '@/views/goods/BrandDetail.vue'
 import GoodsReg from '@/views/goods/GoodsReg.vue'
 import Category from '@/views/goods/Category.vue'
 import GoodsList from '@/views/goods/GoodsList.vue'
@@ -136,7 +137,6 @@ import TimeTable from '@/views/broadcast/TimeTable'
 
 /* 로그인, 회원가입 */
 import MainPage from "@/views/main/MainPage"
-
 import DashBoardIndex from "@/views/dashboard/DashBoardIndex"
 import DashBoardMenu from "@/views/dashboard/DashBoardMenu"
 
@@ -186,7 +186,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path:'/',
+    path:'*',
     redirect:'/login'
   },
   {
@@ -233,9 +233,9 @@ const routes = [
         components: { LeftMenu: GoodsLeftMenu, Contents: BrandReg}
       },
       {
-        path: '/goods/brand_reg/:brandSysId',
+        path: '/goods/brand_detail/:brandSysId',
         name: '브랜드 수정',
-        components: { LeftMenu: GoodsLeftMenu, Contents: BrandReg}
+        components: { LeftMenu: GoodsLeftMenu, Contents: BrandDetail}
       },
       {
         path: '/goods/category',
@@ -706,11 +706,6 @@ const routes = [
       }
     },
     children:[
-      // {
-      //   path: '/mim/',
-      //   name: '판매자관리',
-      //   components: { LeftMenu: MimLeftMenu, Contents: MimIndex }
-      // },
       {
         path: '/mim/dealer_regist',
         name: '판매자신청',
@@ -723,7 +718,7 @@ const routes = [
       },
       {
         path: '/mim/dealer_list',
-        name: '판매자목록',
+        name: '판매자 목록',
         components: { LeftMenu: MimLeftMenu, Contents: DealerList }
       },
       {

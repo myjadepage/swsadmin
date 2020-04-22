@@ -1,11 +1,11 @@
 <template>
  <div id="contents">
-    <h3><font-awesome-icon icon="play-circle" /> 판매자 신청목록</h3>
+    <h3><font-awesome-icon icon="play-circle" /> {{$route.name}}</h3>
     <ul class="navi">
         <li class="home"><a href="/" target="_top">홈</a></li>
         <li>입점업체관리</li>
         <li>판매자관리</li>
-        <li class="on">판매자 신청목록</li>
+        <li class="on">{{$route.name}}</li>
     </ul>
     <ul class="helpbox">
         <li>쇼핑몰에 판매자 신청하신 목록을 관리하는 곳 입니다.</li>
@@ -51,7 +51,8 @@
                 <!-- <col width="50"> -->
             </template>
             <template v-slot:cell(detail) = "detail">
-                <b-button variant="outline-secondary" size="sm" @click="$router.push('/mim/dealer_detail/' + detail.item.sellerSysId)">상세정보</b-button>
+                <b-button variant="outline-secondary" size="sm" @click="$router.push('/mim/dealer_detail/' + detail.item.sellerSysId)">상세정보</b-button>&emsp;
+                            <b-button variant="outline-secondary" size="sm" @click="agressJoin(detail.item.sellerSysId)">입점승인</b-button>                 
             </template>
             <!-- <template v-slot:cell(check)>
                 <input type="checkbox"/>
@@ -117,6 +118,19 @@ export default {
            }
            this.totalPage = result.length
            this.currentPage = 1
+        },
+        agressJoin: function (id) {
+            let row = {
+                sellerSysId: id,
+                proposalStatusCode: 2
+            }
+            if(confirm('입점 신청승인을 하시겠습니까?')) {
+                this.axiosPatchRequest(`/api/v1/sellers/${id}/proposaling`, {jsonData: row},function (res) {
+                    console.log(res)
+                    alert('승인이 완료되었습니다.')
+                    // window.location.href='/mim/dealer_regist_list'
+                }.bind(this))
+            }
         }
     }
 }

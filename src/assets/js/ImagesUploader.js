@@ -92,6 +92,13 @@ export default {
 
     // 이미지 업로드 다시 만듬
     async changeImage (event, requestObject) {
+      if (this.productData.sellerSysId === 0) {
+        alert('판매자를 선택해 주시기 바랍니다.')        
+        return false
+      }else if (this.productData.brandSysId === 0) {
+        alert('브랜드를 선택해 주시기 바랍니다.')
+        return false
+      }
       this.imageEvent.isDisplay = true
       this.imageEvent.progress = 100
       this.productData.bigImageUrl = await this.uploadImageProcess(event.target.files[0], requestObject)

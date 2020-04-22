@@ -7,7 +7,7 @@
                 <router-link to="/mim/dealer_regist">판매자 신청</router-link>
                 <router-link to="/mim/dealer_regist_list">판매자 신청목록</router-link>
                 <router-link to="/mim/dealer_list">판매자 목록</router-link>
-                <router-link to="/mim/dealer_brand_list">브랜드관리</router-link>
+                <!-- <router-link to="/mim/dealer_brand_list">브랜드관리</router-link> -->
                 <!-- <router-link to="/mim/dealer_secession_list">판매자 탈퇴목록</router-link> -->
                 <!-- <a href="/mim/dealer_qna_list">판매자 문의하기</a> -->
                 <!-- <a href="/board/list?board=mim_notice">판매자 공지사항</a> -->

@@ -210,10 +210,7 @@ export default {
         .then(callback)
         .catch(errorFn);
     }else{
-      Axios.request({
-        url: url,
-        params: param
-      })
+      Axios.patch(url, this.patchParam(param))
         .then(callback)
         .catch(errorFn);
     }
@@ -291,6 +288,10 @@ export default {
     },
     getImageUrl: function (url) {
       return url
+    },
+    onFileUploader: function (evt, obj, fields) {
+      obj[fields] = 'http://www.test.com/file'
+      return false
     },
     makeRsa:  function (value) {
         const publicKey =  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA27Bf/sFXPg8cXgLp/n3tqTfKIZ/lcxO3I4K0NfXTXNm49KDmUofzntTS8bPvgcX688ZJRYDwig6a5ZmFE8FFSCdqJuUQ1c9UjnlU4KA7ztHDdPgd+zxCn9+lfaYgDXvwjXQb0t53u001VX5s/eTxsFri9qvMmdDQT4McYN1nIAUsDBDxPAkBQy4+CEddqWCjPLptqdroEUIgQ6fxrVVVzhuIpiG9zcSr/1RLbw6YERBxbVk/Q/CrgC5fKXWYRI5T4+V9MX4BxVvpqR2B+KEfxYQsXvJ2nyV0tKtb+m2hu+HtE4onsoM/lbm0Hw6yMKp/P2MofIyFNTdWeBcyEI3aRwIDAQAB"
