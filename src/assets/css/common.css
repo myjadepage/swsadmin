@@ -3604,3 +3604,7 @@ background-repeat: no-repeat;
 .fa-arrow-down path {
     fill: #4c94f1;
   }
+
+.selPrdts td{
+    height: 70px;
+}

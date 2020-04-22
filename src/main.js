@@ -16,6 +16,10 @@ Vue.use(BootstrapVue)
 Vue.use(cors)
 Vue.config.productionTip = false
 
+Vue.filter('makeComma', val => {
+  return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+})
+
 new Vue({
   store,
   router,

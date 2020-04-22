@@ -1,6 +1,6 @@
 <template>
     <form class="form-group" @submit.prevent="loginClick" method="POST">
-      <input class="form-control" type="email" name="email" id="email" placeholder="Email" required>
+      <input class="form-control" type="text" name="id" id="id" placeholder="ID" required>
       <br>
       <input class="form-control" type="password" name="password" id="password" placeholder="Password" required>
 
@@ -37,7 +37,7 @@ export default {
         loginClick(x){
           this.axiosPostRequest('api/v1/auth/admins/login',{
               jsonData:{
-                email:x.target.elements[0].value,
+                adminId:x.target.elements[0].value,
                 password:this.makeRsa(x.target.elements[1].value)
               }
           },

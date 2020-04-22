@@ -64,6 +64,7 @@ import BlockList from '@/views/management/BlockList'
 import PunishList from '@/views/management/PunishList'
 import CouponList from '@/views/management/CouponList'
 import CouponReg from '@/views/management/CouponReg'
+import ApplyPrdts from '@/components/management/coupon/SelectAppliedPrdt'
 
 
 /** 환경설정 */
@@ -412,6 +413,18 @@ const routes = [
         components: { LeftMenu: ManagementLeftMenu, Contents: CouponReg }
       }    
     ]
+  },
+  {
+    path:'/management/coupon_reg/applyPrdts',
+    name:'상품선택하기',
+    component:ApplyPrdts
+    // beforeEnter: (to, from, next) => {
+    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+    //     next()
+    //   }else{
+    //     next('/')
+    //   }
+    // },
   },
   {
     path: '/setup/',
@@ -849,7 +862,7 @@ const routes = [
         components: { LeftMenu: DashBoardMenu, Contents: DashBoardIndex }
       },
     ]
-  }
+  },
 ]
 
 
