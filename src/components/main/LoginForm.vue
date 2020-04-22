@@ -1,6 +1,6 @@
 <template>
     <form class="form-group" @submit.prevent="loginClick" method="POST">
-      <input class="form-control" type="email" name="email" id="email" placeholder="Email" required>
+      <input class="form-control" type="text" name="adminId" id="adminId" placeholder="Id" required>
       <br>
       <input class="form-control" type="password" name="password" id="password" placeholder="Password" required>
 
@@ -10,10 +10,10 @@
         </div>
     
       <button class="btn btn-login" type="submit">LOGIN</button>
-
+<!-- 
       <div class="text-light mt-2">
         <span @click="signInClick" class="text-light btn">회원가입</span> / <span class="text-light btn">비밀번호 문의</span>
-      </div>
+      </div> -->
     </form>
 </template>
 
@@ -24,12 +24,11 @@ export default {
     mixins: [commonJs],
     data(){
       return{
-
       }
     },
     methods:{
         signInClick(){
-          this.email = ''
+          this.adminId = ''
           this.password = ''
           this.$emit('signInClick')
         },
@@ -37,7 +36,7 @@ export default {
         loginClick(x){
           this.axiosPostRequest('api/v1/auth/admins/login',{
               jsonData:{
-                email:x.target.elements[0].value,
+                adminId:x.target.elements[0].value,
                 password:this.makeRsa(x.target.elements[1].value)
               }
           },

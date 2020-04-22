@@ -4,7 +4,7 @@
                 <ul class="navi">
                     <li class="home"><a href="/" target="_top">홈</a></li>
                     <li>운영관리</li>
-                    <li>고객운영관리</li>
+                    <li>게시판운영관리</li>
                     <li class="on">{{ $route.name }}</li>
                 </ul>
                 <ul class="helpbox">
@@ -52,19 +52,21 @@
                                 <col width="100">
                                 <col width="100">
                             </template>
-                            <template v-slot:cell(faqTypeCode) = "faqTypeCode">
-                              {{ chanegValue(faqTypeCode.item.faqTypeCode) }}
+
+                            <template v-slot:cell(faqTypeCode) = "row">
+                              {{ chanegValue(row.item.faqTypeCode) }}
                             </template>
-                            <template  v-slot:cell(title) = "title">
-                                <router-link :to="'/management/faq_detail/'+ title.item.siteFaqSysId">{{ title.item.title }}</router-link>
+
+                            <template  v-slot:cell(title) = "row">
+                                <router-link :to="'/management/faq_detail/'+ row.item.siteFaqSysId">{{ row.item.title }}</router-link>
                             </template>
-                            <template v-slot:cell(createdAt) = "createdAt">
-                               {{ changeDate(createdAt.item.createdAt) }}
+
+                            <template v-slot:cell(createdAt) = "row">
+                               {{ changeDate(row.item.createdAt) }}
                             </template>
-                            <template v-slot:cell(setting) = "setting">
-                                <span class="button small">
-                                    <b-button variant="outline-danger" size="sm"  @click="deleteFaq(setting.item.siteFaqSysId)">삭제</b-button>
-                                </span>
+
+                            <template v-slot:cell(setting) = "row">
+                                <b-button variant="outline-danger" size="sm"  @click="deleteFaq(row.item.siteFaqSysId)">삭제</b-button>
                             </template>
                         </b-table>
 
@@ -230,7 +232,7 @@ export default {
             var d = date.substr(6, 2)
             return y + '-' + m + '-' + d
         },
-        deleteFaq(siteFaqSysId) {
+        deleteFaq(siteFaqSysId) {                   
            this.axiosDeleteRequest('/api/v1/operations/faqs/' + siteFaqSysId,'',this.deleteFaqStatus, '', sessionStorage.getItem('accessToken')) 
         },
         deleteFaqStatus(res) {
