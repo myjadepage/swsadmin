@@ -34,7 +34,7 @@ export default {
         },
         
         loginClick(x){
-          console.log(x.target.elements[1].value)
+          // console.log(x.target.elements[1].value)
           this.axiosPostRequest('api/v1/auth/admins/login',{
               jsonData:{
                 adminId: x.target.elements[0].value,

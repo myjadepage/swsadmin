@@ -1,24 +1,24 @@
 <template>
   <div class="selectPrdtList">
-    <table id="selectPrdtList" class="table">
+    <table id="selectPrdtList" class="table table-hover">
         <thead>
-            <tr>
-                <th class="text-center"><input @change="checkAll" ref="checkAll" type="checkbox"></th>
-                <th class="text-center">No</th>
-                <th class="text-center">상품코드</th>
-                <th class="text-center">상품</th>
-                <th class="text-center">가격</th>
-                <th class="text-center">선택</th>
+            <tr class="row" :style="{position:'absolute', width:'100%', backgroundColor:'#fff', zIndex:'10'}">
+                <th class="text-center col col-1"><input :checked="checkAllFlag" @change="checkAll" ref="checkAll" type="checkbox"></th>
+                <th class="text-center col col-1">No</th>
+                <th class="text-center col col-1">상품코드</th>
+                <th class="text-center col col-6">상품</th>
+                <th class="text-center col col-2">가격</th>
+                <th class="text-center col col-1">선택</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(product,idx) in products" :key="product.prdtSysId" class="selPrdts">
-                <td class="text-center"><input v-model="product.isChecked" @change="checkPrdt" type="checkbox" class="prdtCheck"></td>
-                <td class="text-center">{{(calcNo(idx))}}</td>
-                <td>{{product.prdtCode}}</td>
-                <td><img :src="product.smallImageUrl" alt="" :style="{width:'50px', height:'50px'}">{{product.name}}</td>
-                <td class="text-center">{{product.price|makeComma}}원</td>
-                <td class="text-center"><button @click="selectPrdt(product.prdtSysId)" class="btn btn-light">확인</button></td>
+            <tr v-for="(product,idx) in products" :key="product.prdtSysId" class="selPrdts row">
+                <td class="text-center col col-1"><input v-model="product.isChecked" @change="checkPrdt" type="checkbox" class="prdtCheck"></td>
+                <td class="text-center col col-1">{{(calcNo(idx))}}</td>
+                <td class="text-center col col-1">{{product.prdtCode}}</td>
+                <td class="col col-6"><img :src="product.smallImageUrl" alt="상품 썸네일" :style="{width:'50px', height:'50px'}" class="mr-2">{{product.name}}</td>
+                <td class="text-center col col-2">{{product.price|makeComma}}원</td>
+                <td class="text-center col col-1"><button @click="selectPrdt(product.prdtSysId, product.name)" class="btn btn-light">확인</button></td>
             </tr>
         </tbody>
     </table>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-    props:['products','currentPage','perPage'],
+    props:['products','currentPage','perPage','checkAllFlag'],
     methods:{
         calcNo(idx){
             let val = idx + 1
@@ -39,10 +39,12 @@ export default {
             if(e.target.checked){
                 this.$el.getElementsByClassName('prdtCheck').forEach((c,idx)=>{
                     this.products[idx].isChecked = true
+                    this.$emit('checkAll', true)
                 })
             }else{
                 this.$el.getElementsByClassName('prdtCheck').forEach((c,idx)=>{
                     this.products[idx].isChecked = false
+                    this.$emit('checkAll', false)
                 })
             }
         },
@@ -57,25 +59,8 @@ export default {
                 this.$refs.checkAll.checked = isCheckAll
         },
 
-        selectPrdt(id){
-            if(sessionStorage.getItem('selectedPrdt')){
-                let list = JSON.parse(sessionStorage.getItem('selectedPrdt'))
-                if(!list.includes(id)){
-                    list.push(id)
-                }
-                sessionStorage.setItem('selectedPrdt', JSON.stringify(list))
-            }else{
-             sessionStorage.setItem('selectedPrdt',JSON.stringify([id]))
-            }
-
-            let event = new CustomEvent("addItem", {
-            detail: {
-            selectedPrdt: JSON.parse(sessionStorage.getItem('selectedPrdt'))
-            }
-        });
-        window.dispatchEvent(event);
-
-
+        selectPrdt(id, name){
+            this.$emit('select',{id:id,name:name})
         }
     }
 }

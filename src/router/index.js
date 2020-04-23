@@ -65,7 +65,8 @@ import BlockList from '@/views/management/BlockList'
 import PunishList from '@/views/management/PunishList'
 import CouponList from '@/views/management/CouponList'
 import CouponReg from '@/views/management/CouponReg'
-import ApplyPrdts from '@/components/management/coupon/SelectAppliedPrdt'
+import SelectGoods from '@/components/management/coupon/SelectGoods'
+import SelectMember from '@/components/management/coupon/SelectMember'
 
 
 /** 환경설정 */
@@ -415,16 +416,28 @@ const routes = [
     ]
   },
   {
-    path:'/management/coupon_reg/applyPrdts',
+    path:'/management/coupon_reg/selectGoods',
     name:'상품선택하기',
-    component:ApplyPrdts
-    // beforeEnter: (to, from, next) => {
-    //   if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
-    //     next()
-    //   }else{
-    //     next('/')
-    //   }
-    // },
+    component:SelectGoods,
+    beforeEnter: (to, from, next) => {
+      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+        next()
+      }else{
+        next('/')
+      }
+    },
+  },
+  {
+    path:'/management/coupon_reg/selectMember',
+    name:'회원선택하기',
+    component:SelectMember,
+    beforeEnter: (to, from, next) => {
+      if(!isTokenExpired(sessionStorage.getItem('refreshToken'))){
+        next()
+      }else{
+        next('/')
+      }
+    },
   },
   {
     path: '/setup/',
