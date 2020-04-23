@@ -63,17 +63,32 @@ export default {
 
       // 1. 사용자 인증
       let loginParam = { user: "l2e2e2@epiens.com", pwd: "ny3yQaQumeje", stoid: "epienscdn", stopwd: "dlvldpstm2020!!"};
-      let auth = await Axios.request({url: "https://stats.kinxcdn.com/api/auth?",params: loginParam}).then((res) => {return res;});
+      let auth = await Axios.request({url: "https://stats.kinxcdn.com/api/auth?",params: loginParam})
+                        .then((res) => {return res;})
+                        .catch(function (err) {
+                          alert('이미지 업로드에 실패했습니다. 관리자에게 문의하여 주시기 바랍니다.')
+                          return false
+                        });
 
       // 2. 디렉토리를 체크한다.
       let dirFindParam = { key: auth.data.Response.key, stoid: "epienscdn", path: dir, type: "dir"};
-      let isDirectory = await Axios.request({url: "https://stats.kinxcdn.com/api/exists?",params: dirFindParam}).then((res) => {return res});
+      let isDirectory = await Axios.request({url: "https://stats.kinxcdn.com/api/exists?",params: dirFindParam})
+                        .then((res) => {return res;})
+                        .catch(function (err) {
+                          alert('이미지 업로드에 실패했습니다. 관리자에게 문의하여 주시기 바랍니다.')
+                          return false
+                        });
 
       let directory = "";
       //3. 디렉토리가 없을경우는 생성한다.
       if (this.isEmpty(isDirectory.dataItem)) {
         let createDirParam = { key: auth.data.Response.key, stoid: "epienscdn", path: dir, work: "C", type: "D"};
-        directory = await Axios.request({url: "https://stats.kinxcdn.com/api/directorys?",params: dirFindParam}).then((res) =>{return res})
+        directory = await Axios.request({url: "https://stats.kinxcdn.com/api/directorys?",params: dirFindParam})
+                        .then((res) => {return res;})
+                        .catch(function (err) {
+                          alert('이미지 업로드에 실패했습니다. 관리자에게 문의하여 주시기 바랍니다.')
+                          return false
+                        });
       }
 
       // 4. 디렉토리가 존재할경우는 바로 업로드진행한다.
