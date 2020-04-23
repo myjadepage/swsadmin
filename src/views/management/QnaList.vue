@@ -12,7 +12,7 @@
     </ul>
     
     <div class="section_head">
-        <h4>등록된 Q＆A는 총 <strong> {{ qnaListData.length }}</strong>개입니다.</h4>
+        <h4>등록된 Q＆A는 총 <span><strong> {{ qnaListData.length }}</strong></span> 개입니다.</h4>
         <div class="mgb5">
          <!--   <select id="skey" name="skey" class="text_input">
                 <option value="">전체</option>

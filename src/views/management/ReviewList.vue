@@ -1,138 +1,149 @@
 <template>
   <div id="contents">
-                <h3><font-awesome-icon icon="play-circle" /> 상품평관리</h3>
-                <ul class="navi">
-                    <li class="home"><a href="/" target="_top">홈</a></li>
-                    <li>운영관리</li>
-                    <li>게시판운영관리</li>
-                    <li class="on">상품평관리</li>
-                </ul>
-                <ul class="helpbox">
-                    <li><span class="red">[회원정보보기]</span>를 클릭하시면 상품평을 적어주신 회원의 정보를 보실 수 있습니다.</li>
-                    <li>상품평을 삭제 하실려면 <span class="red">[삭제]</span> 버튼을 클릭해 주세요.</li>
-                </ul>
+    <h3><font-awesome-icon icon="play-circle" /> 상품평관리</h3>
+    <ul class="navi">
+        <li class="home"><a href="/" target="_top">홈</a></li>
+        <li>운영관리</li>
+        <li>게시판운영관리</li>
+        <li class="on">상품평관리</li>
+    </ul>
+    <ul class="helpbox">
+        <li><span class="red">[회원정보보기]</span>를 클릭하시면 상품평을 적어주신 회원의 정보를 보실 수 있습니다.</li>
+        <li>상품평을 삭제 하실려면 <span class="red">[삭제]</span> 버튼을 클릭해 주세요.</li>
+    </ul>
 
-                <table class="t_list">
-                    <caption>검색 영역</caption>
-                    <colgroup>
-                        <col width="130">
-                        <col width="*">
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th>등록일자</th>
-                            <td style="text-align:left; padding-left:10px">
-                                <sws-date :parentData="FilterFields"></sws-date>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>직접검색</th>
-                            <td style="text-align:left;padding-left:10px">
-                                <select id="skey" name="skey" class="text_input">
-                                    <option value="">전체</option>
-                                    <option value="goods">상품명</option>
-                                    <option value="subject">제목</option>
-                                    <option value="content">내용</option>
-                                    <option value="answer">답변</option>
-                                    <option value="user">평가자</option>
-                                    <option value="dealer">답변자</option>
-                                </select>
-                                <input type="text" name="sword" maxlength="50" class="text_input" style="width:300px; margin:0 5px">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="btn_center">
-                    <b-button variant="outline-secondary" size="lg">검색</b-button>
-                </div>
+    <table class="t_list">
+        <caption>검색 영역</caption>
+        <colgroup>
+            <col width="130">
+            <col width="*">
+        </colgroup>
+        <tbody>
+            <tr>
+                <th>등록일자</th>
+                <td style="text-align:left; padding-left:10px">
+                    <sws-date :parentData="reviewFilter"></sws-date>
+                </td>
+            </tr>
+            <tr>
+                <th>리뷰타입</th>
+                <td style="text-align:left;padding-left:10px">
+                     <select class="text_input" v-model="reviewFilter.reviewTypeField">
+                         <option> ::선택하세요:: </option>
+                         <option v-for="(item, index) in reviewTypeFilter" :key="index" :value="item.value">{{ item.text }}</option>
+                     </select>                     
+                </td>
+            </tr>
+            <tr>
+                <th>직접검색</th>                
+                 <td style="text-align:left;padding-left:10px">
+                     <select class="text_input" v-model="reviewFilter.searchField">
+                         <option v-for="(item, index) in searchFilter" :key="index" :value="item.value">{{ item.text }}</option>
+                     </select>
+                     <input type="text" class="text_input" v-model="reviewFilter.searchText" style="width:300px;margin:0 5px ">
+                     <!-- <b-button id="fileterBoard" type="submit" variant="outline-secondary" size="sm"> <font-awesome-icon icon="search" size="sm"/>&emsp;검색 </b-button> -->
+                 </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="btn_center">
+        <b-button variant="outline-secondary" size="lg" @click="searchClicked">
+            <font-awesome-icon icon="search" size="sm"/> 검색</b-button>
+    </div>
 
-                <form name="Frm">
-                    <div class="section_head">
-                        <!-- <h4>오늘 등록된 상품평은 총 <span><strong>0</strong></span>개입니다.</h4> -->
-                    </div>
+    <div class="section_head">
+        <h4>등록된 상품평은 총 <span><strong>{{ reviewData.length }}</strong></span>개입니다.</h4>
+    </div>
+    
+    
+    <form name="Frm">
+        <b-table ref="qnaTable" head-variant="light" striped    
+          :fields="fields"
+          :items="reviewData"
+          :keyword="searchQuery"                
+        >
+            <template v-slot:table-colgroup>
+                <col width="70">
+                <col width="100">
+                <col width="380">
+                <col width="*">
+                <col width="200">
+                <col width="200">
+                <col width="200">
+                <col width="100">               
+            </template>
 
-                    <table class="t_list">
-                        <caption>등록된 상품평 리스트</caption>
-                        <colgroup>
-                            <col width="70">
-                            <col width="*">
-                            <col width="150">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>상품평</th>
-                                <th>관리</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td style="padding:0">
-                                    <div class="over_h" style="padding:10px;">
-                                        <div class="fl" style="width:70px;"><img src="/img/201324253665762.jpg" width="50" height="50"></div>
-                                        <div class="fl" style="width:40%;text-align:left;padding-top:10px;">
-                                            <a href="/goods/detail?gno=75" target="_blank">버든배낭</a>
-                                        </div>
-                                        <div class="fl" style="padding-top:10px;">
-                                            <router-link to="/management/review_list_all">
-                                                <strong style="text-decoration: underline">총 <span style="color:red;text-decoration: underline">100</span>개의 상품 리뷰(전체보기)</strong>
-                                            </router-link>
-                                        </div>
-                                    </div>
-                                    <div class="over_h" style="padding:6px 10px 7px;background:#f6f6f6;border:solid 1px #ddd;line-height:2">
-                                        <div class="fl">
-                                            <!-- 별점 -->                                          
-                                            <star-rating active-color="#e61654"
-                                                :star-size="25"
-                                                :rounded-corners="true"
-                                                :show-rating="false"                                                             
-                                            ></star-rating>
-                                        </div>
-                                        <div class="fr">몰스토어 (2017-08-31 15:08:47)</div>
-                                    </div>
-                                    <div style="padding:15px 10px;text-align:left;">
-                                        <ul>
-                                            <li class="fl" style="margin-right:5px"><img src="/img/201324253665762.jpg" width="100" height="70"></li>
-                                            <li><img src="/img/201324253665762.jpg" width="100" height="70"></li>
-                                        </ul>
-                                        <ul style="margin-top:10px">
-                                            <li><strong>물건 잘 받았습니다</strong></li>
-                                            <li>만족스럽습니다</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <b-button variant="outline-info" size="sm" id="btnMemberInfo"
+            <template  v-slot:cell(image) = "row">
+                <img :src="row.item.image" style="width:50px">                 
+            </template>
+
+            <template  v-slot:cell(name) = "row">          
+                <p style="padding-right:20px"> {{ row.item.name }}</p>
+            </template>  
+
+            <template  v-slot:cell(content) = "row">          
+                <div style="width:450px;" class="ellipsis"> {{ row.item.content }}</div>
+            </template> 
+
+            <template v-slot:cell(starPoint) = "row">
+                <star-rating active-color="#e61654" :star-size="20" :rounded-corners="true" :show-rating="false"
+                  :rating="row.item.starPoint"
+                ></star-rating>
+            </template>
+
+            <template  v-slot:cell(userId) = "row">          
+                <a href="#" @click="$refs.viewUserInfoModal.show()">{{ row.item.userId }}</a>
+            </template> 
+
+            <template v-slot:cell(show_details)="row">
+                <b-button size="sm" @click="row.toggleDetails">
+                    {{ row.detailsShowing ? '상세닫기' : '상세보기'}}
+                </b-button>
+            </template>
+
+            <template v-slot:row-details = "row">              
+                <div>                         
+                    <b-card>
+                        <b-row class="mb-2">                   
+                            <b-col><strong>상품평 :</strong> {{ row.item.content }}</b-col>
+                            <b-col sm="2" class="text-sm-right">
+                                <!-- <div>
+                                    <b-button variant="outline-info" size="sm" id="btnMemberInfo"
                                           @click="$refs.viewUserInfoModal.show()">회원정보보기</b-button>
-                                    </div>
+                                    </div> -->
                                     <div class="mgt5">
-                                        <b-button variant="outline-secondary" size="sm" id="btnReview" style="margin-right:5px"
-                                          @click="$refs.editReviewModal.show()">수정</b-button>
-                                        <b-button variant="outline-danger" size="sm" onclick="delReview(86)">삭제</b-button>
-                                    </div>
-                                    <div class="mgt5">
-                                        <b-button variant="outline-secondary" size="sm" id="btnAnswer"
-                                          @click="$refs.answerReviewModal.show()">답변</b-button>
-                                    </div>
-                                    <div class="mgt5">
+                                        <!-- <b-button variant="outline-secondary" size="sm" id="btnReview" style="margin-right:5px"
+                                          @click="$refs.editReviewModal.show()">수정</b-button> -->
+                                        <!-- <b-button variant="outline-secondary" size="sm" id="btnAnswer"  style="margin-right:5px"
+                                          @click="$refs.answerReviewModal.show()">답변</b-button> -->
+                                        <b-button variant="outline-danger"  @click="deleteReviewClicked(row)">삭제</b-button>
+                                    </div>                                   
+                                    <!-- <div class="mgt5">
                                         <label><input type="checkbox"/> 미노출</label>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
+                                    </div> -->
+                            </b-col>
+                        </b-row>
 
-                <div style="margin-top:10px">
-                    <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
-                    <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
-                </div>
+                        <!-- 상품평이미지 또는 동영상 -->
+                        <b-row> 
+                            <ul>                               
+                                <li class="fl" style="padding:10px"
+                                  v-for="item in row.item.productReviewPhotos" 
+                                  :key="item.prdtReviewPhotoSysId"
+                                >
+                                  <img :src="item.photoUrl"  style="width:350px">
+                                </li>
+                            </ul>
+                        </b-row>                      
+                    </b-card>   
+                </div>           
+            </template>  
+        </b-table>
+    </form>
 
 
 <!-- 회원정보보기 모달 -->
-                <b-modal ref="viewUserInfoModal">
+    <b-modal ref="viewUserInfoModal">
                     <template v-slot:modal-title>
                     <font-awesome-icon icon="info-circle" /> 회원정보
                     </template>
@@ -232,7 +243,7 @@
                             </tr>
                         </tbody>
                     </table>
-                </b-modal>
+    </b-modal>
 
 <!-- 상품평 수정 모달 -->
                 <b-modal ref="editReviewModal">
@@ -282,29 +293,23 @@
                 </b-modal>
 
 <!-- 상품평 답변달기 모달 -->
-                <b-modal ref="answerReviewModal">
-                    <template v-slot:modal-title>
-                        <font-awesome-icon icon="info-circle" /> 상품평 답변
-                    </template>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="t_form">
-                        <colgroup><col width="130"><col width="*"></colgroup>
-                        <caption>답변 등록 폼</caption>
-                        <tbody>
-                            <tr>
-                            <th>내용</th>
-                            <td>
-                                <textarea name="content" rows="5" class="text_input" style="width:98%"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>작성자</th>
-                            <td>
-                                <input type="text" name="writer" value="몰인몰" class="text_input" style="width:130px" maxlength="20" readonly>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </b-modal>
+    <!-- <b-modal ref="answerReviewModal" size="lg" @ok="answerReviewSubmit">
+        <template v-slot:modal-title>
+            <font-awesome-icon icon="info-circle" /> 상품평 답변
+        </template>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="t_form">
+            <colgroup><col width="130"><col width="*"></colgroup>
+            <caption>답변 등록 폼</caption>
+            <tbody>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea style="width:100%; min-height:200px" class="text_input" v-model="answerReview"></textarea>
+                    </td>
+                </tr>  
+            </tbody>
+        </table>
+    </b-modal> -->
   </div>
 </template>
 
@@ -321,59 +326,99 @@ export default {
     },
     data() {
         return {
-            rating: 0,
-            pageNumber:0,
-            totalPage: 0,
-            perPage: 10,
-            reviewData: [],
-            FilterFields: {
-                categoryList: [],
-                brandSysId: 0,
-                sellerSysId: 0,
-                minPrice: 0,
-                maxPrice: 0,
-                isDisplay: 2,
+            reviewTypeFilter: [                        
+                {value: {code: 0, title: 'text'}, text: '일반'},
+                {value: {code: 1, title: 'photo'}, text: '포토'},
+                {value: {code: 2, title: 'video'}, text: '동영상'}
+            ],
+            searchFilter: [               
+                {value: {code: 0, title: 'All'}, text: '전체'},
+                {value: {code: 1, title: 'name'}, text: '상품명'}
+            ],
+            reviewFilter: {
+                reviewStatusList: this.reviewData,               
                 startDate: '',
                 endDate: '',
-                prdtCode: 'name',
-                FieldText: '',
-                valuable: 'all'
+                searchText: '',
+                searchField: {code: 0, title: 'All'}
             },
+            rating: 0,          
+            searchQuery:'',
+            fields:[
+                {key : 'prdtReviewSysId', label : 'No', sortable: true},
+                {key : 'image', label : '상품이미지', sortable: false},
+                {key : 'name', label : '상품명', sortable: true},
+                {key : 'content', label : '상품평', sortable: false},
+                {key : 'reviewType', label : '상품평타입', sortable: false},
+                {key : 'starPoint', label : '별점', sortable: true},
+                {key : 'userId', label : '작성자', sortable: true},
+                {key : 'createdAt', label : '등록일', sortable: true},
+                {key : 'show_details', label : '상세보기', sortable: false}
+            ],
+            reviewData: []
         }
     },
     mounted () { 
-        this.axiosGetRequest('/api/v1/products/Reviews', '',this.loadReviewList)
-    },
-    computed: {
-        pageCount() {
-            let l = this.reviewData.length,
-                s = this.perPage
-            return Math.ceil(l/s)
-        },
-        paginatedData() {
-            const start = this.pageNumber * this.perPage,
-                  end = start + this.perPage
-                  this.axiosGetRequest('/api/v1/operations/notices/alllist',{'startIndex':start, 'rowCount':end},this.loadReviewList)
-            return this.reviewData.slice(start, end)
-        }
+        this.axiosGetRequest('/api/v1/products/reviews/list', '',this.loadReviewList)
+        this.onSubmit()
     },
     methods: {
-        nextPage() {          
-            this.pageNumber++
-            this.reviewData.splice(0)
-            this.paginatedData
-        },
-        prevPage() {           
-            this.pageNumber--  
-            this.reviewData.splice(0)         
-            this.paginatedData        
-        },   
         setRating: function(rating) {
             this.rating = rating
         },
         loadReviewList(res) {
             console.log(res)
-        }
+            let result = res.data.jsonData.productReviews
+            if(result) {
+                for(let i=0 ; i < result.length; i++ ) {
+                    this.reviewData.push({
+                        'prdtReviewSysId': result[i].prdtReviewSysId,
+                        'image': result[i].smallImageUrl,
+                        'name': result[i].name,
+                        'userId': result[i].userId,
+                        'createdAt': this.changeDate(result[i].createdAt),
+                        'content': result[i].content,
+                        'reviewType' : this.changeReviewType(result[i].reviewType),
+                        'starPoint': result[i].starPoint,
+                        'productReviewPhotos': result[i].productReviewPhotos,
+                        'prdtSysId': result[i].prdtSysId
+                    })
+                }
+            }
+            console.log(this.reviewData)
+        },
+        changeDate(date) {
+            var y = date.substr(0, 4)
+            var m = date.substr(4, 2)
+            var d = date.substr(6, 2)
+            return y + '-' + m + '-' + d
+        },
+        changeReviewType(flag) {
+            switch ( flag) {
+                case 0 : return '일반';
+                case 1 : return '포토';
+                case 2 : return '동영상';
+            }           
+        }, 
+        deleteReviewClicked(row) {
+            this.axiosDeleteRequest('/api/v1/products/' + row.item.prdtSysId + '/reviews/' + row.item.prdtReviewSysId,'', this.deleteReviewCallback,'', sessionStorage.getItem('accessToken'))
+        },
+        deleteReviewCallback(res) {
+            if(res.data.jsonData.resultCode === '0001'){
+                alert('상품평이 삭제되었습니다.')
+                window.location.reload()
+            }
+        },
+        searchClicked() {
+            let searchParams = {}
+            searchParams.startDate = this.reviewFilter.startDate
+            searchParams.endDate = this.reviewFilter.endDate
+
+            if(!this.isEmpty(this.reviewFilter.searchText) && this.reviewFilter.searchText !== ""){
+                searchParams.keywordCode = this.reviewFilter.searchField.code
+                searchParams[this.reviewFilter.searchField.title] = this.reviewFilter.searchText
+            }
+        }   
     }
 }
 </script>

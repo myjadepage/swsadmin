@@ -321,7 +321,7 @@
         overflow: hidden;
         width: 100%;
         text-overflow: ellipsis;
-        white-space: nowrap
+        white-space: nowrap 
     }
     .ir_pm {
         overflow: hidden;
