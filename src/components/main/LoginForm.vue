@@ -34,25 +34,18 @@ export default {
         },
         
         loginClick(x){
-          console.log(x.target.elements[1].value)
-          this.axiosPostRequest('api/v1/auth/admins/login',{
-              jsonData:{
+          const row = {
                 adminId: x.target.elements[0].value,
                 password: this.makeRsa(x.target.elements[1].value)
-              }
-          },
-          (res)=>{
-            console.log(res.data.jsonData);
-            
+          }
+          this.axiosPostRequest('api/v1/auth/admins/login',{jsonData: row}, (res)=>{
             if(res.data.jsonData.resultCode==='0001'){
               sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)
               sessionStorage.setItem('refreshToken',res.data.jsonData.refreshToken)
               sessionStorage.setItem('userName',res.data.jsonData.name)
               sessionStorage.setItem('domainSysId',res.data.jsonData.domainSysId)
               sessionStorage.setItem('companyTypeCode',res.data.jsonData.companyTypeCode)
-              
               this.$store.dispatch('login')
-
             }else if(res.data.jsonData.resultCode==='1003'){
               alert('존재하지 않는 ID입니다.')
             }else if(res.data.jsonData.resultCode==='1004'){

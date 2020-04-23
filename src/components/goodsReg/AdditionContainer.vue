@@ -37,8 +37,8 @@
             <tr v-for="(subItem, index) in item.details" :key="index">
               <template v-if="subItem.procTypeCode !== 4">
                 <td><input type="text" class="text_input" v-model="subItem.item" /></td>
-                <td><input type="text" class="text_input number_input" v-model.number="subItem.price" /></td>
-                <td><input type="text" class="text_input number_input" v-model.number="subItem.stockQty" /></td>
+                <td><input type="text" class="text_input number_input" v-model="subItem.price" /></td>
+                <td><input type="text" class="text_input number_input" v-model="subItem.stockQty" /></td>
                 <td style="vertical-align:middle"><input type="checkbox" v-model="subItem.isSoldout" /></td>
                 <td><input type="checkbox" v-model="subItem.isHide" /></td>
                 <td><b-button block variant="light" size="sm" style="height: 19px;font-size: 10px; line-height: 1.2" @click="removeSubAdditionOptionRow(subItem, mainIndex, index)"><font-awesome-icon icon="trash" />&emsp;삭제</b-button></td>

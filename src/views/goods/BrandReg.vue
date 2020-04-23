@@ -24,29 +24,22 @@
                     <tr>
                         <th>브랜드명&emsp;<span class="red">*</span></th>
                         <td colspan="3">
-                            <input type="text" class="text_input" v-model="brandReg.name" maxlength="100" style="width:98%" required>
+                            <input type="text" class="text_input w-25" v-model="brandReg.name" maxlength="100">
                         </td>
                     </tr>
                     <tr>
-                        <th class="bg-light align-middle font-weight-bold">아이디</th>
+                        <th class="bg-light align-middle font-weight-bold">아이디&emsp;<span class="red">*</span></th>
                         <td colspan="3" class="align-middle">
-                            <input type="search" class="text_input" v-model="brandReg.adminId" @keyup="checkValidateId = false" required/>&emsp;
+                            <input type="search" class="text_input w-25" v-model="brandReg.adminId" @keyup="checkValidateId = false"/>&emsp;
                             <b-button variant="outline-secondary" size="sm" @click="checkDuplicateIdFn" :disabled="checkValidateId"><font-awesome-icon icon="check" />중복체크</b-button>
                         </td>
                     </tr>
                     <tr>
-                        <th class="bg-light align-middle font-weight-bold">패스워드</th>
+                        <th class="bg-light align-middle font-weight-bold">패스워드&emsp;<span class="red">*</span></th>
                         <td colspan="3">
-                            <input type="password" class="text_input" id="password" v-model="brandReg.password" @focusout="changePassword" required/>&emsp;
+                            <input type="password" class="text_input w-25" v-model="brandReg.password" @focusout="changePassword"/>&emsp;
                             <span class="text-muted ml-2">* 패스워드는 6자이상 영문, 숫자, 특수문자 포함입니다.</span>
                             <label :style="passwordsValidate.style" :class="passwordsValidate.class">{{passwordsValidate.message}}</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="bg-light align-middle font-weight-bold">계정사용유무</th>
-                        <td colspan="3">
-                            <input type="checkbox" v-model="checkUserAuth"/> <label class="text-muted">아이디/ 패스워드를 사용하겠습니다.</label>
-                            <p>브랜드의 관리</p>
                         </td>
                     </tr>
                     <tr>
@@ -67,57 +60,43 @@
                     </tr>
                     <tr>
                         <th>담당자명&emsp;<span class="red">*</span></th>
-                        <td><input type="text" class="text_input w-100" placeholder="담당자명을 입력해주세요..." v-model="brandReg.managerName" required/></td>
+                        <td><input type="text" class="text_input w-50" v-model="brandReg.managerName"/></td>
                         <th>담당자직급</th>
-                        <td><input type="text" class="text_input w-100" placeholder="직급을 입력해주세요..." v-model="brandReg.managerRank" /> </td>
+                        <td><input type="text" class="text_input w-50"  v-model="brandReg.managerRank" /> </td>
                     </tr>
                     <tr>
-                        <th>연락처</th>
+                        <th>일반 전화번호&emsp;<span class="red">*</span></th>
                         <td>
-                            <p><input type="tel" class="text_input w-100" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="일반번호 입력해주세요..." v-model="brandReg.tel" /> </p>
-                            <p class="pt-1"><input type="tel" class="text_input w-100" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="휴대폰번호를 입력해주세요..." v-model="brandReg.mobile" /> </p>
+                            <input type="tel" class="text_input w-50" placeholder="- 없이 입력해주세요 (예: 01012345678)" v-model="brandReg.tel" />
                         </td>
-                        <th>이메일 주소&emsp;<span class="red">*</span></th>
-                        <td><input type="email" class="text_input w-100" placeholder="이메일 주소를 입력해주세요..." v-model="brandReg.email" required> </td>
+                        <th>휴대전화번호&emsp;<span class="red">*</span></th>
+                        <td>
+                            <input type="tel" class="text_input w-50" pattern="[0-9]{11}" placeholder="- 없이 입력해주세요 (예: 01012345678)" v-model="brandReg.mobile" />
+                        </td>
                     </tr>
                     <tr>
-                        <th rowspan="2">상단 디자인</th>
-                        <td colspan="3" style="padding: 0px">
-                            <quill-editor
-                                ref="editorOptionRef"
-                                class="quill-editor" 
-                                :options="editorOption"
-                                v-model="brandReg.topDesignHTML"
-                            ></quill-editor>
-                        </td>
+                        <th>이메일 주소&emsp;<span class="red">*</span></th>
+                        <td colspan="3"><input type="email" class="text_input w-25" v-model="brandReg.email"> </td>
                     </tr>
                 </tbody>
             </table>
             <div class="btn_center">
                 <template v-if="brandReg.brandSysId">
-                    <b-button type="submit" variant="info" @click="updateBrand">수정</b-button>
+                    <b-button type="submit" variant="info">수정</b-button>
                 </template>
                 <template v-else>
-                    <b-button type="submit" variant="info" @click="registBrand">저장</b-button>
+                    <b-button type="submit" variant="info">저장</b-button>
                 </template>
             </div>
         </b-form>
     </div>
 </template>
 <script>
-import Quill from 'quill'
-import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
-import { ImageUpload } from 'quill-image-upload'
-import { quillEditor } from 'vue-quill-editor'
-import 'quill/dist/quill.snow.css'
 import commonJs from '@/assets/js/common.js'
 // 이미지 업로드 등록시 함수 
 import ImagesUploader from '@/assets/js/ImagesUploader.js'
 import submitReg from '@/components/brands/BrandReg.js'
 import SwsSeller from '@/components/common/SwsSeller'
-
-Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
-Quill.register('modules/imageUpload', ImageUpload)
 
 export default {
     mixins: [commonJs, ImagesUploader, submitReg],
@@ -129,8 +108,6 @@ export default {
                 proposerSysId: 0,
                 sellerSysId: 0,
                 managerName: '',
-                userId: '',
-                userPassword: '',
                 managerRank: '',
                 tel: '',
                 mobile: '',
@@ -145,8 +122,7 @@ export default {
                 style: {display: 'none'},
                 class: 'text-danger',
                 message : '1231232'
-            },
-            checkUserAuth: false
+            }
         }
     },
     mounted() {
@@ -156,7 +132,6 @@ export default {
         // this.getImageUrl('/brand/image')
     },
     components: {
-        quillEditor,
         SwsSeller
     },
     methods: {
@@ -176,17 +151,6 @@ export default {
             var file = this.blobToFile(blob, 'temp.'+imageExt)
             var cursorLocation = this.$refs.editorOptionRef.quill.getSelection(true) 
             this.onEditorImagesUploaderEvent(file, this.$refs.editorOptionRef.quill, cursorLocation.index, '/brand/image')
-        },
-        registBrand: function () {
-            this.axiosPostRequest('/api/v1/brands', {jsonData: this.brandReg}, (res) => {
-                if (res.data.jsonData.resultCode==='0001'){
-                    alert('브랜드 등록이 완료되었습니다.')
-                    window.location.href="/goods/brand_list"
-                } else {
-                    alert('브랜드 등록에 실패하였습니다.')
-                    console.log(res.data.jsonData)
-                }
-            })
         },
         changePassword: function (evt) {
             if (evt.target.value.length < 5) {
@@ -208,7 +172,7 @@ export default {
             return false
         },
         checkDuplicateIdFn: function () {
-            this.axiosGetRequest('/api/v1/admins/chkdupid', {adminId : this.subAccountObject.adminId}, function (res) {
+            this.axiosGetRequest('/api/v1/admins/chkdupid', {adminId : this.brandReg.adminId}, function (res) {
                 const result = res.data.jsonData
                 if (result.resultCode === '0001') {
                     alert('사용할수 있는 ID입니다.')
@@ -221,17 +185,89 @@ export default {
                 }
             }.bind(this), '',sessionStorage.getItem('accessToken'))
         },
+        popAlert: function (message) {
+            alert(`${message}을(를) 확인하여 주시기 바랍니다.`)
+            return false
+        },
         onSubmit: function () {
-            let key = this.brandReg.brandSysId
-            this.axiosPatchRequest('/api/v1/brands/'+key, {jsonData: this.brandReg}, (res) => {
+            let row = {}
+            if (String(this.brandReg.name).trim().length < 1) {
+                this.popAlert('브랜드명');
+                return false
+            } else {
+                row.name = String(this.brandReg.name).trim()
+            }
+
+            // 부 운영자를 등록
+            if (!this.checkValidateId) {
+                this.popAlert('아이디 중복체크')
+                return false
+            } else {
+                row.adminId = String(this.brandReg.adminId).trim()
+            }
+
+            if (!this.checkValidatePassword) {
+                this.popAlert('비밀번호')
+                return false
+            } else {
+                row.password = this.makeRsa(this.brandReg.password)
+            }
+
+            // 브랜드 이미지 추가
+            row.imageUrl = this.brandReg.imageUrl
+            
+            // 판매자 등록
+            if (this.brandReg.sellerSysId === 0) {
+                this.popAlert('판매자')
+                return false
+            } else {
+                row.sellerSysId = this.brandReg.sellerSysId
+            }
+            
+            // 담당자명 등록
+            if (String(this.brandReg.managerName).trim().length < 1) {
+                this.popAlert('담당자명')
+                return false
+            } else {
+                row.managerName = String(this.brandReg.managerName).trim()
+            }
+
+            // 담당자 직급등록
+            row.managerRank = String(this.brandReg.managerRank).trim()
+            
+            // 일반전화번호
+            if (String(this.brandReg.tel).trim().length < 1) {
+                this.popAlert('일반전화번호')
+                return false
+            } else {
+                row.tel = String(this.brandReg.tel).trim()
+            }
+
+            // 휴대폰번호
+            if (String(this.brandReg.mobile).trim().length < 1) {
+                this.popAlert('휴대전화번호')
+                return false
+            } else {
+                row.mobile = this.makeRsa(String(this.brandReg.mobile).trim())
+            }
+
+            // 이메일 
+            if (String(this.brandReg.email).trim().length < 1) {
+                this.popAlert('이메일')
+                return false
+            } else {
+                row.email = String(this.brandReg.email).trim()
+            }
+
+            this.axiosPostRequest('/api/v1/brands', {jsonData: row}, (res) => {
                 if (res.data.jsonData.resultCode==='0001'){
-                    alert('브랜드 수정이 완료되었습니다.')
+                    alert('브랜드 등록이 완료되었습니다.')
                     window.location.href="/goods/brand_list"
                 } else {
                     alert('브랜드 등록에 실패하였습니다.')
                     console.log(res.data.jsonData)
                 }
-            })
+            },'',sessionStorage.getItem('accessToken'))
 
         }
     }
