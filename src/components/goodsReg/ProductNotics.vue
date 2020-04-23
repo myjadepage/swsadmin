@@ -7,7 +7,7 @@
         <b-button variant="secondary" size="sm" class="m-1" @click="addNotifyRow();">상품 추가</b-button>
     </div>
 
-    <table id="notices" width="100%" summary="상품정보고시 목록 입니다.">
+    <table id="notices" width="100%">
         <colgroup>
             <col width="20">
             <col width="100">
@@ -75,6 +75,7 @@ export default {
       if (obj.selectedIndex > 0) {
         this.axiosGetRequest('/api/v1/preferences/productNoticeDetails/' + this.productData.productNotice.prdtNoticeBaseSysId, '', function (res) {
           let row = this.productData.productNotice.notices[0]
+          if (this.isEmpty(row)) { row =  {}}
           if (this.isEmpty(row['prdtNoticeSysId'])) {
             this.productData.productNotice.notices.splice(0)
           } else {
