@@ -54,6 +54,7 @@
   </table> -->
 </template>
 <script>
+import commonJs from '@/assets/js/common.js'
 export default {
   data: () => ({
     fields: [
@@ -63,6 +64,7 @@ export default {
 
   }),
   props: ['cateogries'],
+  mixins: [commonJs],
   methods: {
     generateCategoryList: function (item) {
       let textArray = new Array()

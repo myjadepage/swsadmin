@@ -54,6 +54,7 @@
                 </b-row>
               </td>
             </tr>
+
             <!-- 상품분류(카테고리) -->
             <tr>
               <th rowspan="2">
@@ -70,6 +71,7 @@
                 <b-button variant="outline-secondary" size="sm" @click="addCate"><font-awesome-icon icon="plus" /> 추가</b-button>
               </td>
             </tr>
+
             <tr>
               <td colspan="3" class="category">
                 <category-component :cateogries="selectedCategories.categoryTable" />
@@ -83,13 +85,14 @@
                 </dl>
               </td>
             </tr>
+
             <tr>
               <th>
                 간략한 설명
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="briefComment" class="text_input w-100" value maxlength="50" v-model="productData.briefComment" required/>
+                <input type="text" name="briefComment" class="text_input w-100" value maxlength="50" v-model="productData.briefComment"/>
               </td>
             </tr>
             <tr>
@@ -98,7 +101,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="briefDescription" class="text_input w-100" value maxlength="100" v-model="productData.briefDescription" required/>
+                <input type="text" name="briefDescription" class="text_input w-100" value maxlength="100" v-model="productData.briefDescription"/>
               </td>
             </tr>
             <!-- 상품명 -->
@@ -108,7 +111,7 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <input type="text" name="name" class="text_input w-100" maxlength="100" v-model="productData.name" required/>
+                <input type="text" name="name" class="text_input w-100" maxlength="100" v-model="productData.name"/>
               </td>
             </tr>
             <tr>
@@ -117,10 +120,9 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <Sws-seller
-                  :parentData="productData"
-                  @changeFn="resultSeller"
-                ></Sws-seller>
+                <select class="text_input" v-model="productData.sellerSysId" @change="changeBrandList()">
+                  <option v-for="(seller, index) in sellerList" :key="index" :value="seller.value">{{seller.text}}</option>
+                </select>
               </td>
             </tr>
             <tr>
@@ -129,48 +131,12 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td colspan="3">
-                <Sws-brand
-                  ref="brand"
-                  :parentData="productData"
-                >
-                </Sws-brand>
-                <!-- <select class="text_input" id="brandSysId" name="brandSysId" v-model="productData.brandSysId">
-                  <option v-for="(item, index) in brands" :key="index" :value="item.value">{{ item.text }}</option>
-                </select> -->
+                <select class="text_input" v-model="productData.brandSysId">
+                  <option v-for="(item, index) in brandList" :key="index" :value="item.value">{{ item.text }}</option>
+                </select>
               </td>
             </tr>
 
-            <!-- 상품아이콘 -->
-            <!-- <tr>
-              <th>
-                상품 아이콘
-                <strong class="red">&nbsp;*</strong>
-                <br />
-                <b-button variant="outline-danger" size="sm" style="height: 20px; line-height: 1">진열관리</b-button>
-              </th>
-              <td colspan="3" class="icons">
-                <ul>
-                  <li>
-                    <input type="checkbox" id="cb_icon_1" name="iconList" value="1" v-model.number="iconList"/>
-                    <div>
-                      <label for="cb_icon_1">
-                        <img src="@/assets/img/ico_pro_sale.gif" />
-                      </label>
-                    </div>
-                  </li>
-                  <li>
-                    <input type="checkbox" id="cb_icon_2" name="iconList" value="2" v-model.number="iconList"/>
-                    <div>
-                      <label for="cb_icon_2">
-                        <img src="@/assets/img/ico_pro_sale.gif" />
-                      </label>
-                    </div>
-                  </li>
-                </ul>
-              </td>
-            </tr> -->
-
-            <!-- 상품 이미지 : 시작 -->
             <tr>
               <th>
                 큰이미지
@@ -184,7 +150,7 @@
                   <p class="text-center font-weight-bold">[미리보기]</p>
                   <img :src=productData.bigImageUrl style="width: 90px; height: 90px; border:1px solid #EFEFEF"/>
                 </div>
-                <input type="file" accept="image/*" name="bigImageUrl" id="bigImageUrl" @change="changeImage($event, {imageDir: `/product/image/${productData.sellerSysId}/${productData.brandSysId}`})" :required="isEmpty($route.params.productSysId) ? true : false"/>
+                <input type="file" accept="image/*" @input="changeImage($event, {imageDir: `/product/image/${productData.sellerSysId}/${productData.brandSysId}`})"/>
                 <br />
                 <span class="light_gray">(1080px * 1080px)</span>
                 <label for="img_auto">
@@ -283,7 +249,7 @@
 
                 <!-- 품절여부 -->
                 <span class="mgl20">
-                  <input type="checkbox" id="isSoldout" name="isSoldout" v-model.number="productData.isSoldout"/>
+                  <input type="checkbox" id="isSoldout" name="isSoldout" v-model="productData.isSoldout"/>
                   <label for="isSoldout" class="red">일시품절</label>
                 </span>
               </td>
@@ -297,23 +263,23 @@
               <th>기획전 설정</th>
               <td colspan="3">
                 <div class="float-left mr-4">
-                  <b-form-checkbox value="1" v-model.number="productData.isWeekly" :disabled="productData.isDisplay === 0">위클리베스트</b-form-checkbox>
+                  <b-form-checkbox v-model="productData.isWeekly" :disabled="productData.isDisplay === 0">위클리베스트</b-form-checkbox>
                 </div>
                 <div class="float-left mr-4">
-                  <b-form-checkbox value="1" v-model.number="productData.isPlanBrand" :disabled="productData.isDisplay === 0">브랜드기획전</b-form-checkbox>
+                  <b-form-checkbox v-model="productData.isPlanBrand" :disabled="productData.isDisplay === 0">브랜드기획전</b-form-checkbox>
                 </div>
                 <div class="float-left mr-4">
-                  <b-form-checkbox value="1" v-model.number="productData.isPlanThema" :disabled="productData.isDisplay === 0">테마기획전</b-form-checkbox>
+                  <b-form-checkbox v-model="productData.isPlanThema" :disabled="productData.isDisplay === 0">테마기획전</b-form-checkbox>
                 </div>
                 <div class="float-left mr-4">
-                  <b-form-checkbox value="1" v-model.number="productData.isSale" :disabled="productData.isDisplay === 0">세일</b-form-checkbox>
+                  <b-form-checkbox v-model="productData.isSale" :disabled="productData.isDisplay === 0">세일</b-form-checkbox>
                 </div>
               </td>
             </tr>
             <tr>
               <th>시중가 (원판매가) <strong class="red">*</strong></th>
               <td colspan="3">
-                <input type="text" class="text_input number_input" v-model.number="productData.marketPrice" required/>&emsp;원
+                <input type="text" class="text_input number_input" v-model="productData.marketPrice"/>&emsp;원
               </td>
               <!-- <th>주간 베스트</th>
               <td><input type="checkbox" v-model="productData.isWeekley" /></td> -->
@@ -324,7 +290,7 @@
                   네이버가격
                 </th>
                 <td colspan="3">
-                  <input type="text" v-model.number="productData.naverPrice" class="text_input number_input"/> 원
+                  <input type="text" v-model="productData.naverPrice" class="text_input number_input"/> 원
                 </td>
               </tr>
             </template>
@@ -469,17 +435,17 @@
                     <li>
                       판매가
                       <br />
-                      <input type="text" ref="price" name="price" id="price" @keyup.stop="priceToSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.price" required/> 원
+                      <input type="text" ref="price" name="price" id="price" @keyup.stop="priceToSupplyPrice" class="text_input" style="width:130px" v-model="productData.price"/> 원
                     </li>
                     <li>
                       수수료율
                       <br />
-                      <input type="text" ref="feeRate" name="feeRate" id="feeRate" @keyup.stop="onFeeRate()" maxlength="5" value="0" class="text_input" style="width:80px" v-model.number="productData.feeRate" disabled required/> %
+                      <input type="text" ref="feeRate" name="feeRate" id="feeRate" @keyup.stop="onFeeRate()" maxlength="5" value="0" class="text_input" style="width:80px" v-model="productData.feeRate" disabled/> %
                     </li>
                     <li>
                       공급가
                       <br />
-                      <input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice" @keyup.stop="onSupplyPrice" class="text_input" style="width:130px" v-model.number="productData.supplyPrice" required/> 원
+                      <input type="text" ref="supplyPrice" name="supplyPrice" id="supplyPrice" @keyup.stop="onSupplyPrice" class="text_input" style="width:130px" v-model="productData.supplyPrice"/> 원
                     </li>
                   </ul>
                 </div>
@@ -511,14 +477,14 @@
                         <option value="4">판매가</option>
                         <option value="5">결제가</option>
                       </select> 의
-                      <input type="text" name="pointRate" maxlength="5" class="text_input number_input" style="width:70px" /> % 지급
+                      <input type="text" name="pointRate" maxlength="5" class="text_input number_input" style="width:70px" v-model="productData.pointRate" /> % 지급
                     </label>
                   </li>
                   <li>
                     <input type="radio" id="pointTypeCode6" name="pointTypeCode" value="6" v-model.number="productData.pointTypeCode" />
                     <label for="pointTypeCode6">
                       구매 상품(개수) 당
-                      <input type="text" name="point" class="text_input number_input" style="width:70px"/> 원 지급
+                      <input type="text" name="point" class="text_input number_input" style="width:70px" v-model="productData.point"/> 원 지급
                     </label>
                   </li>
                 </ul>
@@ -542,14 +508,14 @@
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td>
-                <input type="text" name="manufacturer" class="text_input" style="width:97%" v-model="productData.manufacturer" maxlength="50" required/>
+                <input type="text" name="manufacturer" class="text_input" style="width:97%" v-model="productData.manufacturer" maxlength="50"/>
               </td>
               <th>
                 원산지
                 <strong class="red">&nbsp;*</strong>
               </th>
               <td>
-                <input type="text" name="origin" class="text_input" style="width:97%" v-model="productData.origin" maxlength="50" required/>
+                <input type="text" name="origin" class="text_input" style="width:97%" v-model="productData.origin" maxlength="50"/>
               </td>
             </tr>
             <tr>
@@ -634,16 +600,16 @@
                     <label for="deliveryPriceTypeCode2">착불</label>
                   </dt>
                   <dd>
-                    <input type="text" name="debitAmount" class="text_input number_input debit" style="width: 70px" maxlength="10" v-model.number="productData.debitAmount" :disabled="productData.deliveryPriceTypeCode !== 2"/> 원 (무료배송 :
-                    <input type="text" name="debitfreeMinAmount" class="text_input number_input debit" style="width: 70px" maxlength="10" v-model.number="productData.debitfreeMinAmount" :disabled="productData.deliveryPriceTypeCode !== 2"/> 원 이상 주문시 무료)
+                    <input type="text" name="debitAmount" class="text_input number_input debit" style="width: 70px" maxlength="10" v-model="productData.debitAmount" :disabled="productData.deliveryPriceTypeCode !== 2"/> 원 (무료배송 :
+                    <input type="text" name="debitfreeMinAmount" class="text_input number_input debit" style="width: 70px" maxlength="10" v-model="productData.debitfreeMinAmount" :disabled="productData.deliveryPriceTypeCode !== 2"/> 원 이상 주문시 무료)
                   </dd>
                   <dt>
                     <input type="radio" id="deliveryPriceTypeCode3" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="3" />
                     <label for="deliveryPriceTypeCode3">선불</label>
                   </dt>
                   <dd>
-                    <input type="text" name="prepaymentAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model.number="productData.prepaymentAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 (무료배송 :
-                    <input type="text" name="prepayfreeMinAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model.number="productData.prepayfreeMinAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 이상 주문시 무료)
+                    <input type="text" name="prepaymentAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model="productData.prepaymentAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 (무료배송 :
+                    <input type="text" name="prepayfreeMinAmount" class="text_input prepay number_input" style="width: 70px" maxlength="10" v-model="productData.prepayfreeMinAmount" :disabled="productData.deliveryPriceTypeCode !== 3"/> 원 이상 주문시 무료)
                   </dd>
                   <dt>
                     <input type="radio" id="deliveryPriceTypeCode4" name="deliveryPriceTypeCode" v-model.number="productData.deliveryPriceTypeCode" value="4" />
@@ -827,8 +793,6 @@ import CommonSellers from "@/components/goodsReg/CommonSellers"
 import NomalOptions from "@/components/goodsReg/NomalOptions"
 import ProductNotics from "@/components/goodsReg/ProductNotics"
 import SwsCategory from '@/components/common/SwsCategory'
-import SwsSeller from '@/components/common/SwsSeller'
-import SwsBrand from '@/components/common/SwsBrand'
 
 
 Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
@@ -851,9 +815,7 @@ export default {
     CommonSellers,
     NomalOptions,
     ProductNotics,
-    SwsSeller,
-    SwsCategory,
-    SwsBrand
+    SwsCategory
   },
   data() {
     return {
@@ -869,7 +831,8 @@ export default {
       commonSellers: [
         {people: "", discount: "" }
       ],
-      brands: [{ value: 0, text: "::브랜드를 선택해주세요::" }],
+      sellerList: [{value: 0, text: "::판매자를 선택해주세요::"}],
+      brandList: [{value: 0, text: "::브랜드를 선택해주세요::"}],
       imageEvent: {
         isDisplay: false,
         progress: 0
@@ -887,11 +850,31 @@ export default {
       this.productData.productSysId = this.$route.params.productSysId;
       this.productData.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
       this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,'',this.getProductData);
+      // 판매자 브랜드 세팅
     }
+
+    // 판매자등록에 대한 최초 마운팅
+    this.axiosGetRequest('/api/v1/sellers/bases', '', function (res) {
+      const sellerData = res.data.jsonData.sellers
+      sellerData.forEach(item => {
+        this.sellerList.push({value : item.sellerSysId, text : item.name})
+      })
+    }.bind(this));
     this.calculFeeRateFn({ type: "1" });
-    this.getImageUrl('/product/image/0/'+this.productData.sellerSysId)
   },
   methods: {
+    changeBrandList: function (val) {
+      let sellerSysId = (this.isEmpty(val) ? this.productData.sellerSysId : val)
+      this.axiosGetRequest(`/api/v1/sellers/${sellerSysId}/brands`, '', function (res) {
+        const brandData = res.data.jsonData.brands
+        this.brandList.splice(0)
+        this.brandList.push({value: 0, text: "::브랜드를 선택해주세요::"})
+        if (this.isEmpty(val)) {this.productData.brandSysId = 0}
+        brandData.forEach(item => {
+          this.brandList.push({value : item.brandSysId, text: item.name})
+        })
+      }.bind(this), () => {console.log('데이터 없음')})
+    },
     changeIsCheck: function (){
       const isDisplay = this.productData.isDisplay
       if (isDisplay === 0) {
@@ -910,29 +893,31 @@ export default {
     },
     SubmitAddProduct: function () {
       let object = this.onSubmitValidate();
-      this.axiosPostRequest('/api/v1/products', {jsonData: object}, (res) => {
-        if (res.data.jsonData.resultCode==='0001') {
-            alert('상품등록이 완료 되었습니다.')
-            window.location.href='/goods/goods_list'
-        }else {
-            alert('등록에 실패하였습니다.')
-        }
-      })
+      if (object) {
+        this.axiosPostRequest('/api/v1/products', {jsonData: object}, (res) => {
+          if (res.data.jsonData.resultCode==='0001') {
+              alert('상품등록이 완료 되었습니다.')
+              window.location.href='/goods/goods_list'
+          }else {
+              alert('등록에 실패하였습니다.')
+          }
+        })
+      }
     },
     SubmitUpdateProduct: function () {
       let object = this.onSubmitValidate();
-      this.axiosPutRequest('/api/v1/products/' + this.productData.productSysId, {jsonData: object}, (res) => {
-        let result = res.data.jsonData
-        if (result.resultCode === '0001') {
-          alert('상품이 수정되었습니다.')
-          window.location.href='/goods/goods_list'
-        } else {
-          alert('상품수정에 실패하였습니다.\nresultCode: ['+result.resultCode+']')
-        }
-      })
-    },
-    resultSeller: function (val) {
-      this.$refs.brand.changeSellerFn(val)
+      object.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
+      if (object) {
+        this.axiosPutRequest('/api/v1/products/' + this.productData.productSysId, {jsonData: object}, (res) => {
+          let result = res.data.jsonData
+          if (result.resultCode === '0001') {
+            alert('상품이 수정되었습니다.')
+            window.location.href='/goods/goods_list'
+          } else {
+            alert('상품수정에 실패하였습니다.\nresultCode: ['+result.resultCode+']')
+          }
+        })
+      }
     }
   }
 };

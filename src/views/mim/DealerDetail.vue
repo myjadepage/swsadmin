@@ -199,7 +199,6 @@ export default {
         mimRegObject: {
             sellerSysId: '',
             sellerId: '',
-            password: '',
             name: '',
             ownerName: '',
             businessRegNumber: '',
@@ -214,23 +213,14 @@ export default {
             mobile: '',
             fax: '',
             email: '',
-            // homepage: 'http://',
             postNumber: '',
             address1: '',
             address2: '',
             stampImgUrl: '',
             comment: '',
             calcCycleCode: 3,
-            // feeTypeCode: 1,
-            // fee: 0,
             proposalStatusCode: 1
         },
-        calcCycleCodeList: [
-            {value: 1, text: '일정산'},
-            {value: 2, text: '주정산'},
-            {value: 3, text: '15일정산'},
-            {value: 4, text: '월정산'}
-        ],
         billingBankCodeList: [],
         commentOption: {
             placeholder: "내용을 입력해주세요..."
@@ -248,6 +238,8 @@ export default {
                 for(let _k in result) {
                     if (_k === 'fee') {
                         this.mimRegObject[_k] = result[_k] * 100
+                    } else if (_k === 'password') {
+                        continue
                     } else {
                         this.mimRegObject[_k] = result[_k]
                     }   
@@ -274,7 +266,115 @@ export default {
             this.$bvModal.hide('addressModal')
         },
         onSubmit: function () {
-            this.axiosPatchRequest(`/api/v1/sellers/${this.mimRegObject.sellerSysId}`,{jsonData: this.mimRegObject}, (res) => {
+            let sendObject = {}
+
+            if (String(this.mimRegObject.name).trim().length < 1) {
+                alert('판매자명을 확인하여 주시기 바랍니다.');
+                return false
+            } else {
+                sendObject.name = this.mimRegObject.name
+            }
+
+            if (String(this.mimRegObject.ownerName).trim().length < 1) {
+                alert('대표자명을 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.ownerName = this.mimRegObject.ownerName
+            }
+
+            if (String(this.mimRegObject.businessRegNumber).trim().length < 1) {
+                alert('사업자등록번호를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.businessRegNumber = this.mimRegObject.businessRegNumber
+            }
+
+            if (String(this.mimRegObject.businessType).trim().length < 1) {
+                alert('업태를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.businessType = this.mimRegObject.businessType
+            }
+
+            if (String(this.mimRegObject.businessItem).trim().length < 1) {
+                alert('업종를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.businessItem = this.mimRegObject.businessItem
+            }
+
+            if (String(this.mimRegObject.billingAccountName).trim().length < 1) {
+                alert('결제계좌명의를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.billingAccountName = this.mimRegObject.billingAccountName
+            }
+
+            if (this.mimRegObject.billingBankCode === 0) {
+                alert('결제은행코드를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.billingBankCode = this.mimRegObject.billingBankCode
+            }
+
+            if (String(this.mimRegObject.bankAccount).trim().length < 1) {
+                alert('은행계좌번호를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.bankAccount = this.mimRegObject.bankAccount
+            }
+
+            if (String(this.mimRegObject.managerName).trim().length < 1) {
+                alert('담당자명을 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.managerName = this.mimRegObject.managerName
+            }
+
+            if (String(this.mimRegObject.tel).trim().length < 1) {
+                alert('일반전화번호를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.tel = this.mimRegObject.tel
+            }
+
+            if (String(this.mimRegObject.mobile).trim().length < 1) {
+                alert('휴대폰번호를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.mobile = this.makeRsa(this.mimRegObject.mobile)
+            }
+
+            if (String(this.mimRegObject.email).trim().length < 1) {
+                alert('이메일을 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.email = this.mimRegObject.email
+            }
+
+            if (String(this.mimRegObject.postNumber).trim().length < 1) {
+                alert('주소를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.postNumber = this.mimRegObject.postNumber
+                sendObject.address1 = this.mimRegObject.address1
+            }
+
+            if (String(this.mimRegObject.address2).trim().length < 1) {
+                alert('상세주소를 확인하여 주시기 바랍니다.')
+                return false
+            } else {
+                sendObject.address2 = this.mimRegObject.address2
+            }
+            sendObject.calcCycleCode = this.mimRegObject.calcCycleCode
+
+            if (this.mimRegObject.comment.length > 500) {
+                alert('기타사항 메세지가 너무 깁니다. [최대 500자 이내]')
+                return false
+            } else {
+                sendObject.comment = this.mimRegObject.comment
+            }
+            this.axiosPatchRequest(`/api/v1/sellers/${this.mimRegObject.sellerSysId}`,{jsonData: sendObject}, (res) => {
                 if (res.data.jsonData.resultCode === '0001') {
                     alert('판매자 수정이 완료되었습니다.');
                     window.location.href='/mim/dealer_list';
@@ -283,7 +383,7 @@ export default {
                     alert('알수없는 이유로 에러가 발생했습니다. \n관리자에게 문의하세요.')
                     return false
                 }
-            })
+            }, '' ,sessionStorage.getItem('accessToken'))
         }
     }
 }

@@ -23,12 +23,11 @@
             :per-page="perPage"
             @filtered="resultFilter"
             show-empty
-            
         >
             <template v-slot:table-busy>
                 <div class="text-center text-danger my-2">
                     <b-spinner class="align-middle"></b-spinner>&emsp;&emsp;&emsp;&emsp;
-                    <strong>Loading...</strong>
+                        <strong>Loading...</strong>
                     </div>
             </template>
             <template v-slot:table-colgroup>
@@ -125,7 +124,7 @@
 import commonJs from '@/assets/js/common.js'
 export default {
   data: () => ({
-      perPage: 10,      // 페이지당 표현수
+      perPage: 50,      // 페이지당 표현수
       fields: [
           {key : 'productCode', label: '고유번호', class: 'text-center align-middle', thStyle: 'width: 9%'},
           {key : 'title', label: '상품명 / 카테고리 / 공급업체', class: 'align-middle'},
