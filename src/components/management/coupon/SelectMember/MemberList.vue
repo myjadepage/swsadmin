@@ -1,9 +1,9 @@
 <template>
   <div class="memberListWrap">
-      <table class="table">
+      <table class="table table-hover">
           <thead>
               <tr>
-                  <th><input type="checkbox" @change="checkAll" name="" id=""></th>
+                  <th><input type="checkbox" @change="checkAll" ref="checkAll" :checked="checkAllFlag"></th>
                   <th>No</th>
                   <th>아이디</th>
                   <th>이름</th>
@@ -15,12 +15,12 @@
               </tr>
           </thead>
           <tbody>
-              <tr v-for="(member,idx) in members" :key="idx">
-                  <td><input type="checkbox" class="memberCheck"></td>
+              <tr v-for="(member,idx) in members.slice((this.currentPage-1) * this.perPage,((this.currentPage-1) * this.perPage) + this.perPage)" :key="idx">
+                  <td><input @change="checkMember" v-model="member.isChecked" type="checkbox" class="memberCheck"></td>
                   <td>{{calcNo(idx)}}</td>
                   <td>{{member.id}}</td>
                   <td>{{member.name}}</td>
-                  <td>{{member.grade}}</td>
+                  <td>{{member.gradeSysId===0?'일반회원':'코알라회원'}}</td>
                   <td>{{member.gender==='M'?'남':'여'}}</td>
                   <td>{{member.age}}</td>
                   <td>{{member.didBuy?"있음":'없음'}}</td>
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-    props:['members','currentPage','perPage'],
+    props:['members','currentPage','perPage','checkAllFlag'],
     methods:{
         calcNo(idx){
             let val = idx + 1
@@ -44,25 +44,25 @@ export default {
         checkAll(e){
             if(e.target.checked){
                 this.$el.getElementsByClassName('memberCheck').forEach((c,idx)=>{
-                    this.products[idx].isChecked = true
+                    this.members[idx].isChecked = true
                     this.$emit('checkAll', true)
                 })
             }else{
                 this.$el.getElementsByClassName('memberCheck').forEach((c,idx)=>{
-                    this.products[idx].isChecked = false
+                    this.members[idx].isChecked = false
                     this.$emit('checkAll', false)
                 })
             }
         },
         checkMember(){
-            // let isCheckAll = true
-            //     this.$el.getElementsByClassName('prdtCheck').forEach(c=>{
-            //         if(c.checked===false){
-            //             isCheckAll = false
-            //         }
-            //     })
+            let isCheckAll = true
+                this.$el.getElementsByClassName('memberCheck').forEach(c=>{
+                    if(c.checked===false){
+                        isCheckAll = false
+                    }
+                })
                 
-            //     this.$refs.checkAll.checked = isCheckAll
+                this.$refs.checkAll.checked = isCheckAll
         },
 
         // selectMember(id, name){

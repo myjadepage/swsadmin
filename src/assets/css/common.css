@@ -3645,7 +3645,27 @@ background-repeat: no-repeat;
   margin: 0;
 }
 
+.selectAppliedPrdtWrap h3,.selectMemberWrap h3 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px;
+}
+
 /* Firefox */
 .searchTableWrap input[type=number] {
   -moz-appearance: textfield;
+}
+
+
+.memberListWrap{
+    height: 650px;
+}
+
+.searchTableWrap th{
+    background-color: #f5f5f5;
+}
+
+.searchTableWrap table{
+    margin: 0;
+    /* border: 1px solid #dee2e6; */
 }

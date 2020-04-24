@@ -241,7 +241,7 @@
                                 <td colspan="3">
                                     <div style="width:100%">
                                             <select id="applyGoods" name="applyGoods" class="text_input" multiple size="5" style="width:100%; height: auto;">
-                                                <!-- <option class="issueOption" v-for="(id,idx) in issuedPrdtIds" :key="idx" :value="idx">{{issuedPrdtNames[idx]}}</option> -->
+                                                <option class="issueMember" v-for="(member,idx) in selectedMembers" :key="idx" :value="idx">{{member}}</option>
                                             </select>
                                             <div class="mgt5">
                                                 <div>
@@ -422,6 +422,7 @@ export default {
             name:'',
             comment:'',
             prdtWIndow:undefined,
+            memberWindow:undefined,
             selectMemberType:'select',
             selectedMembers:[]
         }
@@ -567,32 +568,46 @@ export default {
             this.$forceUpdate()
         },
         memberDeleteBtnClick(){
-
+            for (let i = this.$el.getElementsByClassName('issueMember').length-1; i >= 0; i--) {
+                    const opt = this.$el.getElementsByClassName('issueMember')[i]
+                    if(opt.selected){
+                        this.selectedMembers.splice(opt.value,1)
+                    }
+                }
         },
         memberSelectBtnClick(){
             switch (this.selectMemberType) {
                 case 'select':
+                    if(this.selectedMembers.includes('전체회원')){
+                        alert('"전체 회원" 발급 경우, 회원 및 등급 추가를 할 수 없습니다.')
+                        break;
+                    }
                     if(typeof(this.prdtWIndow) == 'undefined' || this.prdtWIndow.closed){
-                    this.prdtWIndow = window.open(`/management/coupon_reg/selectMember`, '_blank', 'toolbar=no, menubar=no, scrollbars=yes, resizable=yes width=1280 height=650')
-                    this.prdtWIndow.addEventListener('addMember',(e)=>{
+                    this.memberWindow = window.open(`/management/coupon_reg/selectMember`, '_blank', 'toolbar=no, menubar=no, scrollbars=yes, resizable=yes width=700 height=1000')
+                    this.memberWindow.addEventListener('addMember',(e)=>{
                         console.log(e);
                       })
                     }else{
-                    this.prdtWIndow.location.href = `/management/coupon_reg/selectMember`;
-                    this.prdtWIndow.focus();
+                    this.memberWindow.location.href = `/management/coupon_reg/selectMember`;
+                    this.memberWindow.focus();
                     }
                     break;
                 case 'all':
-                    
+                    this.selectedMembers = ['전체회원']
                     break;
                 default:
+                    if(this.selectedMembers.includes('전체회원')){
+                        alert('"전체 회원" 발급 경우, 회원 및 등급 추가를 할 수 없습니다.')
+                        break;
+                    }else if(this.selectedMembers.includes(this.selectMemberType)){
+                        alert('이미 추가된 등급입니다.')
+                        break;
+                    }
+
+                    this.selectedMembers.push(this.selectMemberType)
+
                     break;
             }
-
-
-
-
-            
         }
     }
 }
