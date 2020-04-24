@@ -85,7 +85,6 @@ export default {
             for (let i = level; i < 6 ; i++) {
                 let row = this['category'+i]
                 row.splice(0)
-                // row[0] = this.initialCategory[i-1]
                 row.push(this.initialCategory[i-1])
             }
         },

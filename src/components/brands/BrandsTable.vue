@@ -23,13 +23,13 @@
                 {{row.item.managerName}}
             </template>
             <template v-slot:cell(setting)="row">
-                <b-button size="sm" variant="outline-secondary" :href="`/goods/brand_detail/${row.item.brandSysId}`"><font-awesome-icon icon="pencil-alt"/> 수정</b-button>
+                <b-button size="sm" variant="outline-secondary" @click="$router.push(`/goods/brand_detail/${row.item.brandSysId}`)"><font-awesome-icon icon="pencil-alt"/> 수정</b-button>
                 &emsp;&emsp;
                 <b-button size="sm" variant="outline-secondary" @click="$emit('delete', row.item.no)"><font-awesome-icon icon="trash" /> 삭제</b-button>
             </template>
         </b-table>
         <div class="float-left">
-            <b-button variant="outline-secondary" size="sm" href="/goods/brand_reg"><font-awesome-icon icon="plus-circle" /> 추가하기</b-button>
+            <b-button variant="outline-secondary" size="sm" @click="$router.push('/goods/brand_reg')"><font-awesome-icon icon="plus-circle" /> 추가하기</b-button>
         </div>
         <div class="float-right">
             <b-pagination  v-model="currentPage"  :total-rows="items.length" :per-page="viewPage"></b-pagination>

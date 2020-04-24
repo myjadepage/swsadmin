@@ -222,6 +222,13 @@ export default {
                 row.password = this.makeRsa(this.brandReg.password)
             }
 
+            if (this.isEmpty(String(this.brandReg.imageUrl).trim())) {
+                this.popAlert('브랜드 이미지')
+                return false
+            } else {
+                row.imageUrl = this.brandReg.imageUrl
+            }
+
             // 판매자 등록
             if (this.brandReg.sellerSysId === 0) {
                 this.popAlert('판매자')
@@ -276,7 +283,7 @@ export default {
             this.axiosPostRequest('/api/v1/brands', {jsonData: row}, (res) => {
                 if (res.data.jsonData.resultCode==='0001'){
                     alert('브랜드 등록이 완료되었습니다.')
-                    this.$route.push('/goods/brand_list')
+                    this.$router.push('/goods/brand_list')
                 } else {
                     alert('브랜드 등록에 실패하였습니다.')
                     console.log(res.data.jsonData)
