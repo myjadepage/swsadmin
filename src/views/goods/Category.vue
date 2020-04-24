@@ -126,11 +126,8 @@
                                         <tbody>
                                             <tr>
                                                 <th>현재 카테고리</th>
-                                                <td class="category">
-                                                    <u id="target_category"> {{ selectCategory.breadcrumb() }}</u>
-                                                    <!-- <template v-if="categories2Level.children.length > 0">
-                                                        <a href="#" class="btn btn-light btn-sm" @click="newCategorySub()"> + 추가</a>
-                                                    </template> -->
+                                                <td>
+                                                    <input type="text" class="form-control-plaintext font-weight-bold" readonly v-model="breadcrumb"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -139,17 +136,17 @@
                                                     <input type="text" name="name" v-model="selectCategory.title" class="text_input" style="width:98%" maxlength="100">
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th>아이콘 설정</th>
                                                 <td></td>
-                                            </tr>
+                                            </tr> -->
                                             <tr>
                                                 <th>수수료율</th>
                                                 <td>
                                                     <input type="text" class="text_input" style="width:50px; text-align:right" v-model="selectCategory.feeRate" maxlength="5"> %
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th>숨김 여부</th>
                                                 <td>
                                                     <span>
@@ -161,15 +158,13 @@
                                                         <label for="isHideFalse">숨김</label>
                                                     </span>
                                                 </td>
-                                            </tr>
-
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
                                 <!-- 카테고리 정보 : 끝 //-->
-                                
                                 <!-- 상단 꾸미기 : 시작 -->
-                                <div class="box">
+                                <div>
                                     <div class="section_head">
                                         <h4><font-awesome-icon icon="info-circle" /> 카테고리 상단 디자인</h4>
                                     </div>
@@ -196,8 +191,7 @@
                                 </div>
                                 <!-- 상단 꾸미기 : 끝 //-->
                                 <div class="btn_center">
-                                    <b-button type="button" class="btn btn-info" @click="modifyCategory">확인</b-button>&emsp;
-                                    <b-button type="button" class="btn btn-danger">삭제</b-button>
+                                    <b-button type="button" class="btn btn-info" @click="modifyCategory">수정하기</b-button>&emsp;
                                 </div>
                             </div>
                         </form>
@@ -207,58 +201,61 @@
         </table>
 
         <!-- Modal -->
-        <b-modal ref="root-my-modal" hide-footer title="카테고리 생성">
-            <!-- <div class="d-block text-center">
-                <h3>루트 카테고리 생성하기</h3>
-            </div> -->
-            <form name="insertRootCategory" onsubmit="return false">
-                <p><span class="font-weight-bold">{{ selectCategory.breadcrumb() }}</span></p>
+        <b-modal id="insertRootCategory" ref="root-my-modal" hide-footer title="카테고리 생성">
+            <b-form name="insertRootCategory" @submit="insertRootCategory">
+                <p>
+                    <input type="text" class="form-control-plaintext font-weight-bold" readonly v-model="insertSelectCategory.breadcrumb"/>
+                </p>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" v-model="insertSelectCategory.text" placeholder="카테고리명을 입력하세요" aria-label="카테고리명을 입력하세요">
                     <div class="input-group-append">
-                        <button class="btn btn-info" type="button" id="button-addon2" @click="insertRootCategory">추가하기</button>
+                        <b-button variant="info" type="submit" id="button-addon2">추가하기</b-button>
                     </div>
                 </div>
-            </form>
+            </b-form>
         </b-modal>
 
         <!-- Modal -->
-        <b-modal ref="move-category-modal" hide-footer title="카테고리 이동">
+        <b-modal id="moveCategoryModal" ref="move-category-modal" hide-footer title="카테고리 이동">
             <div class="content">
                 <div class="row mb-3">
                     <div class="col-4 font-weight-bold">대상 카테고리</div>
-                    <div class="col-8"><h3><span class="badge badge-light">{{ selectCategory.breadcrumb() }}</span></h3></div>
+                    <div class="col-8"><h4><span class="badge">{{ breadcrumb }}</span></h4></div>
                 </div>
                 <div class="row">
                     <div class="col-4 font-weight-bold">이동 위치</div>
                     <div class="col-8">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <select name="move_category" for="select_1" @change="selectCategory.move_select = 1" @change.stop="selectEvent">
+                                <select name="move_category" class="text_input" for="select_1" @change="selectCategory.move_select = 1" @change.stop="selectEvent">
                                     <option>::1차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect1" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_1" value="1"  v-model="selectCategory.move_select" />
                             </div>
                             <div class="col-12 mb-3">
-                                <select name="move_category" id="select_2" @change="selectCategory.move_select = 2" @change.stop="selectEvent">
+                                <select name="move_category" class="text_input" id="select_2" @change="selectCategory.move_select = 2" @change.stop="selectEvent">
                                     <option>::2차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect2" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_2" value="2" v-model="selectCategory.move_select" />
                             </div>
                             <div class="col-12 mb-3">
-                                <select name="move_category" id="select_3" @change="selectCategory.move_select = 3" @change.stop="selectEvent">
+                                <select name="move_category" class="text_input" id="select_3" @change="selectCategory.move_select = 3" @change.stop="selectEvent">
                                     <option>::3차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect3" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_3" value="3" v-model="selectCategory.move_select" />
                             </div>
                             <div class="col-12 mb-3">
-                                <select name="move_category" id="select_4" @change="selectCategory.move_select = 4" @change.stop="selectEvent" >
+                                <select name="move_category" class="text_input" id="select_4" @change="selectCategory.move_select = 4" @change.stop="selectEvent" >
                                     <option>::4차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect4" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_4" value="4" v-model="selectCategory.move_select" />
                             </div>
                         </div>
@@ -266,14 +263,13 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" @click="move">이동</button>
-                    <button class="btn btn-danger">취소</button>
+                    <button class="btn btn-danger" @click="$bvModal.hide('moveCategoryModal')">취소</button>
                 </div>
             </div>
         </b-modal>
     </div>
 </template>
 <script>
-import $ from 'jquery'
 import Quill from 'quill'
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import { ImageUpload } from 'quill-image-upload'
@@ -324,6 +320,7 @@ export default {
                 placeholder: '내용을 입력해주세요...'
             },
             insertSelectCategory: {
+                breadcrumb: '',
                 parentSysId: 0,
                 categoryLevel: 0,
                 text: ''
@@ -336,24 +333,13 @@ export default {
                 feeRate: 0,
                 isHide: true,
                 title: '',
-                breadcrumb: function () {
-                    if (this.categories.length === 0) {
-                        return ''
-                    } else if (this.categories.length === 1) {
-                        return this.categories[0].name
-                    } else {
-                        var tempTitle = new Array()
-                        for (var i = 0 ; i < this.categories.length ; i++) {
-                            tempTitle[i] = this.categories[i].name
-                        }
-                        return tempTitle.join(' > ')
-                    }
-                },
                 topDesignHTML: '',
                 isApplyChildCategory: false,
                 move_select: 0,
                 categories:[]
             },
+            isModify: true,
+            breadcrumb: '',
             moveSelect1: [],
             moveSelect2: [],
             moveSelect3: [],
@@ -362,7 +348,7 @@ export default {
         }
     },
     mounted () {
-        this.init()
+        this.axiosGetRequest('/api/v1/categories', {categoryLevel: 1}, this.insertCategoryFn)
     },
     methods: {
         // 카테고리 이동 시작
@@ -392,12 +378,7 @@ export default {
                 this.$data['moveSelect'+ categoryLevel].push({value: data[i].categorySysId, text: data[i].name})
             }
         },
-        // 카테고리 이동 끝
-        // 카테고리 이동이동
-        // eslint-disable-next-line no-unused-vars
-        move: function (event){
-            var id = $('#move_select_'+this.selectCategory.move_select)
-            console.log(id)
+        move: function (){
             var param = {
                 categorySysId: this.selectCategory.categorySysId,
                 categoryLevel: this.selectCategory.categoryLevel,
@@ -416,12 +397,6 @@ export default {
             var cursorLocation = this.$refs.editorOptionRef.quill.getSelection(true) 
             this.onEditorImagesUploaderEvent(file, this.$refs.editorOptionRef.quill, cursorLocation.index)
         },
-        init: function () {
-            const param = {
-                categoryLevel: 1
-            }
-            this.axiosGetRequest('/api/v1/categories', param, this.insertCategoryFn)
-        }
     },
     components: {
         quillEditor
@@ -429,10 +404,6 @@ export default {
 }
 </script>
 <style>
-    /* 카테고리 item list */
-    .t_category.category{
-        
-    }
     .t_category.category tr{
         height: 60px;
     }

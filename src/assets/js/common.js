@@ -4,9 +4,10 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 
 export default {
   data () {    
-    // Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
+    Axios.defaults.baseURL = 'http://192.168.1.20:3000/'
+    // Axios.defaults.baseURL = 'http://192.168.1.90:3800/' // me
     // Axios.defaults.baseURL = 'http://192.168.1.20:3800/' // debugging
-    Axios.defaults.baseURL = 'http://api.shallwe.link:3000' // 개발
+    // Axios.defaults.baseURL = 'http://api.shallwe.link:3000' // 개발
     // Axios.defaults.baseURL = 'http://api.shallwe.link:3800' // 배포
     // Axios.defaults.baseURL = 'http://192.168.1.40:3800/' // -- admin.shallwe.link
     // Axios.defaults.baseURL = 'http://api.shallwe.shop:3000/' // -- admin.shallwe.shop
@@ -160,7 +161,7 @@ export default {
      * POST 형태로 Axios 전송
      *
      */
-    axiosPostRequest: function(url, param, callback, errback,token) {
+    axiosPostRequest: function(url, param, callback, errback, token) {
       var errorFn = typeof errback === 'undefined'   ? (err) => {console.log(err);}   : errback;
       if(token){
       Axios.post(url, this.postParam(param), {
@@ -182,7 +183,7 @@ export default {
     }
     },
 
-    axiosPatchRequest: function(url, param, callback, errback,token) {
+    axiosPatchRequest: function(url, param, callback, errback, token) {
       var errorFn = typeof errback === 'undefined'   ? err => { console.log(err);}   : errback;
         if(token){    
           console.log(this.patchParam(param))  
@@ -214,7 +215,11 @@ export default {
     },
     axiosPutRequest: function(url, param, callback, errback) {
       var errorFn = typeof errback === 'undefined'   ? err => {console.log(err);}   : errback;
-      Axios.put(url, this.patchParam(param))
+      Axios.put(url, this.patchParam(param), { headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+      }
+      })
         .then(callback)
         .catch(errorFn);
     },

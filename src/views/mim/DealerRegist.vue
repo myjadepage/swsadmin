@@ -305,6 +305,14 @@ export default {
         },
         checkDuplicateIdFn: function (){
             const chkId = this.mimRegObject.sellerId
+            const engValidate = /^[a-zA-Z0-9]*$/
+            if (this.isEmpty(String(chkId).trim())) {
+                alert('ID를 확인하여 주시기 바랍니다.')
+                return false
+            } else if(!engValidate.test(chkId)) {
+                alert('ID는 영문 및 숫자만 가능힙니다.')
+                return false
+            }
             this.axiosGetRequest('/api/v1/sellers/chkdupId', {sellerId: chkId}, function (res) {
                 const result = res.data.jsonData
                 if (result.resultCode === '0001') {

@@ -113,14 +113,16 @@ export default {
       sendObject.salesQty = this.productData.salesQty
       // ------------------- Form Validate 체크 시작 -------------------
       // 카테고리 선택에 대한 필수값 체크
-      if (this.selectedCategories.categoryTable.length <= 0) {
-        alert('카테고리를 선택하여 추가하여 주시기 바랍니다.')
+      let categoryObject = this.selectedCategories.categoryTable
+      
+      if (categoryObject.length <= 0) {
+        alert('카테고리를 추가하여 주시기 바랍니다.')
         return false
       } else {
         sendObject.category ={
           categories: []
         }
-        this.selectedCategories.categoryTable.forEach(item => {
+        categoryObject.forEach(item => {
           let row = {}
           row.categorySysId1 = item.categorySysId1
           row.categorySysId2 = item.categorySysId2
@@ -130,9 +132,26 @@ export default {
           if (!this.isEmpty(item['prdtCategorySysId'])) {
             row.prdtCategorySysId = item.prdtCategorySysId
             row.procTypeCode = item.procTypeCode
+          } else {
+            row.procTypeCode = 2
           }
           sendObject.category.categories.push(row);
         });
+        
+        let itemCounter = 0
+        for(let validateItem of sendObject.category.categories) {
+          if (this.isEmpty(validateItem['prdtCategorySysId'])) {
+            if (validateItem.procTypeCode !== 4) {
+              itemCounter++
+            }
+          } else {
+            itemCounter++
+          }
+        }
+        if (itemCounter < 1) {
+          alert('카테고리를 추가하여 주시기 바랍니다.')
+          return false
+        }
       }
 
       if (String(this.productData.briefComment).trim().length < 1) {

@@ -1,11 +1,11 @@
 <template>
     <div id="contents">
-        <h3><font-awesome-icon icon="play-circle" /> {{$route.name}}</h3>
+        <h3><font-awesome-icon icon="play-circle" /> {{ $route.name }}</h3>
         <ul class="navi">
             <li class="home"><a href="/" target="_top">홈</a></li>
             <li>입점업체관리</li>
             <li>판매자관리</li>
-            <li class="on">{{$route.name}}</li>
+            <li class="on">{{ $route.name }}</li>
         </ul>
         <ul class="helpbox">
             <li>쇼핑몰에 판매자 신청하신 목록을 관리하는 곳 입니다.</li>
@@ -16,7 +16,7 @@
         <div class="section_head">
             <h4>총 <strong class="red">{{ totalPage }}</strong>건이 있습니다.</h4>
             <div>
-                <select id="skey" name="skey" class="text_input">
+                <select class="text_input">
                     <option value="">전체</option>
                     <option value="id">아이디</option>
                     <option value="name">업체명</option>
@@ -30,10 +30,9 @@
                 <b-button variant="outline-secondary" size="sm">검색</b-button>
             </div>
         </div>
+
         <form name="Frm" style="margin-top:10px">
-            <b-table
-                hover
-                head-variant="light"
+            <b-table hover head-variant="light" sort-icon-left
                 :per-page="perPage"
                 :current-page="currentPage"
                 :fields="fields"  
@@ -46,9 +45,9 @@
                     <col width="13%">
                     <col width="13%">
                     <col width="13%">
-                    <col width="150">
-                    <!-- <col width="50"> -->
+                    <col width="150">                  
                 </template>
+
                 <template v-slot:cell(detail) = "detail">
                     <b-button variant="outline-secondary" size="sm" @click="$router.push('/mim/dealer_detail/' + detail.item.sellerSysId)">상세정보</b-button>                
                 </template>

@@ -13,7 +13,6 @@
         <li>배송비 및 적립금, 쿠폰 등의 할인내역은 금액에 포함되지 않습니다.</li>
     </ul>
 
-
     <form name="sFrm">
         <table class="t_form">
             <caption>회원 검색 폼</caption>
@@ -24,13 +23,13 @@
                         <sws-date :parentData="FilterFields"></sws-date>
                     </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <th>최근접속일</th>
                     <td>
                         <sws-date :parentData="FilterFields"></sws-date>
                     </td>
-                </tr>
-                <tr>
+                </tr> -->
+                <!-- <tr>
                     <th>그룹별</th>
                     <td>
                         <select id="slevel" name="slevel" class="text_input">
@@ -44,7 +43,7 @@
                             <option value="200">여자</option>
                         </select>
                 </td>
-                </tr>
+                </tr> -->
                 <tr>
                     <th>회원상태</th>
                     <td>
@@ -73,12 +72,10 @@
                         <select id="skey" name="skey" class="text_input">
                             <option value="">전체</option>
                             <option value="id">회원아이디</option>
-                            <option value="name">회원명</option>
-                            <option value="tel">전화번호</option>
+                            <option value="name">회원명</option>                          
                             <option value="mobile">휴대폰번호</option>
-                            <option value="email">이메일</option>
                         </select>
-                    <input type="text" name="sword" class="text_input" style="width:300px">
+                        <input type="text" name="sword" class="text_input" style="width:300px">
                         <b-button variant="secondary" size="sm" >검색</b-button>
                     </td>
                 </tr>
@@ -86,76 +83,33 @@
         </table>
 
         <div class="section_head">
-            <h4>총 <strong class="red"> {{ totalPage }}</strong> 명의 회원이 조회 되었으며, 오늘 가입한 회원은 <strong class="red">0</strong> 명입니다.</h4>                        
+            <h4>총 <strong class="red"> {{ memberData.length }}</strong> 명의 회원이 조회되었습니다.</h4>                        
         </div>
     </form>
 
 
     <form name="Frm">
         <b-table
-            hover
             head-variant="light"
             :per-page="perPage"
             :current-page="currentPage"
             :fields="fields"  
             :items="memberData"
         >
-            <template v-slot:table-busy>
-                <div class="text-center text-danger my-2">
-                    <b-spinner class="align-middle"></b-spinner>
-                    <strong>Loading...</strong>
-                    </div>
+            <template v-slot:cell(checked)>
+                <input type="checkbox">
             </template>
-            <template v-slot:cell(check)>
-                <input type="checkbox"/>
-            </template>
+
             <template v-slot:cell(state)>
                 <p>{{ state }}</p>
-            </template>
-            <template v-slot:empty>
-                <p class="text-center">죄송합니다. 데이터를 찾을수 없습니다.</p>
-            </template>
-        </b-table>
-                    <table class="t_list">
-                        <caption>가입한 회원 목록</caption>
-                        <colgroup>
-                            <col width="30">
-                            <col width="7%">
-                            <col width="*">
-                            <col width="10%">
-                            <col width="12%">
-                            <col width="35">
-                            <col width="35">
-                            <col width="12%">
-                            <col width="7%">
-                            <col width="9%">
-                            <col width="12%">
-                            <col width="9%">
-                        </colgroup>                       
-                    </table>
+            </template>            
+        </b-table>                    
 
-                    <!-- <div class="section_head">
-                        <h4><font-awesome-icon icon="check-circle" /> 회원상태변경</h4>
-                    </div>
-                    <table class="t_form">
-                        <caption>회원상태변경 폼</caption>
-                        <tbody>
-                            <tr>
-                                <th>일괄변경</th>
-                                <td>
-                                    선택한 회원을 일반회원으로 
-                                    <b-button variant="secondary">전환하기</b-button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> -->
-
-                    <div class="btn_right">
-                        <b-button variant="outline-danger" style="margin-right:5px" >선택삭제</b-button>
-                        <!-- <b-button variant="outline-secondary">엑셀로 받기</b-button> -->
-                    </div>
-
-                </form>
+        <div class="btn_right">
+            <b-button variant="outline-danger" style="margin-right:5px" >선택삭제</b-button>
+            <!-- <b-button variant="outline-secondary">엑셀로 받기</b-button> -->
+        </div>
+    </form>
   </div>
 </template>
 
@@ -173,18 +127,17 @@ export default {
             totalPage: 0,
             currentPage: 1,
             perPage: 10,
-            fields:[
-                {key : 'check', label : '',sortable: false},
-                {key : 'state', label : '상태', sortable: true},
-                {key : 'id', label : '아이디', sortable: true},
-                {key : 'level', label : '회원등급', sortable: true},
-                {key : 'name', label : '성명', sortable: true},
-                {key : 'gender', label : '성별', sortable: true},
-                {key : 'age', label : '나이', sortable: true},
+            fields:[               
+                {key : 'checked', label : '', sortable: false},
+                {key : 'isBlock', label : '상태', sortable: true},
+                {key : 'userId', label : '아이디', sortable: true},
+                {key : 'userGradeSysId', label : '회원등급', sortable: true},
+                {key : 'name', label : '이름', sortable: true},
+                {key : 'nickName', label : '닉네임', sortable: true},                
+                {key : 'genderCode', label : '성별', sortable: true},               
                 {key : 'point', label : '적립금', sortable: true},
-                {key : 'connectCount', label : '접속수', sortable: true},
-                {key : 'connectAt', label : '최근접속일', sortable : true},
-                {key : 'totalPrice', label : '총구매금액', sortable: true},
+                {key : 'connectionCount', label : '접속수', sortable: true},                
+                {key : 'totalPurchase', label : '총구매금액', sortable: true},
                 {key : 'createdAt', label : '가입일', sortable: true},
             ],
             memberData: [],
@@ -195,11 +148,53 @@ export default {
         }
     },
     mounted () {         
-        this.axiosGetRequest('/api/v1/products/lists','',this.loadMemberList)
+        this.axiosGetRequest('/api/v1/users/all','',this.loadMemberList)
     },
     methods: {
         loadMemberList(res) {
             console.log(res)
+            let result = res.data.jsonData.users
+            if(result) {
+                for(let i=0; i<result.length; i++) {
+                    this.memberData.push({
+                        'userSysId': result[i].userSysId,
+                        'userId': result[i].userId,
+                        'isBlock': this.changeBlock(result[i].isBlock),
+                        'userGradeSysId': result[i].userGradeSysId,
+                        'totalPurchase': result[i].totalPurchase,
+                        'profileImgUrl': result[i].profileImgUrl,
+                        'profile': result[i].profile,
+                        'point': result[i].point,
+                        'nickName': result[i].nickName,
+                        'name': result[i].name,
+                        'mobile': result[i].mobile,
+                        'isDormancy': result[i].isDormancy,
+                        'genderCode': this.changeGender(result[i].genderCode),
+                        'createdAt': this.changeDate(result[i].createdAt),
+                        'connectionCount':result[i].connectionCount
+                    })
+                }
+            }
+        },
+        changeDate(date) {
+            var y = date.substr(0, 4)
+            var m = date.substr(4, 2)
+            var d = date.substr(6, 2)
+            return y + '-' + m + '-' + d
+        },
+        changeGender(num) {
+            switch(num){
+                case 0 : return "여성";
+                case 1 : return "남성";
+                default : return "";
+            }         
+        },
+        changeBlock(num) {
+            switch(num){
+                case 0 : return "일반";
+                case 1 : return "휴면";
+            } 
+
         }
     }
 }

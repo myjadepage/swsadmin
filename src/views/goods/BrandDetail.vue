@@ -52,27 +52,16 @@
                     <tr>
                         <th>일반 전화번호&emsp;<span class="red">*</span></th>
                         <td>
-                            <input type="tel" class="text_input w-50" placeholder="- 없이 입력해주세요 (예: 01012345678)" v-model="brandReg.tel" />
+                            <input type="search" class="text_input w-50" placeholder="- 없이 입력해주세요 (예: 01012345678)" v-model="brandReg.tel" />
                         </td>
                         <th>휴대전화번호&emsp;<span class="red">*</span></th>
                         <td>
-                            <input type="tel" class="text_input w-50" pattern="[0-9]{11}" placeholder="- 없이 입력해주세요 (예: 01012345678)" v-model="brandReg.mobile" />
+                            <input type="search" class="text_input w-50" placeholder="- 없이 입력해주세요 (예: 01012345678)" v-model="brandReg.mobile" />
                         </td>
                     </tr>
                     <tr>
                         <th>이메일 주소&emsp;<span class="red">*</span></th>
                         <td colspan="3"><input type="email" class="text_input w-25" v-model="brandReg.email"> </td>
-                    </tr>
-                    <tr>
-                        <th rowspan="2">상단 디자인</th>
-                        <td colspan="3" style="padding: 0px">
-                            <quill-editor
-                                ref="editorOptionRef"
-                                class="quill-editor" 
-                                :options="editorOption"
-                                v-model="brandReg.topDesignHTML"
-                            ></quill-editor>
-                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -88,19 +77,11 @@
     </div>
 </template>
 <script>
-import Quill from 'quill'
-import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
-import { ImageUpload } from 'quill-image-upload'
-import { quillEditor } from 'vue-quill-editor'
-import 'quill/dist/quill.snow.css'
 import commonJs from '@/assets/js/common.js'
 // 이미지 업로드 등록시 함수 
 import ImagesUploader from '@/assets/js/ImagesUploader.js'
 import submitReg from '@/components/brands/BrandReg.js'
 import SwsSeller from '@/components/common/SwsSeller'
-
-Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
-Quill.register('modules/imageUpload', ImageUpload)
 
 export default {
     mixins: [commonJs, ImagesUploader, submitReg],
@@ -108,7 +89,6 @@ export default {
         return {
             brandReg: {
                 name: '',
-                topDesignHTML: '',
                 sellerSysId: 0,
                 managerName: '',
                 managerRank: '',
@@ -125,7 +105,6 @@ export default {
         }
     },
     components: {
-        quillEditor,
         SwsSeller
     },
     methods: {
@@ -146,24 +125,12 @@ export default {
             var cursorLocation = this.$refs.editorOptionRef.quill.getSelection(true) 
             this.onEditorImagesUploaderEvent(file, this.$refs.editorOptionRef.quill, cursorLocation.index, '/brand/image')
         },
-        // registBrand: function () {
-        //     this.axiosPostRequest('/api/v1/brands', {jsonData: this.brandReg}, (res) => {
-        //         if (res.data.jsonData.resultCode==='0001'){
-        //             alert('브랜드 등록이 완료되었습니다.')
-        //             window.location.href="/goods/brand_list"
-        //         } else {
-        //             alert('브랜드 등록에 실패하였습니다.')
-        //             console.log(res.data.jsonData)
-        //         }
-        //     })
-        // },
         popAlert: function (message) {
             alert(`${message}을(를) 확인하여 주시기 바랍니다.`)
             return false
         },
         onSubmit: function () {
             let row = {}
-            let adminAuth = {}
             if (String(this.brandReg.name).trim().length < 1) {
                 this.popAlert('브랜드명');
                 return false
@@ -171,24 +138,13 @@ export default {
                 row.name = String(this.brandReg.name).trim()
             }
 
-            // 부 운영자를 등록
-            if (this.checkUserAuth) {
-                if (!this.checkValidateId) {
-                    this.popAlert('아이디 중복체크')
-                    return false
-                } else {
-                    adminAuth.adminId = String(this.brandReg.adminId).trim()
-                }
-
-                if (!this.checkValidatePassword) {
-                    this.popAlert('비밀번호')
-                    return false
-                } else {
-                    adminAuth.password = this.makeRsa(this.brandReg.password)
-                }
-            }
             // 브랜드 이미지 추가
-            row.imageUrl = this.brandReg.imageUrl
+            if (this.isEmpty(this.brandReg.imageUrl)){
+                this.popAlert('브랜드 이미지')
+                return false
+            } else {
+                row.imageUrl = this.brandReg.imageUrl
+            }
             
             // 판매자 등록
             if (this.brandReg.sellerSysId === 0) {
@@ -196,7 +152,6 @@ export default {
                 return false
             } else {
                 row.sellerSysId = this.brandReg.sellerSysId
-                adminAuth.sellerSysId = this.brandReg.sellerSysId
             }
             
             // 담당자명 등록
@@ -205,13 +160,10 @@ export default {
                 return false
             } else {
                 row.managerName = String(this.brandReg.managerName).trim()
-                adminAuth.managerName = String(this.brandReg.managerName).trim()
             }
 
             // 담당자 직급등록
             row.managerRank = String(this.brandReg.managerRank).trim()
-            adminAuth.managerRank = String(this.brandReg.managerRank).trim()
-            row.topDesignHTML = this.brandReg.topDesignHTML
             
             // 일반전화번호
             if (String(this.brandReg.tel).trim().length < 1) {
@@ -226,8 +178,7 @@ export default {
                 this.popAlert('휴대전화번호')
                 return false
             } else {
-                row.mobile = String(this.brandReg.mobile).trim()
-                adminAuth.mobile = String(this.brandReg.mobile).trim()
+                row.mobile = this.makeRsa(this.brandReg.mobile)
             }
 
             // 이메일 
@@ -236,18 +187,17 @@ export default {
                 return false
             } else {
                 row.email = String(this.brandReg.email).trim()
-                adminAuth.email = String(this.brandReg.email).trim()
             }
             
-            this.axiosPatchRequest(`/api/v1/brands/${this.$route.params.brandSysId}`, {jsonData: row}, (res) => {
+            this.axiosPatchRequest(`/api/v1/brands/${this.$route.params.brandSysId}`, {jsonData: row}, function (res) {
                 if (res.data.jsonData.resultCode==='0001'){
                     alert('브랜드 수정이 완료되었습니다.')
-                    window.location.href="/goods/brand_list"
+                    this.$router.push(`/goods/brand_list`)
                 } else {
                     alert('브랜드 수정에 실패하였습니다.')
                     console.log(res.data.jsonData)
                 }
-            })
+            }.bind(this),'',sessionStorage.getItem('accessToken'))
 
         }
     }

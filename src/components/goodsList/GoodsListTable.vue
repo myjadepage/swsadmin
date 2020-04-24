@@ -90,7 +90,7 @@
             <template v-slot:cell(view)="view">
                 <p>{{view.item.viewCount}} 회</p>
                 <p>{{view.item.salesQty}} 개</p>
-                <template v-if="view.value.stockQty > 0">
+                <template v-if="view.item.stockQty > 0">
                     <p><input type="text" class="text_input number_input" :ref="`stockQty_${view.item.prdtSysId}`" v-model.number="view.item.stockQty" style="width: 100px"> 개</p>
                 </template>
                 <template v-else>
@@ -102,7 +102,7 @@
                     <b-button variant="light">이력</b-button>
                     <b-button variant="success" @click="savePriceData(setting.item)">저장</b-button>
                     <b-button variant="light">복사</b-button>
-                    <b-button variant="primary" @click="modifyProductData(setting.item.prdtSysId)">수정</b-button>
+                    <b-button variant="primary" @click="$router.push(`/goods/goods_reg/${setting.item.prdtSysId}`)">수정</b-button>
                     <b-button @click="deleteProductData(setting.item.prdtSysId)">삭제</b-button>
                 </b-button-group>
             </template>
@@ -111,7 +111,7 @@
             </template>
         </b-table>
         <div class="float-right">
-            <b-pagination  v-model="currentPage"  :total-rows="totalPage" :per-page="perPage"></b-pagination>
+            <b-pagination  v-model="currentPage"  :total-rows="products.length" :per-page="perPage"></b-pagination>
         </div>
     </div>
 </template>
@@ -208,9 +208,6 @@ export default {
                 this.$emit('refresh')
             }
         },
-        modifyProductData: function (id) {
-            window.location.href='/goods/goods_reg/'+id
-        }
   }
 }
 </script>

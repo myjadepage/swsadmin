@@ -31,15 +31,14 @@
                                 <option value="1">제목</option>
                                 <option value="2">내용</option>
                             </select> -->
-                            <input type="text" v-model="searchQuery" placeholder="검색어" class="text_input" style="width:150px; margin:0 5px" maxlength="50">
+                            <input type="text" v-model="searchQuery" placeholder="검색어" class="text_input" style="width:400px; margin:0 5px" maxlength="50">
                             <!-- <b-button variant="outline-secondary" size="sm" @click="searchButton">검색</b-button> -->
                         </div>
                     </div>
 
                      <form name="Frm">
-                        <b-table
-                            ref="inquiryTable"
-                            head-variant="light"           
+                       
+                        <b-table hover head-variant="light" sort-icon-left
                             :fields="fields"  
                             :items="filteredData"
                             :keyword="searchQuery"
@@ -74,69 +73,8 @@
                             <b-button :disabled="pageNumber === 0" @click="prevPage" style="margin-right:5px">이전</b-button>
                             <b-button :disabled="pageNumber >= pageCount" @click="nextPage">다음</b-button>
                         </div>
-                     </form>    
-
-                    <!-- <table class="t_list">
-                        <caption>FAQ 리스트</caption>
-                        <colgroup>
-                            <col width="50">
-                            <col width="250">
-                            <col width="*">
-                            <col width="250">
-                            <col width="100">
-                            <col width="100">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>분류</th>
-                                <th>제목</th>
-                                <th>등록일</th>
-                                <th>조회수</th>
-                                <th>관리</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-if="faqData === null || faqData === undefinded">
-                                <td colspan="6">등록된 데이타가 없습니다.</td>
-                            </tr>
-
-                            <tr v-for="item in faqData" :key="item.siteFaqSysId">
-                                <td>{{ item.siteFaqSysId }}</td>
-                                <td>{{ chanegValue(item.faqTypeCode)}}</td>
-                                <td class="left">
-                                    <router-link :to="'/management/faq_detail/'+ item.siteFaqSysId">{{ item.title }}</router-link>
-                                </td>
-                                <td>{{ changeDate(item.createdAt) }}</td>
-                                <td>{{ item.viewCount }}</td>
-                                <td>
-                                    <span class="button small">
-                                        <b-button variant="outline-danger" size="sm"  @click="deleteFaq(item.siteFaqSysId)">삭제</b-button>
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr v-for="item in searchData" :key="item.siteFaqSysId">
-                                <td>{{ item.siteFaqSysId }}</td>
-                                <td>{{ chanegValue(item.faqTypeCode)}}</td>
-                                <td class="left">
-                                    <router-link :to="'/management/faq_detail/'+ item.siteFaqSysId">{{ item.title }}</router-link>
-                                </td>
-                                <td>{{ changeDate(item.createdAt) }}</td>
-                                <td>{{ item.viewCount }}</td>
-                                <td>
-                                    <span class="button small">
-                                        <b-button variant="outline-danger" size="sm"  @click="deleteFaq(item.siteFaqSysId)">삭제</b-button>
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="paging" style="margin-top:20px">
-                         <b-button variant="secondary" style="margin:0 5px"> 1 </b-button>
-                    </div> -->
-
+                   
+                     </form>  
                     <div class="btn_center">
                         <b-button variant="outline-info" size="lg" @click="$router.push('/management/faq_reg')">등록</b-button>
                     </div>
@@ -153,7 +91,7 @@ export default {
     data() {
         return {
             pageNumber:0,
-            perPage: 15,
+            perPage: 10,
             fields:[
                 {key : 'siteFaqSysId', label : 'No', sortable: true},
                 {key : 'faqTypeCode', label : '분류', sortable: true},

@@ -83,7 +83,6 @@ export default {
       } else {
         this.cateogries.splice(index, 1)
       }
-      // this.cateogries.splice(item.index, 1)
     }
   }
 };

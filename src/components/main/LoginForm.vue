@@ -40,11 +40,19 @@ export default {
           }
           this.axiosPostRequest('api/v1/auth/admins/login',{jsonData: row}, (res)=>{
             if(res.data.jsonData.resultCode==='0001'){
-              sessionStorage.setItem('accessToken',res.data.jsonData.accessToken)
-              sessionStorage.setItem('refreshToken',res.data.jsonData.refreshToken)
-              sessionStorage.setItem('userName',res.data.jsonData.name)
-              sessionStorage.setItem('domainSysId',res.data.jsonData.domainSysId)
-              sessionStorage.setItem('companyTypeCode',res.data.jsonData.companyTypeCode)
+              const resultObject = res.data.jsonData
+              sessionStorage.setItem('accessToken', resultObject.accessToken)
+              sessionStorage.setItem('refreshToken', resultObject.refreshToken)
+              sessionStorage.setItem('name', resultObject.name)
+              if (!this.isEmpty(resultObject['sellerSysId'])){
+                sessionStorage.setItem('sellerSysId', resultObject.sellerSysId)
+              }
+              if (!this.isEmpty(resultObject['brandSysId'])){
+                sessionStorage.setItem('brandSysId', resultObject.brandSysId)
+              }
+              if (!this.isEmpty(resultObject['gradeSysId'])){
+                sessionStorage.setItem('gradeSysId', resultObject.gradeSysId)
+              }
               this.$store.dispatch('login')
             }else if(res.data.jsonData.resultCode==='1003'){
               alert('존재하지 않는 ID입니다.')
