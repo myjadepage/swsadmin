@@ -128,9 +128,6 @@
                                                 <th>현재 카테고리</th>
                                                 <td class="category">
                                                     <u id="target_category"> {{ selectCategory.breadcrumb() }}</u>
-                                                    <!-- <template v-if="categories2Level.children.length > 0">
-                                                        <a href="#" class="btn btn-light btn-sm" @click="newCategorySub()"> + 추가</a>
-                                                    </template> -->
                                                 </td>
                                             </tr>
                                             <tr>
@@ -139,10 +136,10 @@
                                                     <input type="text" name="name" v-model="selectCategory.title" class="text_input" style="width:98%" maxlength="100">
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th>아이콘 설정</th>
                                                 <td></td>
-                                            </tr>
+                                            </tr> -->
                                             <tr>
                                                 <th>수수료율</th>
                                                 <td>
@@ -207,10 +204,7 @@
         </table>
 
         <!-- Modal -->
-        <b-modal ref="root-my-modal" hide-footer title="카테고리 생성">
-            <!-- <div class="d-block text-center">
-                <h3>루트 카테고리 생성하기</h3>
-            </div> -->
+        <b-modal id="insertRootCategory" ref="root-my-modal" hide-footer title="카테고리 생성">
             <form name="insertRootCategory" onsubmit="return false">
                 <p><span class="font-weight-bold">{{ selectCategory.breadcrumb() }}</span></p>
                 <div class="input-group mb-3">
@@ -223,7 +217,7 @@
         </b-modal>
 
         <!-- Modal -->
-        <b-modal ref="move-category-modal" hide-footer title="카테고리 이동">
+        <b-modal id="moveCategoryModal" ref="move-category-modal" hide-footer title="카테고리 이동">
             <div class="content">
                 <div class="row mb-3">
                     <div class="col-4 font-weight-bold">대상 카테고리</div>
@@ -234,31 +228,35 @@
                     <div class="col-8">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <select name="move_category" for="select_1" @change="selectCategory.move_select = 1" @change.stop="selectEvent">
+                                <select name="move_category" class="text_input" for="select_1" @change="selectCategory.move_select = 1" @change.stop="selectEvent">
                                     <option>::1차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect1" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_1" value="1"  v-model="selectCategory.move_select" />
                             </div>
                             <div class="col-12 mb-3">
-                                <select name="move_category" id="select_2" @change="selectCategory.move_select = 2" @change.stop="selectEvent">
+                                <select name="move_category" class="text_input" id="select_2" @change="selectCategory.move_select = 2" @change.stop="selectEvent">
                                     <option>::2차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect2" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_2" value="2" v-model="selectCategory.move_select" />
                             </div>
                             <div class="col-12 mb-3">
-                                <select name="move_category" id="select_3" @change="selectCategory.move_select = 3" @change.stop="selectEvent">
+                                <select name="move_category" class="text_input" id="select_3" @change="selectCategory.move_select = 3" @change.stop="selectEvent">
                                     <option>::3차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect3" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_3" value="3" v-model="selectCategory.move_select" />
                             </div>
                             <div class="col-12 mb-3">
-                                <select name="move_category" id="select_4" @change="selectCategory.move_select = 4" @change.stop="selectEvent" >
+                                <select name="move_category" class="text_input" id="select_4" @change="selectCategory.move_select = 4" @change.stop="selectEvent" >
                                     <option>::4차 카테고리를 선택하세요::</option>
                                     <option v-for="(item, index) in moveSelect4" :key="index" :value="item.value">{{ item.text }}</option>
                                 </select>
+                                &emsp;
                                 <input type="radio" name="move_select" id="move_select_4" value="4" v-model="selectCategory.move_select" />
                             </div>
                         </div>
@@ -266,14 +264,13 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" @click="move">이동</button>
-                    <button class="btn btn-danger">취소</button>
+                    <button class="btn btn-danger" @click="$bvModal.hide('moveCategoryModal')">취소</button>
                 </div>
             </div>
         </b-modal>
     </div>
 </template>
 <script>
-import $ from 'jquery'
 import Quill from 'quill'
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import { ImageUpload } from 'quill-image-upload'
@@ -362,7 +359,7 @@ export default {
         }
     },
     mounted () {
-        this.init()
+        this.axiosGetRequest('/api/v1/categories', {categoryLevel: 1}, this.insertCategoryFn)
     },
     methods: {
         // 카테고리 이동 시작
@@ -392,21 +389,16 @@ export default {
                 this.$data['moveSelect'+ categoryLevel].push({value: data[i].categorySysId, text: data[i].name})
             }
         },
-        // 카테고리 이동 끝
-        // 카테고리 이동이동
-        // eslint-disable-next-line no-unused-vars
-        move: function (event){
-            var id = $('#move_select_'+this.selectCategory.move_select)
-            console.log(id)
-            var param = {
-                categorySysId: this.selectCategory.categorySysId,
-                categoryLevel: this.selectCategory.categoryLevel,
-                categoryCode: this.selectCategory.categoryCode,
-                name: this.selectCategory.text,
-                parentSysId: ''
-            }
-            console.log(param)
-        },
+        // move: function (){
+        //     var param = {
+        //         categorySysId: this.selectCategory.categorySysId,
+        //         categoryLevel: this.selectCategory.categoryLevel,
+        //         categoryCode: this.selectCategory.categoryCode,
+        //         name: this.selectCategory.text,
+        //         parentSysId: ''
+        //     }
+        //     console.log(param)
+        // },
         // 이미지 에디터에서 올림
         categorCommentHtmlimageHandler: function (imageDataUrl, type){
             var ext = type.split('/')
@@ -416,12 +408,6 @@ export default {
             var cursorLocation = this.$refs.editorOptionRef.quill.getSelection(true) 
             this.onEditorImagesUploaderEvent(file, this.$refs.editorOptionRef.quill, cursorLocation.index)
         },
-        init: function () {
-            const param = {
-                categoryLevel: 1
-            }
-            this.axiosGetRequest('/api/v1/categories', param, this.insertCategoryFn)
-        }
     },
     components: {
         quillEditor
@@ -429,10 +415,6 @@ export default {
 }
 </script>
 <style>
-    /* 카테고리 item list */
-    .t_category.category{
-        
-    }
     .t_category.category tr{
         height: 60px;
     }

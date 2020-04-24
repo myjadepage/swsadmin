@@ -188,19 +188,15 @@ export default {
             parentSysId: getData.parentSysId,
             name: getData.text
         }
-        var failcallbackFn = function (err) {
-            console.log(err)
-        }
-        this.axiosPostRequest('/api/v1/categories', {jsonData: param}, this.insertSuccessFn, failcallbackFn)
-    },
-    // 등록 성공
-    insertSuccessFn: function (res) {
-        var result = res.data.jsonData
-        if (result.code === 200) {
-            alert('카테고리가 등록되었습니다.')
-            this.hideModelFn('root-my-modal')
-            this.reloadCategoryData()
-        }
+        this.axiosPostRequest('/api/v1/categories', {jsonData: param}, function (res) {
+            var result = res.data.jsonData
+            if (result.code === 200) {
+                alert('카테고리가 등록되었습니다.')
+                this.$bvModal.hide('insertRootCategory')
+                this.reloadCategoryData()
+            }
+        }.bind(this), (err) => {console.log(err)})
+
     },
     hideModelFn: function (modalId){
         this.$refs[modalId].hide()

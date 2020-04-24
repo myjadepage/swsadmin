@@ -1,21 +1,25 @@
 <template>
     <div id="contents">
         <Text-align></Text-align>
-        <b-row cols="1">
-            <b-col>
-                <h5><i class="xi-check-circle"></i> 총 <strong>{{ items.length }}</strong>개의 정보가 등록되어있습니다.</h5>
-                <div>
+        <div class="row">
+            <div class="col-12 mb-2">
+                <h5 class="mb-2"><i class="xi-check-circle"></i> 총 <strong>{{ items.length }}</strong>개의 정보가 등록되어있습니다.</h5>
+                <div class="float-left">
                     <select class="text_input">
                         <option value="name">브랜드명</option>
                     </select>
                     <input type="text" class="text_input" style="width:150px">
                     <button type="submit" class="btn btn-sm btn-default">검색</button>
                 </div>
-            </b-col>
-            <Brands-list :items="items" @search="searchBrandsList" @refreshList="refreshBrandsList" @delete="deleteBrandsFn" />
-        </b-row>
-        <div class="float-right">
-            <b-button variant="outline-secondary" size="sm" href="/goods/brand_reg"><font-awesome-icon icon="plus-circle" /> 추가하기</b-button>
+                <div class="float-right">
+                    <select class="text_input" v-model="viewPage">
+                        <option value="10">10개 보기</option>
+                        <option value="30">30개 보기</option>
+                        <option value="50">50개 보기</option>
+                    </select>
+                </div>
+            </div>
+            <Brands-list :items="items" :viewPage="viewPage" @search="searchBrandsList" @refreshList="refreshBrandsList" @delete="deleteBrandsFn" />
         </div>
     </div>
 </template>
@@ -25,7 +29,8 @@ import TextAlign from '@/components/brands/TextAlign'
 import BrandsList from '@/components/brands/BrandsTable'
 export default {
     data: () => ({
-        items: []
+        items: [],
+        viewPage: 10
     }),
     mixins: [commonJs],
     components: {
@@ -37,7 +42,7 @@ export default {
     },
     methods: {
         loadBrandList: function () {
-            this.axiosGetRequest('/api/v1/brands','',this.refreshBrandsList)
+            this.axiosGetRequest('/api/v1/brands/list','',this.refreshBrandsList,'',sessionStorage.getItem('accessToken'))
         },
         deleteBrandsFn: function (key) {
             if (confirm('브랜드를 삭제하시겠습니까?')) {
@@ -53,9 +58,9 @@ export default {
             let loadData = res.data.jsonData.brands
             this.items.splice(0)
             for (const item of loadData) {
-                this.items.push({no: item.brandSysId, brandName: item.name, image: item.imageUrl, managerName: item.managerName})
+                this.items.push(item)
             }
-    }
-  }
+        }
+    } 
 }
 </script>
