@@ -126,8 +126,8 @@
                                         <tbody>
                                             <tr>
                                                 <th>현재 카테고리</th>
-                                                <td class="category">
-                                                    <u id="target_category"> {{ selectCategory.breadcrumb() }}</u>
+                                                <td>
+                                                    <input type="text" class="form-control-plaintext font-weight-bold" readonly v-model="breadcrumb"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -146,7 +146,7 @@
                                                     <input type="text" class="text_input" style="width:50px; text-align:right" v-model="selectCategory.feeRate" maxlength="5"> %
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th>숨김 여부</th>
                                                 <td>
                                                     <span>
@@ -158,15 +158,13 @@
                                                         <label for="isHideFalse">숨김</label>
                                                     </span>
                                                 </td>
-                                            </tr>
-
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
                                 <!-- 카테고리 정보 : 끝 //-->
-                                
                                 <!-- 상단 꾸미기 : 시작 -->
-                                <div class="box">
+                                <div>
                                     <div class="section_head">
                                         <h4><font-awesome-icon icon="info-circle" /> 카테고리 상단 디자인</h4>
                                     </div>
@@ -193,8 +191,7 @@
                                 </div>
                                 <!-- 상단 꾸미기 : 끝 //-->
                                 <div class="btn_center">
-                                    <b-button type="button" class="btn btn-info" @click="modifyCategory">확인</b-button>&emsp;
-                                    <b-button type="button" class="btn btn-danger">삭제</b-button>
+                                    <b-button type="button" class="btn btn-info" @click="modifyCategory">수정하기</b-button>&emsp;
                                 </div>
                             </div>
                         </form>
@@ -205,15 +202,17 @@
 
         <!-- Modal -->
         <b-modal id="insertRootCategory" ref="root-my-modal" hide-footer title="카테고리 생성">
-            <form name="insertRootCategory" onsubmit="return false">
-                <p><span class="font-weight-bold">{{ selectCategory.breadcrumb() }}</span></p>
+            <b-form name="insertRootCategory" @submit="insertRootCategory">
+                <p>
+                    <input type="text" class="form-control-plaintext font-weight-bold" readonly v-model="insertSelectCategory.breadcrumb"/>
+                </p>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" v-model="insertSelectCategory.text" placeholder="카테고리명을 입력하세요" aria-label="카테고리명을 입력하세요">
                     <div class="input-group-append">
-                        <button class="btn btn-info" type="button" id="button-addon2" @click="insertRootCategory">추가하기</button>
+                        <b-button variant="info" type="submit" id="button-addon2">추가하기</b-button>
                     </div>
                 </div>
-            </form>
+            </b-form>
         </b-modal>
 
         <!-- Modal -->
@@ -221,7 +220,7 @@
             <div class="content">
                 <div class="row mb-3">
                     <div class="col-4 font-weight-bold">대상 카테고리</div>
-                    <div class="col-8"><h3><span class="badge badge-light">{{ selectCategory.breadcrumb() }}</span></h3></div>
+                    <div class="col-8"><h4><span class="badge">{{ breadcrumb }}</span></h4></div>
                 </div>
                 <div class="row">
                     <div class="col-4 font-weight-bold">이동 위치</div>
@@ -321,6 +320,7 @@ export default {
                 placeholder: '내용을 입력해주세요...'
             },
             insertSelectCategory: {
+                breadcrumb: '',
                 parentSysId: 0,
                 categoryLevel: 0,
                 text: ''
@@ -333,24 +333,13 @@ export default {
                 feeRate: 0,
                 isHide: true,
                 title: '',
-                breadcrumb: function () {
-                    if (this.categories.length === 0) {
-                        return ''
-                    } else if (this.categories.length === 1) {
-                        return this.categories[0].name
-                    } else {
-                        var tempTitle = new Array()
-                        for (var i = 0 ; i < this.categories.length ; i++) {
-                            tempTitle[i] = this.categories[i].name
-                        }
-                        return tempTitle.join(' > ')
-                    }
-                },
                 topDesignHTML: '',
                 isApplyChildCategory: false,
                 move_select: 0,
                 categories:[]
             },
+            isModify: true,
+            breadcrumb: '',
             moveSelect1: [],
             moveSelect2: [],
             moveSelect3: [],
@@ -389,16 +378,16 @@ export default {
                 this.$data['moveSelect'+ categoryLevel].push({value: data[i].categorySysId, text: data[i].name})
             }
         },
-        // move: function (){
-        //     var param = {
-        //         categorySysId: this.selectCategory.categorySysId,
-        //         categoryLevel: this.selectCategory.categoryLevel,
-        //         categoryCode: this.selectCategory.categoryCode,
-        //         name: this.selectCategory.text,
-        //         parentSysId: ''
-        //     }
-        //     console.log(param)
-        // },
+        move: function (){
+            var param = {
+                categorySysId: this.selectCategory.categorySysId,
+                categoryLevel: this.selectCategory.categoryLevel,
+                categoryCode: this.selectCategory.categoryCode,
+                name: this.selectCategory.text,
+                parentSysId: ''
+            }
+            console.log(param)
+        },
         // 이미지 에디터에서 올림
         categorCommentHtmlimageHandler: function (imageDataUrl, type){
             var ext = type.split('/')
