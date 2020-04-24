@@ -849,7 +849,7 @@ export default {
     if (!this.isEmpty(this.$route.params.productSysId)) {
       this.productData.productSysId = this.$route.params.productSysId;
       this.productData.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
-      this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,'',this.getProductData);
+      this.axiosGetRequest('/api/v1/products/' + this.$route.params.productSysId,'',this.getProductData, '', sessionStorage.getItem('accessToken'));
       // 판매자 브랜드 세팅
     }
 
@@ -859,7 +859,7 @@ export default {
       sellerData.forEach(item => {
         this.sellerList.push({value : item.sellerSysId, text : item.name})
       })
-    }.bind(this));
+    }.bind(this), '', sessionStorage.getItem('accessToken'));
     this.calculFeeRateFn({ type: "1" });
   },
   methods: {
@@ -873,7 +873,7 @@ export default {
         brandData.forEach(item => {
           this.brandList.push({value : item.brandSysId, text: item.name})
         })
-      }.bind(this), () => {console.log('데이터 없음')})
+      }.bind(this), () => {console.log('데이터 없음')}, sessionStorage.getItem('accessToken'))
     },
     changeIsCheck: function (){
       const isDisplay = this.productData.isDisplay
@@ -901,13 +901,13 @@ export default {
           }else {
               alert('등록에 실패하였습니다.')
           }
-        })
+        }, '', sessionStorage.getItem('accessToken'))
       }
     },
     SubmitUpdateProduct: function () {
       let object = this.onSubmitValidate();
-      object.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
       if (object) {
+         object.prdtSysId = this.toNumber(String(this.$route.params.productSysId))
         this.axiosPutRequest('/api/v1/products/' + this.productData.productSysId, {jsonData: object}, (res) => {
           let result = res.data.jsonData
           if (result.resultCode === '0001') {
@@ -916,7 +916,7 @@ export default {
           } else {
             alert('상품수정에 실패하였습니다.\nresultCode: ['+result.resultCode+']')
           }
-        })
+        }, '', sessionStorage.getItem('accessToken'))
       }
     }
   }

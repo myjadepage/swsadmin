@@ -13,16 +13,13 @@ export default {
   mixins: [commonJs],
   props: ['parentData'],
   mounted () {
-    this.axiosGetRequest('/api/v1/sellers/bases', "", this.resultSellersFn);
-  },
-  methods: {
-    resultSellersFn: function(res) {
+    this.axiosGetRequest('/api/v1/sellers/bases', "", function (res) {
       var selleries = res.data.jsonData.sellers
-      this.sellers.push({ value: 0, text: "::판매자를 선택해주십시오::" })
-      selleries.forEach(item => [
+      this.sellers.push({value: 0, text: "::판매자를 선택해주십시오::" })
+      selleries.forEach(item => {
         this.sellers.push({ value: item.sellerSysId, text: item.name })
-      ])
-    }
+      })
+    }.bind(this), '', sessionStorage.getItem('accessToken'));
   }
 }
 </script>

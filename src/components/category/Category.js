@@ -79,6 +79,15 @@ export default {
                 $('.category-item.add-btn.category4').css('display', 'block')
                 $('.category-item.add-btn.category5').css('display', 'block')
                 break
+            case 5:
+                this.selectCategory.categories[4] = item
+                $('.category-item.add-btn').css('display', 'none')
+                $('.category-item.add-btn.category1').css('display', 'block')
+                $('.category-item.add-btn.category2').css('display', 'block')
+                $('.category-item.add-btn.category3').css('display', 'block')
+                $('.category-item.add-btn.category4').css('display', 'block')
+                $('.category-item.add-btn.category5').css('display', 'block')
+                break
         }
     },
     setSelectCategory: function (item){
@@ -100,62 +109,54 @@ export default {
             categoryLevel: (item.categoryLevel + 1),
             parentSysId: item.categorySysId
         }
-        this.axiosGetRequest('/api/v1/categories', param, this.insertCategoryFn, this.exceptionCategoryFn)
+        this.axiosGetRequest('/api/v1/categories', param, this.insertCategoryFn, this.initialUnderCategoryFn)
+        this.setbreadcrumb()
     },
     // 카테고리 로딩 : 로딩된 카테고리 삽입
     insertCategoryFn: function (res) {
         var data = res.data.jsonData.categories
-        var targetObject = this.loadCategoryObject(res.data.jsonData.categoryLevel)
-        targetObject.children.splice(0)
-        targetObject.parentSysId = data[0].parentSysId
-        for (var i = 0; i < data.length; i++) {
-          targetObject.children.push(data[i])
+        const categoryLv = res.config.params.categoryLevel
+        var targetObject = this[`categories${categoryLv}Level`]
+        if (categoryLv !== 6) {
+            targetObject.children.splice(0)
+            targetObject.parentSysId = res.config.params.parentSysId
+            if (!this.isEmpty(data)){
+                for (var i = 0; i < data.length; i++) {
+                    targetObject.children.push(data[i])
+                }
+            }
         }
-    },
-    // 카테고리 로딩 : 카테고리 레벨에 따른 배열객체 불러오기
-    loadCategoryObject: function (lv) {
-        switch(lv) {
-            case 1:
-                return this.categories1Level
-            case 2:
-                return this.categories2Level
-            case 3:
-                return this.categories3Level
-            case 4:
-                return this.categories4Level
-            case 5:
-                return this.categories5Level
-        }
+        this.initialUnderCategoryFn(categoryLv)
     },
     // 카테고리 클릭시에 하위 카테고리 없는 경우, 초기화 
-    exceptionCategoryFn: function (err) {
-      switch(parseInt(this.selectCategory.categoryLevel)) {
-          case 0:
-              this.categories2Level.children.splice(0)
-              this.categories3Level.children.splice(0)
-              this.categories4Level.children.splice(0)
-              this.categories5Level.children.splice(0)
-              break
-          case 1:
-              this.categories2Level.children.splice(0)
-              this.categories3Level.children.splice(0)
-              this.categories4Level.children.splice(0)
-              this.categories5Level.children.splice(0)
-              break
-          case 2:
-              this.categories3Level.children.splice(0)
-              this.categories4Level.children.splice(0)
-              this.categories5Level.children.splice(0)
-              break
-          case 3:
-              this.categories4Level.children.splice(0)
-              this.categories5Level.children.splice(0)
-              break
-          case 4:
-              this.categories5Level.children.splice(0)
-              break
+    initialUnderCategoryFn: function (lv) {
+        const level = (lv ? lv : this.selectCategory.categoryLevel)
+        switch(level) {
+            case 0:
+                this.categories2Level.children.splice(0)
+                this.categories3Level.children.splice(0)
+                this.categories4Level.children.splice(0)
+                this.categories5Level.children.splice(0)
+                break
+            case 1:
+                this.categories2Level.children.splice(0)
+                this.categories3Level.children.splice(0)
+                this.categories4Level.children.splice(0)
+                this.categories5Level.children.splice(0)
+                break
+            case 2:
+                this.categories3Level.children.splice(0)
+                this.categories4Level.children.splice(0)
+                this.categories5Level.children.splice(0)
+                break
+            case 3:
+                this.categories4Level.children.splice(0)
+                this.categories5Level.children.splice(0)
+                break
+            case 4:
+                this.categories5Level.children.splice(0)
+                break
       }
-      console.log(err)
     },
     // 카테고리 아이템 : 삭제버튼 이벤트
     setCloseButtonEventFn: function () {
@@ -177,7 +178,7 @@ export default {
             this.insertSelectCategory.parentSysId = this.selectCategory.categories[categoryLevel - 2].categorySysId
         }
         this.insertSelectCategory.categoryLevel = categoryLevel
-        this.selectCategory.title=''
+        this.insertSelectCategory.breadcrumb= this.customBreadCrumb(categoryLevel)
         this.$refs['root-my-modal'].show()
     },
     // 카테고리 등록
@@ -188,19 +189,16 @@ export default {
             parentSysId: getData.parentSysId,
             name: getData.text
         }
-        var failcallbackFn = function (err) {
-            console.log(err)
-        }
-        this.axiosPostRequest('/api/v1/categories', {jsonData: param}, this.insertSuccessFn, failcallbackFn)
-    },
-    // 등록 성공
-    insertSuccessFn: function (res) {
-        var result = res.data.jsonData
-        if (result.code === 200) {
-            alert('카테고리가 등록되었습니다.')
-            this.hideModelFn('root-my-modal')
-            this.reloadCategoryData()
-        }
+
+        this.axiosPostRequest('/api/v1/categories', {jsonData: param}, function (res) {
+            var result = res.data.jsonData
+            if (result.code === 200) {
+                alert('카테고리가 등록되었습니다.')
+                this.$bvModal.hide('insertRootCategory')
+                this.reloadCategoryData()
+            }
+        }.bind(this), (err) => {console.log(err)})
+
     },
     hideModelFn: function (modalId){
         this.$refs[modalId].hide()
@@ -211,14 +209,35 @@ export default {
             categoryLevel: this.insertSelectCategory.categoryLevel,
             parentSysId: this.insertSelectCategory.parentSysId
         }
-        this.axiosGetRequest('/api/v1/categories',param, this.reloadInsertCategoryFn, this.exceptionCategoryFn)
+        this.axiosGetRequest('/api/v1/categories',param, this.reloadInsertCategoryFn, this.initialUnderCategoryFn)
+    },
+    setbreadcrumb: function () {
+        if (this.selectCategory.categories.length === 0) {
+            this.breadcrumb = ''
+        } else if (this.selectCategory.categories.length === 1) {
+            this.breadcrumb = this.selectCategory.categories[0].name
+        } else {
+            var tempTitle = new Array()
+            for (var i = 0 ; i < this.selectCategory.categories.length ; i++) {
+                tempTitle[i] = this.selectCategory.categories[i].name
+            }
+            this.breadcrumb = tempTitle.join(' > ')
+        }
+        return true
+    },
+    customBreadCrumb: function (lv) {
+        let tempTitle = new Array()
+        for (let i = 0 ; i < lv - 1 ; i++) {
+            tempTitle[i] = this.selectCategory.categories[i].name
+        }
+        return tempTitle.join(' > ')
     },
     // 카테고리 로딩 : 로딩된 카테고리 삽입
     reloadInsertCategoryFn: function (res) {
         var data = res.data.jsonData.categories
-        var targetObject = this.loadCategoryObject(res.data.jsonData.categoryLevel)
+        var targetObject = this[`categories${res.config.params.categoryLevel}Level`]
         targetObject.children.splice(0)
-        targetObject.parentSysId = data[0].parentSysId
+        targetObject.parentSysId = res.config.params.parentSysId
         switch(targetObject.categoryLevel){
             case 1:
                 this.categories2Level.children.splice(0)
@@ -239,9 +258,13 @@ export default {
                 this.categories5Level.children.splice(0)
                 break
         }
-        for (var i = 0; i < data.length; i++) {
-          targetObject.children.push(data[i])
+        if (!this.isEmpty(data)){
+            for (var i = 0; i < data.length; i++) {
+                targetObject.children.push(data[i])
+              }
         }
+        this.setbreadcrumb()
+
     },
 
     // 카테고리 삭제
@@ -251,10 +274,7 @@ export default {
                 categorySysId: item.categorySysId,
                 categoryCode: item.categoryCode
             }
-            var failFn = function (err) {
-                console.log(err)
-            }
-            this.axiosDeleteRequest('/api/v1/categories/'+item.categorySysId, {jsonData: param}, this.deleteCategorySuccess, failFn)
+            this.axiosDeleteRequest('/api/v1/categories/'+item.categorySysId, {jsonData: param}, this.deleteCategorySuccess, (err) => {console.log(err)})
         }
     },
     deleteCategorySuccess: function (res) {
@@ -279,20 +299,18 @@ export default {
             topDesignHTML: (this.isEmpty(this.selectCategory.topDesignHTML) ? '' : this.selectCategory.topDesignHTML),
             isApplyChildCategory: Boolean(this.selectCategory.isApplyChildCategory)
         }
-        var failcallbackFn = function (err) {
-            alert('카테고리 실패 !')
-            console.log(err)
-        }
-        this.axiosPatchRequest('/api/v1/categories/'+this.selectCategory.categorySysId, {jsonData: param}, this.modifyCategorySuccess, failcallbackFn)
-    },
-    modifyCategorySuccess: function (res) {
-        var result = res.data.jsonData
-        if (result.code === 200) {
-            alert('카테고리가 등록되었습니다.')
-            this.insertSelectCategory.categoryLevel = this.selectCategory.categoryLevel
-            this.insertSelectCategory.parentSysId = this.selectCategory.parentSysId
-            this.reloadCategoryData()
-        }
+
+        this.axiosPatchRequest('/api/v1/categories/'+this.selectCategory.categorySysId, {jsonData: param}, function (res) {
+            var result = res.data.jsonData
+            if (result.code === 200) {
+                alert('카테고리가 수정되었습니다.')
+                let categoryObject = this.selectCategory.categories[this.selectCategory.categoryLevel - 1]
+                categoryObject.name = param.name
+                this.insertSelectCategory.categoryLevel = this.selectCategory.categoryLevel
+                this.insertSelectCategory.parentSysId = this.selectCategory.parentSysId
+                this.reloadCategoryData()
+            }
+        }.bind(this), (err) => {console.log(err)})
     }
   }
 }

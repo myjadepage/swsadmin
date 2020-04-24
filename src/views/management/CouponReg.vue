@@ -28,25 +28,25 @@
                                     <ul class="arrange method">
                                         <li>
                                             <div class="form-check">
-                                              <input class="form-check-input" type="radio" name="method" id="method_1" value="101" v-model.number="couponType"/>
+                                              <input class="form-check-input" type="radio" name="method" id="method_1" value="1" v-model.number="couponType"/>
                                               <label class="form-check-label" for="method_1">상품 발급</label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-check">
-                                              <input class="form-check-input" type="radio" name="method" id="method_2" value="102" v-model.number="couponType"/>
+                                              <input class="form-check-input" type="radio" name="method" id="method_2" value="2" v-model.number="couponType"/>
                                               <label class="form-check-label" for="method_2">구매보상 발급</label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-check">
-                                              <input class="form-check-input" type="radio" name="method" id="method_3" value="103" v-model.number="couponType"/>
+                                              <input class="form-check-input" type="radio" name="method" id="method_3" value="3" v-model.number="couponType"/>
                                               <label class="form-check-label" for="method_3">회원선택 발급</label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-check">
-                                              <input class="form-check-input" type="radio" name="method" id="method_4" value="104" v-model.number="couponType"/>
+                                              <input class="form-check-input" type="radio" name="method" id="method_4" value="4" v-model.number="couponType"/>
                                               <label class="form-check-label" for="method_4">회원가입 발급</label>
                                             </div>
                                         </li>
@@ -62,8 +62,8 @@
                             </tr>
 
                             <!-- 쿠폰방식101 :  상품발급 -->
-                        <template v-if="couponType === 101">
-                            <tr class="method_goods" style="display:table-row">
+                        <template>
+                            <tr class="method_goods" style="display:table-row" v-if="couponType===1 || couponType===2">
                                 <th><span class="red">*</span> 진행기간</th>
                                 <td colspan="3">
                                     <!-- 달력 -->
@@ -122,17 +122,17 @@
                                             <b-row>
                                                 <b-col cols="2">
                                             <b-input-group>
-                                                <b-form-input size="sm" v-model="couponData2.startDate" type="text" placeholder="시작일자 (YYYY-MM-DD)"></b-form-input>
+                                                <b-form-input :disabled="isUseLimitDay === 1" size="sm" v-model="couponData2.startDate" type="text" placeholder="시작일자 (YYYY-MM-DD)"></b-form-input>
                                                 <b-input-group-append>
-                                                    <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="couponData2.startDate" button-only right></b-form-datepicker>
+                                                    <b-form-datepicker :disabled="isUseLimitDay === 1" button-variant="outline-secondary" size="sm" v-model="couponData2.startDate" button-only right></b-form-datepicker>
                                                 </b-input-group-append>
                                             </b-input-group>
                                         </b-col>
                                         <b-col cols="2">
                                             <b-input-group>
-                                                <b-form-input size="sm" v-model="couponData2.endDate" type="text" placeholder="종료일자 (YYYY-MM-DD)"></b-form-input>
+                                                <b-form-input :disabled="isUseLimitDay === 1" size="sm" v-model="couponData2.endDate" type="text" placeholder="종료일자 (YYYY-MM-DD)"></b-form-input>
                                                 <b-input-group-append>
-                                                    <b-form-datepicker button-variant="outline-secondary" size="sm" v-model="couponData2.endDate" button-only right></b-form-datepicker>
+                                                    <b-form-datepicker :disabled="isUseLimitDay === 1" button-variant="outline-secondary" size="sm" v-model="couponData2.endDate" button-only right></b-form-datepicker>
                                                 </b-input-group-append>
                                             </b-input-group>
                                         </b-col>     
@@ -181,7 +181,7 @@
                                 </td>
                             </tr>
 
-                            <tr class="method_goods" style="display:table-row">
+                            <tr class="method_goods" style="display:table-row" v-if="couponType===1 || couponType===2">
                                 <th rowspan="2"><span class="red">*</span> 적용등급</th>
                                 <td colspan="3">
                                     <ul class="arrange">
@@ -193,7 +193,7 @@
                                     </ul>
                                 </td>
                             </tr>
-                            <tr class="method_goods" style="display:table-row">
+                            <tr class="method_goods" style="display:table-row" v-if="couponType===1 || couponType===2">
                                 <td colspan="3">
                                     <ul class="arrange">
                                         <li>
@@ -219,6 +219,50 @@
                                 </td>
                             </tr>
 
+                            <tr v-if="couponType===2">
+                                <th>발급상품</th>
+                                <td colspan="3">
+                                    <div style="width:100%">
+                                            <select id="applyGoods" name="applyGoods" class="text_input" multiple size="5" style="width:100%; height: auto;">
+                                                <option class="issueOption" v-for="(id,idx) in issuedPrdtIds" :key="idx" :value="idx">{{issuedPrdtNames[idx]}}</option>
+                                            </select>
+                                            <div class="mgt5">
+                                                <div>
+                                                    <b-button @click="prdtDeleteBtnClick('issueGoods')" variant="outline-danger" style="margin-right:5px">삭제</b-button>
+                                                    <b-button @click="prdtSelectBtnClick('issueGoods')" variant="outline-secondary" class="fr">상품선택</b-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </td>
+                            </tr>
+
+                            <tr v-if="couponType===3">
+                                <th>발급회원</th>
+                                <td colspan="3">
+                                    <div style="width:100%">
+                                            <select id="applyGoods" name="applyGoods" class="text_input" multiple size="5" style="width:100%; height: auto;">
+                                                <!-- <option class="issueOption" v-for="(id,idx) in issuedPrdtIds" :key="idx" :value="idx">{{issuedPrdtNames[idx]}}</option> -->
+                                            </select>
+                                            <div class="mgt5">
+                                                <div>
+                                                    <b-button @click="memberDeleteBtnClick" variant="outline-danger" style="margin-right:5px">삭제</b-button>
+                                                    <b-button @click="memberSelectBtnClick" variant="outline-secondary" class="fr">추가</b-button>
+                                                    <select name="" id="" class="member-select fr mt-1" :style="{width:'200px'}" v-model="selectMemberType">
+                                                        <optgroup label="회원별 추가">
+                                                            <option value="select">회원선택</option>
+                                                            <option value="all">전체회원</option>
+                                                        </optgroup>
+                                                        <optgroup label="등급별 추가">
+                                                            <option value="0">일반회원</option>
+                                                            <option value="1">코알라회원</option>
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </td>
+                            </tr>
+
                             <tr>
                                 <th rowspan="3">적용상품</th>
                                 <td colspan="3">
@@ -235,11 +279,13 @@
                                             </label>
                                         </div>
                                         <div class="fl" style="width:70%">
-                                            <select id="applyGoods" name="applyGoods" class="text_input" multiple="" size="5" style="width:100%; height: auto;"></select>
+                                            <select :disabled="applyMode!==2" id="applyGoods" name="applyGoods" class="text_input" multiple size="5" style="width:100%; height: auto;">
+                                                <option class="applyOptions" v-for="(id,idx) in appliedPrdtIds" :key="idx" :value="idx">{{appliedPrdtNames[idx]}}</option>
+                                            </select>
                                             <div class="mgt5">
                                                 <div class="btn_right">
-                                                    <b-button variant="outline-danger" style="margin-right:5px">삭제</b-button>
-                                                    <b-button @click="prdtSelectBtnClick" variant="outline-secondary">상품선택</b-button>
+                                                    <b-button :disabled="applyMode!==2" @click="prdtDeleteBtnClick('applyGoods')" variant="outline-danger" style="margin-right:5px">삭제</b-button>
+                                                    <b-button :disabled="applyMode!==2" @click="prdtSelectBtnClick('applyGoods')" variant="outline-secondary">상품선택</b-button>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,13 +301,13 @@
                                             </label>
                                         </div>
                                         <div class="fl mgr20">
-                                            <sws-category :selectedCategory="categoryList"></sws-category>
+                                            <sws-category :disabled="applyMode!==3" :selectedCategory="categoryList"></sws-category>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
 
-                            <tr>
+                            <tr v-if="couponType===1 || couponType===2">
                                 <th>쿠폰갯수</th>
                                 <td colspan="3">
                                     <label>
@@ -272,292 +318,7 @@
                             </tr>
                         </template>
                         
-                        <!-- 쿠폰방식102 : 구매보상발급 -->
-                        <template v-if="couponType === 102">
-                            <tr class="method_goods">
-                                <th><span class="red">*</span> 진행기간</th>
-                                <td colspan="3">
-                                    <!-- 달력 -->
-                                    <sws-date :parentData="couponData"></sws-date>                                
-                                    <!-- 달력 -->
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><span class="red">*</span> 사용기간</th>
-                                <td colspan="3">
-                                    <div class="over_h">
-                                        <div class="fl" style="width:130px">
-                                            <label for="use_limit_day_t"><input type="radio" id="use_limit_day_t" name="isUseLimitDay" value="T" onclick="checkUseLimit()" checked>
-                                            사용일자 설정 :</label>
-                                        </div>
-                                        <div class="fl">
-                                            <ul class="arrange">
-                                                <li>발행 후</li>
-                                                <li>
-                                                    <input type="text" id="useLimitDay" name="useLimitDay" min="0" class="text_input" style="width:35px;" onkeypress="blockNotNumber(event)" onkeyup="onlyInt(this)">
-                                                    <button type="button" adjust="+" onclick="controlNum(this, 'useLimitDay');"><i class="xi-plus-square" style="font-size: 20px;"></i></button>
-                                                    <button type="button" adjust="-" onclick="controlNum(this, 'useLimitDay');"><i class="xi-minus-square" style="font-size: 20px;"></i></button> 일간 사용
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="over_h mgt10">
-                                        <div class="fl" style="width:130px">
-                                            <label for="use_limit_day_f"><input type="radio" id="use_limit_day_f" name="isUseLimitDay" value="F" onclick="checkUseLimit()">사용기간 설정 :</label>
-                                        </div>
-                                        <div class="fl">                                            
-                                            <!-- 달력 -->
-                                            <sws-date :parentData="couponData"></sws-date>                                 
-                                            <!-- 달력 -->                                    
-
-                                            <label for="use_weekend_0"><input type="radio" id="use_weekend_0" name="useWeekend" value="0" checked disabled>고정진행</label>
-                                            <label for="use_weekend_1"><input type="radio" id="use_weekend_1" name="useWeekend" value="1" disabled>주말만 진행</label>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><span class="red">*</span> 할인폭</th>
-                                <td colspan="3">
-                                    <input type="text" name="discountValue" class="text_input" style="width:80px;" maxlength="10" onkeyup="toNumericData(this)">
-                                    <label><input type="radio" name="discountUnit" value="100" checked="" onclick="checkDiscountUnit()"> 원</label>
-                                    <label><input type="radio" name="discountUnit" value="200" onclick="checkDiscountUnit()"> %</label>
-                                    <strong class="mgl20">최대할인금액</strong>
-                                    <input type="text" name="maxDiscountPrice" class="text_input" style="width:80px;" value="" disabled="" onkeyup="toCurrency(this)"> 원
-                                    <span class="square_blue">"0 또는 미입력시 할인금액 제한안함."</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>쿠폰사용시<br>최저/최대금액</th>
-                                <td colspan="3">
-                                    <div>
-                                        <label for="use_limit_price_f"><input type="radio" id="use_limit_price_f" name="isUseLimitPrice" value="F" checked="">제한없음</label>
-                                    </div>
-                                    <div class="mgt5">
-                                        <label for="use_limit_price_t"><input type="radio" id="use_limit_price_t" name="isUseLimitPrice" value="T">개별 상품의 주문금액 [ (판매가＋옵션가) × 수량 ] 이
-                                            <input type="text" name="useLowPrice" class="text_input" style="width:70px;" value="" onkeyup="toCurrency(this)"> 원 이상
-                                            <input type="text" name="useHighPrice" class="text_input" style="width:70px;" value="" onkeyup="toCurrency(this)"> 원 이하
-                                        </label>
-                                    </div>
-                                    <div class="square_blue">"최소, 최대금액중 하나는 0원 이상으로 반드시 입력해야 합니다."</div>
-                                </td>
-                            </tr>
-
-                            <tr class="method_goods">
-                                <th rowspan="2"><span class="red">*</span> 적용등급</th>
-                                <td colspan="3">
-                                    <ul class="arrange">
-                                        <li><label for="member_level_0"><input type="checkbox" id="member_level_0" onclick="checkCbAll(this.form.memberLevel, this.checked)"><strong>전체 등급</strong></label></li>
-
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr class="method_goods">
-                                <td colspan="3">
-                                    <ul class="arrange">
-                                        <li><label for="member_level_1"><input type="checkbox" id="member_level_1" name="memberLevel">일반회원</label></li>
-                                        <li class="mgl20"><label for="member_level_4"><input type="checkbox" id="member_level_4" name="memberLevel">코알라회원</label></li>
-                                    </ul>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th><span style="color:red;">*</span> 쿠폰이미지</th>
-                                <td colspan="3">
-                                    <input type="file" name="imgCoupon" onkeydown="blockKey(event)" onkeypress="blockKey(event)">
-                                </td>
-                            </tr>
-
-                            <tr class="method_reward" style="display:table-row">
-                                <th>발급상품</th>
-                                <td colspan="3">
-                                    <select id="issueGoods" name="issueGoods" size="5" style="width:100%; height: auto;" disabled></select>
-                                    <div class="over_h mgt5">
-                                        <div class="fl">
-                                            <b-button variant="danger"  onclick="delSelect('issueGoods');">삭제</b-button>
-                                        </div>
-                                        <div class="fr">
-                                            <b-button variant="secondary"  onclick="openSelectGoods('issueGoods');">상품선택</b-button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th rowspan="3">적용상품</th>
-                                <td colspan="3"><label for="apply_mode_all"><input type="radio" id="apply_mode_all" name="applyMode" value="100" onclick="checkApply()" checked="">전체 상품</label></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="over_h">
-                                        <div class="fl" style="width:180px"><label for="apply_mode_goods"><input type="radio" id="apply_mode_goods" name="applyMode" value="200" onclick="checkApply()">해당 상품</label></div>
-                                        <div class="fl" style="width:70%">
-                                            <select id="applyGoods" name="applyGoods" class="text_input" multiple="" size="5" style="width:100%; height: auto;" disabled></select>
-
-                                            <div class="over_h mgt5">
-                                                <div class="btn_right">
-                                                    <b-button variant="danger" onclick="delSelect('applyGoods');" style="margin-right:5px">삭제</b-button>
-                                                    <b-button variant="secondary"  onclick="openSelectGoods('applyGoods');">상품선택</b-button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="over_h">
-                                        <div class="fl" style="width:180px"><label for="apply_mode_cate"><input type="radio" id="apply_mode_cate" name="applyMode" value="300" onclick="checkApply()">해당 카테고리이하 상품</label></div>
-
-                                        <div class="fl mgr20">
-                                            <select id="applyCate_1" name="applyCate_1" class="text_input" style="width: 150px;" onchange="sc.get(this)" disabled>
-                                            <option value="">선택</option>
-                                            </select>
-                                        </div>
-                                        <div class="fl mgr20">
-                                            <select id="applyCate_2" class="text_input" style="width: 150px;" name="applyCate_2" onchange="sc.get(this)" disabled>
-                                            <option value="">선택</option>
-                                        </select>
-                                        </div>
-                                        <div class="fl mgr20">
-                                            <select id="applyCate_3" class="text_input" style="width: 150px;" name="applyCate_3" onchange="sc.get(this)" disabled>
-                                                <option value="">선택</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr class="method_goods">
-                                <th>쿠폰갯수</th>
-                                <td colspan="3">
-                                    <label><input type="text" name="issueLimit" class="text_input" style="width:70px;" maxlength="10" onkeypress="blockNotNumber(event)" onkeyup="onlyInt(this)"> 개</label>
-
-                                    <span class="square_blue">"쿠폰 갯수를 제한하여 선착순으로 발급할 수 있습니다."</span>
-                                </td>
-                            </tr>                           
-                            </template>
-
-                        <!-- 쿠폰방식104 : 회원가입발급 -->
-                        <template v-if="couponType === 104">                          
-                            <tr>
-                                <th><span class="red">*</span> 사용기간</th>
-                                <td colspan="3">
-                                    <div class="over_h">
-                                        <div class="fl" style="width:130px">
-                                            <input type="radio" id="use_limit_day_t" name="isUseLimitDay" value="T" onClick="checkUseLimit()"  checked /><label for="use_limit_day_t">사용일자 설정</label>
-                                        </div>
-                                        <div class="fl">
-                                            <ul class="arrange">
-                                                <li style="padding-top:3px">발행 후</li>
-                                                <li><input type="text" id="useLimitDay" name="useLimitDay" value="" min="0" class="text_input" style="width:35px;" onKeyPress="blockNotNumber(event)" onKeyUp="onlyInt(this)" /></li>
-                                                <li>
-                                                    <button type="button" adjust="+" onClick="controlNum(this, 'useLimitDay');" class="block"></button>
-                                                    <button type="button" adjust="-" onClick="controlNum(this, 'useLimitDay');" class="block"></button>
-                                                </li>
-                                                <li style="padding-top:3px">일간 사용</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="over_h mgt5">
-                                        <div class="fl" style="width:130px">
-                                            <input type="radio" id="use_limit_day_f" name="isUseLimitDay" value="F" onClick="checkUseLimit()"  /><label for="use_limit_day_f">사용기간 설정</label>
-                                        </div>
-                                        <div class="fl">
-                                            <!-- 달력 -->
-                                            <sws-date :parentData="couponData"></sws-date>                           
-                                            <!-- 달력 -->
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><span class="red">*</span> 할인폭</th>
-                                <td colspan="3">
-                                    <input type="text" name="discountValue" class="text_input" style="width:80px;" maxlength="10" value="" onKeyUp="toNumericData(this)" />
-                                    <input type="radio" name="discountUnit" value="100"  checked onClick="checkDiscountUnit()" /> 원
-                                    <input type="radio" name="discountUnit" value="200"  onClick="checkDiscountUnit()" /> %
-                                    <span style="padding-left:20px">최대할인금액 : </span>
-                                    <input type="text" name="maxDiscountPrice" class="text_input" style="width:80px;" value=""  disabled onKeyUp="toCurrency(this)" /> 원
-                                    <span class="square_blue">0 또는 미입력시 할인금액 제한안함.</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>쿠폰사용시<br />최저/최대금액</th>
-                                <td colspan="3">
-                                    <div>
-                                        <input type="radio" id="use_limit_price_f" name="isUseLimitPrice" value="F"  checked /><label for="use_limit_price_f">제한없음</label>
-                                    </div>
-                                    <div class="mgt5">
-                                        <input type="radio" id="use_limit_price_t" name="isUseLimitPrice" value="T"  /><label for="use_limit_price_t">개별 상품의 주문금액<span class="font11">[(판매가＋옵션가) × 수량]</span>이
-                                        <input type="text" name="useLowPrice" class="text_input" style="width:70px;" value="" onKeyUp="toCurrency(this)" /> 원 이상
-                                        <input type="text" name="useHighPrice" class="text_input" style="width:70px;" value="" onKeyUp="toCurrency(this)" /> 원 이하
-                                        </label>
-                                    </div>
-                                    <div class="square_blue" style="margin:3px 0 0 17px">최소, 최대금액중 하나는 0원 이상으로 반드시 입력해야 합니다.</div>
-                                </td>
-                            </tr>                         
-                        <tr>
-                            <th><span style="color:red;">*</span> 쿠폰이미지</th>
-                            <td colspan="3">
-
-                                <input type="file" name="imgCoupon" onKeyDown="blockKey(event)" onKeyPress="blockKey(event)" />
-                            </td>
-                        </tr>               
-
-                        <tr>
-                            <th rowspan="3">적용상품</th>
-                            <td colspan="3">
-                                <input type="radio" id="apply_mode_all" name="applyMode" value="100" onClick="checkApply()" checked />
-                                <label for="apply_mode_all">전체 상품</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="over_h">
-                                    <div class="fl" style="width:180px">
-                                        <input type="radio" id="apply_mode_goods" name="applyMode" value="200" onClick="checkApply()"  />
-                                        <label for="apply_mode_goods">해당 상품</label>
-                                    </div>
-                                    <div class="fl" style="width:70%">
-                                        <select id='applyGoods' name='applyGoods'   multiple size='5' style='width:100%' disabled></select>
-                                        <div class="over_h mgt5">
-                                            <div class="fl">
-                                                <span class="button small">
-                                                    <b-button variant="outline-danger">삭제</b-button>
-                                                </span>
-                                            </div>
-                                            <div class="fr">
-                                                <span class="button small">
-                                                    <b-button variant="outline-secondary">상품선택</b-button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="over_h">
-                                    <div class="fl" style="width:180px">
-                                        <input type="radio" id="apply_mode_cate" name="applyMode" value="300" onClick="checkApply()"  />
-                                        <label for="apply_mode_cate">해당 카테고리이하 상품</label>
-                                    </div>
-                                    <div class='fl' style='margin-right:5px;'>
-                                        <select id='applyCate_1' name='applyCate_1' head='선택' depth='1' onChange='sc.get(this)' disabled ></select>
-                                    </div>
-                                    <div class='fl' style='margin-right:5px;'>
-                                        <select id='applyCate_2' name='applyCate_2' head='선택' depth='2' onChange='sc.get(this)' disabled ></select>
-                                    </div>
-                                    <div class='fl' style='margin-right:5px;'>
-                                        <select id='applyCate_3' name='applyCate_3' head='선택' depth='3' onChange='sc.get(this)' disabled ></select>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-
+                        
                     <!-- 공통 필드-->
                      <tr>
                         <th>재발급여부</th>
@@ -611,7 +372,7 @@
 
 <script>
 import commonJs from "@/assets/js/common.js"
-import SwsDate from '@/components/common/SwsDate'
+// import SwsDate from '@/components/common/SwsDate'
 import SwsCategory from '@/components/common/SwsCategory.vue'
 import ImagesUploader from "@/assets/js/ImagesUploader.js"
 import moment from 'moment'
@@ -623,12 +384,12 @@ export default {
         ImagesUploader,
     ],
     components: {
-        SwsDate,
+        // SwsDate,
         SwsCategory
     },
     data() {
         return {
-            couponType:101,
+            couponType:1,
             couponData: {
                 startDate: '',
                 endDate: '',
@@ -645,7 +406,10 @@ export default {
             maxDiscountPrice:0,
             minMax2ndTypeMinPrice:0,
             minMax2ndTypeMaxPrice:0,
-            appliedPrdtList:[],
+            appliedPrdtIds:[],
+            appliedPrdtNames:[],
+            issuedPrdtIds:[],
+            issuedPrdtNames:[],
             useWeekend:0,
             isUseLimitPrice:1,
             memberLevel: [],
@@ -656,7 +420,10 @@ export default {
             repubType:0,
             isUsed:1,
             name:'',
-            comment:''
+            comment:'',
+            prdtWIndow:undefined,
+            selectMemberType:'select',
+            selectedMembers:[]
         }
     },
     computed: {
@@ -713,21 +480,22 @@ export default {
                 procType:this.useWeekend,
                 discountWidth:Number(this.discountWidth),
                 discountWidthUnit:this.discountUnit,
-                maxDiscount:this.maxDiscountPrice,
-                minMaxType:this.isUseLimitPrice,
-                minMax2ndTypeMinPrice:this.minMax2ndTypeMinPrice,
-                minMax2ndTypeMaxPrice:this.minMax2ndTypeMaxPrice,
+                maxDiscount:Number(this.maxDiscountPrice),
+                minMaxType:Number(this.isUseLimitPrice),
+                minMax2ndTypeMinPrice:Number(this.minMax2ndTypeMinPrice),
+                minMax2ndTypeMaxPrice:Number(this.minMax2ndTypeMaxPrice),
                 userGradeList:this.memberLevel.join(),
                 couponImageUrl:'',
                 appliedProdcutType:this.applyMode,
-                appliedPrdtSysIdList:this.appliedPrdtList.join(),
+                appliedPrdtSysIdList:this.appliedPrdtIds.join(),
                 appliedCategorySysId1:this.categoryList[0].value,
                 appliedCategorySysId2:null,
                 appliedCategorySysId3:null,
                 couponCount:this.couponCnt,
-                repubType:this.repubType,
+                repubType:Number(this.repubType),
                 isUsed:Number(this.isUsed)
             }
+            
 
             if(this.categoryList[1].value!==0){
                 item.appliedCategorySysId2 = this.categoryList[1].value
@@ -749,15 +517,83 @@ export default {
             console.log(item);
         },
 
-        prdtSelectBtnClick(){
-            if(this.applyMode===2){
-               let x = window.open('/management/coupon_reg/applyPrdts', '_blank', 'toolbar=no, menubar=no, scrollbars=yes, resizable=yes')
-               x.addEventListener('addItem',(e)=>{
-                   console.log(e);
-               })
-            }
-        }
+        prdtSelectBtnClick(target){
+                if(typeof(this.prdtWIndow) == 'undefined' || this.prdtWIndow.closed){
+                    this.prdtWIndow = window.open(`/management/coupon_reg/selectGoods?target=${target}`, '_blank', 'toolbar=no, menubar=no, scrollbars=yes, resizable=yes width=1280 height=650')
+                    this.prdtWIndow.addEventListener('addItem',(e)=>{
+                        if(e.detail.selectPrdts){
+                            if(target==='issueGoods'){
+                                for (const item of e.detail.selectPrdts) {
+                                    if(!this.issuedPrdtIds.includes(item[0])){
+                                        this.issuedPrdtIds.push(item[0])
+                                        this.issuedPrdtNames.push(item[1])
+                                    }
+                                }
+                            }else{
+                                for (const item of e.detail.selectPrdts) {
+                                    if(!this.appliedPrdtIds.includes(item[0])){
+                                        this.appliedPrdtIds.push(item[0])
+                                        this.appliedPrdtNames.push(item[1])
+                                    }
+                                }
+                            }
+                        }
+                })
 
+                } else {
+                this.prdtWIndow.location.href = `/management/coupon_reg/selectGoods?target=${target}`;
+                this.prdtWIndow.focus();
+                }
+        },
+
+        prdtDeleteBtnClick(target){
+            if(target==='issueGoods'){
+                for (let i = this.$el.getElementsByClassName('issueOption').length-1; i >= 0; i--) {
+                    const opt = this.$el.getElementsByClassName('issueOption')[i]
+                    if(opt.selected){
+                        this.issuedPrdtIds.splice(opt.value,1)
+                        this.issuedPrdtNames.splice(opt.value,1)
+                    }
+                }
+            }else{
+                for (let i = this.$el.getElementsByClassName('applyOptions').length-1; i >= 0; i--) {
+                    const opt = this.$el.getElementsByClassName('applyOptions')[i]
+                    if(opt.selected){
+                        this.appliedPrdtIds.splice(opt.value,1)
+                        this.appliedPrdtNames.splice(opt.value,1)
+                    }
+                }
+            }
+            this.$forceUpdate()
+        },
+        memberDeleteBtnClick(){
+
+        },
+        memberSelectBtnClick(){
+            switch (this.selectMemberType) {
+                case 'select':
+                    if(typeof(this.prdtWIndow) == 'undefined' || this.prdtWIndow.closed){
+                    this.prdtWIndow = window.open(`/management/coupon_reg/selectMember`, '_blank', 'toolbar=no, menubar=no, scrollbars=yes, resizable=yes width=1280 height=650')
+                    this.prdtWIndow.addEventListener('addMember',(e)=>{
+                        console.log(e);
+                      })
+                    }else{
+                    this.prdtWIndow.location.href = `/management/coupon_reg/selectMember`;
+                    this.prdtWIndow.focus();
+                    }
+                    break;
+                case 'all':
+                    
+                    break;
+                default:
+                    break;
+            }
+
+
+
+
+            
+        }
     }
 }
 </script>

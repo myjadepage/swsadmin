@@ -161,7 +161,7 @@ export default {
      * POST 형태로 Axios 전송
      *
      */
-    axiosPostRequest: function(url, param, callback, errback,token) {
+    axiosPostRequest: function(url, param, callback, errback, token) {
       var errorFn = typeof errback === 'undefined'   ? (err) => {console.log(err);}   : errback;
       if(token){
       Axios.post(url, this.postParam(param), {
@@ -183,7 +183,7 @@ export default {
     }
     },
 
-    axiosPatchRequest: function(url, param, callback, errback,token) {
+    axiosPatchRequest: function(url, param, callback, errback, token) {
       var errorFn = typeof errback === 'undefined'   ? err => { console.log(err);}   : errback;
         if(token){    
           console.log(this.patchParam(param))  
@@ -215,7 +215,11 @@ export default {
     },
     axiosPutRequest: function(url, param, callback, errback) {
       var errorFn = typeof errback === 'undefined'   ? err => {console.log(err);}   : errback;
-      Axios.put(url, this.patchParam(param))
+      Axios.put(url, this.patchParam(param), { headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+      }
+      })
         .then(callback)
         .catch(errorFn);
     },

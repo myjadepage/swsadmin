@@ -30,20 +30,20 @@
                     <tr>
                         <th class="bg-light align-middle font-weight-bold">아이디&emsp;<span class="red">*</span></th>
                         <td colspan="3" class="align-middle">
-                            <input type="search" class="text_input w-25" v-model="brandReg.adminId" @keyup="checkValidateId = false"/>&emsp;
+                            <input type="search" class="text_input w-25" maxlength="12"  v-model="brandReg.adminId" @keyup="checkValidateId = false"/>&emsp;
                             <b-button variant="outline-secondary" size="sm" @click="checkDuplicateIdFn" :disabled="checkValidateId"><font-awesome-icon icon="check" />중복체크</b-button>
                         </td>
                     </tr>
                     <tr>
                         <th class="bg-light align-middle font-weight-bold">패스워드&emsp;<span class="red">*</span></th>
                         <td colspan="3">
-                            <input type="password" class="text_input w-25" v-model="brandReg.password" @focusout="changePassword"/>&emsp;
+                            <input type="password" maxlength="15" class="text_input w-25" v-model="brandReg.password" @focusout="changePassword"/>&emsp;
                             <span class="text-muted ml-2">* 패스워드는 6자이상 영문, 숫자, 특수문자 포함입니다.</span>
                             <label :style="passwordsValidate.style" :class="passwordsValidate.class">{{passwordsValidate.message}}</label>
                         </td>
                     </tr>
                     <tr>
-                        <th>이미지</th>
+                        <th>이미지&emsp;<span class="red">*</span></th>
                         <td colspan="3">
                             <div>
                                 <input type="file" accept="image/jpeg, image/gif" @change="onNewSingleImageUploadEvent($event, {item: brandReg, field: 'imageUrl', imageDir: '/brand/image'})">
@@ -172,6 +172,15 @@ export default {
             return false
         },
         checkDuplicateIdFn: function () {
+            const engValidate = /^[a-zA-Z0-9]*$/
+            if (this.isEmpty(String(this.brandReg.adminId).trim())) {
+                this.popAlert('ID 입력')
+                return false
+            } else if(!engValidate.test(this.brandReg.adminId)) {
+                alert('ID는 영문 및 숫자만 가능힙니다.')
+                return false
+            }
+
             this.axiosGetRequest('/api/v1/admins/chkdupid', {adminId : this.brandReg.adminId}, function (res) {
                 const result = res.data.jsonData
                 if (result.resultCode === '0001') {
@@ -213,9 +222,21 @@ export default {
                 row.password = this.makeRsa(this.brandReg.password)
             }
 
-            // 브랜드 이미지 추가
-            row.imageUrl = this.brandReg.imageUrl
-            
+            if (this.isEmpty(String(this.brandReg.imageUrl).trim())) {
+                this.popAlert('브랜드 이미지')
+                return false
+            } else {
+                row.imageUrl = this.brandReg.imageUrl
+            }
+
+            // 판매자 등록
+            if (this.brandReg.sellerSysId === 0) {
+                this.popAlert('판매자')
+                return false
+            } else {
+                row.sellerSysId = this.brandReg.sellerSysId
+            }
+
             // 판매자 등록
             if (this.brandReg.sellerSysId === 0) {
                 this.popAlert('판매자')
@@ -262,7 +283,7 @@ export default {
             this.axiosPostRequest('/api/v1/brands', {jsonData: row}, (res) => {
                 if (res.data.jsonData.resultCode==='0001'){
                     alert('브랜드 등록이 완료되었습니다.')
-                    window.location.href="/goods/brand_list"
+                    this.$router.push('/goods/brand_list')
                 } else {
                     alert('브랜드 등록에 실패하였습니다.')
                     console.log(res.data.jsonData)
