@@ -41,15 +41,16 @@
                          <option v-for="(item, index) in searchFilter" :key="index" :value="item.value">{{ item.text }}</option>
                      </select>
                      <input type="text" class="text_input" v-model="reviewFilter.searchText" style="width:300px;margin:0 5px ">
-                     <!-- <b-button id="fileterBoard" type="submit" variant="outline-secondary" size="sm"> <font-awesome-icon icon="search" size="sm"/>&emsp;검색 </b-button> -->
+                     <b-button variant="outline-secondary" size="sm"  @click="searchClicked">
+                         <font-awesome-icon icon="search" size="sm"/>&emsp;검색 </b-button>
                  </td>
             </tr>
         </tbody>
     </table>
-    <div class="btn_center">
+    <!-- <div class="btn_center">
         <b-button variant="outline-secondary" size="lg" @click="searchClicked">
             <font-awesome-icon icon="search" size="sm"/> 검색</b-button>
-    </div>
+    </div> -->
 
     <div class="section_head">
         <h4>등록된 상품평은 총 <span><strong>{{ reviewData.length }}</strong></span>개입니다.</h4>

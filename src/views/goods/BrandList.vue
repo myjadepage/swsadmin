@@ -3,13 +3,15 @@
         <Text-align></Text-align>
         <b-row cols="1">
             <b-col>
-                <h5><i class="xi-check-circle"></i> 총 <strong>{{ items.length }}</strong>개의 정보가 등록되어있습니다.</h5>
-                <div>
-                    <select class="text_input">
-                        <option value="name">브랜드명</option>
-                    </select>
-                    <input type="text" class="text_input" style="width:150px">
-                    <button type="submit" class="btn btn-sm btn-default">검색</button>
+                <div class="section_head"> 
+                    <h4>총 <strong class="red">{{ items.length }}</strong>개의 정보가 등록되어있습니다.</h4>
+                   <div class="mgb5">
+                        <select class="text_input">
+                            <option value="name">브랜드명</option>
+                        </select>
+                        <input type="text" class="text_input" style="width:150px; margin:0 5px">                       
+                        <b-button variant="outline-secondary" size="sm"> <font-awesome-icon icon="search" size="sm"/>&emsp;검색 </b-button>
+                    </div>
                 </div>
             </b-col>
             <Brands-list :items="items" @search="searchBrandsList" @refreshList="refreshBrandsList" @delete="deleteBrandsFn" />
