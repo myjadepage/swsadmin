@@ -5,6 +5,7 @@
             :items="items"
             :per-page="viewPage"
             :currentPage="currentPage"
+            :filter="searchFilter"
             head-variant="light"
         >
             <template v-slot:cell(no)="data">
@@ -38,7 +39,7 @@
 </template>
 <script>
 export default {
-    props: ['viewPage', 'items'],
+    props: ['viewPage', 'items', 'searchFilter'],
     data: () => ({
         currentPage: 1,
         fields: [
@@ -49,6 +50,6 @@ export default {
             {key: 'managerName', label: '담당자', class: "text-center", thStyle: 'width: 150px'}, 
             {key: 'setting', label: '관리', class: "text-center", thStyle: 'width : 150px'}
         ]
-    }),
+    })
 }
 </script>

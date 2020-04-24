@@ -6,10 +6,11 @@
                 <h5 class="mb-2"><i class="xi-check-circle"></i> 총 <strong>{{ items.length }}</strong>개의 정보가 등록되어있습니다.</h5>
                 <div class="float-left">
                     <select class="text_input">
-                        <option value="name">브랜드명</option>
+                        <option value="brandName">브랜드명</option>
                     </select>
-                    <input type="text" class="text_input" style="width:150px">
-                    <button type="submit" class="btn btn-sm btn-default">검색</button>
+                    &emsp;
+                    <input type="text" class="text_input" style="width:150px" v-model="filterText">
+                    <b-button variant="outline-secondary" size="sm">검색</b-button>
                 </div>
                 <div class="float-right">
                     <select class="text_input" v-model="viewPage">
@@ -19,7 +20,14 @@
                     </select>
                 </div>
             </div>
-            <Brands-list :items="items" :viewPage="viewPage" @search="searchBrandsList" @refreshList="refreshBrandsList" @delete="deleteBrandsFn" />
+            <Brands-list 
+                :items="items" 
+                :viewPage="viewPage" 
+                :searchFilter="filterText"
+                @search="searchBrandsList" 
+                @refreshList="refreshBrandsList" 
+                @delete="deleteBrandsFn" 
+            />
         </div>
     </div>
 </template>
@@ -30,7 +38,8 @@ import BrandsList from '@/components/brands/BrandsTable'
 export default {
     data: () => ({
         items: [],
-        viewPage: 10
+        viewPage: 10,
+        filterText: ''
     }),
     mixins: [commonJs],
     components: {

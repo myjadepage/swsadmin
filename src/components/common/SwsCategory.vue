@@ -53,10 +53,10 @@ export default {
             const reqParams = res.config.params
             let categories = res.data.jsonData.categories
             if (!categories) {
-                this.initCategoryDept(reqParams.categoryLevel)
                 console.log('데이터 없슴')
                 return false
             }
+            this.initCategoryDept(reqParams.categoryLevel)
             let targetRef = this['category'+reqParams.categoryLevel]
             targetRef.splice(0)
             targetRef[0] = this.initialCategory[reqParams.categoryLevel-1]
@@ -83,10 +83,12 @@ export default {
         },
         initCategoryDept: function (level){
             for (let i = level; i < 6 ; i++) {
-                let row = this['category'+i]
+                let row = this[`category${i}`]
                 row.splice(0)
                 row.push(this.initialCategory[i-1])
+                this.selectedCategory[i-1] = this.initialCategory[i-1]
             }
+            this.$forceUpdate()
         },
         isPercentFn: function (item){
             const isPercent = this.isPercent || false
