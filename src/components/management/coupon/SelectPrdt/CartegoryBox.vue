@@ -1,10 +1,13 @@
 <template>
   <div class="selectPrdtTree">
-      <table class="table" :style="{border:'1px solid #dee2e6'}">
-          <tr v-for="(c,idx) in cats" :key="idx">
+      <table class="table" :style="{borderRight:'1px solid #dee2e6'}">
+          <tr v-for="(c,idx) in cats" :key="idx" >
               <th>{{idx+1}}차 카테고리</th>
                 <td>
-                    <button @click="$emit('catSelect',[cc.categorySysId, cc.categoryLevel])" v-for="cc in c" :key="cc.categorySysId" class="btn btn-primary ml-2 mb-1" >{{cc.name}}</button>
+                    <select @change="catSelect" class="form-control">
+                        <option value="">{{idx+1}}차 카테고리</option>
+                        <option v-for="cc in c" :key="cc.categorySysId" :value="[cc.categorySysId, cc.categoryLevel]">{{cc.name}}</option>
+                    </select>
                 </td>
           </tr>
       </table>
@@ -15,9 +18,13 @@
 
 <script>
 
-
 export default {
     props:['cats'],
+    methods:{
+        catSelect(e){
+            this.$emit('catSelect',e.target.value.split(',').map(e=>Number(e)))
+        }
+    }
 }
 </script>
 

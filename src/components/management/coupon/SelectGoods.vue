@@ -10,7 +10,7 @@
             <PrdtList @checkAll="checkAllChange" @select="select" :checkAllFlag="checkAll"  :currentPage="currentPage" :perPage="perPage" :products="products" />
           </div>
       </div>
-        <Footer @close="close"  @selectAll="selectAll" @paging="paging" :totalCnt="totalPrdtLength" :perPage="perPage" :currentPage="currentPage" />
+        <Footer @reset="reset" @close="close"  @selectAll="selectAll" @paging="paging" :totalCnt="totalPrdtLength" :perPage="perPage" :currentPage="currentPage" />
   </div>
 </template>
 
@@ -76,9 +76,12 @@ created(){
 },
 methods:{
     catSelect(catInfo){
+        console.log(catInfo);
+        
+
+
         this.axiosGetRequest('/api/v1/categories', {categoryLevel: catInfo[1]+1, parentSysId:catInfo[0]}, 
      (res=>{
-         
          this[`categories${catInfo[1]+1}`] = res.data.jsonData.categories
      }))
 
@@ -86,6 +89,12 @@ methods:{
         for (let i = catInfo[1]; i < 5; i++) {
             this.selectCat[i] = 0
         }
+
+        for(let i = 5; i >= catInfo[1]+2; i--){
+            this[`categories${i}`] = []
+        }
+
+
         this.currentPage = 1
         this.searchInfo = {}
         this.checkAll = false
@@ -234,6 +243,52 @@ methods:{
          },
      checkAllChange(x){
          this.checkAll = x;
+     },
+
+     reset(){
+        this.categories1 =[]
+        this.categories2=[]
+        this.categories3=[]
+        this.categories4=[]
+        this.categories5=[]
+        this.selectCat = [0,0,0,0,0]
+        this.products=[]
+        this.brands=[]
+        this.currentPage=1
+        this.totalPrdtLength=0
+        this.perPage=15
+        this.searchInfo={}
+        this.selectPrdts=null
+        this.checkAll=false
+
+
+
+
+         this.axiosGetRequest('/api/v1/categories', {categoryLevel: 1}, 
+     (res=>{
+         this.categories1 = res.data.jsonData.categories
+     }))
+
+
+    this.axiosGetRequest('api/v1/products/lists',
+    {
+    startIndex:0, 
+    rowCount:100
+    },
+    (res)=>{
+        this.totalPrdtLength = res.data.jsonData.products.length;
+        this.products =[]
+            res.data.jsonData.products.splice(0,this.perPage).forEach(p=>{
+                this.products.push({
+                    ...p, isChecked: false
+                })
+            })
+         })
+
+
+    
+
+
      }
     }
 }

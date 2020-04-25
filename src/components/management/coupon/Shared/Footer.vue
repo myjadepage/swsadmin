@@ -1,6 +1,8 @@
 <template>
   <div class="selectPrdtFooter row mt-3 mb-3">
-    <div class="col"></div>
+    <div class="col">
+      <button v-if="routeName" @click="reset" class="ml-3 btn btn-success">초기화</button>
+    </div>
     <div class="col">
       <b-pagination 
       class="justify-content-center"
@@ -28,6 +30,14 @@ export default {
     },
     close(){
       this.$emit('close')
+    },
+    reset(){
+      this.$emit('reset')
+    }
+  },
+  computed:{
+    routeName(){
+      return this.$route.name==='상품선택하기'
     }
   }
 }

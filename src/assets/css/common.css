@@ -3629,15 +3629,15 @@ background-repeat: no-repeat;
 }
 
 .selectPrdtList{
-    height: 500px;
+    height: 400px;
     width: 100%;
     overflow-y: scroll;
 }
 
-.selectPrdtTree{
-    height: 350px;
-    overflow-y: scroll;
+.selectPrdtTree table{
+    margin: 0;
 }
+
 
 .searchTableWrap input::-webkit-outer-spin-button,
 .searchTableWrap input::-webkit-inner-spin-button {
